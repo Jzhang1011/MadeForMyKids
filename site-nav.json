@@ -1,0 +1,35 @@
+{
+  "brand": "MadeForMyKids",
+  "homeHref": "/",
+  "main": [
+    {"id": "learn", "label": "Learn", "href": "/learn/"},
+    {"id": "practice", "label": "Practice", "href": "/practice/"},
+    {"id": "games", "label": "Games", "href": "/games/"},
+    {"id": "parents", "label": "Parents", "href": "/parents/"}
+  ],
+  "footer": {
+    "learn": [
+      {"label": "Typing", "href": "/typing.html"},
+      {"label": "Mac Skills", "href": "/mac/"},
+      {"label": "Math", "href": "/amc/"},
+      {"label": "STEM", "href": "/stem/"}
+    ],
+    "parents": [
+      {"label": "About", "href": "/parents/about/"},
+      {"label": "How It Works", "href": "/parents/how-it-works/"},
+      {"label": "Progress", "href": "/parents/progress/"},
+      {"label": "FAQ", "href": "/parents/faq/"}
+    ],
+    "resources": [
+      {"label": "Learning Guides", "href": "/guides/"},
+      {"label": "Blog", "href": "/blog/"}
+    ],
+    "legal": [
+      {"label": "Privacy", "href": "/privacy/"},
+      {"label": "Terms", "href": "/terms/"},
+      {"label": "Contact", "href": "/contact/"}
+    ]
+  },
+  "search": {"enabled": true, "placeholder": "Search skills & activities"},
+  "parentArea": {"label": "Parents", "href": "/parents/"}
+}
