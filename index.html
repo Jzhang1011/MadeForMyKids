@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Search — MadeForMyKids</title>
+  <meta name="description" content="Search MadeForMyKids skills and activities." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .search-box {
+      margin: 1.25rem 0 1.75rem;
+      display: flex;
+      gap: 0.5rem;
+      max-width: 28rem;
+    }
+    .search-box input {
+      flex: 1;
+      border: 1px solid var(--mfk-border);
+      border-radius: 9999px;
+      padding: 0.65rem 1rem;
+      font: inherit;
+      background: var(--mfk-white);
+    }
+    .search-box input:focus {
+      outline: 3px solid var(--mfk-coral);
+      outline-offset: 1px;
+    }
+    .search-box button {
+      border: none;
+      background: var(--mfk-coral);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 9999px;
+      padding: 0.65rem 1.15rem;
+      cursor: pointer;
+    }
+    .search-box button:hover { background: var(--mfk-coral-dark); }
+    .results { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+    .results li {
+      background: var(--mfk-white);
+      border: 1px solid var(--mfk-border);
+      border-radius: var(--mfk-radius);
+      padding: 1rem 1.15rem;
+      box-shadow: var(--mfk-shadow);
+    }
+    .results a {
+      color: var(--mfk-coral-dark);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .results a:hover { text-decoration: underline; }
+    .results a:focus-visible { outline: 3px solid var(--mfk-coral); outline-offset: 2px; border-radius: 4px; }
+    .results p { margin: 0.35rem 0 0; color: var(--mfk-slate-soft); font-size: 0.95rem; }
+    .hint { color: var(--mfk-slate-soft); margin: 0 0 1rem; }
+    #query-label { font-weight: 600; color: var(--mfk-slate); }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="home"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Search"
+      title="Search"
+      subtitle="Find skills and activities. Full search is coming soon — here are starter matches."
+    ></mfk-page-hero>
+
+    <form class="search-box" id="search-form" role="search" aria-label="Search MadeForMyKids">
+      <label class="mfk-sr-only" for="q">Search query</label>
+      <input id="q" name="q" type="search" placeholder="Search skills &amp; activities" autocomplete="off" />
+      <button type="submit">Search</button>
+    </form>
+
+    <p class="hint">Showing placeholder results<span id="query-label"></span>.</p>
+    <ul class="results" id="results" aria-live="polite">
+      <li>
+        <a href="/typing.html">Fox Typing Adventure</a>
+        <p>Guided typing practice — accuracy, rhythm, and keyboard confidence.</p>
+      </li>
+      <li>
+        <a href="/amc/">Olympiad Forge (AMC Math)</a>
+        <p>AMC-style problem bank for curious problem-solvers.</p>
+      </li>
+    </ul>
+  </main>
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="/components/pageHero.js"></script>
+  <script src="/components/toast.js"></script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var q = (params.get("q") || "").trim();
+      var input = document.getElementById("q");
+      var label = document.getElementById("query-label");
+      if (input) input.value = q;
+      if (label) label.textContent = q ? ' for “' + q + '”' : "";
+      document.getElementById("search-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var next = (input && input.value || "").trim();
+        var url = next ? "/search/?q=" + encodeURIComponent(next) : "/search/";
+        window.location.href = url;
+      });
+    })();
+  </script>
+</body>
+</html>
