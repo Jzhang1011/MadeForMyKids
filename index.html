@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Games — MadeForMyKids</title>
+  <meta name="description" content="Playful challenges that reinforce learning — coming soon." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .stub-links { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .stub-links a {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.65rem 1.1rem; border-radius: 9999px;
+      background: var(--mfk-coral-soft); color: var(--mfk-coral-dark);
+      text-decoration: none; font-weight: 600; border: 1px solid var(--mfk-border-warm);
+    }
+    .stub-links a:hover { background: var(--mfk-coral-muted); }
+    .stub-links a:focus-visible { outline: 3px solid var(--mfk-coral); outline-offset: 2px; }
+    .note { margin-top: 1.25rem; color: var(--mfk-slate-soft); max-width: 36rem; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="games"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Coming soon"
+      title="Games"
+      subtitle="Playful challenges that reinforce learning — coming soon."
+    ></mfk-page-hero>
+    
+    <p class="note">While this hub is under construction, try activities that are ready today:</p>
+    <div class="stub-links">
+      <a href="/typing.html">⌨️ Fox Typing Adventure</a>
+      <a href="/amc/">🧮 Olympiad Forge (AMC)</a>
+    </div>
+
+  </main>
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="/components/pageHero.js"></script>
+  <script src="/components/toast.js"></script>
+</body>
+</html>
