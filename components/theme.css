@@ -1,0 +1,205 @@
+/**
+ * MadeForMyKids shared theme tokens & base styles
+ * Warm coral/orange + deep slate — kid-friendly, parent-trustworthy
+ */
+
+:root {
+  /* Brand */
+  --mfk-coral: #ff7d26;
+  --mfk-coral-dark: #e8661a;
+  --mfk-coral-light: #ff9a55;
+  --mfk-coral-soft: #fff0e6;
+  --mfk-coral-muted: #ffe4d1;
+
+  --mfk-slate: #1e293b;
+  --mfk-slate-mid: #334155;
+  --mfk-slate-soft: #64748b;
+  --mfk-slate-faint: #94a3b8;
+
+  --mfk-cream: #fffbf7;
+  --mfk-white: #ffffff;
+  --mfk-border: #e2e8f0;
+  --mfk-border-warm: #fcd9b8;
+
+  /* Semantic */
+  --mfk-success: #16a34a;
+  --mfk-success-soft: #dcfce7;
+  --mfk-warning: #ca8a04;
+  --mfk-warning-soft: #fef9c3;
+  --mfk-error: #dc2626;
+  --mfk-error-soft: #fee2e2;
+  --mfk-info: #2563eb;
+  --mfk-info-soft: #dbeafe;
+
+  /* Difficulty */
+  --mfk-easy: #16a34a;
+  --mfk-easy-bg: #dcfce7;
+  --mfk-medium: #ca8a04;
+  --mfk-medium-bg: #fef9c3;
+  --mfk-hard: #dc2626;
+  --mfk-hard-bg: #fee2e2;
+
+  /* Skills */
+  --mfk-skill-typing: #ff7d26;
+  --mfk-skill-math: #7c3aed;
+  --mfk-skill-reading: #0891b2;
+  --mfk-skill-science: #059669;
+  --mfk-skill-default: #64748b;
+
+  /* Layout */
+  --mfk-radius: 12px;
+  --mfk-radius-sm: 8px;
+  --mfk-radius-lg: 20px;
+  --mfk-radius-full: 9999px;
+  --mfk-shadow: 0 4px 14px rgba(30, 41, 59, 0.08);
+  --mfk-shadow-lg: 0 12px 32px rgba(30, 41, 59, 0.12);
+  --mfk-max: 1100px;
+  --mfk-header-h: 64px;
+
+  /* Type */
+  --mfk-font-display: "Fredoka", "Nunito", system-ui, sans-serif;
+  --mfk-font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Base resets scoped to mfk pages when theme is loaded */
+.mfk-page,
+mfk-header,
+mfk-footer,
+mfk-navigation,
+mfk-breadcrumbs,
+mfk-page-hero,
+mfk-activity-card,
+mfk-lesson-card,
+mfk-progress-bar,
+mfk-skill-badge,
+mfk-difficulty-badge,
+mfk-button,
+mfk-modal,
+mfk-toast-host,
+mfk-feedback,
+mfk-related-activities,
+mfk-parent-note {
+  box-sizing: border-box;
+  font-family: var(--mfk-font-body);
+  color: var(--mfk-slate);
+  line-height: 1.5;
+}
+
+.mfk-page *,
+mfk-header *,
+mfk-footer *,
+mfk-navigation *,
+mfk-breadcrumbs *,
+mfk-page-hero *,
+mfk-activity-card *,
+mfk-lesson-card *,
+mfk-progress-bar *,
+mfk-skill-badge *,
+mfk-difficulty-badge *,
+mfk-button *,
+mfk-modal *,
+mfk-toast-host *,
+mfk-feedback *,
+mfk-related-activities *,
+mfk-parent-note * {
+  box-sizing: border-box;
+}
+
+.mfk-page {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--mfk-cream);
+  color: var(--mfk-slate);
+  font-family: var(--mfk-font-body);
+}
+
+.mfk-page a {
+  color: var(--mfk-coral-dark);
+}
+
+.mfk-page a:hover {
+  color: var(--mfk-coral);
+}
+
+.mfk-container {
+  width: 100%;
+  max-width: var(--mfk-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.mfk-section {
+  padding: 2.5rem 0;
+}
+
+.mfk-display {
+  font-family: var(--mfk-font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Focus ring shared */
+.mfk-focus:focus-visible,
+mfk-button button:focus-visible,
+mfk-header a:focus-visible,
+mfk-header button:focus-visible,
+mfk-footer a:focus-visible,
+mfk-modal button:focus-visible,
+mfk-feedback button:focus-visible {
+  outline: 3px solid var(--mfk-coral);
+  outline-offset: 2px;
+}
+
+/* Utility helpers when Tailwind is absent */
+.mfk-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mfk-grid-cards {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .mfk-grid-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .mfk-grid-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.mfk-coming-soon {
+  border: 2px dashed var(--mfk-border-warm);
+  border-radius: var(--mfk-radius-lg);
+  background: var(--mfk-white);
+  padding: 2rem;
+  text-align: center;
+  color: var(--mfk-slate-soft);
+}
+
+.mfk-coming-soon h3 {
+  font-family: var(--mfk-font-display);
+  color: var(--mfk-slate);
+  margin: 0 0 0.5rem;
+}
+
+.mfk-coming-soon p {
+  margin: 0;
+  max-width: 36rem;
+  margin-inline: auto;
+}
