@@ -1,0 +1,1092 @@
+[
+  {
+    "id": "hidden-figures",
+    "title": "Hidden Figures",
+    "year": 2016,
+    "runtime": 127,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "STEM",
+    "secondary": [
+      "World Knowledge",
+      "Resilience"
+    ],
+    "learn": "NASA computing, orbital mathematics, how unrecognized work makes exploration possible",
+    "qualities": "Confidence, resilience, curiosity, teamwork",
+    "knowledge": "Space race, segregation, women in STEM, NASA Langley",
+    "questions": [
+      "Why do you think Katherine kept pushing forward when the room was not built for her?",
+      "What is the difference between being allowed in a room and being respected in it?",
+      "Who are the 'hidden figures' in work you see around you?"
+    ],
+    "activity": "Look up how long sunlight takes to reach Earth, then how long a radio signal takes to reach the Moon. Sketch the two distances.",
+    "parent": "Strong first title for barriers and persistence. Pause for the bathroom-run scene and ask what the rule was really protecting.",
+    "content": "Historical racism, segregated facilities, workplace sexism; no graphic violence. Some period tension.",
+    "featured": true
+  },
+  {
+    "id": "inside-out",
+    "title": "Inside Out",
+    "year": 2015,
+    "runtime": 95,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "Empathy",
+    "secondary": [
+      "Curiosity"
+    ],
+    "learn": "Named emotions, memory, why sadness is useful, how a move can scramble identity",
+    "qualities": "Emotional literacy, empathy, self-awareness",
+    "knowledge": "Basic psychology of feelings; family relocation",
+    "questions": [
+      "When did Sadness help Riley more than Joy did?",
+      "What would happen if one emotion ran the whole console?",
+      "Which of Riley's islands feels most like you right now?"
+    ],
+    "activity": "Draw a five-emotion console for a real day this week. Label one memory that changed color after you talked about it.",
+    "parent": "Best on-ramp to feeling words. Watch for kids who treat Joy as the 'correct' emotion — the film argues otherwise.",
+    "content": "Anxiety and sadness portrayed vividly; brief implied depression. No frightening villains.",
+    "featured": true
+  },
+  {
+    "id": "coco",
+    "title": "Coco",
+    "year": 2017,
+    "runtime": 105,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "World Knowledge",
+    "secondary": [
+      "Empathy",
+      "Resilience"
+    ],
+    "learn": "Family memory, artistic vocation, how culture keeps people present after death",
+    "qualities": "Empathy, courage, respect for elders, creative grit",
+    "knowledge": "Día de los Muertos, Mexican family tradition, ofrenda practice",
+    "questions": [
+      "Why does Miguel's family ban music if music is how they remember?",
+      "What does it mean that being forgotten is the second death?",
+      "Who would you put on an ofrenda and why?"
+    ],
+    "activity": "Make a small ofrenda or memory table for someone you love: photo, favorite food, one object, one story told out loud.",
+    "parent": "Death is central but treated as continuation through memory. Good for families processing loss if you preview first.",
+    "content": "Themes of death and being forgotten; mild action. Culturally specific and worth naming as tradition, not costume.",
+    "featured": true
+  },
+  {
+    "id": "encanto",
+    "title": "Encanto",
+    "year": 2021,
+    "runtime": 102,
+    "mpaa": "PG",
+    "age": "6+",
+    "primary": "Creativity",
+    "secondary": [
+      "Empathy",
+      "Resilience"
+    ],
+    "learn": "Family roles, giftedness vs. worth, what happens when a house (or family) cracks",
+    "qualities": "Empathy, self-acceptance, creative problem-solving",
+    "knowledge": "Colombian-inspired culture, intergenerational family systems",
+    "questions": [
+      "What is Bruno's real 'gift' besides seeing the future?",
+      "Which family member is carrying a job that does not fit them?",
+      "What would your family miracle be, and what would it cost?"
+    ],
+    "activity": "Each person writes a hidden pressure they carry on a card. Trade and invent a kind sentence the family could say instead of 'we don't talk about it.'",
+    "parent": "Use for perfectionism and sibling comparison. Mirabel having no gift is the point, not a problem to fix.",
+    "content": "Family tension, implied trauma in Abuela's past; no on-screen violence. Songs carry the argument.",
+    "featured": true
+  },
+  {
+    "id": "moana",
+    "title": "Moana",
+    "year": 2016,
+    "runtime": 107,
+    "mpaa": "PG",
+    "age": "6+",
+    "primary": "Resilience",
+    "secondary": [
+      "World Knowledge",
+      "Curiosity"
+    ],
+    "learn": "Wayfinding, stewardship of the ocean, identity beyond a parent's fear",
+    "qualities": "Courage, curiosity, responsibility, persistence",
+    "knowledge": "Pacific voyaging culture, ecological imbalance as story metaphor",
+    "questions": [
+      "Why does Tala push Moana toward the reef when her father forbids it?",
+      "Is Maui a hero, a cautionary tale, or both?",
+      "What does 'know who you are' mean after the journey, not before?"
+    ],
+    "activity": "Try a simple navigation challenge: cross a park or block using only landmarks and the sun, no phone.",
+    "parent": "Strong for kids who need permission to try a hard thing. Separate Polynesian inspiration from 'generic island movie.'",
+    "content": "Mild peril at sea, lava being, comic sidekick. Some kids find Te Kā intense; sit close.",
+    "featured": true
+  },
+  {
+    "id": "how-to-train-your-dragon",
+    "title": "How to Train Your Dragon",
+    "year": 2010,
+    "runtime": 98,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "Empathy",
+    "secondary": [
+      "Courage",
+      "Creativity"
+    ],
+    "learn": "Enemies can be misunderstood; invention plus kindness changes a culture",
+    "qualities": "Empathy, courage, creative thinking, moral independence",
+    "knowledge": "Prejudice as inherited story; prosthetic/adaptive design (Hiccup's foot, Toothless's tail)",
+    "questions": [
+      "What did Hiccup notice that the other Vikings refused to look at?",
+      "Why is it harder to change your father's mind than to fight a dragon?",
+      "Where do we still tell 'they are all dangerous' stories?"
+    ],
+    "activity": "Design a helpful prosthetic or tool for an animal or person on paper. Label the problem it solves.",
+    "parent": "Excellent prejudice conversation without a lecture. The night-fury scene is the whole thesis: look closer.",
+    "content": "Battle sequences, parental injury, a prosthetic outcome. Intensity rises in the nest battle.",
+    "featured": true
+  },
+  {
+    "id": "wonder",
+    "title": "Wonder",
+    "year": 2017,
+    "runtime": 113,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "Empathy",
+    "secondary": [
+      "Resilience"
+    ],
+    "learn": "Perspective-taking, friendship under social pressure, how kindness is a practice",
+    "qualities": "Empathy, courage, integrity, resilience",
+    "knowledge": "Facial difference, school inclusion, family stress around medical care",
+    "questions": [
+      "Why does the film keep switching whose eyes we see through?",
+      "When is 'being nice' not the same as being a friend?",
+      "What would you want classmates to do on a first day like Auggie's?"
+    ],
+    "activity": "Write the same cafeteria scene from three seats: Auggie, Jack, Via. Read them aloud and mark what each person cannot see.",
+    "parent": "Preview if your child has been bullied or has a visible difference. The precepts make a good week-long dinner ritual.",
+    "content": "Bullying, social exclusion, medical history. Not graphic; emotionally heavy for sensitive 8–9 year olds.",
+    "featured": true
+  },
+  {
+    "id": "october-sky",
+    "title": "October Sky",
+    "year": 1999,
+    "runtime": 108,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "Curiosity",
+    "secondary": [
+      "STEM",
+      "Resilience"
+    ],
+    "learn": "Amateur rocketry, scientific method through failure, leaving a town without rejecting it",
+    "qualities": "Curiosity, grit, mentorship, family loyalty",
+    "knowledge": "Sputnik era, coal-town economics, contest science",
+    "questions": [
+      "Why does Homer keep launching after the rockets fail in public?",
+      "What does his father fear losing if Homer leaves the mine?",
+      "Who is the most important teacher in the film who is not in a classroom?"
+    ],
+    "activity": "Build and test a bottle rocket or paper rocket. Log three failures and what you changed after each.",
+    "parent": "Quiet, true-story energy. Good for kids who think science is only for 'geniuses already ahead.'",
+    "content": "Mine disaster tension, father-son conflict, period smoking. No sensational violence.",
+    "featured": true
+  },
+  {
+    "id": "apollo-13",
+    "title": "Apollo 13",
+    "year": 1995,
+    "runtime": 140,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "STEM",
+    "secondary": [
+      "Resilience"
+    ],
+    "learn": "Engineering under constraint, teamwork on the ground matching courage in the capsule",
+    "qualities": "Composure, collaboration, problem-solving, trust",
+    "knowledge": "Apollo program, orbital mechanics at a story level, Mission Control culture",
+    "questions": [
+      "Why is 'failure is not an option' a team sentence, not a hero sentence?",
+      "Which fix in the film is the most creative use of leftover parts?",
+      "How do the families on the ground practice courage differently from the crew?"
+    ],
+    "activity": "Give the family a 'square peg, round hole' challenge: solve a household problem using only items from one drawer.",
+    "parent": "Long but gripping. You can watch in two nights. Emphasize the ground crew as co-protagonists.",
+    "content": "Sustained peril, oxygen crisis, brief tempers. Based on real events; some kids ask if the crew dies — tell them no before you start if needed.",
+    "featured": true
+  },
+  {
+    "id": "walle",
+    "title": "WALL-E",
+    "year": 2008,
+    "runtime": 98,
+    "mpaa": "G",
+    "age": "8+",
+    "primary": "STEM",
+    "secondary": [
+      "World Knowledge",
+      "Empathy"
+    ],
+    "learn": "Robotics and automation, consumer waste, what humans forget how to do",
+    "qualities": "Care, curiosity, courage, stewardship",
+    "knowledge": "Environmental collapse as cautionary future; plant life as a restart signal",
+    "questions": [
+      "What does WALL-E know how to do that the people on the ship have forgotten?",
+      "Why is a single plant more important than all the ads?",
+      "If a robot can be lonely, what is the film saying about attention?"
+    ],
+    "activity": "Do a home 'trash audit' for one day. Sort landfill / recycle / compost and set one reduction goal for the week.",
+    "parent": "Almost silent first act is a gift: ask kids to narrate what WALL-E wants before EVE arrives.",
+    "content": "Bleak empty Earth may unsettle younger children. Comic tone returns; no gore.",
+    "featured": true
+  },
+  {
+    "id": "big-hero-6",
+    "title": "Big Hero 6",
+    "year": 2014,
+    "runtime": 102,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "STEM",
+    "secondary": [
+      "Empathy",
+      "Resilience"
+    ],
+    "learn": "Robotics, prototyping, grief redirected into purpose rather than revenge",
+    "qualities": "Inventiveness, loyalty, emotional regulation, teamwork",
+    "knowledge": "Applied engineering, superhero ethics, sibling loss",
+    "questions": [
+      "When does Hiro stop building to hurt and start building to help?",
+      "What is Baymax's actual job description, and why does that matter in a fight?",
+      "Which teammate's 'soft' skill saves the mission?"
+    ],
+    "activity": "Invent a helper robot on paper: one job, three sensors, one safety rule it must never break.",
+    "parent": "The death is early and clear. Pause. Baymax's care protocol is the moral center — name it.",
+    "content": "Sibling death, fire, action violence. Tone is adventurous after the funeral; still a real loss.",
+    "featured": true
+  },
+  {
+    "id": "the-wild-robot",
+    "title": "The Wild Robot",
+    "year": 2024,
+    "runtime": 102,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "Empathy",
+    "secondary": [
+      "STEM",
+      "Resilience"
+    ],
+    "learn": "Adaptation, parenting without a manual, ecosystems as networks not scenery",
+    "qualities": "Empathy, flexibility, courage, belonging",
+    "knowledge": "Migration, predator-prey, what 'programmed' vs. 'chosen' might mean",
+    "questions": [
+      "When does Roz stop being a machine that washes ashore and start being a mother?",
+      "Why do the animals need her to change more than they need her to stay efficient?",
+      "What rule would you keep if you were stranded and had to belong?"
+    ],
+    "activity": "Map a backyard or park food web with at least eight species. Add one 'Roz' — an outsider who changes the map.",
+    "parent": "Gentle face, real stakes. Excellent for kids who intellectualize feelings; the robot learns them in public.",
+    "content": "Animal peril and death in the cycle of nature; storms; mild action. Sad in places, not cruel.",
+    "featured": true
+  },
+  {
+    "id": "ratatouille",
+    "title": "Ratatouille",
+    "year": 2007,
+    "runtime": 111,
+    "mpaa": "G",
+    "age": "8+",
+    "primary": "Creativity",
+    "secondary": [
+      "Resilience"
+    ],
+    "learn": "Craft takes taste plus practice; gatekeeping in art; collaboration across status lines",
+    "qualities": "Creativity, persistence, humility, courage",
+    "knowledge": "French kitchen brigade, food criticism, who gets to be called an artist",
+    "questions": [
+      "Is Linguini the cook, the partner, or the front?",
+      "Why does Ego's review matter more than the crowd's applause?",
+      "What talent in your house is hiding in the 'wrong' body or room?"
+    ],
+    "activity": "Cook one simple dish together from scratch. Plate it as if a critic is coming, then write a four-sentence review that is specific, not just 'yummy.'",
+    "parent": "Use for kids who think talent is magic. Gusteau's line is the whole site in one sentence: anyone can cook.",
+    "content": "Comic chase peril, health-inspector tension, a gunshot scare at the start for some kids. Generally gentle.",
+    "featured": true
+  },
+  {
+    "id": "paddington-2",
+    "title": "Paddington 2",
+    "year": 2017,
+    "runtime": 104,
+    "mpaa": "PG",
+    "age": "6+",
+    "primary": "Empathy",
+    "secondary": [
+      "Creativity"
+    ],
+    "learn": "Manners as social technology, how one kind person rearranges a neighborhood",
+    "qualities": "Kindness, fairness, optimism, civic-mindedness",
+    "knowledge": "London community life, prisons as places that can still hold humor and reform (story-level)",
+    "questions": [
+      "What does Paddington do that makes hard people softer?",
+      "Is 'if we are kind and polite the world will be right' always true? When is it still worth trying?",
+      "Who in the film needs a second chance more than a punishment?"
+    ],
+    "activity": "Write and deliver one useful thank-you (not a compliment) to someone who keeps your daily life running.",
+    "parent": "The rare film that teaches manners without nagging. Pop-up book sequence is a creativity master class.",
+    "content": "Wrongful imprisonment, mild villainy, comic danger. Very safe emotionally for most 6+.",
+    "featured": true
+  },
+  {
+    "id": "zootopia",
+    "title": "Zootopia",
+    "year": 2016,
+    "runtime": 108,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "World Knowledge",
+    "secondary": [
+      "Empathy"
+    ],
+    "learn": "Bias can hide inside people who think they are the good guys; cities are systems",
+    "qualities": "Fairness, courage, self-scrutiny, persistence",
+    "knowledge": "Stereotypes, policing and trust, urban design as metaphor",
+    "questions": [
+      "When does Judy catch herself doing the thing she hates?",
+      "Why is 'predator' a dangerous nickname even when it started as biology?",
+      "What stereotype do people put on you, and what do they miss?"
+    ],
+    "activity": "Invent two animals and write the rumor about each. Then write one fact that makes the rumor fall apart.",
+    "parent": "Do not skip the Judy-Nick sidewalk scene. That is the learning. The night howler plot is just the vehicle.",
+    "content": "Prejudice themes, mild noir menace, a sloth joke that runs long. Some intense predator-prey framing for younger kids.",
+    "featured": true
+  },
+  {
+    "id": "soul",
+    "title": "Soul",
+    "year": 2020,
+    "runtime": 100,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "Curiosity",
+    "secondary": [
+      "Creativity"
+    ],
+    "learn": "Purpose vs. spark; a life is more than the job you wanted",
+    "qualities": "Curiosity, presence, humility, creative love of craft",
+    "knowledge": "Jazz as practice, philosophy of vocation at kid-accessible level",
+    "questions": [
+      "What is the difference between Joe's 'purpose' and 22's 'spark'?",
+      "When is ambition a gift and when is it a trap?",
+      "What ordinary thing in your day would a soul who has never lived find amazing?"
+    ],
+    "activity": "Each person lists four 'spark' moments from an ordinary day (not achievements). Put them on the fridge for a week.",
+    "parent": "More philosophical than most Pixar. Best at 10+ unless you like pausing to translate. Jazz scenes reward a short music detour.",
+    "content": "Afterlife abstraction, a character in a hospital, existential dread played gently. Not scary; can feel big.",
+    "featured": true
+  },
+  {
+    "id": "mitchells-vs-machines",
+    "title": "The Mitchells vs. the Machines",
+    "year": 2021,
+    "runtime": 114,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "Creativity",
+    "secondary": [
+      "Empathy"
+    ],
+    "learn": "Family as mismatched operating systems; screens as connection and capture",
+    "qualities": "Creativity, flexibility, family loyalty, media literacy",
+    "knowledge": "AI hype as comedy; how algorithms flatten people into types",
+    "questions": [
+      "What does Katie make that a machine cannot rank?",
+      "Why does the dad's 'plan' keep failing his actual kids?",
+      "When does a phone help this family, and when does it steal them?"
+    ],
+    "activity": "Shoot a 60-second family movie with phones in a drawer except the camera. Credits required.",
+    "parent": "Loud and dense visually. Great for creative kids who feel unseen by practical parents — and the reverse.",
+    "content": "Robot apocalypse comedy, mild peril, family yelling. Overstimulating for some; harmless morally.",
+    "featured": true
+  },
+  {
+    "id": "akeelah-and-the-bee",
+    "title": "Akeelah and the Bee",
+    "year": 2006,
+    "runtime": 112,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "Resilience",
+    "secondary": [
+      "Curiosity"
+    ],
+    "learn": "Language as power, community coaching, excellence without abandoning home",
+    "qualities": "Grit, humility, belonging, intellectual courage",
+    "knowledge": "Scripps-style spelling, South L.A. community, etymology as a tool",
+    "questions": [
+      "Why is Akeelah afraid to look like she cares?",
+      "What does Dr. Larabee mean by 'our language'?",
+      "Who in your life would show up if you trained for something hard?"
+    ],
+    "activity": "Pick five words. Find root + language of origin + one sentence you would actually use. Hold a five-word family bee.",
+    "parent": "Old-fashioned in the best way. Affirms neighborhood pride and high standards in the same breath.",
+    "content": "Grief (father's death in backstory), class tension, pressure. No violence of note.",
+    "featured": true
+  },
+  {
+    "id": "remember-the-titans",
+    "title": "Remember the Titans",
+    "year": 2000,
+    "runtime": 113,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "World Knowledge",
+    "secondary": [
+      "Empathy",
+      "Resilience"
+    ],
+    "learn": "Integration is work, not a speech; teams can lead towns or copy them",
+    "qualities": "Courage, respect, discipline, moral leadership",
+    "knowledge": "Virginia school integration era, football as civic stage",
+    "questions": [
+      "What changes first — the locker room or the town?",
+      "When does Boone's toughness help, and when does Yoast's gentleness?",
+      "Who on the team is brave off the field?"
+    ],
+    "activity": "Choose a group you belong to. Write one rule that would make a newcomer feel the group is actually shared.",
+    "parent": "Sports movie that earns its history. Some language and racial slurs are period-accurate; preview and plan to pause.",
+    "content": "Racist language and threats, injury, a car accident. PG but emotionally adult in places.",
+    "featured": true
+  },
+  {
+    "id": "boy-who-harnessed-wind",
+    "title": "The Boy Who Harnessed the Wind",
+    "year": 2019,
+    "runtime": 113,
+    "mpaa": "PG-13",
+    "age": "11+",
+    "primary": "STEM",
+    "secondary": [
+      "World Knowledge",
+      "Resilience"
+    ],
+    "learn": "Practical physics, libraries as infrastructure, engineering as family survival",
+    "qualities": "Ingenuity, persistence, filial respect, civic courage",
+    "knowledge": "Malawi famine context, wind energy basics, education access",
+    "questions": [
+      "Why is the library more important than the broken pump at first?",
+      "What does William have to risk in his father's eyes to try the mill?",
+      "How is this different from a 'gifted kid' movie set in a lab?"
+    ],
+    "activity": "Build a pinwheel or small wind toy and test it in three places. Which location wins and why?",
+    "parent": "Heavier than most on this list (hunger, political violence at a distance). Worth it for 11+ with context. True story.",
+    "content": "Famine, poverty, brief unrest. PG-13 for thematic intensity more than images. Watch first if your child is sensitive to hunger stories.",
+    "featured": true
+  },
+  {
+    "id": "queen-of-katwe",
+    "title": "Queen of Katwe",
+    "year": 2016,
+    "runtime": 124,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "Resilience",
+    "secondary": [
+      "World Knowledge"
+    ],
+    "learn": "Chess as thinking sport, talent plus transport plus a coach",
+    "qualities": "Focus, confidence, family loyalty, strategic patience",
+    "knowledge": "Kampala / Katwe life, competitive chess, what 'opportunity' actually costs a family",
+    "questions": [
+      "What does Phiona see on the board that she also needs off the board?",
+      "Why is leaving for a tournament a family decision, not just hers?",
+      "Who wins if she wins — only Phiona?"
+    ],
+    "activity": "Learn and play three games of chess (or checkers). After each, name one mistake you will not repeat.",
+    "parent": "Disney drama with real texture. Good counterweight to 'pull yourself up' myths — community is the engine.",
+    "content": "Poverty, a missing father, mild peril in the slum setting. No graphic content.",
+    "featured": true
+  },
+  {
+    "id": "holes",
+    "title": "Holes",
+    "year": 2003,
+    "runtime": 117,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "Resilience",
+    "secondary": [
+      "World Knowledge"
+    ],
+    "learn": "Cause and effect across generations, friendship as survival, justice delayed",
+    "qualities": "Loyalty, endurance, fairness, pattern-spotting",
+    "knowledge": "American tall-tale structure, desert ecology lite, juvenile detention critique (story-level)",
+    "questions": [
+      "What 'curse' is actually a chain of human choices?",
+      "Why does Zero matter more than the treasure?",
+      "Where is an adult using kids to do dirty work?"
+    ],
+    "activity": "Draw the story as a family tree of cause and effect: one injustice leading to the next, then the repair.",
+    "parent": "Funny and dark. Pause on Camp Green Lake's rules — kids recognize unfair systems fast if you let them.",
+    "content": "Cruel adults, forced labor, historical racism in flashbacks, implied danger. PG with bite.",
+    "featured": true
+  },
+  {
+    "id": "finding-nemo",
+    "title": "Finding Nemo",
+    "year": 2003,
+    "runtime": 100,
+    "mpaa": "G",
+    "age": "6+",
+    "primary": "Resilience",
+    "secondary": [
+      "Empathy"
+    ],
+    "learn": "Overprotection vs. trust, ocean habitats, asking for help",
+    "qualities": "Courage, persistence, trust, adaptability",
+    "knowledge": "Coral reef, currents, fish adaptations (popular-science level)",
+    "questions": [
+      "What is Marlin afraid of that is no longer happening?",
+      "How does Dory's way of thinking save them?",
+      "When should a parent let a child take a risk?"
+    ],
+    "activity": "Pick three ocean animals from the film and find one true fact and one movie invention about each.",
+    "parent": "Opening is harsher than people remember. You can start after it for younger kids and still keep the theme.",
+    "content": "Predator attacks, separation trauma at the start, comic peril after. G-rated but the first minutes sting.",
+    "featured": true
+  },
+  {
+    "id": "kikis-delivery-service",
+    "title": "Kiki's Delivery Service",
+    "year": 1989,
+    "runtime": 103,
+    "mpaa": "G",
+    "age": "6+",
+    "primary": "Creativity",
+    "secondary": [
+      "Resilience"
+    ],
+    "learn": "Independence, creative burnout, finding work that fits a gift",
+    "qualities": "Self-reliance, creativity, humility, recovery",
+    "knowledge": "Coming-of-age work life; artist block as a real event",
+    "questions": [
+      "Why does Kiki lose her magic when she starts comparing herself?",
+      "What does the baker give her that is not money?",
+      "What would 'open a small business at 13' teach you that school does not?"
+    ],
+    "activity": "Offer one real helpful service this week (walk, bake, organize, draw). Charge nothing; write what was hard besides the task.",
+    "parent": "The quietest courage film on the list. Ideal for kids entering a new school or sport.",
+    "content": "Very gentle. A flying scare or two. No villains.",
+    "featured": true
+  },
+  {
+    "id": "my-neighbor-totoro",
+    "title": "My Neighbor Totoro",
+    "year": 1988,
+    "runtime": 86,
+    "mpaa": "G",
+    "age": "6+",
+    "primary": "Curiosity",
+    "secondary": [
+      "Empathy"
+    ],
+    "learn": "Attention to ordinary nature, waiting, sibling care while adults are stretched",
+    "qualities": "Wonder, patience, gentleness, observation",
+    "knowledge": "Japanese countryside living, soot sprites as household folklore",
+    "questions": [
+      "What do the girls notice because they are not in a hurry?",
+      "Why doesn't the film explain Totoro?",
+      "How do Mei and Satsuki take care of each other when Mother is away?"
+    ],
+    "activity": "Take a 20-minute 'noticing walk.' Each person must bring back three things they never named before.",
+    "parent": "Mother's illness is background, not a twist. If a parent is sick in real life, preview. Otherwise it is comfort cinema.",
+    "content": "Hospital visits, a lost-child scare that resolves. No antagonists.",
+    "featured": true
+  },
+  {
+    "id": "hugo",
+    "title": "Hugo",
+    "year": 2011,
+    "runtime": 126,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "Curiosity",
+    "secondary": [
+      "Creativity",
+      "World Knowledge"
+    ],
+    "learn": "Early cinema history, clocks and automata, repairing people by repairing things",
+    "qualities": "Curiosity, craftsmanship, empathy, persistence",
+    "knowledge": "Georges Méliès, birth of movie magic, 1930s Paris station life",
+    "questions": [
+      "Why does Papa Georges hide the part of himself that made films?",
+      "What is the difference between stealing a machine and stealing a life?",
+      "How is a movie like a clock?"
+    ],
+    "activity": "Watch one very short early film (Méliès' Trip to the Moon is ideal). List three tricks that still show up in movies today.",
+    "parent": "A love letter to movies themselves — meta in a useful way for this site. Long for some 8-year-olds; an intermission works.",
+    "content": "Orphanhood, a station inspector who looks scarier than he is, brief war injury backstory.",
+    "featured": true
+  },
+  {
+    "id": "spider-verse",
+    "title": "Spider-Man: Into the Spider-Verse",
+    "year": 2018,
+    "runtime": 117,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "Creativity",
+    "secondary": [
+      "Resilience"
+    ],
+    "learn": "Style as meaning, multiple versions of a person, stepping up without being 'the' chosen one first",
+    "qualities": "Courage, originality, responsibility, humor under pressure",
+    "knowledge": "Comic-book visual language; Brooklyn family life",
+    "questions": [
+      "Why does Miles's world look different from Peter's?",
+      "What does 'anyone can wear the mask' add to 'with great power'?",
+      "When does Miles stop imitating and start inventing?"
+    ],
+    "activity": "Draw the same hero three ways (stick, realistic, wild). Write one sentence each version would say about fear.",
+    "parent": "Form is content: the look teaches creative confidence. Action is punchy; fine for most 10+.",
+    "content": "Comic-book fights, a parent in danger, some menace. PG action, not grim.",
+    "featured": true
+  },
+  {
+    "id": "iron-giant",
+    "title": "The Iron Giant",
+    "year": 1999,
+    "runtime": 86,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "Learn Through Stories",
+    "secondary": [
+      "Empathy",
+      "World Knowledge"
+    ],
+    "learn": "You are what you choose, not what you were built for; fear makes bad policy",
+    "qualities": "Moral courage, friendship, self-control, hope",
+    "knowledge": "1950s Cold War mood, weapons panic as social story",
+    "questions": [
+      "Who decides what the Giant is — the government, Hogarth, or the Giant?",
+      "Why is 'Superman' a better instruction than 'weapon'?",
+      "What fear in the town looks like a fact but is actually a story?"
+    ],
+    "activity": "Write two headlines about the same event: one from fear, one from curiosity. Discuss which one you would click and why.",
+    "parent": "Short, perfect, and the ending needs a talk. Kids often ask if the Giant dies. Stay for that conversation.",
+    "content": "Military force, a sacrificial ending, guns. Emotionally larger than its runtime.",
+    "featured": true
+  },
+  {
+    "id": "luca",
+    "title": "Luca",
+    "year": 2021,
+    "runtime": 95,
+    "mpaa": "PG",
+    "age": "6+",
+    "primary": "Learn Through Stories",
+    "secondary": [
+      "Empathy",
+      "Curiosity"
+    ],
+    "learn": "Friendship as bravery, hiding vs. belonging, curiosity about the 'other side'",
+    "qualities": "Loyalty, courage, openness, playfulness",
+    "knowledge": "Italian coastal town life; difference as metaphor (read it as you need)",
+    "questions": [
+      "What is Luca not allowed to be curious about, and who made that rule?",
+      "When does hiding protect him, and when does it shrink him?",
+      "What does Alberto teach that a parent cannot?"
+    ],
+    "activity": "Each person names one 'land' thing they want to try that feels a bit sea-monster scary. Plan one small first step.",
+    "parent": "Works as a friendship movie first. If you want the identity metaphor, let the child lead; do not force a coming-out reading.",
+    "content": "Parental fear, a chase, mild bullying. Warm overall.",
+    "featured": true
+  },
+  {
+    "id": "fly-away-home",
+    "title": "Fly Away Home",
+    "year": 1996,
+    "runtime": 107,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "STEM",
+    "secondary": [
+      "Resilience",
+      "Empathy"
+    ],
+    "learn": "Imprinting, migration, father-daughter repair through a shared project",
+    "qualities": "Responsibility, courage, scientific patience, trust",
+    "knowledge": "Canada geese migration, ultralight aircraft, habitat disruption",
+    "questions": [
+      "Why can't the geese just 'figure out' south without help?",
+      "What is Amy practicing besides flying?",
+      "When does a parent need to follow a child's lead on a project?"
+    ],
+    "activity": "Trace a real migratory route on a map. Estimate days and hazards. Compare to the film.",
+    "parent": "Opens with a car accident and a mother's death. Tell kids beforehand or start after the title sequence if needed.",
+    "content": "Parental death at the start, flight danger, developers as antagonists. True-story inspired.",
+    "featured": true
+  },
+  {
+    "id": "mulan-1998",
+    "title": "Mulan",
+    "year": 1998,
+    "runtime": 88,
+    "mpaa": "G",
+    "age": "8+",
+    "primary": "Resilience",
+    "secondary": [
+      "World Knowledge"
+    ],
+    "learn": "Courage as cleverness, family honor vs. self, wartime gender rules",
+    "qualities": "Courage, ingenuity, loyalty",
+    "knowledge": "Legendary China setting (story, not textbook history)",
+    "questions": [
+      "What does Mulan save besides China?",
+      "When is disguise protection and when is it a prison?"
+    ],
+    "activity": "List three problems Mulan solves with brains instead of force.",
+    "parent": "Use the legend as story, then note it is not a documentary about China.",
+    "content": "War, a frightening Shan Yu, implied death. G but intense in battle.",
+    "featured": false
+  },
+  {
+    "id": "turning-red",
+    "title": "Turning Red",
+    "year": 2022,
+    "runtime": 100,
+    "mpaa": "PG",
+    "age": "9+",
+    "primary": "Empathy",
+    "secondary": [
+      "World Knowledge"
+    ],
+    "learn": "Puberty as metaphor, mother-daughter control vs. care, friend groups as labs",
+    "qualities": "Self-acceptance, honesty, empathy",
+    "knowledge": "Toronto Chinese-Canadian family life, temple tradition in a modern city",
+    "questions": [
+      "What is Mei's mother afraid will happen if she loosens her grip?"
+    ],
+    "activity": "Each person names a 'red panda' — a feeling that arrives too big for the room.",
+    "parent": "Period talk is frank and healthy. Preview if you want to set family language first.",
+    "content": "Puberty themes, family yelling, a concert climax. PG.",
+    "featured": false
+  },
+  {
+    "id": "elemental",
+    "title": "Elemental",
+    "year": 2023,
+    "runtime": 101,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "Empathy",
+    "secondary": [
+      "World Knowledge"
+    ],
+    "learn": "Immigration, mixed communities, duty to parents vs. own path",
+    "qualities": "Empathy, courage, respect",
+    "knowledge": "City-as-immigrant-story metaphor",
+    "questions": [
+      "What rule in Element City is really a habit of fear?"
+    ],
+    "activity": "Cook or buy a food from a culture your family did not grow up in. Learn one story behind it.",
+    "parent": "Softer than Zootopia; good for younger kids on belonging.",
+    "content": "Flood peril, family pressure. Gentle.",
+    "featured": false
+  },
+  {
+    "id": "newsies",
+    "title": "Newsies",
+    "year": 1992,
+    "runtime": 121,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "World Knowledge",
+    "secondary": [
+      "Courage"
+    ],
+    "learn": "Child labor, collective action, newspapers as power",
+    "qualities": "Solidarity, courage, rhetoric",
+    "knowledge": "1899 New York newsboy strike (musical version)",
+    "questions": [
+      "What can kids change when adults own the presses?"
+    ],
+    "activity": "Write a one-page 'extra' about a fairness issue at school. Headline required.",
+    "parent": "Musical, not documentary. Pair with a short real-strike paragraph after.",
+    "content": "Street hardship, strike violence at a distance. PG.",
+    "featured": false
+  },
+  {
+    "id": "stand-and-deliver",
+    "title": "Stand and Deliver",
+    "year": 1988,
+    "runtime": 103,
+    "mpaa": "PG",
+    "age": "12+",
+    "primary": "STEM",
+    "secondary": [
+      "Resilience"
+    ],
+    "learn": "Calculus as access, stereotype threat, teacher as organizer",
+    "qualities": "Discipline, pride, intellectual courage",
+    "knowledge": "AP calculus, East L.A. in the 1980s, testing politics",
+    "questions": [
+      "Why do the students have to prove the scores twice?"
+    ],
+    "activity": "Work one hard problem together until everyone can explain one step.",
+    "parent": "Talky and dated in style; the fairness ending still lands.",
+    "content": "Language, teen pregnancy subplot, class conflict. 12+.",
+    "featured": false
+  },
+  {
+    "id": "little-women-2019",
+    "title": "Little Women",
+    "year": 2019,
+    "runtime": 135,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "Creativity",
+    "secondary": [
+      "World Knowledge",
+      "Empathy"
+    ],
+    "learn": "Art vs. money, sisterhood, 19th-century limits on girls",
+    "qualities": "Ambition, loyalty, creative persistence",
+    "knowledge": "Civil War home front, publishing, women's economic options then",
+    "questions": [
+      "Which March sister is choosing freedom, and which is choosing safety?"
+    ],
+    "activity": "Write two versions of the same page: one 'for the market,' one 'for yourself.'",
+    "parent": "Gerwig structure jumps in time — help younger viewers once, then let it play.",
+    "content": "Illness and death, poverty stress. PG.",
+    "featured": false
+  },
+  {
+    "id": "school-of-rock",
+    "title": "School of Rock",
+    "year": 2003,
+    "runtime": 108,
+    "mpaa": "PG-13",
+    "age": "10+",
+    "primary": "Creativity",
+    "secondary": [
+      "Learn Through Stories"
+    ],
+    "learn": "Ensemble music, finding a role, adults who are still unfinished",
+    "qualities": "Collaboration, confidence, play",
+    "knowledge": "Rock band roles; school as institution vs. workshop",
+    "questions": [
+      "What does each kid bring that Dewey did not plan for?"
+    ],
+    "activity": "Form a 20-minute living-room band with pots, playlists, or real instruments. Assign jobs.",
+    "parent": "PG-13 for language and a fake-teacher plot you should label as comedy, not advice.",
+    "content": "Deceit premise, rock lyrics, mild language. Fun with a disclaimer.",
+    "featured": false
+  },
+  {
+    "id": "night-at-the-museum",
+    "title": "Night at the Museum",
+    "year": 2006,
+    "runtime": 108,
+    "mpaa": "PG",
+    "age": "7+",
+    "primary": "Curiosity",
+    "secondary": [
+      "World Knowledge"
+    ],
+    "learn": "Museums as story warehouses, history figures as personalities",
+    "qualities": "Curiosity, responsibility, humor",
+    "knowledge": "Natural history museum mash-up (starter, not accurate syllabus)",
+    "questions": [
+      "Which exhibit would you want to talk to, and what would you ask?"
+    ],
+    "activity": "Pick one real object from a museum site. Write five true facts vs. five movie inventions.",
+    "parent": "Gateway film. Follow with a real visit or virtual tour so magic does not replace history.",
+    "content": "Comic chase action. Easy.",
+    "featured": false
+  },
+  {
+    "id": "charlottes-web-2006",
+    "title": "Charlotte's Web",
+    "year": 2006,
+    "runtime": 97,
+    "mpaa": "G",
+    "age": "6+",
+    "primary": "Empathy",
+    "secondary": [
+      "Learn Through Stories"
+    ],
+    "learn": "Friendship across difference, words that change fate, farm life cycles",
+    "qualities": "Kindness, loyalty, acceptance",
+    "knowledge": "Farm seasons; how stories travel",
+    "questions": [
+      "What does Charlotte give Wilbur that bacon economics cannot?"
+    ],
+    "activity": "Write three words that would save someone — specific, true, short.",
+    "parent": "Death is quiet and clear. Stay for it. The book still outruns the film if they want more.",
+    "content": "Animal death handled gently.",
+    "featured": false
+  },
+  {
+    "id": "kings-speech",
+    "title": "The King's Speech",
+    "year": 2010,
+    "runtime": 118,
+    "mpaa": "R",
+    "age": "13+",
+    "primary": "Resilience",
+    "secondary": [
+      "World Knowledge"
+    ],
+    "learn": "Speech work, friendship across class, leadership as practice",
+    "qualities": "Perseverance, humility, trust",
+    "knowledge": "Abdication crisis, radio as mass medium, WWII prelude",
+    "questions": [
+      "Why does Bertie need a friend more than a speech coach?"
+    ],
+    "activity": "Read a paragraph aloud twice: once rushed, once after three slow breaths.",
+    "parent": "Rated R mainly for coaching-session language. If that is a no, skip. Historically rich for 13+.",
+    "content": "Strong language in therapy scenes; stuttering depicted in depth. R.",
+    "featured": false
+  },
+  {
+    "id": "pursuit-of-happyness",
+    "title": "The Pursuit of Happyness",
+    "year": 2006,
+    "runtime": 117,
+    "mpaa": "PG-13",
+    "age": "12+",
+    "primary": "Resilience",
+    "secondary": [
+      "World Knowledge"
+    ],
+    "learn": "Unstable housing, unpaid internships as a gamble, fathering under scarcity",
+    "qualities": "Endurance, focus, parental devotion",
+    "knowledge": "1980s Bay Area finance intern culture; homelessness",
+    "questions": [
+      "What systems fail Chris besides 'not trying hard enough'?"
+    ],
+    "activity": "Map a monthly budget with rent as the first line. What disappears when rent doubles?",
+    "parent": "Inspiring and stressful. Do not use as a simple bootstrap fable; name the luck and the grind.",
+    "content": "Homelessness, brief violence, language. PG-13. Heavy.",
+    "featured": false
+  },
+  {
+    "id": "gifted-2017",
+    "title": "Gifted",
+    "year": 2017,
+    "runtime": 101,
+    "mpaa": "PG-13",
+    "age": "12+",
+    "primary": "STEM",
+    "secondary": [
+      "Empathy"
+    ],
+    "learn": "Giftedness vs. a whole childhood, who owns a child's mind",
+    "qualities": "Care, integrity, intellectual honesty",
+    "knowledge": "Mathematics culture, custody as values fight",
+    "questions": [
+      "What does Mary need besides harder problems?"
+    ],
+    "activity": "Learn one elegant idea (infinity hotel, primes) and explain it to someone younger.",
+    "parent": "Courtroom plus grief. Better for tweens than the trailer suggests.",
+    "content": "Language, adult conflict, a mother's suicide in backstory. PG-13.",
+    "featured": false
+  },
+  {
+    "id": "spirited-away",
+    "title": "Spirited Away",
+    "year": 2001,
+    "runtime": 125,
+    "mpaa": "PG",
+    "age": "10+",
+    "primary": "Curiosity",
+    "secondary": [
+      "World Knowledge",
+      "Resilience"
+    ],
+    "learn": "Work as identity, greed, keeping your name",
+    "qualities": "Courage, courtesy, endurance",
+    "knowledge": "Bathhouse folklore, Japanese spirit world imagery",
+    "questions": [
+      "What happens when Chihiro stops acting like a guest and starts acting like a worker?"
+    ],
+    "activity": "List every job Chihiro does. Which one changes her most?",
+    "parent": "Dense and strange on purpose. Reassure younger watchers that the parents return.",
+    "content": "Transformation body horror-lite, eerie spirits. PG with real unease.",
+    "featured": false
+  },
+  {
+    "id": "up",
+    "title": "Up",
+    "year": 2009,
+    "runtime": 96,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "Empathy",
+    "secondary": [
+      "Resilience"
+    ],
+    "learn": "Grief, adventure late in life, promises that need updating",
+    "qualities": "Empathy, flexibility, loyalty",
+    "knowledge": "Exploration history as personal myth",
+    "questions": [
+      "What adventure was Carl missing that was already in the house?"
+    ],
+    "activity": "Make a 'married life' style page of your year in six silent images.",
+    "parent": "Opening montage is famous and devastating. Preview for sensitive kids.",
+    "content": "Death of a spouse, mild peril. PG.",
+    "featured": false
+  },
+  {
+    "id": "paddington-1",
+    "title": "Paddington",
+    "year": 2014,
+    "runtime": 95,
+    "mpaa": "PG",
+    "age": "6+",
+    "primary": "Empathy",
+    "secondary": [
+      "World Knowledge"
+    ],
+    "learn": "Immigration welcome, manners, found family",
+    "qualities": "Kindness, courage, courtesy",
+    "knowledge": "London as arrival city",
+    "questions": [
+      "What does 'please look after this bear' ask of a whole city?"
+    ],
+    "activity": "Write a welcome card for a new student that includes one useful local tip.",
+    "parent": "Start here if 2 feels like a sequel jump. 2 is stronger; 1 teaches the welcome.",
+    "content": "Comic villain, mild danger. Very safe.",
+    "featured": false
+  },
+  {
+    "id": "how-to-train-your-dragon-2",
+    "title": "How to Train Your Dragon 2",
+    "year": 2014,
+    "runtime": 102,
+    "mpaa": "PG",
+    "age": "8+",
+    "primary": "Resilience",
+    "secondary": [
+      "Empathy"
+    ],
+    "learn": "Leadership after loss, war ethics with animals",
+    "qualities": "Grief-processing, courage",
+    "knowledge": "Sequel-level politics of dragon riding",
+    "questions": [
+      "What kind of leader does Hiccup refuse to become?"
+    ],
+    "activity": "Compare Hiccup's method to Drago's in a two-column chart.",
+    "parent": "Contains a major parental death. Do not surprise families who loved the first film.",
+    "content": "War action, death of a parent. Heavier than film 1.",
+    "featured": false
+  }
+]
