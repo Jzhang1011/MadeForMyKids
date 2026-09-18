@@ -293,11 +293,11 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-stone-50 p-3.5 rounded-2xl border border-stone-200">
         <div>
           <span class="text-stone-500 block">Grade 3 JSON Path:</span>
-          <span class="font-mono font-semibold text-slate-800" id="g3-path-status">../data/writing/grade3/exercises.json</span>
+          <span class="font-mono font-semibold text-slate-800" id="g3-path-status">/data/writing/grade3/exercises.json</span>
         </div>
         <div>
           <span class="text-stone-500 block">Grade 7 JSON Path:</span>
-          <span class="font-mono font-semibold text-slate-800" id="g7-path-status">../data/writing/grade7/exercises.json</span>
+          <span class="font-mono font-semibold text-slate-800" id="g7-path-status">/data/writing/grade7/exercises.json</span>
         </div>
       </div>
 
@@ -721,8 +721,8 @@
      * If fetch fails or runs on file:// without server, it gracefully retains the rich seed bank.
      */
     async function loadExternalJSONExercises() {
-      const g3Url = "../data/writing/grade3/exercises.json";
-      const g7Url = "../data/writing/grade7/exercises.json";
+      const g3Url = "/data/writing/grade3/exercises.json";
+      const g7Url = "/data/writing/grade7/exercises.json";
 
       let g3Loaded = false;
       let g7Loaded = false;
