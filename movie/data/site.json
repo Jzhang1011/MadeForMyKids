@@ -1,0 +1,401 @@
+{
+  "name": "Watch to Grow",
+  "tagline": "Movies as a learning tool",
+  "manifesto": "Two ways in: what you want them to grow, or a job you want them to see. Two thousand titles. Pick a door.",
+  "homeFeatured": [
+    "hidden-figures",
+    "inside-out",
+    "coco",
+    "encanto",
+    "apollo-13",
+    "iron-giant"
+  ],
+  "needs": [
+    {
+      "slug": "professions",
+      "name": "Professions",
+      "emoji": "🧭",
+      "parent": "I want my child to see what real jobs look like.",
+      "promise": "Movies and series as workplace field trips — what the job is, what it costs, what it is not."
+    },
+    {
+      "slug": "curiosity",
+      "name": "Curiosity",
+      "emoji": "🔎",
+      "parent": "I want my child to become more curious.",
+      "promise": "The child leaves with a question they did not have before. Wonder is the point."
+    },
+    {
+      "slug": "world",
+      "name": "World Knowledge",
+      "emoji": "🌎",
+      "parent": "I want them to understand the world.",
+      "promise": "A real place, era, culture, or civic fact becomes discussable — a doorway, not a lecture."
+    },
+    {
+      "slug": "resilience",
+      "name": "Resilience",
+      "emoji": "💪",
+      "parent": "I want them to become more resilient.",
+      "promise": "A character stays with a hard thing. Afterward you can name the skill, not just the plot."
+    },
+    {
+      "slug": "creativity",
+      "name": "Creativity",
+      "emoji": "🎨",
+      "parent": "I want them to think creatively.",
+      "promise": "Making, inventing, or seeing differently is the engine of the story — not decoration."
+    },
+    {
+      "slug": "empathy",
+      "name": "Empathy",
+      "emoji": "❤️",
+      "parent": "I want them to understand other people.",
+      "promise": "The child practices standing in someone else's shoes, including people who are hard to like."
+    },
+    {
+      "slug": "stem",
+      "name": "STEM",
+      "emoji": "🔬",
+      "parent": "I want them to become interested in STEM.",
+      "promise": "Science, technology, engineering, or math drives the plot. Not a chalkboard cameo."
+    },
+    {
+      "slug": "stories",
+      "name": "Learn Through Stories",
+      "emoji": "🍿",
+      "parent": "I want something educational but fun.",
+      "promise": "Fun first. Learning sneaks in. Use when tonight should not feel like homework."
+    }
+  ],
+  "ages": [
+    {
+      "slug": "6",
+      "label": "6+",
+      "match": [
+        "6+",
+        "7+"
+      ],
+      "blurb": "Shorter nights, gentler stakes, play after the credits."
+    },
+    {
+      "slug": "8",
+      "label": "8+",
+      "match": [
+        "8+",
+        "9+"
+      ],
+      "blurb": "Feelings, fairness, and first hard questions."
+    },
+    {
+      "slug": "10",
+      "label": "10+",
+      "match": [
+        "10+",
+        "11+"
+      ],
+      "blurb": "History, science, and social pressure with room to talk."
+    },
+    {
+      "slug": "12",
+      "label": "12+",
+      "match": [
+        "12+",
+        "13+"
+      ],
+      "blurb": "Heavier themes. Preview first. Still a conversation, not a lecture."
+    },
+    {
+      "slug": "14",
+      "label": "14+",
+      "match": [
+        "14+",
+        "15+"
+      ],
+      "blurb": "Workplace dramas and teen-plus themes. Preview an episode first."
+    },
+    {
+      "slug": "16",
+      "label": "16+",
+      "match": [
+        "16+",
+        "17+",
+        "18+"
+      ],
+      "blurb": "Adult workplaces (finance, law, hospitals). Not a kids' night. Still useful as a career window if you watch with them."
+    }
+  ],
+  "howTo": {
+    "headline": "The parent is the user. The child is the learner. The film is the material.",
+    "lede": "Watch to Grow is a lesson layer on top of movies you can already press play on. It is not a ranking of “best family films.”",
+    "note": "If a card does not feel useful at your table, the page failed — not the child.",
+    "blocks": [
+      {
+        "title": "What a movie page contains",
+        "body": "Recommended age, what kids may learn, qualities the story exercises, world knowledge, three conversation questions, one short activity, a parent note, and content notes worth previewing."
+      },
+      {
+        "title": "Professions",
+        "body": "Use the Professions door when the question is “what is that job actually like?” A series can be a better workplace tour than a two-hour film. Adult shows (Billions, Boston Legal) are labeled 16+ on purpose — they are career windows, not bedtime."
+      },
+      {
+        "title": "What not to do",
+        "body": "Do not turn the questions into a test. Do not skip the content notes because the rating looks mild. Do not hunt only for the “educational” scene — the learning is usually in how a character decides."
+      },
+      {
+        "title": "What Phase 1 is not",
+        "body": "No accounts. No watchlists. No star ratings. No “three films for my 11-year-old who loves science.” That is later, and only if these cards earn it."
+      }
+    ]
+  },
+  "ritual": [
+    [
+      "1. Choose a need",
+      "Curiosity, grit, empathy — not “PG animated.”"
+    ],
+    [
+      "2. Check the notes",
+      "Age is a parent call. Content notes are honest."
+    ],
+    [
+      "3. Watch together",
+      "The film is the material. You are the teacher."
+    ],
+    [
+      "4. Ask one question",
+      "Do not quiz. If they shrug, offer your answer and stop."
+    ],
+    [
+      "5. Try the activity",
+      "Keep it under 30 minutes, while the story is still warm."
+    ]
+  ],
+  "movieSchema": {
+    "id": "url slug, lowercase, hyphens, unique",
+    "title": "display title",
+    "year": "number",
+    "runtime": "minutes, number",
+    "mpaa": "G | PG | PG-13 | R",
+    "age": "recommended age label such as 8+",
+    "primary": "must match a needs[].name",
+    "secondary": "array of needs[].name values",
+    "learn": "what kids may learn",
+    "qualities": "qualities developed",
+    "knowledge": "world knowledge",
+    "questions": "array of 3 parent questions",
+    "activity": "one short activity",
+    "parent": "how a parent should use the film",
+    "content": "what to preview",
+    "featured": "true if it belongs in the printed 30",
+    "kind": "movie | series",
+    "professions": "array of professions[].name",
+    "seasons": "optional number for series"
+  },
+  "professions": [
+    {
+      "slug": "lawyer",
+      "name": "Lawyer",
+      "look": "Research, clients, negotiation, and court — not only closing arguments."
+    },
+    {
+      "slug": "judge",
+      "name": "Judge",
+      "look": "Procedure, discretion, and the gap between law and fairness."
+    },
+    {
+      "slug": "investment-analyst",
+      "name": "Investment analyst",
+      "look": "Reading companies, risk, and incentives — Billions is a warning label, not a how-to."
+    },
+    {
+      "slug": "banker",
+      "name": "Banker",
+      "look": "Capital, clients, and what gets sold as sophistication."
+    },
+    {
+      "slug": "entrepreneur",
+      "name": "Entrepreneur",
+      "look": "Building something from nothing, including the boring failure parts."
+    },
+    {
+      "slug": "doctor",
+      "name": "Doctor",
+      "look": "Diagnosis, shifts, teamwork, and the limits of heroics."
+    },
+    {
+      "slug": "nurse",
+      "name": "Nurse",
+      "look": "The work that actually keeps a hospital standing."
+    },
+    {
+      "slug": "surgeon",
+      "name": "Surgeon",
+      "look": "Training, precision, and responsibility when a body is on the table."
+    },
+    {
+      "slug": "veterinarian",
+      "name": "Veterinarian",
+      "look": "Animal medicine plus the families who bring the animals in."
+    },
+    {
+      "slug": "scientist",
+      "name": "Scientist",
+      "look": "Questions, experiments, dead ends, and publishing the result."
+    },
+    {
+      "slug": "engineer",
+      "name": "Engineer",
+      "look": "Constraints, prototypes, and fixing what failed in public."
+    },
+    {
+      "slug": "astronaut",
+      "name": "Astronaut",
+      "look": "Training, systems, and teamwork more than blast-off."
+    },
+    {
+      "slug": "programmer",
+      "name": "Programmer",
+      "look": "Building tools, debugging, and the ethics of what you ship."
+    },
+    {
+      "slug": "teacher",
+      "name": "Teacher",
+      "look": "Planning, attention, and the politics of a classroom."
+    },
+    {
+      "slug": "journalist",
+      "name": "Journalist",
+      "look": "Sources, facts, deadlines, and what not to invent."
+    },
+    {
+      "slug": "chef",
+      "name": "Chef",
+      "look": "Craft, hierarchy, pace, and taste as a serious skill."
+    },
+    {
+      "slug": "architect",
+      "name": "Architect",
+      "look": "Space, clients, and drawings that have to stand up."
+    },
+    {
+      "slug": "pilot",
+      "name": "Pilot",
+      "look": "Checklists, weather, crew, and responsibility for other people."
+    },
+    {
+      "slug": "firefighter",
+      "name": "Firefighter",
+      "look": "Team drills, waiting, then minutes that matter."
+    },
+    {
+      "slug": "detective",
+      "name": "Detective",
+      "look": "Evidence, interviews, and patience — not a lone genius."
+    },
+    {
+      "slug": "paramedic",
+      "name": "Paramedic",
+      "look": "First hour medicine, calm under mess."
+    },
+    {
+      "slug": "social-worker",
+      "name": "Social worker",
+      "look": "Systems, families, and help that is not a speech."
+    },
+    {
+      "slug": "diplomat",
+      "name": "Diplomat",
+      "look": "Listening for countries, not winning an argument at dinner."
+    },
+    {
+      "slug": "politician",
+      "name": "Politician",
+      "look": "Public choice, compromise, and the cost of attention."
+    },
+    {
+      "slug": "farmer",
+      "name": "Farmer",
+      "look": "Seasons, weather, money, and land as a job."
+    },
+    {
+      "slug": "artist",
+      "name": "Artist",
+      "look": "Practice, taste, and making a living from looking hard."
+    },
+    {
+      "slug": "musician",
+      "name": "Musician",
+      "look": "Rehearsal is the job. Performance is the visible sliver."
+    },
+    {
+      "slug": "athlete",
+      "name": "Athlete",
+      "look": "Training, coaching, and a body as a workplace."
+    },
+    {
+      "slug": "coach",
+      "name": "Coach",
+      "look": "Teaching under scoreboards."
+    },
+    {
+      "slug": "filmmaker",
+      "name": "Filmmaker",
+      "look": "Crews, shots, and finishing something other people will see."
+    },
+    {
+      "slug": "writer",
+      "name": "Writer",
+      "look": "Drafts, editors, and sitting with a sentence until it is true."
+    },
+    {
+      "slug": "photographer",
+      "name": "Photographer",
+      "look": "Seeing, waiting, and choosing one frame."
+    },
+    {
+      "slug": "designer",
+      "name": "Designer",
+      "look": "Problems dressed as objects, apps, or clothes."
+    },
+    {
+      "slug": "archaeologist",
+      "name": "Archaeologist",
+      "look": "Dirt, records, and patience with the past."
+    },
+    {
+      "slug": "marine-biologist",
+      "name": "Marine biologist",
+      "look": "Fieldwork plus the slow science under the pretty water."
+    },
+    {
+      "slug": "environmentalist",
+      "name": "Environmentalist",
+      "look": "Measuring harm and arguing for a different default."
+    },
+    {
+      "slug": "mechanic",
+      "name": "Mechanic",
+      "look": "Diagnosis with tools. Machines as puzzles."
+    },
+    {
+      "slug": "carpenter",
+      "name": "Carpenter",
+      "look": "Measure twice. The wall does not care about your feelings."
+    },
+    {
+      "slug": "psychologist",
+      "name": "Psychologist",
+      "look": "Listening as skilled work, not advice-giving."
+    },
+    {
+      "slug": "librarian",
+      "name": "Librarian",
+      "look": "Access, cataloguing, and helping people find a true thing."
+    },
+    {
+      "slug": "chef-baker",
+      "name": "Baker",
+      "look": "Time, temperature, and repetition."
+    }
+  ]
+}
