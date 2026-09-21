@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fox's Typing Adventure (Complete Curriculum Edition) 🦊</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-orange: #ff7d26;
+      --accent-yellow: #ffd026;
+      --emerald-green: #10b981;
+      --zone-pinky: #fca5a5;
+      --zone-ring: #fdba74;
+      --zone-middle: #fef08a;
+      --zone-index-l: #86efac;
+      --zone-index-r: #93c5fd;
+      --zone-thumb: #cbd5e1;
+      --shadow-sm: 0 4px 6px rgba(0,0,0,0.08);
+      --shadow-md: 0 8px 18px rgba(0,0,0,0.12);
+      --radius-round: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      font-family: 'Fredoka', cursive, sans-serif;
+      background: linear-gradient(180deg, #bfe3ff 0%, #e2f4ff 100%);
+      color: #2d3748;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOP BAR */
+    header {
+      height: 56px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-sm);
+      z-index: 25;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary-orange);
+      cursor: pointer;
+    }
+
+    .brand-icon { font-size: 1.6rem; }
+
+    .telemetry-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .telemetry-card {
+      background: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+
+    .telemetry-val {
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-btn {
+      background: white;
+      border: 2px solid #e2e8f0;
+      padding: 5px 12px;
+      border-radius: 14px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background: #f8fafc;
+      border-color: var(--primary-orange);
+      transform: translateY(-1px);
+    }
+
+    .nav-btn.active {
+      background: var(--primary-orange);
+      color: white;
+      border-color: var(--primary-orange);
+    }
+
+    .nav-btn.muted-pill {
+      color: #64748b;
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* TOP 56%: ADVENTURE WORLD */
+    .adventure-view {
+      flex: 1.25;
+      position: relative;
+      background: linear-gradient(180deg, #99d5ff 0%, #dcf4ff 60%, #a2df6a 60%, #76bc38 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+      padding: 10px 16px 4px 16px;
+      transition: background 0.5s ease;
+    }
+
+    /* Realm Color Themes */
+    .adventure-view.realm-forest { background: linear-gradient(180deg, #99d5ff 0%, #dcf4ff 60%, #a2df6a 60%, #76bc38 100%); }
+    .adventure-view.realm-river { background: linear-gradient(180deg, #60a5fa 0%, #bfdbfe 60%, #38bdf8 60%, #0284c7 100%); }
+    .adventure-view.realm-cave { background: linear-gradient(180deg, #475569 0%, #94a3b8 60%, #64748b 60%, #334155 100%); }
+    .adventure-view.realm-castle { background: linear-gradient(180deg, #c084fc 0%, #f3e8ff 60%, #eab308 60%, #ca8a04 100%); }
+
+    .sky-cloud {
+      position: absolute;
+      background: white;
+      border-radius: 50px;
+      opacity: 0.85;
+      animation: floatCloud 30s linear infinite;
+    }
+    .cloud-1 { width: 120px; height: 38px; top: 16px; left: -140px; }
+    .cloud-2 { width: 160px; height: 48px; top: 52px; left: -200px; animation-delay: 15s; }
+
+    @keyframes floatCloud {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(100vw + 250px)); }
+    }
+
+    .level-banner {
+      background: rgba(255, 255, 255, 0.94);
+      padding: 4px 16px;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #334155;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .typing-card {
+      background: rgba(255, 255, 255, 0.96);
+      padding: 14px 28px;
+      border-radius: var(--radius-round);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      z-index: 10;
+      border: 3px solid #ffeedb;
+      max-width: 88%;
+      min-width: 480px;
+    }
+
+    .mission-prompt {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .typing-text-display {
+      font-size: 2.8rem;
+      letter-spacing: 3px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      min-height: 60px;
+      position: relative;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .char-box {
+      position: relative;
+      display: inline-block;
+      transition: color 0.15s ease, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      color: #94a3b8;
+      padding: 0 2px;
+    }
+
+    .char-box.space { width: 20px; }
+
+    .char-box.typed {
+      color: var(--emerald-green);
+      transform: scale(1.05);
+      text-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+    }
+
+    .char-box.current {
+      color: #ea580c;
+      transform: scale(1.22);
+    }
+
+    .char-box.current::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--primary-orange);
+      border-radius: 3px;
+      animation: caretBlink 0.9s infinite ease-in-out;
+    }
+
+    .char-box.shake {
+      animation: gentleWiggle 0.4s ease-in-out;
+      color: #f59e0b;
+    }
+
+    @keyframes caretBlink {
+      0%, 100% { opacity: 1; transform: translateY(0); }
+      50% { opacity: 0.3; transform: translateY(2px); }
+    }
+
+    @keyframes gentleWiggle {
+      0%, 100% { transform: translateX(0) scale(1.2); }
+      25% { transform: translateX(-6px) scale(1.2); }
+      75% { transform: translateX(6px) scale(1.2); }
+    }
+
+    .adventure-track {
+      width: 86%;
+      height: 50px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 2px;
+      z-index: 5;
+    }
+
+    .track-line {
+      position: absolute;
+      width: 100%;
+      height: 12px;
+      background: #e2a85c;
+      border-radius: 8px;
+      border: 3px solid #b27a32;
+    }
+
+    .track-finish {
+      position: absolute;
+      right: 0;
+      top: -16px;
+      font-size: 2.2rem;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+      animation: bounceGoal 2s infinite ease-in-out;
+    }
+
+    @keyframes bounceGoal {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .fox-avatar {
+      position: absolute;
+      left: 0%;
+      bottom: 8px;
+      width: 60px;
+      height: 60px;
+      transition: left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 10;
+      filter: drop-shadow(0 6px 6px rgba(0,0,0,0.25));
+    }
+
+    .fox-avatar.fox-step { animation: foxHop 0.32s ease-out; }
+    .fox-avatar.fox-cheer { animation: foxCelebrate 0.8s infinite ease-in-out; }
+
+    @keyframes foxHop {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-18px) rotate(6deg); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes foxCelebrate {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-22px) scale(1.15) rotate(-6deg); }
+    }
+
+    .hint-bubble {
+      position: absolute;
+      top: 6px;
+      background: #fffae6;
+      border: 2px solid #ffd23f;
+      color: #945800;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow-sm);
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: all 0.3s ease;
+      z-index: 15;
+    }
+    .hint-bubble.show { opacity: 1; transform: translateY(0); }
+
+    /* BOTTOM 44%: TUTOR & KEYBOARD */
+    .tutor-view {
+      flex: 1;
+      background: #fcfdfe;
+      border-top: 4px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      position: relative;
+    }
+
+    .finger-instruction-bar {
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .instruction-tag {
+      background: #edf2f7;
+      padding: 3px 12px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .highlight-badge {
+      background: #ff6584;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+
+    .keyboard-wrapper {
+      background: #e2e8f0;
+      padding: 7px;
+      border-radius: 14px;
+      box-shadow: inset 0 3px 6px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .keyboard-row {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+    }
+
+    .key {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      background: #f8fafc;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #334155;
+      box-shadow: 0 3px 0 #cbd5e1;
+      transition: all 0.12s ease;
+      cursor: default;
+    }
+
+    .key[data-finger="left-pinky"], .key[data-finger="right-pinky"] { border-top: 4px solid var(--zone-pinky); }
+    .key[data-finger="left-ring"], .key[data-finger="right-ring"] { border-top: 4px solid var(--zone-ring); }
+    .key[data-finger="left-middle"], .key[data-finger="right-middle"] { border-top: 4px solid var(--zone-middle); }
+    .key[data-finger="left-index"] { border-top: 4px solid var(--zone-index-l); }
+    .key[data-finger="right-index"] { border-top: 4px solid var(--zone-index-r); }
+    .key[data-finger="thumb"] { border-top: 4px solid var(--zone-thumb); }
+
+    .key.has-bump::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      width: 8px;
+      height: 3px;
+      background: #94a3b8;
+      border-radius: 2px;
+    }
+
+    .key.space-key { width: 230px; }
+
+    .key.target-key {
+      background: #ffdf40 !important;
+      color: #8f4b00 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #f59e0b, 0 0 12px rgba(255, 223, 64, 0.8) !important;
+      animation: keyBounce 0.9s infinite alternate ease-in-out;
+    }
+
+    .key.key-press-success {
+      background: #4ade80 !important;
+      color: white !important;
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #16a34a !important;
+    }
+
+    @keyframes keyBounce {
+      0% { transform: translateY(-1px); }
+      100% { transform: translateY(-4px); }
+    }
+
+    .hands-container {
+      display: flex;
+      justify-content: space-between;
+      width: 700px;
+      height: 58px;
+      margin-top: 2px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .hand-svg {
+      width: 150px;
+      height: 58px;
+      filter: drop-shadow(0 3px 5px rgba(0,0,0,0.1));
+    }
+
+    .finger-node {
+      fill: #fed7aa;
+      stroke: #fb923c;
+      stroke-width: 1.5;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .finger-node.active-finger {
+      fill: #ff6584 !important;
+      stroke: #be123c !important;
+      transform: translateY(-8px);
+      filter: drop-shadow(0 0 8px rgba(255, 101, 132, 0.8));
+    }
+
+    /* MODALS */
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .game-modal {
+      background: white;
+      width: 540px;
+      max-width: 92%;
+      border-radius: 26px;
+      padding: 26px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      border: 4px solid #fef08a;
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .star-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      font-size: 2.6rem;
+    }
+
+    .star-elem {
+      color: #e2e8f0;
+      transition: color 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .star-elem.filled {
+      color: var(--accent-yellow);
+      transform: scale(1.15);
+      text-shadow: 0 4px 10px rgba(255, 208, 38, 0.5);
+    }
+
+    .modal-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .modal-subtitle {
+      font-size: 1rem;
+      color: #64748b;
+      margin-bottom: 18px;
+    }
+
+    .modal-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .modal-stat-box {
+      background: #f8fafc;
+      padding: 8px 4px;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+    }
+
+    .modal-stat-val {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--primary-orange);
+    }
+
+    .modal-stat-lbl {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #475569;
+      border: 2px solid #cbd5e1;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #ff8a3d 0%, #f96300 100%);
+      color: white;
+      border: none;
+      padding: 10px 26px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-family: inherit;
+      border-radius: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #c2410c, 0 8px 14px rgba(249, 99, 0, 0.3);
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #c2410c, 0 10px 18px rgba(249, 99, 0, 0.35);
+    }
+
+    /* WORLD MAP & LESSON SELECTOR */
+    .map-world-section {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .world-header {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lesson-chip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 8px;
+    }
+
+    .lesson-chip {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      padding: 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+      font-weight: 600;
+      font-size: 0.82rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .lesson-chip:hover {
+      border-color: var(--primary-orange);
+      background: #fff7ed;
+      transform: translateY(-1px);
+    }
+
+    .lesson-chip.active-chip {
+      border-color: var(--primary-orange);
+      background: #ffedd5;
+    }
+
+    .lesson-chip .chip-stars {
+      color: var(--accent-yellow);
+      font-size: 0.75rem;
+    }
+
+    /* PARENT DASHBOARD */
+    .parent-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      text-align: left;
+      margin: 16px 0;
+    }
+
+    .parent-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .parent-card h4 {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #334155;
+    }
+
+    .skill-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .skill-status {
+      color: var(--emerald-green);
+      font-weight: 700;
+    }
+
+    .telemetry-card.is-hidden { display: none; }
+    .victory-payoff {
+      background: #f0fdf4;
+      border: 2px solid #bbf7d0;
+      color: #166534;
+      border-radius: 14px;
+      padding: 10px 14px;
+      margin: 0 0 16px;
+      font-size: 0.98rem;
+      font-weight: 500;
+      line-height: 1.35;
+      text-align: left;
+    }
+    .mission-prompt {
+      text-align: center;
+      line-height: 1.3;
+      max-width: 640px;
+    }
+    .typing-text-display { font-size: 2.15rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header>
+    <div class="brand" onclick="openMapModal()">
+      <span class="brand-icon">🦊</span>
+      <span>Fox's Adventure</span>
+    </div>
+
+    <!-- Live Telemetry -->
+    <div class="telemetry-bar">
+      <div class="telemetry-card">
+        <span>⏱️</span>
+        <span>Time:</span>
+        <span class="telemetry-val" id="timer-display">0:00</span>
+      </div>
+      <div class="telemetry-card" id="wpm-telemetry">
+        <span>⚡</span>
+        <span>WPM:</span>
+        <span class="telemetry-val" id="live-wpm">0</span>
+      </div>
+      <div class="telemetry-card">
+        <span>🎯</span>
+        <span>Accuracy:</span>
+        <span class="telemetry-val" id="live-accuracy">100%</span>
+      </div>
+      <div class="telemetry-card">
+        <span>⭐</span>
+        <span class="telemetry-val" id="star-count">0</span>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="nav-btn" id="btn-map" onclick="openMapModal()">🗺️ Map & Lessons</button>
+      <button class="nav-btn active" id="btn-mode-adventure" onclick="switchMode('adventure')">🌲 Adventure</button>
+      <button class="nav-btn" id="btn-mode-practice" onclick="switchMode('practice')">🧑‍🏫 Practice</button>
+      <button class="nav-btn muted-pill" id="btn-voice-toggle" onclick="toggleVoice()">🔇 Voice: OFF</button>
+      <button class="nav-btn" id="btn-sound-toggle" onclick="toggleSound()">🔊 Sound: ON</button>
+      <button class="nav-btn" id="btn-mode-parent" onclick="openParentModal()">📊 Parent</button>
+    </div>
+  </header>
+
+  <!-- Main Viewport -->
+  <main>
+    <div class="adventure-view realm-forest" id="adventure-realm">
+      <div class="sky-cloud cloud-1"></div>
+      <div class="sky-cloud cloud-2"></div>
+
+      <div class="level-banner">
+        <span id="realm-icon">🌲</span>
+        <span id="mission-title">World 1 - Lesson 1: Meet F & J</span>
+      </div>
+
+      <div class="hint-bubble" id="hint-bubble">Press the key on your keyboard!</div>
+
+      <div class="typing-card">
+        <div class="mission-prompt" id="mission-instruction">Help Fox take his first steps!</div>
+        <div class="typing-text-display" id="typing-display"></div>
+      </div>
+
+      <div class="adventure-track">
+        <div class="track-line"></div>
+        
+        <div class="fox-avatar" id="fox-character">
+          <svg viewBox="0 0 100 100" width="100%" height="100%">
+            <path d="M25 65 C10 60 5 40 20 30 C30 25 35 45 30 65 Z" fill="#e65100" />
+            <path d="M12 40 C15 32 25 30 24 45 Z" fill="#ffffff" />
+            <ellipse cx="50" cy="65" rx="22" ry="18" fill="#f57c00" />
+            <ellipse cx="50" cy="68" rx="14" ry="12" fill="#ffffff" />
+            <circle cx="38" cy="82" r="6" fill="#bf360c" />
+            <circle cx="62" cy="82" r="6" fill="#bf360c" />
+            <polygon points="34,42 42,15 54,35" fill="#f57c00" />
+            <polygon points="38,38 43,22 50,35" fill="#ffe0b2" />
+            <polygon points="66,42 58,15 46,35" fill="#f57c00" />
+            <polygon points="62,38 57,22 50,35" fill="#ffe0b2" />
+            <circle cx="50" cy="45" r="20" fill="#f57c00" />
+            <polygon points="30,48 50,60 38,36" fill="#ffffff" />
+            <polygon points="70,48 50,60 62,36" fill="#ffffff" />
+            <ellipse cx="43" cy="44" rx="3" ry="4" fill="#212121" />
+            <ellipse cx="57" cy="44" rx="3" ry="4" fill="#212121" />
+            <circle cx="44" cy="42" r="1" fill="#ffffff" />
+            <circle cx="58" cy="42" r="1" fill="#ffffff" />
+            <polygon points="47,52 53,52 50,56" fill="#212121" />
+          </svg>
+        </div>
+
+        <div class="track-finish" id="goal-marker">🏡</div>
+      </div>
+    </div>
+
+    <!-- TUTOR & KEYBOARD -->
+    <div class="tutor-view">
+      <div class="finger-instruction-bar">
+        <div class="instruction-tag">
+          Finger Guide: <span class="highlight-badge" id="finger-instruction-text">Left Index Finger</span>
+        </div>
+      </div>
+
+      <div class="keyboard-wrapper" id="keyboard">
+        <div class="keyboard-row">
+          <div class="key" data-key="q" data-finger="left-pinky">Q</div>
+          <div class="key" data-key="w" data-finger="left-ring">W</div>
+          <div class="key" data-key="e" data-finger="left-middle">E</div>
+          <div class="key" data-key="r" data-finger="left-index">R</div>
+          <div class="key" data-key="t" data-finger="left-index">T</div>
+          <div class="key" data-key="y" data-finger="right-index">Y</div>
+          <div class="key" data-key="u" data-finger="right-index">U</div>
+          <div class="key" data-key="i" data-finger="right-middle">I</div>
+          <div class="key" data-key="o" data-finger="right-ring">O</div>
+          <div class="key" data-key="p" data-finger="right-pinky">P</div>
+        </div>
+        <div class="keyboard-row">
+          <div class="key" data-key="a" data-finger="left-pinky">A</div>
+          <div class="key" data-key="s" data-finger="left-ring">S</div>
+          <div class="key" data-key="d" data-finger="left-middle">D</div>
+          <div class="key has-bump" data-key="f" data-finger="left-index">F</div>
+          <div class="key" data-key="g" data-finger="left-index">G</div>
+          <div class="key" data-key="h" data-finger="right-index">H</div>
+          <div class="key has-bump" data-key="j" data-finger="right-index">J</div>
+          <div class="key" data-key="k" data-finger="right-middle">K</div>
+          <div class="key" data-key="l" data-finger="right-ring">L</div>
+          <div class="key" data-key=";" data-finger="right-pinky">;</div>
+        </div>
+        <div class="keyboard-row">
+          <div class="key" data-key="z" data-finger="left-pinky">Z</div>
+          <div class="key" data-key="x" data-finger="left-ring">X</div>
+          <div class="key" data-key="c" data-finger="left-middle">C</div>
+          <div class="key" data-key="v" data-finger="left-index">V</div>
+          <div class="key" data-key="b" data-finger="left-index">B</div>
+          <div class="key" data-key="n" data-finger="right-index">N</div>
+          <div class="key" data-key="m" data-finger="right-index">M</div>
+          <div class="key" data-key="," data-finger="right-middle">,</div>
+          <div class="key" data-key="." data-finger="right-ring">.</div>
+        </div>
+        <div class="keyboard-row">
+          <div class="key space-key" data-key=" " data-finger="thumb">SPACE</div>
+        </div>
+      </div>
+
+      <div class="hands-container">
+        <svg class="hand-svg" viewBox="0 0 200 100">
+          <path d="M30 65 C30 45 70 45 85 65 C90 85 20 85 30 65 Z" fill="#fed7aa" stroke="#fb923c" stroke-width="2"/>
+          <rect id="f-left-pinky" class="finger-node" x="20" y="30" width="12" height="40" rx="6" />
+          <rect id="f-left-ring" class="finger-node" x="38" y="20" width="12" height="50" rx="6" />
+          <rect id="f-left-middle" class="finger-node" x="56" y="14" width="12" height="56" rx="6" />
+          <rect id="f-left-index" class="finger-node" x="74" y="20" width="12" height="50" rx="6" />
+          <rect id="f-thumb-left" class="finger-node" x="92" y="44" width="22" height="12" rx="6" transform="rotate(-25 92 44)" />
+          <text x="50" y="92" font-size="12" font-weight="bold" fill="#64748b" text-anchor="middle">Left Hand</text>
+        </svg>
+
+        <svg class="hand-svg" viewBox="0 0 200 100">
+          <path d="M115 65 C130 45 170 45 170 65 C180 85 110 85 115 65 Z" fill="#fed7aa" stroke="#fb923c" stroke-width="2"/>
+          <rect id="f-thumb-right" class="finger-node" x="86" y="44" width="22" height="12" rx="6" transform="rotate(25 86 44)" />
+          <rect id="f-right-index" class="finger-node" x="114" y="20" width="12" height="50" rx="6" />
+          <rect id="f-right-middle" class="finger-node" x="132" y="14" width="12" height="56" rx="6" />
+          <rect id="f-right-ring" class="finger-node" x="150" y="20" width="12" height="50" rx="6" />
+          <rect id="f-right-pinky" class="finger-node" x="168" y="30" width="12" height="40" rx="6" />
+          <text x="145" y="92" font-size="12" font-weight="bold" fill="#64748b" text-anchor="middle">Right Hand</text>
+        </svg>
+      </div>
+    </div>
+  </main>
+
+  <!-- WORLD MAP & LESSON SELECTOR MODAL -->
+  <div class="modal-backdrop" id="map-modal">
+    <div class="game-modal" style="width: 680px;">
+      <h2 class="modal-title">🗺️ Adventure World Map</h2>
+      <p class="modal-subtitle">Same path, new words each try. Finish a line to learn a little something.</p>
+      
+      <div id="map-content">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <button class="btn-primary" style="margin-top: 14px;" onclick="closeMapModal()">Close Map</button>
+    </div>
+  </div>
+
+  <!-- SUMMARY MODAL -->
+  <div class="modal-backdrop" id="victory-modal">
+    <div class="game-modal">
+      <div class="star-row" id="modal-star-row">
+        <span class="star-elem" id="star-1">★</span>
+        <span class="star-elem" id="star-2">★</span>
+        <span class="star-elem" id="star-3">★</span>
+      </div>
+
+      <h2 class="modal-title">Mission Complete!</h2>
+      <p class="modal-subtitle" id="victory-subtitle">Fox made great progress on his journey!</p>
+      <p class="victory-payoff" id="victory-payoff"></p>
+
+      <div class="modal-stats-grid">
+        <div class="modal-stat-box">
+          <div class="modal-stat-val" id="modal-time">0:00</div>
+          <div class="modal-stat-lbl">Time</div>
+        </div>
+        <div class="modal-stat-box" id="modal-wpm-box">
+          <div class="modal-stat-val" id="modal-wpm">0</div>
+          <div class="modal-stat-lbl">WPM</div>
+        </div>
+        <div class="modal-stat-box">
+          <div class="modal-stat-val" id="modal-accuracy">100%</div>
+          <div class="modal-stat-lbl">Accuracy</div>
+        </div>
+        <div class="modal-stat-box">
+          <div class="modal-stat-val" id="modal-score">100</div>
+          <div class="modal-stat-lbl">Score</div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="retryMission()">↺ Try Again</button>
+        <button class="btn-primary" onclick="nextMission()">Next Lesson ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARENT DASHBOARD -->
+  <div class="modal-backdrop" id="parent-modal">
+    <div class="game-modal" style="width: 580px;">
+      <h2 class="modal-title">📊 Parent & Tutor Dashboard</h2>
+      <p class="modal-subtitle">Real-time touch-typing diagnostics across all 4 worlds</p>
+
+      <div class="parent-grid">
+        <div class="parent-card">
+          <h4>Overall Milestones</h4>
+          <div class="skill-row"><span>Lessons Cleared:</span> <strong id="p-stat-missions">0 / 18</strong></div>
+          <div class="skill-row"><span>Total Keystrokes:</span> <strong id="p-stat-keys">0</strong></div>
+          <div class="skill-row"><span>Average Speed:</span> <strong id="p-stat-wpm">0 WPM</strong></div>
+          <div class="skill-row"><span>Lifetime Accuracy:</span> <strong id="p-stat-acc">100%</strong></div>
+        </div>
+
+        <div class="parent-card">
+          <h4>Finger Mastery</h4>
+          <div class="skill-row"><span>Home Row (A S D F J K L ;):</span> <span class="skill-status" id="p-skill-home">Mastered</span></div>
+          <div class="skill-row"><span>Top Reach (Q W E R T Y U I O P):</span> <span class="skill-status" id="p-skill-top">In Progress</span></div>
+          <div class="skill-row"><span>Bottom Reach (Z X C V B N M):</span> <span class="skill-status" id="p-skill-bot">Developing</span></div>
+          <div class="skill-row"><span>Punctuation & Flow:</span> <span class="skill-status" id="p-skill-flow">Beginning</span></div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="closeParentModal()">Back to Adventure</button>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================
+       COMPLETE 18-LESSON PROGRESSIVE CURRICULUM
+       ========================================================== */
+    const WORLDS = [
+      {
+        id: "world-1",
+        title: "🌲 World 1: Sunny Forest (Home Row Fundamentals)",
+        realmClass: "realm-forest",
+        icon: "🌲",
+        subject: "paws, trees, and first words",
+        lessons: [
+          {
+            id: 1,
+            title: "1. Meet F & J",
+            prompt: "Index fingers rest on the tactile bumps!",
+            keys: ["f", "j", " "],
+            kind: "letters",
+            goalIcon: "🐾",
+            storyBeat: "Fox plants both paws on the path. Left paw is F. Right paw is J.",
+            text: "f j f j f j f j f j",
+            variants: [
+              "f j f j f j f j f j",
+              "f f j j f j f j f j",
+              "j f j f j f j f j f",
+              "f j j f f j j f f j",
+              "f j f f j f j j f j"
+            ],
+            payoff: "Those two little bumps on F and J are Fox’s home. Every adventure starts here."
+          },
+          {
+            id: 2,
+            title: "2. Left Home Row",
+            prompt: "A, S, D, F — pinky to index on the left hand!",
+            keys: ["a", "s", "d", "f", " "],
+            kind: "letters-to-words",
+            goalIcon: "🍃",
+            storyBeat: "Left paw learns the forest floor: A S D F.",
+            text: "a s d f dad sad",
+            variants: [
+              "a s d f a s d f",
+              "f d s a a s d f",
+              "dad sad dad sad",
+              "a sad dad",
+              "dad as sad",
+              "add a sad dad"
+            ],
+            payoff: "Dad and sad are real words from only four keys. The left hand can already talk."
+          },
+          {
+            id: 3,
+            title: "3. Right Home Row",
+            prompt: "J, K, L, ; — index to pinky on the right hand!",
+            keys: ["j", "k", "l", ";", " "],
+            kind: "letters",
+            goalIcon: "🌿",
+            storyBeat: "Right paw copies the same walk on the other side of the path.",
+            text: "j k l ; j k l ;",
+            variants: [
+              "j k l ; j k l ;",
+              "; l k j j k l ;",
+              "j j k k l l ; ;",
+              "j k l j k l j k",
+              "l k j ; j k l ;"
+            ],
+            payoff: "The semicolon sits under the right pinky. It is a pause, like Fox waiting behind a tree."
+          },
+          {
+            id: 4,
+            title: "4. Full Home Row",
+            prompt: "All home-row fingers together — including G and H between the bumps!",
+            keys: ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", " "],
+            kind: "letters-to-words",
+            goalIcon: "🌳",
+            storyBeat: "Both paws share the path. G and H live in the middle, one key each from F and J.",
+            text: "a s d f g h j k l ;",
+            variants: [
+              "a s d f g h j k l ;",
+              "f g h j f g h j",
+              "a sad lad",
+              "dad asks a lad",
+              "all fall",
+              "a glass hall"
+            ],
+            payoff: "G is a left-index reach. H is a right-index reach. Together they unlock glass, hall, and flash."
+          },
+          {
+            id: 5,
+            title: "5. First Forest Words",
+            prompt: "Type real words using only the home row!",
+            keys: ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", " "],
+            kind: "words",
+            goalIcon: "🍓",
+            storyBeat: "Fox finds berries that are also words. Type each one to pick it.",
+            text: "dad sad ask fall salad flask",
+            variants: [
+              "dad sad ask fall salad flask",
+              "a sad lad asks dad",
+              "salad falls",
+              "dad had a flask",
+              "a flag falls",
+              "ask a glad lad",
+              "all lads fall"
+            ],
+            payoff: "Home-row words you now own: dad, sad, ask, fall, salad, flask, flag, glad, hall, lads."
+          }
+        ]
+      },
+      {
+        id: "world-2",
+        title: "🌊 World 2: Crystal River (Top Row Reach)",
+        realmClass: "realm-river",
+        icon: "🌊",
+        subject: "water, weather, and living things",
+        lessons: [
+          {
+            id: 6,
+            title: "6. Index Reach (R U T Y)",
+            prompt: "From F reach up to R and T. From J reach up to U and Y!",
+            keys: ["a","s","d","f","g","h","j","k","l",";","r","u","t","y"," "],
+            kind: "letters-to-words",
+            goalIcon: "🐟",
+            storyBeat: "Fox stretches toward the riverbank. Index fingers hook the four keys above home.",
+            text: "f r f t j u j y",
+            variants: [
+              "f r t f j u y j",
+              "art fur jar hay",
+              "a rusty jar",
+              "a tall yard",
+              "star fish fry",
+              "just a tar trail"
+            ],
+            payoff: "R and T live above F. U and Y live above J. Fish, star, and trail all start with these reaches."
+          },
+          {
+            id: 7,
+            title: "7. Middle Reach (E & I)",
+            prompt: "From D reach up to E. From K reach up to I!",
+            keys: ["a","s","d","f","g","h","j","k","l",";","r","u","t","y","e","i"," "],
+            kind: "letters-to-words",
+            goalIcon: "🛶",
+            storyBeat: "The river gets deeper. Middle fingers learn to paddle: E on the left, I on the right.",
+            text: "d e d k i k see if",
+            variants: [
+              "d e k i d e k i",
+              "see a seed",
+              "the fire is red",
+              "a little fish",
+              "she is at the river",
+              "three red leaves"
+            ],
+            payoff: "E and I are in almost every English sentence. That is why this reach feels like real reading."
+          },
+          {
+            id: 8,
+            title: "8. Outer Reach (W O Q P)",
+            prompt: "Ring and pinky fingers reach up: W and Q on the left, O and P on the right!",
+            keys: ["a","s","d","f","g","h","j","k","l",";","r","u","t","y","e","i","w","o","q","p"," "],
+            kind: "letters-to-words",
+            goalIcon: "💧",
+            storyBeat: "Fox follows the river to a quiet pool. The outer fingers take the last top-row steps.",
+            text: "s w l o a q ; p",
+            variants: [
+              "s w l o q p",
+              "a quiet pool",
+              "we see a wood pool",
+              "a puppy at the water",
+              "the yellow wood",
+              "people like cool water"
+            ],
+            payoff: "The whole top row is open. Fox can now spell water, quiet, puppy, people, and yellow."
+          },
+          {
+            id: 9,
+            title: "9. River Words",
+            prompt: "Spell living things and water words with the keys you have!",
+            keys: ["a","s","d","f","g","h","j","k","l",";","q","w","e","r","t","y","u","i","o","p"," "],
+            kind: "words",
+            goalIcon: "🌸",
+            storyBeat: "Every word is something Fox can see from the river: trees, water, fish, light.",
+            text: "tree water river fish light",
+            variants: [
+              "tree water river fish light",
+              "quiet puppy yellow leaf",
+              "seed soil water sun",
+              "otter otter otter",
+              "people need fresh water",
+              "a frog sits still"
+            ],
+            payoff: "Trees drink through roots. Fish pull oxygen from water with gills. You just typed both ideas."
+          },
+          {
+            id: 10,
+            title: "10. River Sentences",
+            prompt: "Type a full science sentence. Keep your eyes on the words, not the keys!",
+            keys: ["a","s","d","f","g","h","j","k","l",";","q","w","e","r","t","y","u","i","o","p"," "],
+            kind: "sentence",
+            goalIcon: "🦆",
+            storyBeat: "A duck rides the current. The sentence is the river — do not stop in the middle.",
+            text: "the duck is in the cold water",
+            variants: [
+              "the duck is in the cold water",
+              "fish need water to live",
+              "the sun dries the wet leaves",
+              "a seed waits in the dark soil",
+              "people should keep rivers clean",
+              "the quiet otter eats a fish"
+            ],
+            payoff: "A sentence is just words holding hands. If Fox does not look down, the current carries him."
+          }
+        ]
+      },
+      {
+        id: "world-3",
+        title: "⛰️ World 3: Misty Cavern (Bottom Row Dexterity)",
+        realmClass: "realm-cave",
+        icon: "⛰️",
+        subject: "rocks, dark, and hidden animals",
+        lessons: [
+          {
+            id: 11,
+            title: "11. Bottom Index (V B N M)",
+            prompt: "From F reach down to V and B. From J reach down to N and M!",
+            keys: ["a","s","d","f","g","h","j","k","l",";","q","w","e","r","t","y","u","i","o","p","v","b","n","m"," "],
+            kind: "letters-to-words",
+            goalIcon: "🔦",
+            storyBeat: "The cave floor drops. Index fingers climb down to V B and N M.",
+            text: "f v b j n m",
+            variants: [
+              "f v f b j n j m",
+              "a bat in a cave",
+              "moon over a mountain",
+              "never bump the web",
+              "a brave man",
+              "move the lamp"
+            ],
+            payoff: "Bats live in caves and fly at night using echoes, not bright light. You typed bat, cave, and moon."
+          },
+          {
+            id: 12,
+            title: "12. Outer Bottom (Z X C , .)",
+            prompt: "Left pinky Z, ring X, middle C. Right middle comma, ring period!",
+            keys: ["a","s","d","f","g","h","j","k","l",";","q","w","e","r","t","y","u","i","o","p","v","b","n","m","z","x","c",",","."," "],
+            kind: "letters-to-words",
+            goalIcon: "💎",
+            storyBeat: "Fox’s claws click on crystal. Z, X, C and the two pause keys live on this lower ledge.",
+            text: "a z s x d c , .",
+            variants: [
+              "a z s x d c k , l .",
+              "a fox can see.",
+              "cool rock, warm cave.",
+              "zinc is a metal.",
+              "next, climb the crack.",
+              "crystals catch the lamp."
+            ],
+            payoff: "A period is a full stop. A comma is a breath. Caves are quiet — so is good punctuation."
+          },
+          {
+            id: 13,
+            title: "13. Cavern Explorer Words",
+            prompt: "Type cave science and adventure words using every row!",
+            keys: "all-letters",
+            kind: "words",
+            goalIcon: "✨",
+            storyBeat: "The lamp shows new words on the wall. Each one is a thing Fox can touch or study.",
+            text: "cave box climb jump magic crystal",
+            variants: [
+              "cave box climb jump crystal mineral",
+              "bat echo tunnel stone fossil",
+              "silver quartz granite marble",
+              "dark damp drip moss",
+              "compass map lamp rope",
+              "jaguar badger beetle"
+            ],
+            payoff: "Crystal is rock that grew in a pattern. A fossil is a print of a plant or animal from long ago."
+          },
+          {
+            id: 14,
+            title: "14. Cavern Sentences",
+            prompt: "Guide Fox through the cavern with complete sentences!",
+            keys: "all-letters",
+            kind: "sentence",
+            goalIcon: "🗝️",
+            storyBeat: "The tunnel forks. The sentence you type is the map.",
+            text: "fox found a crystal box in the cave",
+            variants: [
+              "fox found a crystal box in the cave",
+              "bats fly by echo in the dark",
+              "water drips and makes new stone",
+              "a fossil hid in the quiet wall",
+              "never run in a wet tunnel",
+              "the lamp shows moss on the rock"
+            ],
+            payoff: "Cave water dissolves limestone and leaves it behind as stalactites. Slow drips build stone."
+          }
+        ]
+      },
+      {
+        id: "world-4",
+        title: "🏰 World 4: Sunken Castle (Advanced Fluency)",
+        realmClass: "realm-castle",
+        icon: "🏰",
+        subject: "stories, sight words, and heading home",
+        lessons: [
+          {
+            id: 15,
+            title: "15. High-Frequency Sight Words",
+            prompt: "These words appear constantly in books. Build them until they feel easy!",
+            keys: "all-letters",
+            kind: "words",
+            goalIcon: "📜",
+            storyBeat: "The castle library only opens if Fox can type the words every story needs.",
+            text: "the and you can see they have from with",
+            variants: [
+              "the and you can see they have from with",
+              "said were there what when your about",
+              "would could should their them then",
+              "into after before around because",
+              "where who why some come look",
+              "little down over again could"
+            ],
+            payoff: "Sight words are the glue of English. The faster they become automatic, the more attention is left for meaning."
+          },
+          {
+            id: 16,
+            title: "16. Punctuation & Pauses",
+            prompt: "Commas breathe. Periods stop. Exclamation points cheer!",
+            keys: "all-letters-punct",
+            kind: "sentence",
+            goalIcon: "👑",
+            storyBeat: "The castle hall echoes. Punctuation tells the echo when to wait.",
+            text: "look, a fox! it is quick, smart, and brave.",
+            variants: [
+              "look, a fox! it is quick, smart, and brave.",
+              "wait, is the gate open? yes, it is.",
+              "slow down. look up. keep going.",
+              "help! the bridge is wet, but safe.",
+              "fox, come home. supper is ready.",
+              "one step, two steps, three steps. home."
+            ],
+            payoff: "A comma is not a decoration. It is the place Fox inhales so the next clause can run."
+          },
+          {
+            id: 17,
+            title: "17. Story Chapter: The Woods",
+            prompt: "Type the chapter. Do not peek at your fingers!",
+            keys: "all-letters-punct",
+            kind: "paragraph",
+            goalIcon: "📖",
+            storyBeat: "This is the first page of Fox’s book. Your hands are the narrator.",
+            text: "the swift red fox jumped over the sleepy brown dog and ran into the green woods.",
+            variants: [
+              "the swift red fox jumped over the sleepy brown dog and ran into the green woods.",
+              "at dawn fox left the river and followed a deer trail toward the castle hill.",
+              "owls watched from the high pines while fox stepped quietly over wet roots.",
+              "he carried a small crystal from the cave. it glowed when the trees grew dark.",
+              "somewhere ahead, home fires were already lit. fox did not run. he walked."
+            ],
+            payoff: "You typed a whole scene. That is the same skill used for school stories and messages home."
+          },
+          {
+            id: 18,
+            title: "18. The Grand Finale",
+            prompt: "Lead Fox home with a short paragraph. Accuracy first, then ease.",
+            keys: "all-letters-punct",
+            kind: "paragraph",
+            goalIcon: "🏡",
+            storyBeat: "The last ridge. Type Fox all the way to the door.",
+            text: "fox climbed the highest mountain peak and looked down upon the magical forest. all the animals cheered as the brave fox finally reached home.",
+            variants: [
+              "fox climbed the highest mountain peak and looked down upon the magical forest. all the animals cheered as the brave fox finally reached home.",
+              "below him the river flashed, the cave mouth was a small dark smile, and the castle roofs held the last gold light of day.",
+              "fox sat. he had used every key on the path. the forest did not need a hero. it needed him to come home.",
+              "one by one the animals stepped out: duck, otter, bat, and deer. nobody made a speech. they just made room.",
+              "home was not a prize. home was the place his paws already knew, the way F and J knew the bumps."
+            ],
+            payoff: "Fox is home. The bumps on F and J are still there whenever he wants another walk."
+          }
+        ]
+      }
+    ]
+
+    // Flattened array for sequential adventure mode
+    const ALL_ADVENTURE_MISSIONS = [];
+    WORLDS.forEach(w => {
+      w.lessons.forEach(l => {
+        ALL_ADVENTURE_MISSIONS.push({
+          ...l,
+          worldTitle: w.title,
+          realmClass: w.realmClass,
+          realmIcon: w.icon
+        });
+      });
+    });
+
+    const PRACTICE_MISSIONS = [
+      {
+        id: 101,
+        title: "Home Row Speed Drill",
+        prompt: "Keep fingers balanced on the home row!",
+        keys: ["a","s","d","f","g","h","j","k","l",";"," "],
+        kind: "words",
+        goalIcon: "🎯",
+        storyBeat: "A warm-up trail through familiar trees.",
+        text: "a sad lad asks dad for a salad",
+        variants: [
+          "a s d f g h j k l ;",
+          "a sad lad asks dad for a salad",
+          "flags fall; lads laugh",
+          "dad had a glass flask",
+          "all fall; all stand"
+        ],
+        payoff: "Smooth home row is the difference between hunting for keys and walking them."
+      },
+      {
+        id: 102,
+        title: "Index Fingers Power",
+        prompt: "Strengthen F, J, R, U, V, N, T, Y, G, H!",
+        keys: ["f","j","r","u","v","n","t","y","g","h"," "],
+        kind: "letters-to-words",
+        goalIcon: "⚡",
+        storyBeat: "Index fingers do the most walking. This trail is theirs.",
+        text: "f j r u v n t y g h",
+        variants: [
+          "f j r u v n t y g h",
+          "try your very funny hunt",
+          "turn right; hunt left",
+          "a very funny yarn",
+          "nurture your craft"
+        ],
+        payoff: "If the index fingers are sure, every other finger has a calmer job."
+      },
+      {
+        id: 103,
+        title: "Punctuation & Space Rhythm",
+        prompt: "Maintain a smooth cadence on commas, periods, and spaces!",
+        keys: "all-letters-punct",
+        kind: "sentence",
+        goalIcon: "⭐",
+        storyBeat: "Type like you speak: words, breath, stop.",
+        text: "wait, look. then go.",
+        variants: [
+          "wait, look. then go.",
+          "one, two, three. rest.",
+          "yes, fox. no, bat. maybe.",
+          "stop. listen. step.",
+          "hello, forest. i am home."
+        ],
+        payoff: "Rhythm is accuracy you can hear."
+      },
+      {
+        id: 104,
+        title: "Full Alphabet Walk",
+        prompt: "Visit every letter, then turn the letters into a sentence.",
+        keys: "all-letters",
+        kind: "letters-to-sentence",
+        goalIcon: "🏆",
+        storyBeat: "From A to Z, then a thought that uses the whole trail.",
+        text: "a b c d e f g h i j k l m n o p q r s t u v w x y z",
+        variants: [
+          "a b c d e f g h i j k l m n o p q r s t u v w x y z",
+          "the quick fox jumps over the old log",
+          "pack my box with five dozen jewels",
+          "a very quiet bat dozes by the warm cave",
+          "fox, bat, and duck explore the misty canyon"
+        ],
+        payoff: "The alphabet is a map. A sentence is a journey on that map."
+      }
+    ]
+
+
+    function pickLine(lesson) {
+      const bank = (lesson && lesson.variants && lesson.variants.length)
+        ? lesson.variants
+        : [lesson.text];
+      if (bank.length === 1) return bank[0];
+      let choice = bank[Math.floor(Math.random() * bank.length)];
+      let guard = 0;
+      while (choice === lastPickedLine && guard < 8) {
+        choice = bank[Math.floor(Math.random() * bank.length)];
+        guard++;
+      }
+      lastPickedLine = choice;
+      return choice;
+    }
+
+    function missionShowsWpm(mission) {
+      if (!mission) return false;
+      if (currentMode === 'practice') return mission.id !== 101;
+      return Number(mission.id) >= 5;
+    }
+
+    function applyWpmVisibility(mission) {
+      const show = missionShowsWpm(mission);
+      const card = document.getElementById('wpm-telemetry');
+      if (card) card.classList.toggle('is-hidden', !show);
+      const modalBox = document.getElementById('modal-wpm-box');
+      if (modalBox) modalBox.style.display = show ? '' : 'none';
+    }
+
+    const KEY_FINGER_MAP = {
+      'q': { finger: 'left-pinky', label: 'Left Pinky' },
+      'a': { finger: 'left-pinky', label: 'Left Pinky' },
+      'z': { finger: 'left-pinky', label: 'Left Pinky' },
+      'w': { finger: 'left-ring', label: 'Left Ring' },
+      's': { finger: 'left-ring', label: 'Left Ring' },
+      'x': { finger: 'left-ring', label: 'Left Ring' },
+      'e': { finger: 'left-middle', label: 'Left Middle' },
+      'd': { finger: 'left-middle', label: 'Left Middle' },
+      'c': { finger: 'left-middle', label: 'Left Middle' },
+      'r': { finger: 'left-index', label: 'Left Index' },
+      'f': { finger: 'left-index', label: 'Left Index' },
+      'v': { finger: 'left-index', label: 'Left Index' },
+      't': { finger: 'left-index', label: 'Left Index' },
+      'g': { finger: 'left-index', label: 'Left Index' },
+      'b': { finger: 'left-index', label: 'Left Index' },
+      'y': { finger: 'right-index', label: 'Right Index' },
+      'h': { finger: 'right-index', label: 'Right Index' },
+      'u': { finger: 'right-index', label: 'Right Index' },
+      'j': { finger: 'right-index', label: 'Right Index' },
+      'n': { finger: 'right-index', label: 'Right Index' },
+      'm': { finger: 'right-index', label: 'Right Index' },
+      'i': { finger: 'right-middle', label: 'Right Middle' },
+      'k': { finger: 'right-middle', label: 'Right Middle' },
+      ',': { finger: 'right-middle', label: 'Right Middle' },
+      'o': { finger: 'right-ring', label: 'Right Ring' },
+      'l': { finger: 'right-ring', label: 'Right Ring' },
+      '.': { finger: 'right-ring', label: 'Right Ring' },
+      'p': { finger: 'right-pinky', label: 'Right Pinky' },
+      ';': { finger: 'right-pinky', label: 'Right Pinky' },
+      '!': { finger: 'right-pinky', label: 'Right Pinky (Shift)' },
+      ' ': { finger: 'thumb', label: 'Thumb (Space)' }
+    };
+
+    /* AUDIO ENGINE */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playCorrect() {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523.25, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(659.25, this.ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.16);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.18);
+      }
+      playMistake() {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(196.00, this.ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(164.81, this.ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.14);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.15);
+      }
+      playVictory() {
+        if (!this.enabled) return;
+        this.init();
+        [440, 554.37, 659.25, 880].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + (idx * 0.1));
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime + (idx * 0.1));
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + (idx * 0.1) + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + (idx * 0.1));
+          osc.stop(this.ctx.currentTime + (idx * 0.1) + 0.4);
+        });
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* GAME ENGINE STATE */
+    let currentMode = 'adventure';
+    let currentMissionIndex = 0;
+    let currentMission = null;
+    let lastPickedLine = "";
+    let targetString = "";
+    let charIndex = 0;
+    let totalKeystrokes = 0;
+    let correctKeystrokes = 0;
+    let starsEarned = parseInt(localStorage.getItem('fox_stars') || '0', 10);
+    let consecutiveMistakes = 0;
+    let voiceEnabled = false;
+
+    let timerRunning = false;
+    let startTime = null;
+    let timerInterval = null;
+    let elapsedSeconds = 0;
+
+    const typingDisplay = document.getElementById('typing-display');
+    const missionTitle = document.getElementById('mission-title');
+    const missionInstruction = document.getElementById('mission-instruction');
+    const goalMarker = document.getElementById('goal-marker');
+    const foxChar = document.getElementById('fox-character');
+    const starDisplay = document.getElementById('star-count');
+    const liveAccuracy = document.getElementById('live-accuracy');
+    const liveWPM = document.getElementById('live-wpm');
+    const timerDisplay = document.getElementById('timer-display');
+    const fingerInstructionText = document.getElementById('finger-instruction-text');
+    const hintBubble = document.getElementById('hint-bubble');
+    const btnVoiceToggle = document.getElementById('btn-voice-toggle');
+    const btnSoundToggle = document.getElementById('btn-sound-toggle');
+    const adventureRealm = document.getElementById('adventure-realm');
+
+    function initGame() {
+      starDisplay.innerText = starsEarned;
+      loadMission(0);
+      setupKeyboardEvents();
+      renderMap();
+    }
+
+    function loadMission(index) {
+      const missionList = currentMode === 'adventure' ? ALL_ADVENTURE_MISSIONS : PRACTICE_MISSIONS;
+      currentMissionIndex = index % missionList.length;
+      const mission = missionList[currentMissionIndex];
+      currentMission = mission;
+
+      targetString = pickLine(mission);
+      charIndex = 0;
+      consecutiveMistakes = 0;
+      totalKeystrokes = 0;
+      correctKeystrokes = 0;
+
+      stopTimer();
+      elapsedSeconds = 0;
+      timerDisplay.innerText = "0:00";
+      liveWPM.innerText = "0";
+      liveAccuracy.innerText = "100%";
+      applyWpmVisibility(mission);
+
+      missionTitle.innerText = mission.title;
+      missionInstruction.innerText = mission.storyBeat || mission.prompt;
+      goalMarker.innerText = mission.goalIcon || "🏡";
+
+      // Set Realm Theme
+      if (mission.realmClass) {
+        adventureRealm.className = `adventure-view ${mission.realmClass}`;
+      } else {
+        adventureRealm.className = `adventure-view realm-forest`;
+      }
+
+      renderTypingChars();
+      updateFoxPosition();
+      highlightTargetKey();
+      hideHint();
+
+      if (voiceEnabled) speakCurrentLetter();
+    }
+
+    function speakCurrentLetter() {
+      if (!voiceEnabled || !('speechSynthesis' in window)) return;
+      if (charIndex >= targetString.length) return;
+      const char = targetString[charIndex];
+      const textToSpeak = char === ' ' ? 'Space' : char;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.2;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function toggleVoice() {
+      voiceEnabled = !voiceEnabled;
+      if (!voiceEnabled) {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        btnVoiceToggle.innerText = '🔇 Voice: OFF';
+        btnVoiceToggle.classList.add('muted-pill');
+      } else {
+        btnVoiceToggle.innerText = '🗣️ Voice: ON';
+        btnVoiceToggle.classList.remove('muted-pill');
+        speakCurrentLetter();
+      }
+    }
+
+    function toggleSound() {
+      sound.enabled = !sound.enabled;
+      btnSoundToggle.innerText = sound.enabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
+      btnSoundToggle.classList.toggle('muted-pill', !sound.enabled);
+    }
+
+    function startTimer() {
+      if (timerRunning) return;
+      timerRunning = true;
+      startTime = Date.now() - (elapsedSeconds * 1000);
+      timerInterval = setInterval(() => {
+        elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+        const mins = Math.floor(elapsedSeconds / 60);
+        const secs = elapsedSeconds % 60;
+        timerDisplay.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        calculateLiveWPM();
+      }, 500);
+    }
+
+    function stopTimer() {
+      timerRunning = false;
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function calculateLiveWPM() {
+      if (elapsedSeconds < 1) return 0;
+      const words = correctKeystrokes / 5;
+      const minutes = elapsedSeconds / 60;
+      const wpm = Math.round(words / minutes);
+      liveWPM.innerText = wpm;
+      return wpm;
+    }
+
+    function renderTypingChars() {
+      typingDisplay.innerHTML = '';
+      for (let i = 0; i < targetString.length; i++) {
+        const span = document.createElement('span');
+        span.className = 'char-box';
+        const char = targetString[i];
+        
+        if (char === ' ') {
+          span.classList.add('space');
+          span.innerHTML = '&nbsp;';
+        } else {
+          span.innerText = char;
+        }
+
+        if (i < charIndex) {
+          span.classList.add('typed');
+        } else if (i === charIndex) {
+          span.classList.add('current');
+        }
+        typingDisplay.appendChild(span);
+      }
+    }
+
+    function updateFoxPosition() {
+      const progressPercent = (charIndex / targetString.length) * 85;
+      foxChar.style.left = `${progressPercent}%`;
+    }
+
+    function highlightTargetKey() {
+      document.querySelectorAll('.key').forEach(k => k.classList.remove('target-key'));
+      document.querySelectorAll('.finger-node').forEach(f => f.classList.remove('active-finger'));
+
+      if (charIndex >= targetString.length) return;
+
+      const targetChar = targetString[charIndex].toLowerCase();
+      const fingerInfo = KEY_FINGER_MAP[targetChar];
+
+      const keyElem = document.querySelector(`.key[data-key="${targetChar}"]`);
+      if (keyElem) keyElem.classList.add('target-key');
+
+      if (fingerInfo) {
+        fingerInstructionText.innerText = fingerInfo.label;
+        if (fingerInfo.finger === 'thumb') {
+          const thumbL = document.getElementById('f-thumb-left');
+          const thumbR = document.getElementById('f-thumb-right');
+          if (thumbL) thumbL.classList.add('active-finger');
+          if (thumbR) thumbR.classList.add('active-finger');
+        } else {
+          const fingerElem = document.getElementById(`f-${fingerInfo.finger}`);
+          if (fingerElem) fingerElem.classList.add('active-finger');
+        }
+      }
+    }
+
+    function showHint(text) {
+      hintBubble.innerText = text;
+      hintBubble.classList.add('show');
+    }
+
+    function hideHint() {
+      hintBubble.classList.remove('show');
+    }
+
+    function setupKeyboardEvents() {
+      window.addEventListener('keydown', (e) => {
+        if (e.key === ' ') e.preventDefault();
+        if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) return;
+
+        if (e.key === 'Enter') {
+          if (document.getElementById('victory-modal').classList.contains('open')) {
+            nextMission();
+            return;
+          }
+        }
+        handleKeyPress(e.key);
+      });
+    }
+
+    function handleKeyPress(key) {
+      if (charIndex >= targetString.length) return;
+
+      if (!timerRunning) startTimer();
+
+      totalKeystrokes++;
+      const targetChar = targetString[charIndex];
+
+      if (key.toLowerCase() === targetChar.toLowerCase() || key === targetChar) {
+        correctKeystrokes++;
+        consecutiveMistakes = 0;
+        hideHint();
+        sound.playCorrect();
+
+        const nextCh = targetString[charIndex + 1];
+        const finishedWord = targetChar === ' ' || nextCh === undefined || nextCh === ' ';
+        if (finishedWord) {
+          foxChar.classList.add('fox-step');
+          setTimeout(() => foxChar.classList.remove('fox-step'), 300);
+        }
+
+        const keyElem = document.querySelector(`.key[data-key="${key.toLowerCase()}"]`);
+        if (keyElem) {
+          keyElem.classList.add('key-press-success');
+          setTimeout(() => keyElem.classList.remove('key-press-success'), 180);
+        }
+
+        charIndex++;
+        renderTypingChars();
+        updateFoxPosition();
+        updateLiveStats();
+
+        if (charIndex >= targetString.length) {
+          triggerMissionComplete();
+        } else {
+          highlightTargetKey();
+          if (voiceEnabled) speakCurrentLetter();
+        }
+      } else {
+        consecutiveMistakes++;
+        sound.playMistake();
+
+        const currentSpan = typingDisplay.children[charIndex];
+        if (currentSpan) {
+          currentSpan.classList.add('shake');
+          setTimeout(() => currentSpan.classList.remove('shake'), 400);
+        }
+
+        if (consecutiveMistakes === 1) {
+          showHint(`Try pressing ${targetChar === ' ' ? 'SPACE' : targetChar.toUpperCase()}! 🌟`);
+        } else if (consecutiveMistakes >= 2) {
+          const info = KEY_FINGER_MAP[targetChar.toLowerCase()];
+          if (info) showHint(`Use your ${info.label}! 🐾`);
+        }
+        updateLiveStats();
+      }
+    }
+
+    function updateLiveStats() {
+      const accuracy = totalKeystrokes === 0 ? 100 : Math.round((correctKeystrokes / totalKeystrokes) * 100);
+      liveAccuracy.innerText = `${accuracy}%`;
+      calculateLiveWPM();
+    }
+
+    function triggerMissionComplete() {
+      stopTimer();
+      sound.playVictory();
+      foxChar.classList.add('fox-cheer');
+
+      const finalAccuracy = totalKeystrokes === 0 ? 100 : Math.round((correctKeystrokes / totalKeystrokes) * 100);
+      const finalWPM = calculateLiveWPM();
+      const showWpm = missionShowsWpm(currentMission);
+
+      let stars = 1;
+      if (finalAccuracy >= 90) {
+        stars = 2;
+        if (!showWpm || finalWPM >= 8) stars = 3;
+      }
+
+      starsEarned += stars;
+      localStorage.setItem('fox_stars', starsEarned);
+      starDisplay.innerText = starsEarned;
+
+      const payoff = (currentMission && currentMission.payoff) ? currentMission.payoff : 'Fox made great progress on his journey!';
+      document.getElementById('victory-subtitle').innerText = showWpm
+        ? 'Try again for a new line — or walk on.'
+        : 'No speed score yet. Smooth paws matter more.';
+      document.getElementById('victory-payoff').innerText = payoff;
+
+      document.getElementById('modal-time').innerText = timerDisplay.innerText;
+      document.getElementById('modal-wpm').innerText = finalWPM;
+      document.getElementById('modal-accuracy').innerText = `${finalAccuracy}%`;
+      document.getElementById('modal-score').innerText = Math.round(finalAccuracy * (1 + (showWpm ? finalWPM * 0.1 : 0)));
+      applyWpmVisibility(currentMission);
+
+      for (let i = 1; i <= 3; i++) {
+        const s = document.getElementById(`star-${i}`);
+        if (s) s.classList.toggle('filled', i <= stars);
+      }
+
+      renderMap();
+
+      setTimeout(() => {
+        document.getElementById('victory-modal').classList.add('open');
+      }, 500);
+    }
+
+    function retryMission() {
+      document.getElementById('victory-modal').classList.remove('open');
+      foxChar.classList.remove('fox-cheer');
+      loadMission(currentMissionIndex);
+    }
+
+    function nextMission() {
+      document.getElementById('victory-modal').classList.remove('open');
+      foxChar.classList.remove('fox-cheer');
+      loadMission(currentMissionIndex + 1);
+    }
+
+    function switchMode(mode) {
+      currentMode = mode;
+      document.getElementById('btn-mode-adventure').classList.toggle('active', mode === 'adventure');
+      document.getElementById('btn-mode-practice').classList.toggle('active', mode === 'practice');
+      loadMission(0);
+    }
+
+    /* WORLD MAP CONTROLS */
+    function renderMap() {
+      const mapContainer = document.getElementById('map-content');
+      mapContainer.innerHTML = '';
+
+      let globalIdx = 0;
+      WORLDS.forEach((world) => {
+        const section = document.createElement('div');
+        section.className = 'map-world-section';
+        section.innerHTML = `<div class="world-header">${world.title}</div>`;
+
+        const grid = document.createElement('div');
+        grid.className = 'lesson-chip-grid';
+
+        world.lessons.forEach((les) => {
+          const idx = globalIdx;
+          const chip = document.createElement('div');
+          chip.className = `lesson-chip ${currentMode === 'adventure' && currentMissionIndex === idx ? 'active-chip' : ''}`;
+          chip.innerHTML = `
+            <div>${les.title}</div>
+            <div class="chip-stars">★★★★★</div>
+          `;
+          chip.onclick = () => {
+            currentMode = 'adventure';
+            document.getElementById('btn-mode-adventure').classList.add('active');
+            document.getElementById('btn-mode-practice').classList.remove('active');
+            closeMapModal();
+            loadMission(idx);
+          };
+          grid.appendChild(chip);
+          globalIdx++;
+        });
+
+        section.appendChild(grid);
+        mapContainer.appendChild(section);
+      });
+    }
+
+    function openMapModal() {
+      renderMap();
+      document.getElementById('map-modal').classList.add('open');
+    }
+
+    function closeMapModal() {
+      document.getElementById('map-modal').classList.remove('open');
+    }
+
+    function openParentModal() {
+      document.getElementById('p-stat-missions').innerText = `${currentMissionIndex + 1} / ${ALL_ADVENTURE_MISSIONS.length}`;
+      document.getElementById('p-stat-keys').innerText = correctKeystrokes;
+      document.getElementById('p-stat-wpm').innerText = `${liveWPM.innerText} WPM`;
+      document.getElementById('p-stat-acc').innerText = liveAccuracy.innerText;
+      document.getElementById('parent-modal').classList.add('open');
+    }
+
+    function closeParentModal() {
+      document.getElementById('parent-modal').classList.remove('open');
+    }
+
+    window.onload = initGame;
+  </script>
+</body>
+</html>
