@@ -12,6 +12,8 @@
     mac: { label: "Mac", icon: "💻", bg: "#fce7f3", fg: "#be185d" },
     math: { label: "Math", icon: "🧮", bg: "#f3e8ff", fg: "#7c3aed" },
     stem: { label: "STEM", icon: "🔬", bg: "#d1fae5", fg: "#059669" },
+    writing: { label: "Writing", icon: "✍️", bg: "#fff7ed", fg: "#ea580c" },
+    movie: { label: "Movie", icon: "🎬", bg: "#e0f2fe", fg: "#0284c7" },
   };
   const SKILL_ALIASES = {
     typing: "typing",
@@ -24,6 +26,11 @@
     amc: "math",
     stem: "stem",
     science: "stem",
+    writing: "writing",
+    write: "writing",
+    movie: "movie",
+    film: "movie",
+    media: "movie",
   };
 
   const DIFF = {
@@ -69,7 +76,15 @@
   }
 
   const STYLES = `
-    :host { display: block; height: 100%; }
+    :host {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      position: relative;
+      z-index: 0;
+    }
     a.card {
       display: flex;
       flex-direction: column;
