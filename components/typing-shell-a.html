@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fox Typing Adventure · MadeForMyKids</title>
+  <meta name="description" content="Fox Typing Adventure — guided typing practice for kids. Accuracy, rhythm, and confidence on the keyboard." />
+  <link rel="canonical" href="https://www.madeformykids.com/typing.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/components/theme.css" />
+
+    <link rel="stylesheet" href="/components/typing-page-1.css" />
+  <link rel="stylesheet" href="/components/typing-page-2.css" />
+
+</head>
+<body class="mfk-page mfk-activity-shell mfk-activity-fixed">
+
+  <mfk-header active="practice"></mfk-header>
+
+  <!-- Game toolbar (activity chrome — site identity is MadeForMyKids above) -->
+  <div class="game-toolbar" role="toolbar" aria-label="Fox Typing Adventure controls">
+    <div class="game-brand" onclick="openMapModal()" title="Open world map">
+      <span class="game-brand-icon">🦊</span>
+      <span>Fox Typing</span>
+    </div>
+
+    <!-- Live Telemetry -->
+    <div class="telemetry-bar">
+      <div class="telemetry-card">
+        <span>⏱️</span>
+        <span>Time:</span>
+        <span class="telemetry-val" id="timer-display">0:00</span>
+      </div>
+      <div class="telemetry-card" id="wpm-telemetry">
+        <span>⚡</span>
+        <span>WPM:</span>
+        <span class="telemetry-val" id="live-wpm">0</span>
+      </div>
+      <div class="telemetry-card">
+        <span>🎯</span>
+        <span>Accuracy:</span>
+        <span class="telemetry-val" id="live-accuracy">100%</span>
+      </div>
+      <div class="telemetry-card">
+        <span>⭐</span>
+        <span class="telemetry-val" id="star-count">0</span>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="nav-btn" id="btn-map" onclick="openMapModal()">🗺️ Map & Lessons</button>
+      <button class="nav-btn active" id="btn-mode-adventure" onclick="switchMode('adventure')">🌲 Adventure</button>
+      <button class="nav-btn" id="btn-mode-practice" onclick="switchMode('practice')">🧑‍🏫 Practice</button>
+      <button class="nav-btn muted-pill" id="btn-voice-toggle" onclick="toggleVoice()">🔇 Voice: OFF</button>
+      <button class="nav-btn" id="btn-sound-toggle" onclick="toggleSound()">🔊 Sound: ON</button>
+      <button class="nav-btn" id="btn-mode-parent" onclick="openParentModal()">📊 Parent</button>
+    </div>
+  </div>
+
+  <!-- Main Viewport -->
+  <main class="mfk-activity-main game-main">
+    <div class="adventure-view realm-forest" id="adventure-realm">
+      <div class="sky-cloud cloud-1"></div>
+      <div class="sky-cloud cloud-2"></div>
+
+      <div class="level-banner">
+        <span id="realm-icon">🌲</span>
+        <span id="mission-title">World 1 - Lesson 1: Meet F & J</span>
+      </div>
+
+      <div class="hint-bubble" id="hint-bubble">Press the key on your keyboard!</div>
+
+      <div class="typing-card">
+        <div class="mission-prompt" id="mission-instruction">Help Fox take his first steps!</div>
+        <div class="typing-text-display" id="typing-display"></div>
+      </div>
+
+      <div class="adventure-track">
+        <div class="track-line"></div>
+        
+        <div class="fox-avatar" id="fox-character">
+          <svg viewBox="0 0 100 100" width="100%" height="100%">
+            <path d="M25 65 C10 60 5 40 20 30 C30 25 35 45 30 65 Z" fill="#e65100" />
+            <path d="M12 40 C15 32 25 30 24 45 Z" fill="#ffffff" />
+            <ellipse cx="50" cy="65" rx="22" ry="18" fill="#f57c00" />
+            <ellipse cx="50" cy="68" rx="14" ry="12" fill="#ffffff" />
+            <circle cx="38" cy="82" r="6" fill="#bf360c" />
+            <circle cx="62" cy="82" r="6" fill="#bf360c" />
+            <polygon points="34,42 42,15 54,35" fill="#f57c00" />
+            <polygon points="38,38 43,22 50,35" fill="#ffe0b2" />
+            <polygon points="66,42 58,15 46,35" fill="#f57c00" />
+            <polygon points="62,38 57,22 50,35" fill="#ffe0b2" />
+            <circle cx="50" cy="45" r="20" fill="#f57c00" />
+            <polygon points="30,48 50,60 38,36" fill="#ffffff" />
+            <polygon points="70,48 50,60 62,36" fill="#ffffff" />
+            <ellipse cx="43" cy="44" rx="3" ry="4" fill="#212121" />
+            <ellipse cx="57" cy="44" rx="3" ry="4" fill="#212121" />
+            <circle cx="44" cy="42" r="1" fill="#ffffff" />
+            <circle cx="58" cy="42" r="1" fill="#ffffff" />
+            <polygon points="47,52 53,52 50,56" fill="#212121" />
+          </svg>
+        </div>
+
+        <div class="track-finish" id="goal-marker">🏡</div>
+      </div>
+    </div>
+
+    <!-- TUTOR & KEYBOARD -->
+    <div class="tutor-view">
+      <div class="finger-instruction-bar">
+        <div class="instruction-tag">
+          Finger Guide: <span class="highlight-badge" id="finger-instruction-text">Left Index Finger</span>
+        </div>
+      </div>
+
+      <div class="keyboard-wrapper" id="keyboard">
+        <div class="keyboard-row">
+          <div class="key" data-key="q" data-finger="left-pinky">Q</div>
+          <div class="key" data-key="w" data-finger="left-ring">W</div>
+          <div class="key" data-key="e" data-finger="left-middle">E</div>
+          <div class="key" data-key="r" data-finger="left-index">R</div>
+          <div class="key" data-key="t" data-finger="left-index">T</div>
+          <div class="key" data-key="y" data-finger="right-index">Y</div>
+          <div class="key" data-key="u" data-finger="right-index">U</div>
+          <div class="key" data-key="i" data-finger="right-middle">I</div>
+          <div class="key" data-key="o" data-finger="right-ring">O</div>
+          <div class="key" data-key="p" data-finger="right-pinky">P</div>
+        </div>
+        <div class="keyboard-row">
+          <div class="key" data-key="a" data-finger="left-pinky">A</div>
+          <div class="key" data-key="s" data-finger="left-ring">S</div>
+          <div class="key" data-key="d" data-finger="left-middle">D</div>
+          <div class="key has-bump" data-key="f" data-finger="left-index">F</div>
+          <div class="key" data-key="g" data-finger="left-index">G</div>
+          <div class="key" data-key="h" data-finger="right-index">H</div>
+          <div class="key has-bump" data-key="j" data-finger="right-index">J</div>
+          <div class="key" data-key="k" data-finger="right-middle">K</div>
+          <div class="key" data-key="l" data-finger="right-ring">L</div>
+          <div class="key" data-key=";" data-finger="right-pinky">;</div>
+        </div>
+        <div class="keyboard-row">
+          <div class="key" data-key="z" data-finger="left-pinky">Z</div>
+          <div class="key" data-key="x" data-finger="left-ring">X</div>
+          <div class="key" data-key="c" data-finger="left-middle">C</div>
+          <div class="key" data-key="v" data-finger="left-index">V</div>
+          <div class="key" data-key="b" data-finger="left-index">B</div>
+          <div class="key" data-key="n" data-finger="right-index">N</div>
