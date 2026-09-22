@@ -1,6 +1,6 @@
-/* MadeForMyKids Watch to Grow — multi-part loader (chrome-guarded) */
+/* MadeForMyKids Watch to Grow — 9-chunk loader (chrome-guarded) */
 (async function () {
-  const parts = ["/movie/assets/app.part0.js", "/movie/assets/app.part1.js", "/movie/assets/app.part2.js"];
+  const parts = ["/movie/assets/app.ch0.js", "/movie/assets/app.ch1.js", "/movie/assets/app.ch2.js", "/movie/assets/app.ch3.js", "/movie/assets/app.ch4.js", "/movie/assets/app.ch5.js", "/movie/assets/app.ch6.js", "/movie/assets/app.ch7.js", "/movie/assets/app.ch8.js"];
   const texts = await Promise.all(parts.map(function (u) {
     return fetch(u).then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status + " " + u);
