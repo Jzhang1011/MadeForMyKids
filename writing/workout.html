@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Writing Gym — BuildForMyKids</title>
+  <title>Writing Gym · MadeForMyKids</title>
+  <meta name="description" content="Writing Gym — short writing reps that build real sentence muscles. No ghostwriting." />
+  <link rel="canonical" href="https://www.madeformykids.com/writing/workout.html" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/components/theme.css" />
   <style>
     body { font-family: 'Inter', sans-serif; }
     .font-display { font-family: 'Outfit', sans-serif; }
@@ -32,6 +35,11 @@
     .shake-lite { animation: shake-lite 0.35s ease; }
     #confetti-canvas { pointer-events: none; position: fixed; inset: 0; z-index: 70; }
     .move-chip.active { background: #1A2332; color: white; border-color: #1A2332; }
+    .gym-toolbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #e7e5e4;
+    }
   </style>
   <script>
     tailwind.config = {
@@ -45,20 +53,20 @@
     }
   </script>
 </head>
-<body class="bg-gym-sand text-slate-800 min-h-screen flex flex-col antialiased selection:bg-orange-100 selection:text-orange-900">
+<body class="mfk-page bg-gym-sand text-slate-800 min-h-screen flex flex-col antialiased selection:bg-orange-100 selection:text-orange-900">
 <canvas id="confetti-canvas"></canvas>
 
-<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200 px-4 sm:px-8 py-3.5 shadow-sm">
+<mfk-header active="practice"></mfk-header>
+
+<!-- In-page activity toolbar (grade, timer, stamps) — site chrome is mfk-header -->
+<div class="gym-toolbar px-4 sm:px-8 py-3 shadow-sm">
   <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-    <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-gym-orange to-gym-amber flex items-center justify-center text-white shadow-md shadow-orange-500/20">
-        <span class="text-xl">✍️</span>
+    <div class="flex items-center space-x-3 min-w-0">
+      <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-gym-orange to-gym-amber flex items-center justify-center text-white shadow-md shadow-orange-500/20 shrink-0">
+        <span class="text-lg" aria-hidden="true">✍️</span>
       </div>
-      <div>
-        <div class="flex items-center space-x-2">
-          <span class="font-display font-black tracking-tight text-xl text-slate-900">Writing Gym</span>
-          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 tracking-wide">BuildForMyKids</span>
-        </div>
+      <div class="min-w-0">
+        <div class="font-display font-bold tracking-tight text-base text-slate-900 truncate">Writing Gym · MadeForMyKids</div>
         <p class="text-xs text-stone-500 hidden sm:block">Short reps. Real muscles. No ghostwriting.</p>
       </div>
     </div>
@@ -81,9 +89,10 @@
       <button onclick="toggleModal('modal-muscles')" class="px-2.5 py-1.5 rounded-lg border border-stone-200 text-xs font-medium">💪 Muscles</button>
     </div>
   </div>
-</header>
+</div>
 
-<main class="max-w-7xl mx-auto px-4 sm:px-8 py-6 flex-1 w-full flex flex-col gap-5">
+
+<main class="mfk-activity-main max-w-7xl mx-auto px-4 sm:px-8 py-6 flex-1 w-full flex flex-col gap-5">
   <section class="bg-white rounded-2xl border border-stone-200 p-4 shadow-sm">
     <div class="flex items-center justify-between mb-3">
       <span class="text-xs font-bold text-stone-500 uppercase tracking-wider">Today's Stations</span>
@@ -261,6 +270,10 @@
   </div>
 </div>
 
+<mfk-footer></mfk-footer>
+
+<script src="/components/header.js"></script>
+<script src="/components/footer.js"></script>
 <script src="exercises-bank.js"></script>
 <script src="gym-app.js"></script>
 </body>
