@@ -77,7 +77,7 @@
       background: var(--mfk-slate, #1e293b);
       color: #e2e8f0;
       padding: 2.5rem 0 1.5rem;
-      margin-top: 3rem;
+      margin-top: 0;
     }
     .inner {
       max-width: var(--mfk-max, 1100px);
