@@ -1,9 +1,72 @@
 /**
  * <mfk-activity-card>
- * Attributes: icon, title, blurb, href, tags (comma-separated)
+ * Attributes:
+ *   icon (optional override), skill, title, blurb, difficulty, duration, href, cta-label
+ * Legacy: tags (comma-separated) — shown as soft tags when skill/difficulty absent
  */
 (function () {
   if (customElements.get("mfk-activity-card")) return;
+
+  const SKILL = {
+    typing: { label: "Typing", icon: "⌨️", bg: "#fff0e6", fg: "#e8661a" },
+    mac: { label: "Mac", icon: "💻", bg: "#fce7f3", fg: "#be185d" },
+    math: { label: "Math", icon: "🧮", bg: "#f3e8ff", fg: "#7c3aed" },
+    stem: { label: "STEM", icon: "🔬", bg: "#d1fae5", fg: "#059669" },
+  };
+  const SKILL_ALIASES = {
+    typing: "typing",
+    type: "typing",
+    keyboard: "typing",
+    mac: "mac",
+    macos: "mac",
+    math: "math",
+    maths: "math",
+    amc: "math",
+    stem: "stem",
+    science: "stem",
+  };
+
+  const DIFF = {
+    beginner: { label: "Beginner", icon: "🌱", bg: "#dcfce7", fg: "#15803d" },
+    intermediate: { label: "Intermediate", icon: "🌿", bg: "#fef9c3", fg: "#a16207" },
+    advanced: { label: "Advanced", icon: "🔥", bg: "#ffedd5", fg: "#c2410c" },
+    challenge: { label: "Challenge", icon: "⚡", bg: "#fee2e2", fg: "#b91c1c" },
+  };
+  const DIFF_ALIASES = {
+    beginner: "beginner",
+    easy: "beginner",
+    intermediate: "intermediate",
+    medium: "intermediate",
+    advanced: "advanced",
+    hard: "advanced",
+    challenge: "challenge",
+  };
+
+  function skillMeta(raw) {
+    if (window.MFK && window.MFK.skill && window.MFK.skill.meta) {
+      const m = window.MFK.skill.meta(raw);
+      if (m) return m;
+    }
+    const id = SKILL_ALIASES[String(raw || "").trim().toLowerCase()];
+    return id ? SKILL[id] : null;
+  }
+
+  function diffMeta(raw) {
+    if (window.MFK && window.MFK.difficulty && window.MFK.difficulty.meta) {
+      return window.MFK.difficulty.meta(raw);
+    }
+    const id =
+      DIFF_ALIASES[String(raw || "").trim().toLowerCase()] || "intermediate";
+    return DIFF[id] || DIFF.intermediate;
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
 
   const STYLES = `
     :host { display: block; height: 100%; }
@@ -29,13 +92,29 @@
       outline: 3px solid var(--mfk-coral, #ff7d26);
       outline-offset: 3px;
     }
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
     .icon {
-      width: 48px; height: 48px;
-      border-radius: 14px;
+      width: 40px; height: 40px;
+      border-radius: 12px;
       background: var(--mfk-coral-soft, #fff0e6);
       display: grid; place-items: center;
-      font-size: 1.5rem;
-      margin-bottom: 0.85rem;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
     }
     h3 {
       font-family: var(--mfk-font-display, Fredoka, system-ui, sans-serif);
@@ -51,6 +130,18 @@
       color: var(--mfk-slate-soft, #64748b);
       line-height: 1.5;
     }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .duration {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--mfk-slate-soft, #64748b);
+    }
     .tags {
       display: flex;
       flex-wrap: wrap;
@@ -65,9 +156,12 @@
       padding: 0.2rem 0.55rem;
       border-radius: 9999px;
     }
-    .go {
+    .cta {
       margin-top: 1rem;
-      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 700;
       font-size: 0.9rem;
       color: var(--mfk-coral, #ff7d26);
     }
@@ -75,7 +169,17 @@
 
   class MfkActivityCard extends HTMLElement {
     static get observedAttributes() {
-      return ["icon", "title", "blurb", "href", "tags"];
+      return [
+        "icon",
+        "skill",
+        "title",
+        "blurb",
+        "difficulty",
+        "duration",
+        "href",
+        "cta-label",
+        "tags",
+      ];
     }
 
     constructor() {
@@ -92,27 +196,57 @@
     }
 
     render() {
-      const icon = this.getAttribute("icon") || "✨";
       const title = this.getAttribute("title") || "Activity";
       const blurb = this.getAttribute("blurb") || "";
       const href = this.getAttribute("href") || "#";
+      const duration = this.getAttribute("duration") || "";
+      const cta = this.getAttribute("cta-label") || "Start";
+      const skillRaw = this.getAttribute("skill") || "";
+      const diffRaw = this.getAttribute("difficulty") || "";
+      const sm = skillRaw ? skillMeta(skillRaw) : null;
+      const dm = diffRaw ? diffMeta(diffRaw) : null;
+      const iconOverride = this.getAttribute("icon");
+      const icon = iconOverride || (sm && sm.icon) || "✨";
       const tags = (this.getAttribute("tags") || "")
         .split(",")
         .map((t) => t.trim())
         .filter(Boolean);
+      const useLegacyTags = tags.length && !sm && !dm;
+
+      let topHtml = "";
+      if (sm) {
+        topHtml = `<span class="pill" style="background:${sm.bg};color:${sm.fg}" aria-label="Skill: ${esc(sm.label)}"><span aria-hidden="true">${esc(icon)}</span> ${esc(sm.label)}</span>`;
+      } else if (iconOverride) {
+        topHtml = `<div class="icon" aria-hidden="true">${icon}</div>`;
+      }
+
+      let metaHtml = "";
+      if (dm || duration) {
+        const parts = [];
+        if (dm) {
+          parts.push(
+            `<span class="pill" style="background:${dm.bg};color:${dm.fg}" aria-label="Difficulty: ${esc(dm.label)}"><span aria-hidden="true">${dm.icon}</span> ${esc(dm.label)}</span>`
+          );
+        }
+        if (duration) {
+          parts.push(`<span class="duration">${esc(duration)}</span>`);
+        }
+        metaHtml = `<div class="meta-row">${parts.join("")}</div>`;
+      }
+
+      const tagsHtml = useLegacyTags
+        ? `<div class="tags">${tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div>`
+        : "";
 
       this.shadowRoot.innerHTML = `
         <style>${STYLES}</style>
-        <a class="card" href="${href}">
-          <div class="icon" aria-hidden="true">${icon}</div>
-          <h3>${title}</h3>
-          ${blurb ? `<p class="blurb">${blurb}</p>` : ""}
-          ${
-            tags.length
-              ? `<div class="tags">${tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div>`
-              : ""
-          }
-          <span class="go">Open activity →</span>
+        <a class="card" href="${esc(href)}">
+          ${topHtml ? `<div class="top">${topHtml}</div>` : `<div class="icon" aria-hidden="true">${icon}</div>`}
+          <h3>${esc(title)}</h3>
+          ${blurb ? `<p class="blurb">${esc(blurb)}</p>` : ""}
+          ${metaHtml}
+          ${tagsHtml}
+          <span class="cta">${esc(cta)} <span aria-hidden="true">→</span></span>
         </a>
       `;
     }
