@@ -1,7 +1,7 @@
 /**
- * <mfk-skill-badge skill="typing|mac|math|stem" icon="optional override">
+ * <mfk-skill-badge skill="typing|mac|math|stem|writing|movie" icon="optional override">
  *
- * Locked skills: Typing, Mac, Math, STEM.
+ * Skills: Typing, Mac, Math, STEM, Writing, Movie.
  * Helpers: MFK.skill.normalize(skill), MFK.skill.label(skill), MFK.skill.icon(skill), MFK.skill.meta(skill)
  */
 (function () {
@@ -22,6 +22,14 @@
     stem: "stem",
     science: "stem",
     tech: "stem",
+    writing: "writing",
+    write: "writing",
+    writer: "writing",
+    movie: "movie",
+    movies: "movie",
+    film: "movie",
+    media: "movie",
+    watch: "movie",
   };
 
   const MAP = {
@@ -52,6 +60,20 @@
       icon: "🔬",
       bg: "var(--mfk-skill-stem-bg, #d1fae5)",
       fg: "var(--mfk-skill-stem, #059669)",
+    },
+    writing: {
+      id: "writing",
+      label: "Writing",
+      icon: "✍️",
+      bg: "var(--mfk-skill-writing-bg, #fff7ed)",
+      fg: "var(--mfk-skill-writing, #ea580c)",
+    },
+    movie: {
+      id: "movie",
+      label: "Movie",
+      icon: "🎬",
+      bg: "var(--mfk-skill-movie-bg, #e0f2fe)",
+      fg: "var(--mfk-skill-movie, #0284c7)",
     },
   };
 
