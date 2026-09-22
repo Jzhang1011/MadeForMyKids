@@ -1,6 +1,7 @@
 /**
  * MadeForMyKids shared theme tokens & base styles
  * Warm coral/orange + deep slate — kid-friendly, parent-trustworthy
+ * Hub visual elevation: soft mesh depth, layered cards, type rhythm
  */
 
 :root {
@@ -41,7 +42,7 @@
   --mfk-challenge: #b91c1c;
   --mfk-challenge-bg: #fee2e2;
 
-  /* Skills — locked: typing | mac | math | stem */
+  /* Skills — typing | mac | math | stem | writing | movie */
   --mfk-skill-typing: #e8661a;
   --mfk-skill-typing-bg: #fff0e6;
   --mfk-skill-mac: #be185d;
@@ -50,6 +51,10 @@
   --mfk-skill-math-bg: #f3e8ff;
   --mfk-skill-stem: #059669;
   --mfk-skill-stem-bg: #d1fae5;
+  --mfk-skill-writing: #ea580c;
+  --mfk-skill-writing-bg: #fff7ed;
+  --mfk-skill-movie: #0284c7;
+  --mfk-skill-movie-bg: #e0f2fe;
   --mfk-skill-default: #475569;
   --mfk-skill-default-bg: #f1f5f9;
 
@@ -57,9 +62,13 @@
   --mfk-radius: 12px;
   --mfk-radius-sm: 8px;
   --mfk-radius-lg: 20px;
+  --mfk-radius-xl: 28px;
   --mfk-radius-full: 9999px;
   --mfk-shadow: 0 4px 14px rgba(30, 41, 59, 0.08);
+  --mfk-shadow-md: 0 8px 24px rgba(30, 41, 59, 0.1);
   --mfk-shadow-lg: 0 12px 32px rgba(30, 41, 59, 0.12);
+  --mfk-shadow-xl: 0 20px 48px rgba(30, 41, 59, 0.14);
+  --mfk-shadow-coral: 0 8px 28px rgba(255, 125, 38, 0.22);
   --mfk-max: 1100px;
   --mfk-header-h: 64px;
 
@@ -115,9 +124,17 @@ mfk-parent-note * {
 .mfk-page {
   margin: 0;
   min-height: 100vh;
-  background: var(--mfk-cream);
   color: var(--mfk-slate);
   font-family: var(--mfk-font-body);
+  /* Soft coral/cream radial mesh — not flat cream */
+  background-color: var(--mfk-cream);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% -10%, rgba(255, 125, 38, 0.14), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 95% 5%, rgba(255, 154, 85, 0.12), transparent 50%),
+    radial-gradient(ellipse 60% 45% at 50% 100%, rgba(252, 217, 184, 0.35), transparent 55%),
+    radial-gradient(ellipse 40% 30% at 80% 70%, rgba(255, 240, 230, 0.8), transparent 60%),
+    linear-gradient(180deg, #fffbf7 0%, #fff8f2 40%, #fffbf7 100%);
+  background-attachment: fixed;
 }
 
 .mfk-page a {
@@ -145,6 +162,58 @@ mfk-parent-note * {
   font-family: var(--mfk-font-display);
   font-weight: 600;
   letter-spacing: -0.02em;
+}
+
+/* Elevated white/glass panel for hub bands */
+.mfk-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--mfk-border-warm);
+  border-radius: var(--mfk-radius-xl);
+  box-shadow:
+    var(--mfk-shadow-md),
+    0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  padding: 1.75rem 1.5rem;
+}
+
+@media (min-width: 700px) {
+  .mfk-panel {
+    padding: 2.25rem 2rem;
+  }
+}
+
+.mfk-panel--flush {
+  padding: 1.5rem;
+}
+
+/* Hub section hierarchy */
+.mfk-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mfk-coral-dark);
+  margin: 0 0 0.4rem;
+}
+
+.mfk-section-title {
+  font-family: var(--mfk-font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+  color: var(--mfk-slate);
+  line-height: 1.2;
+}
+
+.mfk-section-lead {
+  margin: 0 0 1.5rem;
+  color: var(--mfk-slate-soft);
+  max-width: 36rem;
+  font-size: 1.05rem;
+  line-height: 1.55;
 }
 
 /* Focus ring shared */
@@ -178,12 +247,12 @@ mfk-feedback button:focus-visible {
   grid-template-columns: 1fr;
   align-items: stretch;
   /* Keep cards from colliding when custom elements size themselves */
-  grid-auto-rows: auto;
+  grid-auto-rows: 1fr;
 }
 
 @media (min-width: 640px) {
   .mfk-grid-cards {
-    /* 2×2 for four activities — 3-col left the 4th card under the first and it looked overlapped */
+    /* 2×2 for four activities — minmax keeps equal columns */
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -200,7 +269,7 @@ mfk-feedback button:focus-visible {
   display: block;
   min-width: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
   position: relative;
   z-index: 0;
 }
@@ -208,14 +277,16 @@ mfk-feedback button:focus-visible {
 .mfk-coming-soon {
   border: 2px dashed var(--mfk-border-warm);
   border-radius: var(--mfk-radius-lg);
-  background: var(--mfk-white);
-  padding: 2rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--mfk-shadow);
+  padding: 2rem 1.75rem;
   text-align: center;
   color: var(--mfk-slate-soft);
 }
 
 .mfk-coming-soon h3 {
   font-family: var(--mfk-font-display);
+  font-size: clamp(1.15rem, 2.5vw, 1.35rem);
   color: var(--mfk-slate);
   margin: 0 0 0.5rem;
 }
@@ -224,6 +295,7 @@ mfk-feedback button:focus-visible {
   margin: 0;
   max-width: 36rem;
   margin-inline: auto;
+  line-height: 1.55;
 }
 
 
