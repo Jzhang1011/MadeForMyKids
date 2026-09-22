@@ -1,16 +1,80 @@
 /**
- * <mfk-skill-badge skill="Typing" variant="typing|math|reading|science|default">
+ * <mfk-skill-badge skill="typing|mac|math|stem" icon="optional override">
+ *
+ * Locked skills: Typing, Mac, Math, STEM.
+ * Helpers: MFK.skill.normalize(skill), MFK.skill.label(skill), MFK.skill.icon(skill), MFK.skill.meta(skill)
  */
 (function () {
   if (customElements.get("mfk-skill-badge")) return;
 
-  const COLORS = {
-    typing: { bg: "#fff0e6", fg: "#e8661a" },
-    math: { bg: "#f3e8ff", fg: "#7c3aed" },
-    reading: { bg: "#cffafe", fg: "#0891b2" },
-    science: { bg: "#d1fae5", fg: "#059669" },
-    default: { bg: "#f1f5f9", fg: "#475569" },
+  const ALIASES = {
+    typing: "typing",
+    type: "typing",
+    keyboard: "typing",
+    mac: "mac",
+    macos: "mac",
+    "mac skills": "mac",
+    "mac-skills": "mac",
+    apple: "mac",
+    math: "math",
+    maths: "math",
+    amc: "math",
+    stem: "stem",
+    science: "stem",
+    tech: "stem",
   };
+
+  const MAP = {
+    typing: {
+      id: "typing",
+      label: "Typing",
+      icon: "⌨️",
+      bg: "var(--mfk-skill-typing-bg, #fff0e6)",
+      fg: "var(--mfk-skill-typing, #e8661a)",
+    },
+    mac: {
+      id: "mac",
+      label: "Mac",
+      icon: "💻",
+      bg: "var(--mfk-skill-mac-bg, #fce7f3)",
+      fg: "var(--mfk-skill-mac, #be185d)",
+    },
+    math: {
+      id: "math",
+      label: "Math",
+      icon: "🧮",
+      bg: "var(--mfk-skill-math-bg, #f3e8ff)",
+      fg: "var(--mfk-skill-math, #7c3aed)",
+    },
+    stem: {
+      id: "stem",
+      label: "STEM",
+      icon: "🔬",
+      bg: "var(--mfk-skill-stem-bg, #d1fae5)",
+      fg: "var(--mfk-skill-stem, #059669)",
+    },
+  };
+
+  function normalize(skill) {
+    const key = String(skill || "")
+      .trim()
+      .toLowerCase();
+    if (ALIASES[key]) return ALIASES[key];
+    if (MAP[key]) return key;
+    return "typing";
+  }
+
+  function meta(skill) {
+    return MAP[normalize(skill)] || MAP.typing;
+  }
+
+  function label(skill) {
+    return meta(skill).label;
+  }
+
+  function iconFor(skill) {
+    return meta(skill).icon;
+  }
 
   const STYLES = `
     :host { display: inline-block; }
@@ -24,11 +88,12 @@
       border-radius: 9999px;
       letter-spacing: 0.01em;
     }
+    .icon { font-size: 0.95em; line-height: 1; }
   `;
 
   class MfkSkillBadge extends HTMLElement {
     static get observedAttributes() {
-      return ["skill", "variant"];
+      return ["skill", "icon", "variant"];
     }
 
     constructor() {
@@ -45,13 +110,20 @@
     }
 
     render() {
-      const skill = this.getAttribute("skill") || this.textContent.trim() || "Skill";
-      const variant = (this.getAttribute("variant") || "default").toLowerCase();
-      const c = COLORS[variant] || COLORS.default;
+      const raw =
+        this.getAttribute("skill") ||
+        this.getAttribute("variant") ||
+        this.textContent.trim() ||
+        "";
+      const m = meta(raw);
+      const icon = this.getAttribute("icon") || m.icon;
 
       this.shadowRoot.innerHTML = `
         <style>${STYLES}</style>
-        <span class="badge" style="background:${c.bg};color:${c.fg}">${skill}</span>
+        <span class="badge" style="background:${m.bg};color:${m.fg}" aria-label="Skill: ${m.label}">
+          <span class="icon" aria-hidden="true">${icon}</span>
+          <span>${m.label}</span>
+        </span>
       `;
     }
   }
@@ -59,4 +131,5 @@
   customElements.define("mfk-skill-badge", MfkSkillBadge);
   window.MFK = window.MFK || {};
   window.MFK.SkillBadge = MfkSkillBadge;
+  window.MFK.skill = { normalize, label, icon: iconFor, meta, MAP, ALIASES };
 })();
