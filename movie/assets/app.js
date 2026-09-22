@@ -1,7 +1,12 @@
-/* MadeForMyKids Watch to Grow — multi-part loader */
+/* MadeForMyKids Watch to Grow — multi-part loader (chrome-guarded) */
 (async function () {
   const parts = ["/movie/assets/app.part0.js", "/movie/assets/app.part1.js", "/movie/assets/app.part2.js"];
-  const texts = await Promise.all(parts.map(function (u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status + " " + u); return r.text(); }); }));
+  const texts = await Promise.all(parts.map(function (u) {
+    return fetch(u).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status + " " + u);
+      return r.text();
+    });
+  }));
   (0, eval)(texts.join(""));
 })().catch(function (err) {
   console.error(err);
