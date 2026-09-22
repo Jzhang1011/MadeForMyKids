@@ -3,75 +3,104 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OlympiadForge - Competition Math Bank</title>
+  <title>Olympiad Forge · Math · MadeForMyKids</title>
+  <meta name="description" content="Olympiad Forge — AMC-style competition math problem bank with step-by-step proofs. Practice Algebra, Geometry, Number Theory, and more." />
+  <link rel="canonical" href="https://www.madeformykids.com/amc/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            coral: { DEFAULT: '#ff7d26', dark: '#e8661a', soft: '#fff0e6', muted: '#ffe4d1' },
+            cream: '#fffbf7'
+          },
+          fontFamily: {
+            display: ['Fredoka', 'system-ui', 'sans-serif'],
+            body: ['Inter', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
   <!-- KaTeX CSS & JS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initApp()"></script>
   <style>
     .math-content { font-size: 1.05rem; line-height: 1.7; }
+    .amc-page-title {
+      font-family: var(--mfk-font-display, Fredoka, system-ui, sans-serif);
+    }
+    #searchInput:focus, #categorySelect:focus, #difficultySelect:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 125, 38, 0.35);
+      border-color: #ff9a55;
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
+<body class="mfk-page font-body antialiased min-h-screen flex flex-col">
 
-  <!-- Header -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div>
-        <h1 class="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-          <span>📐</span> Olympiad<span class="text-indigo-600">Forge</span>
-        </h1>
-        <p class="text-xs text-slate-500">7,500+ Competition Math Problems & Step-by-Step Proofs</p>
-      </div>
-      <div class="flex items-center gap-3">
-        <span id="counter" class="text-xs font-semibold px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-full border border-indigo-100">Loading problems...</span>
-      </div>
-    </div>
-  </header>
+  <mfk-header active="learn"></mfk-header>
 
-  <!-- Controls Bar -->
-  <main class="max-w-6xl mx-auto px-4 py-6">
-    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-      <!-- Search Input -->
-      <div class="md:col-span-2">
-        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Search Keywords / Concepts</label>
-        <input id="searchInput" type="text" placeholder="e.g. prime factor, circle, triangle, modular..." class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+  <main class="mfk-activity-main flex-1 w-full">
+    <div class="max-w-6xl mx-auto px-4 py-6">
+      <!-- Activity intro (replaces old sticky OlympiadForge site header) -->
+      <div class="mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wider text-coral-dark mb-1">Math · Practice bank</p>
+          <h1 class="amc-page-title text-2xl md:text-3xl font-semibold text-slate-800 tracking-tight flex items-center gap-2">
+            <span aria-hidden="true">📐</span> Olympiad Forge
+          </h1>
+          <p class="text-sm text-slate-500 mt-1">Competition-style problems &amp; step-by-step proofs — warm-ups through contest pace.</p>
+        </div>
+        <span id="counter" class="text-xs font-semibold px-3 py-1.5 bg-coral-soft text-coral-dark rounded-full border border-[#fcd9b8] self-start md:self-auto">Loading problems...</span>
       </div>
 
-      <!-- Category Filter -->
-      <div>
-        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Pillar</label>
-        <select id="categorySelect" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
-          <option value="ALL">All Pillars</option>
-          <option value="Algebra">Algebra</option>
-          <option value="Geometry">Geometry</option>
-          <option value="Number Theory">Number Theory</option>
-          <option value="Counting & Probability">Counting & Probability</option>
-          <option value="Prealgebra">Prealgebra</option>
-          <option value="Precalculus">Precalculus</option>
-        </select>
+      <!-- Controls Bar -->
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="md:col-span-2">
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Search Keywords / Concepts</label>
+          <input id="searchInput" type="text" placeholder="e.g. prime factor, circle, triangle, modular..." class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none bg-cream" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Pillar</label>
+          <select id="categorySelect" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none bg-white">
+            <option value="ALL">All Pillars</option>
+            <option value="Algebra">Algebra</option>
+            <option value="Geometry">Geometry</option>
+            <option value="Number Theory">Number Theory</option>
+            <option value="Counting & Probability">Counting & Probability</option>
+            <option value="Prealgebra">Prealgebra</option>
+            <option value="Precalculus">Precalculus</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Difficulty</label>
+          <select id="difficultySelect" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none bg-white">
+            <option value="ALL">All Tiers</option>
+            <option value="Easy">Easy (Levels 1-2)</option>
+            <option value="Medium">Medium (Levels 3-4)</option>
+            <option value="Hard">Hard (Level 5 / AIME)</option>
+          </select>
+        </div>
       </div>
 
-      <!-- Difficulty Filter -->
-      <div>
-        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Difficulty</label>
-        <select id="difficultySelect" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
-          <option value="ALL">All Tiers</option>
-          <option value="Easy">Easy (Levels 1-2)</option>
-          <option value="Medium">Medium (Levels 3-4)</option>
-          <option value="Hard">Hard (Level 5 / AIME)</option>
-        </select>
+      <div id="problemsContainer" class="space-y-4">
+        <div class="text-center py-12 text-slate-400">Loading dataset...</div>
       </div>
-    </div>
-
-    <!-- Problems List Container -->
-    <div id="problemsContainer" class="space-y-4">
-      <div class="text-center py-12 text-slate-400">Loading dataset...</div>
     </div>
   </main>
 
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
   <script>
     let allProblems = [];
 
@@ -89,7 +118,6 @@
           </div>`;
       }
 
-      // Event listeners
       document.getElementById('searchInput').addEventListener('input', renderProblems);
       document.getElementById('categorySelect').addEventListener('change', renderProblems);
       document.getElementById('difficultySelect').addEventListener('change', renderProblems);
@@ -108,7 +136,7 @@
       });
 
       const container = document.getElementById('problemsContainer');
-      const previewSet = filtered.slice(0, 30); // Render first 30 for snappy DOM performance
+      const previewSet = filtered.slice(0, 30);
 
       document.getElementById('counter').innerText = `Showing ${filtered.length.toLocaleString()} of ${allProblems.length.toLocaleString()} Problems`;
 
@@ -123,26 +151,24 @@
                           'bg-rose-50 text-rose-700 border-rose-200';
 
         return `
-          <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:border-slate-300 transition">
+          <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:border-[#fcd9b8] transition">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
               <div class="flex items-center gap-2">
                 <span class="text-xs font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">${p.id}</span>
-                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700">${p.category}</span>
+                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-coral-soft text-coral-dark">${p.category}</span>
                 <span class="text-xs font-semibold px-2 py-0.5 rounded border ${diffBadge}">${p.difficulty} (${p.level})</span>
               </div>
             </div>
 
-            <!-- Problem Statement -->
             <div class="math-content text-slate-800 mb-4 whitespace-pre-line">
               ${escapeHtml(p.problem_text)}
             </div>
 
-            <!-- Solution Reveal Accordion -->
             <details class="group mt-4 pt-3 border-t border-slate-100">
-              <summary class="cursor-pointer text-xs font-bold tracking-wide uppercase text-indigo-600 hover:text-indigo-700 select-none flex items-center gap-1">
+              <summary class="cursor-pointer text-xs font-bold tracking-wide uppercase text-coral-dark hover:text-coral select-none flex items-center gap-1">
                 <span>View Full Solution & Proof</span>
               </summary>
-              <div class="mt-3 p-4 bg-slate-50 border border-slate-100 rounded-lg text-sm text-slate-700 math-content whitespace-pre-line">
+              <div class="mt-3 p-4 bg-cream border border-[#fcd9b8] rounded-lg text-sm text-slate-700 math-content whitespace-pre-line">
                 ${escapeHtml(p.solution)}
               </div>
             </details>
@@ -150,7 +176,6 @@
         `;
       }).join('');
 
-      // Auto-render LaTeX with KaTeX
       renderMathInElement(container, {
         delimiters: [
           { left: '$$', right: '$$', display: true },
