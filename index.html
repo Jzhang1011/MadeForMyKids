@@ -64,32 +64,31 @@
           <p class="section-lead">Pick a path and practice a little each day. Progress compounds faster than marathon weekends.</p>
           <div class="mfk-grid-cards">
             <mfk-activity-card
-              icon="⌨️"
+              skill="typing"
               title="Fox Typing Adventure"
               blurb="Guided typing practice with a friendly fox guide — accuracy, rhythm, and confidence for young fingers on the keyboard."
+              difficulty="beginner"
+              duration="10 min"
               href="/typing.html"
-              tags="Typing, Ages 6+, Keyboard skills"
+              cta-label="Start"
             ></mfk-activity-card>
             <mfk-activity-card
-              icon="🧮"
+              skill="math"
               title="Olympiad Forge"
               blurb="AMC-style math problem bank to stretch problem-solving. Warm-ups through contest-level challenges for curious minds."
+              difficulty="challenge"
+              duration="15+ min"
               href="/amc/"
-              tags="Math, AMC, Problem solving"
+              cta-label="Start"
             ></mfk-activity-card>
             <mfk-activity-card
-              icon="pen"
-              title="Writing Gym"
-              blurb="Build your writing muscles one workout at a time "
-              href="writing/workout.html"
-              tags="Writing"
-            ></mfk-activity-card>
-             <mfk-activity-card
-              icon="🌱"
-              title="Movie"
-              blurb="Movie as a learning tool. Live other's life and learn from it"
-              href="movie/index.html"
-              tags="movie"
+              skill="stem"
+              title="More subjects soon"
+              blurb="Reading fluency, science labs, and other focus areas are on the way. Tell us what your learner needs most."
+              difficulty="beginner"
+              duration="Coming soon"
+              href="/#coming-soon"
+              cta-label="Peek"
             ></mfk-activity-card>
           </div>
         </section>
@@ -105,8 +104,14 @@
 
         <section id="practice-together" aria-labelledby="parent-heading">
           <h2 id="parent-heading" class="mfk-sr-only">For parents</h2>
-          <mfk-parent-note title="Practice together, then step back">
-            Sit with your child for the first few sessions so the tool feels safe and clear. After that, cheer from the doorway: short daily reps beat long guilt-driven weekends. Celebrate effort (“you stuck with the hard one”) more than scores. MadeForMyKids is a family practice space — not a gradebook and not a product pitch.
+          <mfk-parent-note
+            title="Practice together, then step back"
+            summary="Short daily reps beat long guilt-driven weekends."
+            skill="Family practice"
+            minutes="10–15 min"
+            next="Try Fox Typing Adventure, then peek at Olympiad Forge when curiosity shows up."
+          >
+            Sit with your child for the first few sessions so the tool feels safe and clear. After that, cheer from the doorway. Celebrate effort (“you stuck with the hard one”) more than scores. MadeForMyKids is a family practice space — not a gradebook and not a product pitch.
           </mfk-parent-note>
         </section>
 
@@ -129,6 +134,8 @@
   <script src="/components/footer.js"></script>
   <script src="/components/breadcrumbs.js"></script>
   <script src="/components/pageHero.js"></script>
+  <script src="/components/skillBadge.js"></script>
+  <script src="/components/difficultyBadge.js"></script>
   <script src="/components/activityCard.js"></script>
   <script src="/components/parentNote.js"></script>
   <script src="/components/feedback.js"></script>
