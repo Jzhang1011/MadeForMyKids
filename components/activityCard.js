@@ -3,6 +3,7 @@
  * Attributes:
  *   icon (optional override), skill, title, blurb, difficulty, duration, href, cta-label
  * Legacy: tags (comma-separated) — shown as soft tags when skill/difficulty absent
+ * Elevated: top accent gradient bar, larger icon well, hover lift + coral glow, min-height
  */
 (function () {
   if (customElements.get("mfk-activity-card")) return;
@@ -86,22 +87,46 @@
       z-index: 0;
     }
     a.card {
+      --accent: var(--mfk-coral, #ff7d26);
+      --accent-soft: var(--mfk-coral-soft, #fff0e6);
       display: flex;
       flex-direction: column;
       height: 100%;
+      min-height: 280px;
       text-decoration: none;
       color: inherit;
       background: var(--mfk-white, #fff);
       border: 1px solid var(--mfk-border, #e2e8f0);
-      border-radius: var(--mfk-radius, 12px);
-      padding: 1.35rem;
+      border-radius: var(--mfk-radius-lg, 20px);
+      padding: 0;
+      overflow: hidden;
       box-shadow: var(--mfk-shadow, 0 4px 14px rgba(30,41,59,0.08));
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      position: relative;
+    }
+    /* Top accent gradient bar by skill color */
+    a.card::before {
+      content: "";
+      display: block;
+      height: 4px;
+      width: 100%;
+      flex-shrink: 0;
+      background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 55%, white));
+    }
+    .body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 1.35rem 1.4rem 1.4rem;
+      min-height: 0;
     }
     a.card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--mfk-shadow-lg, 0 12px 32px rgba(30,41,59,0.12));
-      border-color: var(--mfk-border-warm, #fcd9b8);
+      transform: translateY(-5px);
+      box-shadow:
+        var(--mfk-shadow-xl, 0 20px 48px rgba(30,41,59,0.14)),
+        0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent),
+        0 8px 28px color-mix(in srgb, var(--accent) 22%, transparent);
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--mfk-border-warm, #fcd9b8));
     }
     a.card:focus-visible {
       outline: 3px solid var(--mfk-coral, #ff7d26);
@@ -110,17 +135,21 @@
     .top {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
+      gap: 0.65rem;
+      margin-bottom: 0.9rem;
       flex-wrap: wrap;
     }
-    .icon {
-      width: 40px; height: 40px;
-      border-radius: 12px;
-      background: var(--mfk-coral-soft, #fff0e6);
+    .icon-well {
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, var(--accent-soft) 0%, color-mix(in srgb, var(--accent-soft) 70%, white) 100%);
       display: grid; place-items: center;
-      font-size: 1.25rem;
+      font-size: 1.45rem;
       flex-shrink: 0;
+      box-shadow:
+        0 2px 8px color-mix(in srgb, var(--accent) 18%, transparent),
+        0 1px 0 rgba(255,255,255,0.8) inset;
+      border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
     }
     .pill {
       display: inline-flex;
@@ -128,29 +157,30 @@
       gap: 0.3rem;
       font-size: 0.75rem;
       font-weight: 700;
-      padding: 0.25rem 0.65rem;
+      padding: 0.28rem 0.7rem;
       border-radius: 9999px;
     }
     h3 {
       font-family: var(--mfk-font-display, Fredoka, system-ui, sans-serif);
-      font-size: 1.2rem;
+      font-size: clamp(1.2rem, 2.2vw, 1.35rem);
       font-weight: 600;
-      margin: 0 0 0.45rem;
+      margin: 0 0 0.5rem;
       color: var(--mfk-slate, #1e293b);
+      letter-spacing: -0.015em;
+      line-height: 1.25;
     }
     .blurb {
       margin: 0;
       flex: 1;
       font-size: 0.95rem;
       color: var(--mfk-slate-soft, #64748b);
-      line-height: 1.5;
+      line-height: 1.55;
     }
     .meta-row {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
       gap: 0.5rem;
-      margin-top: 1rem;
+      margin-top: 1.1rem;
     }
     .duration {
       font-size: 0.8rem;
@@ -172,14 +202,16 @@
       border-radius: 9999px;
     }
     .cta {
-      margin-top: 1rem;
+      margin-top: 1.1rem;
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
       font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--mfk-coral, #ff7d26);
+      font-size: 0.92rem;
+      color: var(--accent, var(--mfk-coral, #ff7d26));
+      transition: gap 0.15s ease;
     }
+    a.card:hover .cta { gap: 0.55rem; }
   `;
 
   class MfkActivityCard extends HTMLElement {
@@ -228,11 +260,17 @@
         .filter(Boolean);
       const useLegacyTags = tags.length && !sm && !dm;
 
+      const accent = (sm && sm.fg) || "var(--mfk-coral, #ff7d26)";
+      const accentSoft = (sm && sm.bg) || "var(--mfk-coral-soft, #fff0e6)";
+
       let topHtml = "";
       if (sm) {
-        topHtml = `<span class="pill" style="background:${sm.bg};color:${sm.fg}" aria-label="Skill: ${esc(sm.label)}"><span aria-hidden="true">${esc(icon)}</span> ${esc(sm.label)}</span>`;
-      } else if (iconOverride) {
-        topHtml = `<div class="icon" aria-hidden="true">${icon}</div>`;
+        topHtml = `
+          <div class="icon-well" aria-hidden="true">${icon}</div>
+          <span class="pill" style="background:${sm.bg};color:${sm.fg}" aria-label="Skill: ${esc(sm.label)}">${esc(sm.label)}</span>
+        `;
+      } else {
+        topHtml = `<div class="icon-well" aria-hidden="true">${icon}</div>`;
       }
 
       let metaHtml = "";
@@ -255,13 +293,15 @@
 
       this.shadowRoot.innerHTML = `
         <style>${STYLES}</style>
-        <a class="card" href="${esc(href)}">
-          ${topHtml ? `<div class="top">${topHtml}</div>` : `<div class="icon" aria-hidden="true">${icon}</div>`}
-          <h3>${esc(title)}</h3>
-          ${blurb ? `<p class="blurb">${esc(blurb)}</p>` : ""}
-          ${metaHtml}
-          ${tagsHtml}
-          <span class="cta">${esc(cta)} <span aria-hidden="true">→</span></span>
+        <a class="card" href="${esc(href)}" style="--accent:${accent};--accent-soft:${accentSoft}">
+          <div class="body">
+            <div class="top">${topHtml}</div>
+            <h3>${esc(title)}</h3>
+            ${blurb ? `<p class="blurb">${esc(blurb)}</p>` : ""}
+            ${metaHtml}
+            ${tagsHtml}
+            <span class="cta">${esc(cta)} <span aria-hidden="true">→</span></span>
+          </div>
         </a>
       `;
     }

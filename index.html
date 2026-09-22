@@ -8,27 +8,22 @@
   <link rel="canonical" href="https://www.madeformykids.com/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/components/theme.css" />
   <style>
-    .hub-intro {
-      margin: 1.25rem 0 0;
-      color: var(--mfk-slate-soft);
-      max-width: 40rem;
+    .hub-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 3.25rem;
     }
-    .section-title {
-      font-family: var(--mfk-font-display);
-      font-size: 1.5rem;
-      margin: 0 0 0.35rem;
-      color: var(--mfk-slate);
+    .hub-band--hero {
+      padding-top: 0.5rem;
+      padding-bottom: 0.25rem;
     }
-    .section-lead {
-      margin: 0 0 1.25rem;
-      color: var(--mfk-slate-soft);
-      max-width: 36rem;
+    .hub-band--activities .mfk-panel {
+      margin-top: 0;
     }
-    .stack { display: flex; flex-direction: column; gap: 2.5rem; }
-    .crumbs { margin-bottom: 1rem; }
+    .crumbs { margin-bottom: 1.25rem; }
   </style>
 </head>
 <body class="mfk-page">
@@ -48,70 +43,76 @@
         ></mfk-breadcrumbs>
       </div>
 
-      <div class="stack">
-        <mfk-page-hero
-          badge="Family learning hub"
-          title="MadeForMyKids"
-          subtitle="Help kids thrive in the subjects they need — short, joyful practice that builds real skill. Built for our family — and open to every family who wants the same."
-          cta-label="Start Typing Adventure"
-          cta-href="/typing.html"
-          cta2-label="Try Olympiad Forge"
-          cta2-href="/amc/"
-        ></mfk-page-hero>
+      <div class="hub-stack">
+        <section class="hub-band hub-band--hero" aria-label="Welcome">
+          <mfk-page-hero
+            badge="Family learning hub"
+            title="MadeForMyKids"
+            subtitle="Help kids thrive in the subjects they need — short, joyful practice that builds real skill. Built for our family — and open to every family who wants the same."
+            cta-label="Start Typing Adventure"
+            cta-href="/typing.html"
+            cta2-label="Try Writing Gym"
+            cta2-href="/writing/workout.html"
+          ></mfk-page-hero>
+        </section>
 
-        <section aria-labelledby="activities-heading">
-          <h2 id="activities-heading" class="section-title">Activities ready now</h2>
-          <p class="section-lead">Pick a path and practice a little each day. Progress compounds faster than marathon weekends.</p>
-          <div class="mfk-grid-cards">
-            <mfk-activity-card
-              skill="typing"
-              title="Fox Typing Adventure"
-              blurb="Guided typing practice with a friendly fox guide — accuracy, rhythm, and confidence for young fingers on the keyboard."
-              difficulty="beginner"
-              duration="10 min"
-              href="/typing.html"
-              cta-label="Start"
-            ></mfk-activity-card>
-            <mfk-activity-card
-              skill="writing"
-              title="Writing Gym"
-              blurb="Short writing reps that build real sentence muscles — story builder for younger writers, writer's studio for older ones. No ghostwriting."
-              difficulty="intermediate"
-              duration="8–15 min"
-              href="/writing/workout.html"
-              cta-label="Start"
-            ></mfk-activity-card>
-            <mfk-activity-card
-              skill="math"
-              title="Olympiad Forge"
-              blurb="AMC-style math problem bank to stretch problem-solving. Warm-ups through contest-level challenges for curious minds."
-              difficulty="challenge"
-              duration="15+ min"
-              href="/amc/"
-              cta-label="Start"
-            ></mfk-activity-card>
-            <mfk-activity-card
-              skill="movie"
-              title="Watch to Grow"
-              blurb="Movie learning for families — use films as a learning tool together, not another review site."
-              difficulty="beginner"
-              duration="Family time"
-              href="/movie/"
-              cta-label="Start"
-            ></mfk-activity-card>
+        <section class="hub-band hub-band--activities" aria-labelledby="activities-heading">
+          <div class="mfk-panel">
+            <p class="mfk-eyebrow">Ready to play</p>
+            <h2 id="activities-heading" class="mfk-section-title">Activities ready now</h2>
+            <p class="mfk-section-lead">Pick a path and practice a little each day. Progress compounds faster than marathon weekends.</p>
+            <div class="mfk-grid-cards">
+              <mfk-activity-card
+                skill="typing"
+                title="Fox Typing Adventure"
+                blurb="Guided typing practice with a friendly fox guide — accuracy, rhythm, and confidence for young fingers on the keyboard."
+                difficulty="beginner"
+                duration="10 min"
+                href="/typing.html"
+                cta-label="Start"
+              ></mfk-activity-card>
+              <mfk-activity-card
+                skill="writing"
+                title="Writing Gym"
+                blurb="Short writing reps that build real sentence muscles — story builder for younger writers, writer's studio for older ones. No ghostwriting."
+                difficulty="intermediate"
+                duration="8–15 min"
+                href="/writing/workout.html"
+                cta-label="Start"
+              ></mfk-activity-card>
+              <mfk-activity-card
+                skill="math"
+                title="Olympiad Forge"
+                blurb="AMC-style math problem bank to stretch problem-solving. Warm-ups through contest-level challenges for curious minds."
+                difficulty="challenge"
+                duration="15+ min"
+                href="/amc/"
+                cta-label="Start"
+              ></mfk-activity-card>
+              <mfk-activity-card
+                skill="movie"
+                title="Watch to Grow"
+                blurb="Movie learning for families — use films as a learning tool together, not another review site."
+                difficulty="beginner"
+                duration="Family time"
+                href="/movie/"
+                cta-label="Start"
+              ></mfk-activity-card>
+            </div>
           </div>
         </section>
 
-        <section id="coming-soon" aria-labelledby="soon-heading">
-          <h2 id="soon-heading" class="section-title">Coming soon</h2>
-          <p class="section-lead">We add subjects when they help our kids — then share what works.</p>
+        <section class="hub-band" id="coming-soon" aria-labelledby="soon-heading">
+          <p class="mfk-eyebrow">On the roadmap</p>
+          <h2 id="soon-heading" class="mfk-section-title">Coming soon</h2>
+          <p class="mfk-section-lead">We add subjects when they help our kids — then share what works.</p>
           <div class="mfk-coming-soon">
             <h3>Mac skills, STEM labs &amp; calm focus tools</h3>
             <p>Next up: Mac practice paths, hands-on science explainers, and gentle focus timers. No rush — quality over a crowded menu.</p>
           </div>
         </section>
 
-        <section id="practice-together" aria-labelledby="parent-heading">
+        <section class="hub-band" id="practice-together" aria-labelledby="parent-heading">
           <h2 id="parent-heading" class="mfk-sr-only">For parents</h2>
           <mfk-parent-note
             title="Practice together, then step back"
@@ -124,9 +125,10 @@
           </mfk-parent-note>
         </section>
 
-        <section aria-labelledby="feedback-heading">
-          <h2 id="feedback-heading" class="section-title">Quick feedback</h2>
-          <p class="section-lead">Your note stays on this device and helps us decide what to build next.</p>
+        <section class="hub-band" aria-labelledby="feedback-heading">
+          <p class="mfk-eyebrow">Tell us</p>
+          <h2 id="feedback-heading" class="mfk-section-title">Quick feedback</h2>
+          <p class="mfk-section-lead">Your note stays on this device and helps us decide what to build next.</p>
           <mfk-feedback
             storage-key="mfk-feedback-home"
             prompt="Is this hub clear for your family?"
