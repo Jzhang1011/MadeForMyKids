@@ -73,6 +73,12 @@
         if (item.title) card.setAttribute("title", item.title);
         if (item.blurb) card.setAttribute("blurb", item.blurb);
         if (item.href) card.setAttribute("href", item.href);
+        if (item.skill) card.setAttribute("skill", item.skill);
+        if (item.difficulty) card.setAttribute("difficulty", item.difficulty);
+        if (item.duration) card.setAttribute("duration", item.duration);
+        if (item.ctaLabel || item["cta-label"]) {
+          card.setAttribute("cta-label", item.ctaLabel || item["cta-label"]);
+        }
         if (item.tags) {
           card.setAttribute(
             "tags",

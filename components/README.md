@@ -4,7 +4,9 @@ Warm, kid-friendly UI chrome for [www.madeformykids.com](https://www.madeformyki
 Pattern mirrors WealthLanding (`/components/*.js`), with an `mfk-` prefix and coral/slate brand tokens.
 
 **Brand:** MadeForMyKids (never BuildForMyKids).  
-**Skills:** Typing, Mac, Math, STEM.  
+**Skills (locked):** `typing` | `mac` | `math` | `stem` → ⌨️ Typing, 💻 Mac, 🧮 Math, 🔬 STEM.  
+**Difficulty (locked):** `beginner` | `intermediate` | `advanced` | `challenge`  
+→ labels **Beginner, Intermediate, Advanced, Challenge** (do **not** use Easy/Medium/Hard as the primary site vocabulary).  
 **Main nav:** Learn, Practice, Games, Parents.
 
 ## Approach
@@ -90,6 +92,31 @@ Category hubs (`/learn/`, `/practice/`, `/games/`, `/parents/`, …) may 404 unt
 
 `load.js` injects `theme.css` plus core chrome (`header`, `footer`, `button`, `toast`, `modal`) and any listed extras.
 
+
+## Activity pages (required chrome)
+
+Every activity page (Typing, AMC, future Mac/STEM games) **must** include:
+
+1. Fredoka + Inter fonts
+2. `/components/theme.css`
+3. `<mfk-header active="…">` (use a main-nav id: `learn` | `practice` | `games` | `parents`)
+4. `<mfk-footer>`
+5. Scripts: `/components/header.js` + `/components/footer.js`
+
+**Do not invent page-local site headers** (no competing brand bars like “OlympiadForge” or “Fox’s Adventure” as site identity). Keep unique activity UIs, but demote game-only chrome to a toolbar / intro inside `<main>`.
+
+For full-bleed games that need the remaining viewport:
+
+```html
+<body class="mfk-page mfk-activity-shell mfk-activity-fixed">
+  <mfk-header active="practice"></mfk-header>
+  <main class="mfk-activity-main">…game…</main>
+  <mfk-footer></mfk-footer>
+</body>
+```
+
+Utility classes (in `theme.css`): `.mfk-activity-shell`, `.mfk-activity-main`, `.mfk-activity-fixed`.
+
 ## Header behavior (`<mfk-header>`)
 
 | Attribute | Values |
@@ -145,18 +172,18 @@ Tailwind via CDN is optional. Components ship scoped Shadow DOM CSS and look goo
 | Element | Key attributes |
 |---------|----------------|
 | `<mfk-page-hero>` | `title`, `subtitle`, `badge`, `cta-label`, `cta-href`, `cta2-label`, `cta2-href` |
-| `<mfk-activity-card>` | `icon`, `title`, `blurb`, `href`, `tags` (comma-separated) |
-| `<mfk-lesson-card>` | `title`, `duration`, `skill`, `href`, `progress` (0–100) |
+| `<mfk-activity-card>` | `skill`, `title`, `blurb`, `difficulty`, `duration`, `href`, `cta-label` (default `Start`); optional `icon` override; legacy `tags` |
+| `<mfk-lesson-card>` | `skill`, `title`, `blurb`, `duration`, `href`, `cta-label` (default `Learn`); optional `icon`, `progress` (0–100) |
 | `<mfk-related-activities>` | `title`, `columns="3"`, optional `data-items` JSON; or nest `<mfk-activity-card>` children |
-| `<mfk-parent-note>` | `title`, `body` — or default slot for HTML body |
+| `<mfk-parent-note>` | `title`, `summary`, `skill`, `minutes`, `next`, `body` — or default slot for HTML body |
 
 ### Indicators & controls
 
 | Element | Key attributes / API |
 |---------|----------------------|
 | `<mfk-progress-bar>` | `value`, `label`, `show-percent` |
-| `<mfk-skill-badge>` | `skill`, `variant` = `typing` \| `math` \| `reading` \| `science` \| `default` |
-| `<mfk-difficulty-badge>` | `level` = `Easy` \| `Medium` \| `Hard`, `ages` |
+| `<mfk-skill-badge>` | `skill` = `typing` \| `mac` \| `math` \| `stem` (display-name aliases ok); optional `icon` override |
+| `<mfk-difficulty-badge>` | `level` = `beginner` \| `intermediate` \| `advanced` \| `challenge` (case-insensitive aliases ok, including legacy Easy/Medium/Hard); optional `ages` |
 | `<mfk-button>` | `variant` = `primary` \| `secondary` \| `ghost`, `size` = `sm` \| `md` \| `lg`, `href`, `disabled` |
 
 ### Overlays & helpers
@@ -178,6 +205,22 @@ MFK.toast.show({ message: 'Lesson saved!', type: 'success' }); // success|error|
 <mfk-feedback storage-key="mfk-fb-typing" prompt="Was this practice helpful?"></mfk-feedback>
 ```
 
+### Feedback: site thumbs vs activity states
+
+| Element | Purpose |
+|---------|---------|
+| `<mfk-feedback>` (`feedback.js`) | Site thumbs + optional comment (localStorage). Use on hub / parent pages. |
+| `<mfk-activity-feedback>` (`activityFeedback.js`) | In-activity states: **Correct** / **Incorrect** / **Completed** / **Hint**. |
+
+```html
+<mfk-activity-feedback state="correct" message="Nice — keep going!"></mfk-activity-feedback>
+<script src="/components/activityFeedback.js"></script>
+<script>
+  MFK.activityFeedback.show({ state: 'hint', message: 'Try the home row first.' });
+</script>
+```
+
+
 ```html
 <mfk-seo
   title="MadeForMyKids — practice that helps kids thrive"
@@ -192,6 +235,90 @@ MFK.seo.apply({
   description: '…',
   canonical: 'https://www.madeformykids.com/typing.html',
 });
+```
+
+
+## Difficulty & skill vocabulary
+
+Site-wide enums. Cards and badges should only **display** the locked labels.
+
+### Difficulty
+
+| Value | Label | Notes |
+|-------|-------|-------|
+| `beginner` | Beginner | Legacy alias: `easy` |
+| `intermediate` | Intermediate | Legacy alias: `medium` |
+| `advanced` | Advanced | Legacy alias: `hard` |
+| `challenge` | Challenge | Stretch / contest pace |
+
+Helpers (after `difficultyBadge.js` loads):
+
+```js
+MFK.difficulty.normalize("Easy"); // "beginner"
+MFK.difficulty.label("challenge"); // "Challenge"
+```
+
+```html
+<mfk-difficulty-badge level="beginner" ages="6+"></mfk-difficulty-badge>
+<mfk-difficulty-badge level="challenge"></mfk-difficulty-badge>
+```
+
+### Skills
+
+| Value | Label | Default icon |
+|-------|-------|----------------|
+| `typing` | Typing | ⌨️ |
+| `mac` | Mac | 💻 |
+| `math` | Math | 🧮 |
+| `stem` | STEM | 🔬 |
+
+Helpers (after `skillBadge.js` loads):
+
+```js
+MFK.skill.normalize("AMC"); // "math"
+MFK.skill.label("mac");     // "Mac"
+MFK.skill.icon("stem");     // "🔬"
+```
+
+```html
+<mfk-skill-badge skill="typing"></mfk-skill-badge>
+<mfk-skill-badge skill="mac" icon="🍏"></mfk-skill-badge>
+```
+
+Theme tokens in `theme.css`: `--mfk-beginner` / `--mfk-beginner-bg` (and intermediate, advanced, challenge) plus `--mfk-skill-typing` / `--mfk-skill-typing-bg` (and mac, math, stem).
+
+### Activity card
+
+Layout: skill badge → title → blurb → difficulty + duration row → CTA (default **Start**).
+
+```html
+<mfk-activity-card
+  skill="typing"
+  title="Fox Typing Adventure"
+  blurb="Guided typing practice with a friendly fox."
+  difficulty="beginner"
+  duration="10 min"
+  href="/typing.html"
+  cta-label="Start"
+></mfk-activity-card>
+```
+
+Optional `icon` overrides the skill’s default glyph. Legacy `tags="Typing, Ages 6+"` still renders as soft pills **only when** `skill` and `difficulty` are omitted (home-page backward compat).
+
+### Lesson card
+
+Layout: skill badge → title → blurb → duration + CTA (default **Learn**) → optional progress.
+
+```html
+<mfk-lesson-card
+  skill="math"
+  title="Contest warm-up set"
+  blurb="A handful of AMC-style problems."
+  duration="12 min"
+  href="/amc/"
+  progress="40"
+  cta-label="Learn"
+></mfk-lesson-card>
 ```
 
 ## Accessibility
@@ -214,7 +341,8 @@ index.html    →  repo/index.html   (hub)
 learn/ practice/ games/ parents/ search/  →  matching stubs (optional)
 ```
 
-Do **not** overwrite `typing.html` or `amc/` unless you only need hub links (already point to `/typing.html` and `/amc/`).  
+This cumulative pack includes unified `typing.html` and `amc/index.html` (shared MFK header/footer).  
+**Do not** bundle `amc_master_dataset.json` in the archive — it lives on GitHub next to `amc/index.html` and is fetched at runtime.  
 No kids' full names on public pages.
 
 ## Kids & mission

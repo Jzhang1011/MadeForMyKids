@@ -31,20 +31,27 @@
   --mfk-info: #2563eb;
   --mfk-info-soft: #dbeafe;
 
-  /* Difficulty */
-  --mfk-easy: #16a34a;
-  --mfk-easy-bg: #dcfce7;
-  --mfk-medium: #ca8a04;
-  --mfk-medium-bg: #fef9c3;
-  --mfk-hard: #dc2626;
-  --mfk-hard-bg: #fee2e2;
+  /* Difficulty — site-wide: beginner | intermediate | advanced | challenge */
+  --mfk-beginner: #15803d;
+  --mfk-beginner-bg: #dcfce7;
+  --mfk-intermediate: #a16207;
+  --mfk-intermediate-bg: #fef9c3;
+  --mfk-advanced: #c2410c;
+  --mfk-advanced-bg: #ffedd5;
+  --mfk-challenge: #b91c1c;
+  --mfk-challenge-bg: #fee2e2;
 
-  /* Skills */
-  --mfk-skill-typing: #ff7d26;
+  /* Skills — locked: typing | mac | math | stem */
+  --mfk-skill-typing: #e8661a;
+  --mfk-skill-typing-bg: #fff0e6;
+  --mfk-skill-mac: #be185d;
+  --mfk-skill-mac-bg: #fce7f3;
   --mfk-skill-math: #7c3aed;
-  --mfk-skill-reading: #0891b2;
-  --mfk-skill-science: #059669;
-  --mfk-skill-default: #64748b;
+  --mfk-skill-math-bg: #f3e8ff;
+  --mfk-skill-stem: #059669;
+  --mfk-skill-stem-bg: #d1fae5;
+  --mfk-skill-default: #475569;
+  --mfk-skill-default-bg: #f1f5f9;
 
   /* Layout */
   --mfk-radius: 12px;
@@ -202,4 +209,30 @@ mfk-feedback button:focus-visible {
   margin: 0;
   max-width: 36rem;
   margin-inline: auto;
+}
+
+
+/* Activity shells: site chrome + full-bleed activity (typing, games, etc.) */
+.mfk-activity-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mfk-activity-shell > mfk-header,
+.mfk-activity-shell > mfk-footer {
+  flex-shrink: 0;
+}
+
+.mfk-activity-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+/* Fixed-viewport activities (e.g. typing game) */
+.mfk-activity-shell.mfk-activity-fixed {
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
 }
