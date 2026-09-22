@@ -29,11 +29,26 @@ body {
 a { color: var(--teal); text-decoration: none; }
 a:hover { color: var(--navy); }
 .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
-header.site {
-  position: sticky; top: 0; z-index: 20;
-  background: rgba(251, 247, 239, 0.92);
-  backdrop-filter: blur(12px);
+/* Legacy site header/footer — unused when MFK chrome is present */
+header.site { display: none; }
+footer.site { display: none; }
+
+/* In-page Watch to Grow activity toolbar under shared MFK sticky header */
+.movie-activity-toolbar {
+  background: rgba(251, 247, 239, 0.96);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
+}
+.movie-toolbar-inner {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Space under sticky mfk-header */
+.mfk-page main.wrap,
+.mfk-page .mfk-activity-main {
+  padding-top: 8px;
+  padding-bottom: 48px;
 }
 .nav {
   display: flex; align-items: center; justify-content: space-between;
