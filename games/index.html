@@ -10,16 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/components/theme.css" />
   <style>
-    .stub-links { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
-    .stub-links a {
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      padding: 0.65rem 1.1rem; border-radius: 9999px;
-      background: var(--mfk-coral-soft); color: var(--mfk-coral-dark);
-      text-decoration: none; font-weight: 600; border: 1px solid var(--mfk-border-warm);
-    }
-    .stub-links a:hover { background: var(--mfk-coral-muted); }
-    .stub-links a:focus-visible { outline: 3px solid var(--mfk-coral); outline-offset: 2px; }
-    .note { margin-top: 1.25rem; color: var(--mfk-slate-soft); max-width: 36rem; }
+    .note { margin: 1.25rem 0 1rem; color: var(--mfk-slate-soft); max-width: 36rem; }
   </style>
 </head>
 <body class="mfk-page">
@@ -30,11 +21,36 @@
       title="Games"
       subtitle="Playful challenges that reinforce learning — coming soon."
     ></mfk-page-hero>
-    
-    <p class="note">While this hub is under construction, try activities that are ready today:</p>
-    <div class="stub-links">
-      <a href="/typing.html">⌨️ Fox Typing Adventure</a>
-      <a href="/amc/">🧮 Olympiad Forge (AMC)</a>
+
+    <p class="note">Sample game cards while this hub is under construction.</p>
+    <div class="mfk-grid-cards">
+      <mfk-activity-card
+        skill="typing"
+        title="Fox Typing Adventure"
+        blurb="Type with the fox — a game-like path through accuracy and rhythm."
+        difficulty="beginner"
+        duration="10 min"
+        href="/typing.html"
+        cta-label="Play"
+      ></mfk-activity-card>
+      <mfk-activity-card
+        skill="math"
+        title="Olympiad Forge"
+        blurb="Contest-style math puzzles that feel like a challenge, not a worksheet."
+        difficulty="challenge"
+        duration="15+ min"
+        href="/amc/"
+        cta-label="Play"
+      ></mfk-activity-card>
+      <mfk-activity-card
+        skill="stem"
+        title="STEM lab games"
+        blurb="Hands-on science and engineering play — coming soon."
+        difficulty="intermediate"
+        duration="Coming soon"
+        href="/games/"
+        cta-label="Coming soon"
+      ></mfk-activity-card>
     </div>
 
   </main>
@@ -42,6 +58,9 @@
   <script src="/components/header.js"></script>
   <script src="/components/footer.js"></script>
   <script src="/components/pageHero.js"></script>
+  <script src="/components/skillBadge.js"></script>
+  <script src="/components/difficultyBadge.js"></script>
+  <script src="/components/activityCard.js"></script>
   <script src="/components/toast.js"></script>
 </body>
 </html>

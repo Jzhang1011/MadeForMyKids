@@ -10,16 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/components/theme.css" />
   <style>
-    .stub-links { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
-    .stub-links a {
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      padding: 0.65rem 1.1rem; border-radius: 9999px;
-      background: var(--mfk-coral-soft); color: var(--mfk-coral-dark);
-      text-decoration: none; font-weight: 600; border: 1px solid var(--mfk-border-warm);
-    }
-    .stub-links a:hover { background: var(--mfk-coral-muted); }
-    .stub-links a:focus-visible { outline: 3px solid var(--mfk-coral); outline-offset: 2px; }
-    .note { margin-top: 1.25rem; color: var(--mfk-slate-soft); max-width: 36rem; }
+    .note { margin: 1.25rem 0 1rem; color: var(--mfk-slate-soft); max-width: 36rem; }
+    .lesson-stack { display: grid; gap: 0.85rem; max-width: 40rem; }
   </style>
 </head>
 <body class="mfk-page">
@@ -30,11 +22,34 @@
       title="Learn"
       subtitle="Guided lessons across Typing, Mac Skills, Math, and STEM — coming soon."
     ></mfk-page-hero>
-    
-    <p class="note">While this hub is under construction, try activities that are ready today:</p>
-    <div class="stub-links">
-      <a href="/typing.html">⌨️ Fox Typing Adventure</a>
-      <a href="/amc/">🧮 Olympiad Forge (AMC)</a>
+
+    <p class="note">Sample lesson tiles while this hub is under construction. Ready activities live on Typing Adventure and Olympiad Forge.</p>
+    <div class="lesson-stack">
+      <mfk-lesson-card
+        skill="typing"
+        title="Home-row warm-up"
+        blurb="Find the home keys and type short words with the fox."
+        duration="8 min"
+        href="/typing.html"
+        cta-label="Learn"
+      ></mfk-lesson-card>
+      <mfk-lesson-card
+        skill="math"
+        title="Contest warm-up set"
+        blurb="A handful of AMC-style problems to stretch thinking."
+        duration="12 min"
+        href="/amc/"
+        progress="40"
+        cta-label="Learn"
+      ></mfk-lesson-card>
+      <mfk-lesson-card
+        skill="mac"
+        title="Finder &amp; folders"
+        blurb="Name files, make folders, and keep a project tidy on a Mac."
+        duration="10 min"
+        href="/learn/"
+        cta-label="Coming soon"
+      ></mfk-lesson-card>
     </div>
 
   </main>
@@ -42,6 +57,8 @@
   <script src="/components/header.js"></script>
   <script src="/components/footer.js"></script>
   <script src="/components/pageHero.js"></script>
+  <script src="/components/skillBadge.js"></script>
+  <script src="/components/lessonCard.js"></script>
   <script src="/components/toast.js"></script>
 </body>
 </html>
