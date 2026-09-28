@@ -15,7 +15,6 @@
       { id: "learn", label: "Learn", href: "/learn/" },
       { id: "practice", label: "Practice", href: "/practice/" },
       { id: "games", label: "Games", href: "/games/" },
-      { id: "parents", label: "Parents", href: "/parents/" },
     ],
     footer: {
       learn: [

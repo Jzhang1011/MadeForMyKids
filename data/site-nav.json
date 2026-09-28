@@ -16,11 +16,6 @@
       "id": "games",
       "label": "Games",
       "href": "/games/"
-    },
-    {
-      "id": "parents",
-      "label": "Parents",
-      "href": "/parents/"
     }
   ],
   "footer": {
