@@ -65,7 +65,7 @@
     <mfk-page-hero
       badge="Search"
       title="Search"
-      subtitle="Find skills and activities. Full search is coming soon — here are starter matches."
+      subtitle="Find skills and activities across every topic."
     ></mfk-page-hero>
 
     <form class="search-box" id="search-form" role="search" aria-label="Search MadeForMyKids">
@@ -74,17 +74,8 @@
       <button type="submit">Search</button>
     </form>
 
-    <p class="hint">Showing placeholder results<span id="query-label"></span>.</p>
-    <ul class="results" id="results" aria-live="polite">
-      <li>
-        <a href="/typing.html">Fox Typing Adventure</a>
-        <p>Guided typing practice — accuracy, rhythm, and keyboard confidence.</p>
-      </li>
-      <li>
-        <a href="/amc/">Olympiad Forge (AMC Math)</a>
-        <p>AMC-style problem bank for curious problem-solvers.</p>
-      </li>
-    </ul>
+    <p class="hint" id="hint">Type above to search topics and lessons.</p>
+    <ul class="results" id="results" aria-live="polite"></ul>
   </main>
   <mfk-footer></mfk-footer>
   <script src="/components/header.js"></script>
@@ -96,15 +87,55 @@
       var params = new URLSearchParams(window.location.search);
       var q = (params.get("q") || "").trim();
       var input = document.getElementById("q");
-      var label = document.getElementById("query-label");
+      var hint = document.getElementById("hint");
+      var results = document.getElementById("results");
+      var form = document.getElementById("search-form");
       if (input) input.value = q;
-      if (label) label.textContent = q ? ' for “' + q + '”' : "";
-      document.getElementById("search-form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        var next = (input && input.value || "").trim();
-        var url = next ? "/search/?q=" + encodeURIComponent(next) : "/search/";
-        window.location.href = url;
-      });
+
+      function esc(s) {
+        return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      }
+
+      function matches(entry, tokens) {
+        var hay = (entry.title + " " + entry.blurb + " " + (entry.keywords || "")).toLowerCase();
+        return tokens.every(function (t) { return hay.indexOf(t) !== -1; });
+      }
+
+      function render(entries, query) {
+        if (!query) {
+          hint.textContent = "Showing all topics and lessons — type above to narrow it down.";
+        } else if (!entries.length) {
+          hint.textContent = "No matches for \u201c" + query + "\u201d. Try \u201ctyping\u201d, \u201cmoney\u201d, or \u201cmath\u201d.";
+        } else {
+          hint.textContent = entries.length + (entries.length === 1 ? " match" : " matches") + " for \u201c" + query + "\u201d.";
+        }
+        results.innerHTML = entries.map(function (e) {
+          return "<li><a href=\"" + esc(e.href) + "\">" + esc(e.title) + "</a>" +
+            (e.ages ? " <span style=\"font-size:0.8rem;color:#64748b;font-weight:600\">Ages " + esc(e.ages) + "</span>" : "") +
+            "<p>" + esc(e.blurb) + "</p></li>";
+        }).join("");
+      }
+
+      fetch("/data/search-index.json")
+        .then(function (r) { return r.json(); })
+        .then(function (index) {
+          var tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
+          var entries = tokens.length ? index.filter(function (e) { return matches(e, tokens); }) : index.slice();
+          render(entries, q);
+          form.addEventListener("submit", function (ev) {
+            ev.preventDefault();
+            var next = (input && input.value || "").trim();
+            var tokens2 = next.toLowerCase().split(/\s+/).filter(Boolean);
+            var entries2 = tokens2.length ? index.filter(function (e) { return matches(e, tokens2); }) : index.slice();
+            render(entries2, next);
+            var url = next ? "/search/?q=" + encodeURIComponent(next) : "/search/";
+            window.history.replaceState(null, "", url);
+          });
+        })
+        .catch(function () {
+          hint.textContent = "Search could not load. Try the topic list on the Learn page instead.";
+          results.innerHTML = "";
+        });
     })();
   </script>
 </body>
