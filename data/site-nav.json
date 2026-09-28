@@ -26,6 +26,10 @@
   "footer": {
     "learn": [
       {
+        "label": "Money Lab",
+        "href": "/money/"
+      },
+      {
         "label": "Typing",
         "href": "/typing.html"
       },

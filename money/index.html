@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Money Lab: Turn $100 Into a Money Machine — MadeForMyKids</title>
+  <meta name="description" content="You got $100. Candy now, or a money machine that pays you every year? Learn the 6 detective checks for picking dividend companies, then try the picker yourself." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+
+    /* ---------- story: candy vs machine ---------- */
+    .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; }
+    @media (max-width: 640px) { .choice-grid { grid-template-columns: 1fr; } }
+    .choice-card {
+      background: var(--mfk-white); border: 2px solid var(--mfk-border);
+      border-radius: 16px; padding: 1.25rem 1.35rem;
+    }
+    .choice-card.candy { border-color: #f9a8d4; background: #fff5f9; }
+    .choice-card.machine { border-color: var(--mfk-border-warm); background: #fffaf3; }
+    .choice-card h3 { margin: 0 0 0.4rem; font-size: 1.25rem; }
+    .choice-card p { margin: 0.35rem 0; color: var(--mfk-slate-mid); line-height: 1.55; font-size: 0.97rem; }
+    .choice-card .big-emoji { font-size: 2.2rem; }
+    .money-line { font-weight: 700; color: var(--mfk-slate); }
+
+    /* ---------- jar game ---------- */
+    .jar-game {
+      margin-top: 1rem; background: var(--mfk-white); border: 2px dashed var(--mfk-coral);
+      border-radius: 16px; padding: 1.25rem 1.35rem; text-align: center;
+    }
+    .jar-display {
+      font-family: Fredoka, system-ui, sans-serif; font-size: 2rem; font-weight: 700;
+      color: var(--mfk-coral-dark); margin: 0.5rem 0;
+    }
+    .jar-years { color: var(--mfk-slate-soft); font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .btn-collect {
+      font-family: Fredoka, system-ui, sans-serif; font-size: 1.05rem; font-weight: 600;
+      background: var(--mfk-coral); color: #fff; border: none; border-radius: 9999px;
+      padding: 0.7rem 1.6rem; cursor: pointer; transition: transform 0.08s ease, background 0.15s ease;
+    }
+    .btn-collect:hover:not(:disabled) { background: var(--mfk-coral-dark); transform: scale(1.04); }
+    .btn-collect:disabled { background: var(--mfk-slate-faint); cursor: default; }
+    .btn-reset-link { background: none; border: none; color: var(--mfk-slate-soft); text-decoration: underline; cursor: pointer; font-size: 0.85rem; margin-top: 0.6rem; }
+    .jar-finale { display: none; margin-top: 0.75rem; font-weight: 600; color: var(--mfk-success); line-height: 1.5; }
+
+    /* ---------- detective checks ---------- */
+    .checks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 1.25rem; }
+    .check-card {
+      background: var(--mfk-white); border: 1px solid var(--mfk-border);
+      border-left: 5px solid var(--mfk-coral); border-radius: 14px; padding: 1.15rem 1.25rem;
+    }
+    .check-card .check-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.9rem; height: 1.9rem; border-radius: 9999px;
+      background: var(--mfk-coral); color: #fff; font-family: Fredoka, system-ui, sans-serif;
+      font-weight: 700; font-size: 1rem; margin-right: 0.5rem; vertical-align: middle;
+    }
+    .check-card h3 { display: inline; font-size: 1.15rem; vertical-align: middle; }
+    .grownup {
+      display: inline-block; margin-top: 0.5rem; font-size: 0.75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em; color: var(--mfk-coral-dark);
+      background: var(--mfk-coral-soft); border-radius: 9999px; padding: 0.2rem 0.65rem;
+    }
+    .check-card p { margin: 0.55rem 0 0; color: var(--mfk-slate-mid); line-height: 1.6; font-size: 0.95rem; }
+    .check-card p strong { color: var(--mfk-slate); }
+
+    /* ---------- screener tool ---------- */
+    .tool-card { background: var(--mfk-white); border: 1px solid var(--mfk-border); border-radius: 18px; padding: 1.5rem; margin-top: 1.25rem; }
+    .pill {
+      display: inline-block; background: var(--mfk-coral-soft); color: var(--mfk-coral-dark);
+      font-weight: 700; font-size: 0.85rem; border-radius: 9999px; padding: 0.35rem 0.9rem;
+      border: 1px solid var(--mfk-border-warm);
+    }
+    .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.1rem 1.75rem; margin-top: 1.25rem; }
+    .filter-block label { display: block; font-weight: 700; color: var(--mfk-slate); font-size: 0.95rem; margin-bottom: 0.15rem; }
+    .filter-block .grownup-tag { font-size: 0.72rem; font-weight: 600; color: var(--mfk-slate-faint); text-transform: uppercase; letter-spacing: 0.05em; }
+    .filter-val { font-family: Fredoka, system-ui, sans-serif; font-weight: 700; color: var(--mfk-coral-dark); font-size: 1.05rem; }
+    input[type="range"].mfk-range { width: 100%; accent-color: var(--mfk-coral); height: 2rem; cursor: pointer; }
+    .match-line { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--mfk-border); display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+    .match-num { font-family: Fredoka, system-ui, sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--mfk-coral-dark); }
+    .btn-reset-filters {
+      margin-left: auto; background: none; border: 2px solid var(--mfk-border); color: var(--mfk-slate-mid);
+      border-radius: 9999px; padding: 0.45rem 1.1rem; font-weight: 600; cursor: pointer; font-size: 0.9rem;
+    }
+    .btn-reset-filters:hover { border-color: var(--mfk-coral); color: var(--mfk-coral-dark); }
+
+    .table-wrap { overflow-x: auto; margin-top: 1rem; border: 1px solid var(--mfk-border); border-radius: 14px; }
+    table.mfk-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 880px; }
+    table.mfk-table th {
+      background: var(--mfk-coral-soft); color: var(--mfk-slate); text-align: left;
+      padding: 0.65rem 0.75rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em;
+      white-space: nowrap; position: sticky; top: 0;
+    }
+    table.mfk-table th[data-sort] { cursor: pointer; }
+    table.mfk-table th[data-sort]:hover { color: var(--mfk-coral-dark); }
+    table.mfk-table td { padding: 0.6rem 0.75rem; border-top: 1px solid var(--mfk-border); color: var(--mfk-slate-mid); white-space: nowrap; }
+    table.mfk-table td .ticker { font-weight: 700; color: var(--mfk-slate); }
+    table.mfk-table td .co-name { font-size: 0.78rem; color: var(--mfk-slate-faint); }
+    .est-mark { color: #b45309; font-size: 11px; font-weight: 700; }
+    .data-note { margin-top: 0.9rem; font-size: 0.8rem; color: var(--mfk-slate-faint); line-height: 1.5; }
+
+    .section-title { font-size: 1.7rem; margin: 0; }
+    .section-sub { color: var(--mfk-slate-soft); margin: 0.4rem 0 0; line-height: 1.6; max-width: 44rem; }
+    section.block { margin-top: 2.75rem; }
+    .step-lead { display:flex; align-items:center; gap:0.6rem; }
+    .step-badge {
+      font-family: Fredoka, system-ui, sans-serif; background: var(--mfk-slate); color:#fff;
+      border-radius: 9999px; padding: 0.25rem 0.9rem; font-weight: 600; font-size: 0.9rem; white-space: nowrap;
+    }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="💰 Money Lab"
+      title="Turn $100 Into a Money Machine"
+      subtitle="You got $100. Candy tastes great for a week — but a tiny piece of the right company can pay you $5 every single year. Learn the 6 detective checks, then pick companies yourself."
+    ></mfk-page-hero>
+
+    <!-- STEP 1: THE $100 STORY -->
+    <section class="block" id="story">
+      <div class="step-lead"><span class="step-badge">Step 1</span><h2 class="section-title">The $100 decision</h2></div>
+      <p class="section-sub">Birthday money, tooth-fairy bonus, lemonade-stand profits — doesn't matter. It's <strong>yours</strong>. And the Target candy aisle is calling your name…</p>
+      <div class="choice-grid">
+        <div class="choice-card candy">
+          <div class="big-emoji">🍬</div>
+          <h3>Spend it all on candy</h3>
+          <p><span class="money-line">Day 1:</span> $100 of candy. The best day ever.</p>
+          <p><span class="money-line">Day 30:</span> $0 left. The candy is a memory now. (A delicious memory — but still just a memory.)</p>
+        </div>
+        <div class="choice-card machine">
+          <div class="big-emoji">🏭</div>
+          <h3>Buy a tiny piece of a company</h3>
+          <p>Some companies share their profits with the people who own a piece of them. Your share of the profits is called a <strong>dividend</strong> — like the company mailing you $5 every year, just for owning it.</p>
+          <p><span class="money-line">Try it:</span> press the button to collect each year's $5.</p>
+        </div>
+      </div>
+      <div class="jar-game">
+        <div style="font-size:2.4rem">🫙</div>
+        <div class="jar-display" id="jar-total">$0 collected</div>
+        <div class="jar-years" id="jar-years">Year 0 of 5 — and you still own your $100 piece!</div>
+        <button class="btn-collect" id="jar-btn">Collect this year's $5 →</button>
+        <div class="jar-finale" id="jar-finale">🎉 5 years later: you collected <strong>$25</strong>… AND you still own your $100 piece. That's <strong>$125</strong> total.<br/>The candy kid has $0. The money machine keeps paying.</div>
+        <div><button class="btn-reset-link" id="jar-reset">start over</button></div>
+      </div>
+    </section>
+
+    <!-- STEP 2: THE 6 DETECTIVE CHECKS -->
+    <section class="block" id="checks">
+      <div class="step-lead"><span class="step-badge">Step 2</span><h2 class="section-title">The 6 detective checks</h2></div>
+      <p class="section-sub">Not every company is a good money machine. Some are traps! Before you pick one, run these 6 checks — the same ones grown-up investors use. Each check below becomes a slider in the picker.</p>
+      <div class="checks-grid">
+        <div class="check-card">
+          <span class="check-num">1</span><h3>Enough candy money?</h3><br/>
+          <span class="grownup">Grown-up word: dividend yield</span>
+          <p>If your $100 only earns you <strong>$1 a year</strong>, that's a terrible trade. We want companies that pay at least <strong>$2.50 every year for every $100</strong> — that's a 2.5% yield. More yearly pay = better.</p>
+        </div>
+        <div class="check-card">
+          <span class="check-num">2</span><h3>The piggy-bank test</h3><br/>
+          <span class="grownup">Grown-up word: payout ratio</span>
+          <p>If a company gives away <strong>$95 of every $100</strong> it earns, what happens when trouble comes? Nothing left in the piggy bank! We want companies that share nicely <strong>and</strong> keep some saved — giving away less than 75%.</p>
+        </div>
+        <div class="check-card">
+          <span class="check-num">3</span><h3>Real cash, not pretend</h3><br/>
+          <span class="grownup">Grown-up word: free cash flow</span>
+          <p>Some companies <em>look</em> rich on paper, but open the cash register and… empty! We check that real money is left over after paying all the bills — more than <strong>$1 billion</strong> of real cash.</p>
+        </div>
+        <div class="check-card">
+          <span class="check-num">4</span><h3>The promise keeper</h3><br/>
+          <span class="grownup">Grown-up word: years of dividend raises</span>
+          <p>Would you trust a friend who kept every promise for <strong>10 years straight</strong>? Companies that raised their yearly payment 10+ years in a row are promise keepers. One missed year and they're out.</p>
+        </div>
+        <div class="check-card">
+          <span class="check-num">5</span><h3>The growing allowance</h3><br/>
+          <span class="grownup">Grown-up word: dividend growth</span>
+          <p>Candy costs more every year. If your $5 never grows, it buys <strong>less candy</strong> each year! We want the yearly payment to grow at least <strong>5% a year</strong> — faster than prices rise.</p>
+        </div>
+        <div class="check-card">
+          <span class="check-num">6</span><h3>No melting ice cream</h3><br/>
+          <span class="grownup">Grown-up word: company value growth</span>
+          <p>Tricky one! A company could pay you $5 while the company itself <strong>shrinks</strong> — like a melting ice cream cone dripping on your hand. Sweet at first, gone later. We want the whole company growing, not melting.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: THE PICKER TOOL -->
+    <section class="block" id="picker">
+      <div class="step-lead"><span class="step-badge">Step 3</span><h2 class="section-title">Your turn, detective</h2></div>
+      <p class="section-sub">Drag the sliders to set your 6 checks. The table shows which real companies pass <strong>all six at once</strong>. Start strict, then loosen one check at a time to see which one is doing the work.</p>
+      <div class="tool-card">
+        <span class="pill" id="universe-pill">… companies to investigate</span>
+        <span class="pill" style="margin-left:0.5rem" id="asof-pill"></span>
+        <div class="filter-grid" id="filters"></div>
+        <div class="match-line">
+          <span class="match-num" id="match-count">–</span>
+          <span id="match-label" style="font-weight:600;color:var(--mfk-slate-mid)">companies pass all 6 detective checks</span>
+          <button class="btn-reset-filters" id="reset-btn">Reset checks</button>
+        </div>
+        <div class="table-wrap">
+          <table class="mfk-table" id="results-table">
+            <thead><tr id="results-head"></tr></thead>
+            <tbody id="results-body">
+              <tr><td colspan="10" style="text-align:center;color:var(--mfk-slate-faint);padding:2rem">Loading company data…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="data-note"><span class="est-mark">†</span> estimate — this number was reconstructed from public sources and couldn't be double-checked. Figures cover the last 12 months unless noted. This is a learning tool, not investment advice — always decide together with a grown-up.</p>
+      </div>
+    </section>
+
+    <mfk-parent-note
+      title="For grown-ups"
+      summary="A kid-friendly front end on a real 275-stock dividend dataset (US dividend champions, kings, contenders & challengers). Same six filters as professional screeners: yield, payout ratio, free cash flow, raise streak, dividend growth, and enterprise-value growth."
+      skill="Money basics"
+      minutes="15 min"
+      body="Figures marked † are estimates reconstructed from public filings and data aggregators. Banks, insurers, REITs and MLPs show no free-cash-flow figure because FCF isn't a meaningful metric for them. This page teaches concepts — it is not financial advice, and no real investing should happen without an adult."
+    ></mfk-parent-note>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero,parentNote"></script>
+  <script>
+    'use strict';
+
+    /* ---------- jar game ---------- */
+    (function () {
+      var year = 0, MAX = 5, PER = 5;
+      var total = document.getElementById('jar-total');
+      var years = document.getElementById('jar-years');
+      var btn = document.getElementById('jar-btn');
+      var finale = document.getElementById('jar-finale');
+      function paint() {
+        total.textContent = '$' + (year * PER) + ' collected';
+        years.textContent = 'Year ' + year + ' of ' + MAX + ' — and you still own your $100 piece!';
+        if (year >= MAX) {
+          btn.disabled = true;
+          btn.textContent = 'All collected!';
+          finale.style.display = 'block';
+        }
+      }
+      btn.addEventListener('click', function () { if (year < MAX) { year++; paint(); } });
+      document.getElementById('jar-reset').addEventListener('click', function () {
+        year = 0; btn.disabled = false; btn.textContent = "Collect this year's $5 →";
+        finale.style.display = 'none'; paint();
+      });
+      paint();
+    })();
+
+    /* ---------- dividend detective picker ---------- */
+    var FILTERS = [
+      { key: 'yieldPct',       kid: 'Yearly pay per $100',      grownup: 'dividend yield',        unit: '$',   op: '>=', min: 0,   max: 8,  step: 0.25, def: 2.5, fmt: function (v) { return '≥ $' + v.toFixed(2); } },
+      { key: 'payoutRatioPct', kid: 'Shares nicely, saves some', grownup: 'payout ratio',         unit: '%',   op: '<',  min: 10,  max: 100, step: 5,   def: 75,  fmt: function (v) { return '< ' + v + '%'; } },
+      { key: 'fcfTtmBln',      kid: 'Real cash in the register', grownup: 'free cash flow',       unit: '$B',  op: '>',  min: 0,   max: 30, step: 1,    def: 1,   fmt: function (v) { return '> $' + v + 'B'; } },
+      { key: 'divYears',       kid: 'Promise-keeping streak',   grownup: 'years of raises',       unit: 'yrs', op: '>',  min: 0,   max: 60, step: 1,    def: 10,  fmt: function (v) { return '> ' + v + ' yrs'; } },
+      { key: 'divGrowth5yPct', kid: 'Allowance growth',         grownup: 'dividend growth',       unit: '%',   op: '>=', min: 0,   max: 15, step: 0.5,  def: 5,   fmt: function (v) { return '≥ ' + v.toFixed(1) + '%'; } },
+      { key: 'evGrowth5yPct',  kid: 'Not melting',              grownup: 'company value growth', unit: '%',   op: '>=', min: -10, max: 50, step: 0.5,  def: 0,   fmt: function (v) { return '≥ ' + v.toFixed(1) + '%'; } }
+    ];
+
+    var COLUMNS = [
+      { key: 'ticker',         label: 'Company',    sortable: false },
+      { key: 'sector',         label: 'Business',   sortable: false, tip: 'What the company does',        fmt: function (v) { return esc(v); } },
+      { key: 'price',          label: 'Price',      tip: 'Cost of one tiny piece (one share)',            fmt: function (v) { return '$' + v.toFixed(2); } },
+      { key: 'yieldPct',       label: 'Pays you',   tip: 'Yearly pay per $100 (dividend yield)',           fmt: function (v) { return v.toFixed(2) + '%'; } },
+      { key: 'payoutRatioPct', label: 'Shares',     tip: '% of earnings given away (payout ratio)',       fmt: function (v) { return v.toFixed(0) + '%'; } },
+      { key: 'fcfTtmBln',      label: 'Cash',       tip: 'Real cash left after bills, in $B (free cash flow)', fmt: function (v) { return '$' + v.toFixed(1) + 'B'; } },
+      { key: 'evBln',          label: 'Value',      tip: 'What the whole company is worth, in $B',         fmt: function (v) { return '$' + v.toFixed(1) + 'B'; } },
+      { key: 'evGrowth5yPct',  label: 'Growing?',   tip: 'Is the company growing or melting? (%/yr)',     fmt: function (v) { return v.toFixed(1) + '%'; } },
+      { key: 'divYears',       label: 'Streak',     tip: 'Years of raising the payment in a row',          fmt: function (v) { return v; } },
+      { key: 'divGrowth5yPct', label: 'Pay growth', tip: 'How fast the yearly pay grows (%/yr)',          fmt: function (v) { return v.toFixed(1) + '%'; } }
+    ];
+
+    var state = { data: [], asOf: '', sortKey: 'yieldPct', sortDir: -1, values: {} };
+    FILTERS.forEach(function (f) { state.values[f.key] = f.def; });
+
+    function $(id) { return document.getElementById(id); }
+
+    function esc(str) {
+      return String(str == null ? '' : str).replace(/[&<>"']/g, function (m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+      });
+    }
+
+    function buildFilters() {
+      var host = $('filters');
+      host.innerHTML = FILTERS.map(function (f, i) {
+        return '' +
+          '<div class="filter-block">' +
+            '<label for="f' + i + '">' + esc(f.kid) + '</label>' +
+            '<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.1rem">' +
+              '<span class="grownup-tag">' + esc(f.grownup) + '</span>' +
+              '<span class="filter-val" id="fval' + i + '">' + f.fmt(f.def) + '</span>' +
+            '</div>' +
+            '<input type="range" class="mfk-range" id="f' + i + '" min="' + f.min + '" max="' + f.max + '" step="' + f.step + '" value="' + f.def + '" aria-label="' + esc(f.kid) + '">' +
+            '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--mfk-slate-faint)"><span>' + f.min + f.unit + '</span><span>' + f.max + f.unit + '</span></div>' +
+          '</div>';
+      }).join('');
+
+      FILTERS.forEach(function (f, i) {
+        var el = $('f' + i);
+        el.addEventListener('input', function () {
+          state.values[f.key] = parseFloat(el.value);
+          $('fval' + i).textContent = f.fmt(parseFloat(el.value));
+          render();
+        });
+      });
+
+      $('reset-btn').addEventListener('click', function () {
+        FILTERS.forEach(function (f, i) {
+          state.values[f.key] = f.def;
+          $('f' + i).value = f.def;
+          $('fval' + i).textContent = f.fmt(f.def);
+        });
+        render();
+      });
+    }
+
+    function passes(s) {
+      var v = state.values;
+      if (s.yieldPct == null || s.yieldPct < v.yieldPct) return false;
+      if (s.payoutRatioPct == null || !(s.payoutRatioPct < v.payoutRatioPct)) return false;
+      if (s.fcfTtmBln == null || !(s.fcfTtmBln > v.fcfTtmBln)) return false;
+      if (s.divYears == null || !(s.divYears > v.divYears)) return false;
+      if (s.divGrowth5yPct == null || s.divGrowth5yPct < v.divGrowth5yPct) return false;
+      if (s.evGrowth5yPct == null || s.evGrowth5yPct < v.evGrowth5yPct) return false;
+      return true;
+    }
+
+    function buildHead() {
+      $('results-head').innerHTML = COLUMNS.map(function (c) {
+        var arrow = '';
+        if (c.sortable !== false && c.key === state.sortKey) {
+          arrow = ' ' + (state.sortDir < 0 ? '▼' : '▲');
+        }
+        var attrs = c.sortable === false ? '' : ' data-sort="' + c.key + '" title="Click to sort"';
+        var tip = c.tip ? ' title="' + esc(c.tip) + '"' : '';
+        return '<th' + attrs + tip + '>' + esc(c.label) + arrow + '</th>';
+      }).join('');
+      document.querySelectorAll('#results-head th[data-sort]').forEach(function (th) {
+        th.addEventListener('click', function () {
+          var k = th.getAttribute('data-sort');
+          if (state.sortKey === k) { state.sortDir *= -1; } else { state.sortKey = k; state.sortDir = -1; }
+          render();
+        });
+      });
+    }
+
+    function render() {
+      var rows = state.data.filter(passes).sort(function (a, b) {
+        var k = state.sortKey;
+        var av = a[k] == null ? -Infinity : a[k];
+        var bv = b[k] == null ? -Infinity : b[k];
+        return (av - bv) * state.sortDir;
+      });
+
+      $('match-count').textContent = rows.length;
+      $('match-label').textContent = rows.length === 1 ? 'company passes all 6 detective checks' : 'companies pass all 6 detective checks';
+
+      var body = $('results-body');
+      if (!rows.length) {
+        body.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--mfk-slate-faint);padding:2rem">No companies pass all six checks — loosen one, detective! 🔎</td></tr>';
+        return;
+      }
+      body.innerHTML = rows.map(function (s) {
+        var tds = COLUMNS.map(function (c) {
+          if (c.key === 'ticker') {
+            return '<td><span class="ticker">' + esc(s.ticker) + '</span><br><span class="co-name">' + esc(s.name) + (s.estimated ? ' <span class="est-mark" title="One or more numbers are estimates">†</span>' : '') + '</span></td>';
+          }
+          var v = s[c.key];
+          var disp = v == null ? '—' : c.fmt(v);
+          if (v != null && (c.key === 'evBln' || c.key === 'evGrowth5yPct') && s.evEstimated) {
+            disp += ' <span class="est-mark" title="Company value is estimated">†</span>';
+          }
+          return '<td>' + disp + '</td>';
+        }).join('');
+        return '<tr>' + tds + '</tr>';
+      }).join('');
+    }
+
+    var DATA_URL = '/money/data/dividend-stocks.json?v=20260928';
+    fetch(DATA_URL)
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (data) {
+        state.data = data.records || [];
+        state.asOf = data.asOf || '';
+        $('universe-pill').textContent = state.data.length + ' companies to investigate';
+        $('asof-pill').textContent = state.asOf ? 'Data as of ' + state.asOf : '';
+        buildFilters();
+        buildHead();
+        render();
+      })
+      .catch(function () {
+        $('results-body').innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--mfk-slate-faint);padding:2rem">Could not load company data — check your connection and refresh.</td></tr>';
+      });
+  </script>
+</body>
+</html>
