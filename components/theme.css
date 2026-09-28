@@ -42,7 +42,7 @@
   --mfk-challenge: #b91c1c;
   --mfk-challenge-bg: #fee2e2;
 
-  /* Skills — typing | mac | math | stem | writing | movie */
+  /* Skills — typing | mac | math | stem | writing | movie | money */
   --mfk-skill-typing: #e8661a;
   --mfk-skill-typing-bg: #fff0e6;
   --mfk-skill-mac: #be185d;
@@ -55,6 +55,8 @@
   --mfk-skill-writing-bg: #fff7ed;
   --mfk-skill-movie: #0284c7;
   --mfk-skill-movie-bg: #e0f2fe;
+  --mfk-skill-money: #b45309;
+  --mfk-skill-money-bg: #fef3c7;
   --mfk-skill-default: #475569;
   --mfk-skill-default-bg: #f1f5f9;
 

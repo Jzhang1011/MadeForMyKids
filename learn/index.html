@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Learn — MadeForMyKids</title>
-  <meta name="description" content="Guided lessons across Typing, Mac Skills, Math, and STEM — coming soon." />
+  <meta name="description" content="Explore every MadeForMyKids topic: Typing, Writing, AMC Math, Money Lab, and Movie learning — grouped by subject, with age guidance." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,45 +12,110 @@
   <style>
     .note { margin: 1.25rem 0 1rem; color: var(--mfk-slate-soft); max-width: 36rem; }
     .lesson-stack { display: grid; gap: 0.85rem; max-width: 40rem; }
+    .topic-group { margin-top: 2.25rem; }
+    .topic-group h2 {
+      font-family: var(--mfk-font-display, Fredoka, system-ui, sans-serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--mfk-slate, #1e293b);
+      margin: 0 0 0.25rem;
+      letter-spacing: -0.01em;
+    }
+    .topic-group > p { margin: 0 0 1rem; color: var(--mfk-slate-soft, #64748b); font-size: 0.95rem; }
   </style>
 </head>
 <body class="mfk-page">
   <mfk-header active="learn"></mfk-header>
   <main class="mfk-container mfk-section">
     <mfk-page-hero
-      badge="Coming soon"
-      title="Learn"
-      subtitle="Guided lessons across Typing, Mac Skills, Math, and STEM — coming soon."
+      badge="Topics"
+      title="Explore topics"
+      subtitle="Every topic, grouped by subject. Ages are a guide, not a gate — kids vary, and nothing here is locked."
     ></mfk-page-hero>
 
-    <p class="note">Sample lesson tiles while this hub is under construction. Ready activities live on Typing Adventure and Olympiad Forge.</p>
-    <div class="lesson-stack">
-      <mfk-lesson-card
-        skill="typing"
-        title="Home-row warm-up"
-        blurb="Find the home keys and type short words with the fox."
-        duration="8 min"
-        href="/typing.html"
-        cta-label="Learn"
-      ></mfk-lesson-card>
-      <mfk-lesson-card
-        skill="math"
-        title="Contest warm-up set"
-        blurb="A handful of AMC-style problems to stretch thinking."
-        duration="12 min"
-        href="/amc/"
-        progress="40"
-        cta-label="Learn"
-      ></mfk-lesson-card>
-      <mfk-lesson-card
-        skill="mac"
-        title="Finder &amp; folders"
-        blurb="Name files, make folders, and keep a project tidy on a Mac."
-        duration="10 min"
-        href="/learn/"
-        cta-label="Coming soon"
-      ></mfk-lesson-card>
-    </div>
+    <section class="topic-group" aria-labelledby="group-words">
+      <h2 id="group-words">Words &amp; stories</h2>
+      <p>Reading, writing, and the keyboard skills underneath them.</p>
+      <div class="lesson-stack">
+        <mfk-lesson-card
+          skill="typing"
+          title="Fox Typing Adventure"
+          blurb="Guided typing practice with a friendly fox guide — accuracy, rhythm, and confidence for young fingers."
+          duration="10 min"
+          ages="6+"
+          href="/typing.html"
+          cta-label="Start"
+        ></mfk-lesson-card>
+        <mfk-lesson-card
+          skill="writing"
+          title="Writing Gym"
+          blurb="Short writing reps that build real sentence muscles — story builder for younger writers, writer's studio for older ones."
+          duration="8–15 min"
+          ages="8+"
+          href="/writing/workout.html"
+          cta-label="Start"
+        ></mfk-lesson-card>
+      </div>
+    </section>
+
+    <section class="topic-group" aria-labelledby="group-numbers">
+      <h2 id="group-numbers">Numbers &amp; money</h2>
+      <p>Math thinking and the money skills school skips.</p>
+      <div class="lesson-stack">
+        <mfk-lesson-card
+          skill="math"
+          title="Olympiad Forge"
+          blurb="AMC-style math problem bank to stretch problem-solving — warm-ups through contest-level challenges."
+          duration="15+ min"
+          ages="10+"
+          href="/amc/"
+          cta-label="Start"
+        ></mfk-lesson-card>
+        <mfk-lesson-card
+          skill="money"
+          title="Money Lab: the $100 decision"
+          blurb="A story about $100: spend it on candy, or put the money machine to work? Includes the interactive 5-year jar game."
+          duration="10 min"
+          ages="8+"
+          href="/money/#story"
+          cta-label="Learn"
+        ></mfk-lesson-card>
+        <mfk-lesson-card
+          skill="money"
+          title="Money Lab: the 6 detective checks"
+          blurb="The six filters from the dividend screener, translated into kid language — each paired with its grown-up term."
+          duration="10 min"
+          ages="8+"
+          href="/money/#checks"
+          cta-label="Learn"
+        ></mfk-lesson-card>
+        <mfk-lesson-card
+          skill="money"
+          title="Money Lab: dividend picker"
+          blurb="Your turn, detective — six sliders over 275 real dividend stocks. Find companies strong enough to pay you every year."
+          duration="15 min"
+          ages="8+"
+          href="/money/#picker"
+          cta-label="Try it"
+        ></mfk-lesson-card>
+      </div>
+    </section>
+
+    <section class="topic-group" aria-labelledby="group-watch">
+      <h2 id="group-watch">Watch &amp; explore</h2>
+      <p>Learning through the stories kids already love.</p>
+      <div class="lesson-stack">
+        <mfk-lesson-card
+          skill="movie"
+          title="Watch to Grow"
+          blurb="Movie learning for families — use films as a learning tool together, not another review site."
+          duration="Family time"
+          ages="5+"
+          href="/movie/"
+          cta-label="Start"
+        ></mfk-lesson-card>
+      </div>
+    </section>
 
   </main>
   <mfk-footer></mfk-footer>

@@ -15,6 +15,7 @@
     stem: { label: "STEM", icon: "🔬", bg: "#d1fae5", fg: "#059669" },
     writing: { label: "Writing", icon: "✍️", bg: "#fff7ed", fg: "#ea580c" },
     movie: { label: "Movie", icon: "🎬", bg: "#e0f2fe", fg: "#0284c7" },
+    money: { label: "Money", icon: "💰", bg: "#fef3c7", fg: "#b45309" },
   };
   const SKILL_ALIASES = {
     typing: "typing",
@@ -32,6 +33,9 @@
     movie: "movie",
     film: "movie",
     media: "movie",
+    money: "money",
+    finance: "money",
+    investing: "money",
   };
 
   const DIFF = {
@@ -223,6 +227,7 @@
         "blurb",
         "difficulty",
         "duration",
+        "ages",
         "href",
         "cta-label",
         "tags",
@@ -247,6 +252,7 @@
       const blurb = this.getAttribute("blurb") || "";
       const href = this.getAttribute("href") || "#";
       const duration = this.getAttribute("duration") || "";
+      const ages = this.getAttribute("ages") || "";
       const cta = this.getAttribute("cta-label") || "Start";
       const skillRaw = this.getAttribute("skill") || "";
       const diffRaw = this.getAttribute("difficulty") || "";
@@ -274,11 +280,16 @@
       }
 
       let metaHtml = "";
-      if (dm || duration) {
+      if (dm || duration || ages) {
         const parts = [];
         if (dm) {
           parts.push(
             `<span class="pill" style="background:${dm.bg};color:${dm.fg}" aria-label="Difficulty: ${esc(dm.label)}"><span aria-hidden="true">${dm.icon}</span> ${esc(dm.label)}</span>`
+          );
+        }
+        if (ages) {
+          parts.push(
+            `<span class="pill" style="background:#f1f5f9;color:#475569" aria-label="Recommended ages: ${esc(ages)}">Ages ${esc(ages)}</span>`
           );
         }
         if (duration) {

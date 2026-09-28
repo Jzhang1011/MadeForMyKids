@@ -10,6 +10,9 @@
     mac: { label: "Mac", icon: "💻", bg: "#fce7f3", fg: "#be185d" },
     math: { label: "Math", icon: "🧮", bg: "#f3e8ff", fg: "#7c3aed" },
     stem: { label: "STEM", icon: "🔬", bg: "#d1fae5", fg: "#059669" },
+    writing: { label: "Writing", icon: "✍️", bg: "#fff7ed", fg: "#ea580c" },
+    movie: { label: "Movie", icon: "🎬", bg: "#e0f2fe", fg: "#0284c7" },
+    money: { label: "Money", icon: "💰", bg: "#fef3c7", fg: "#b45309" },
   };
   const SKILL_ALIASES = {
     typing: "typing",
@@ -21,6 +24,14 @@
     amc: "math",
     stem: "stem",
     science: "stem",
+    writing: "writing",
+    write: "writing",
+    movie: "movie",
+    film: "movie",
+    media: "movie",
+    money: "money",
+    finance: "money",
+    investing: "money",
   };
 
   function skillMeta(raw) {
@@ -143,6 +154,7 @@
         "title",
         "blurb",
         "duration",
+        "ages",
         "href",
         "cta-label",
         "progress",
@@ -166,6 +178,7 @@
       const title = this.getAttribute("title") || "Lesson";
       const blurb = this.getAttribute("blurb") || "";
       const duration = this.getAttribute("duration") || "";
+      const ages = this.getAttribute("ages") || "";
       const skillRaw = this.getAttribute("skill") || "";
       const href = this.getAttribute("href") || "#";
       const cta = this.getAttribute("cta-label") || "Learn";
@@ -192,7 +205,7 @@
           <h3>${esc(title)}</h3>
           ${blurb ? `<p class="blurb">${esc(blurb)}</p>` : ""}
           <div class="row">
-            ${duration ? `<span class="duration">${esc(duration)}</span>` : `<span></span>`}
+            <span>${duration ? `<span class="duration">${esc(duration)}</span>` : ""}${ages ? ` <span class="pill" style="background:#f1f5f9;color:#475569" aria-label="Recommended ages: ${esc(ages)}">Ages ${esc(ages)}</span>` : ""}</span>
             <span class="cta">${esc(cta)} <span aria-hidden="true">→</span></span>
           </div>
           ${
