@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>French Corner: Conjugation Lab — MadeForMyKids</title>
+  <meta name="description" content="Learn French verb conjugation the fun way — pick a verb, flip through tenses, and hear every form spoken aloud. 15 starter verbs, more on the way." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+
+    .lab-card {
+      background: var(--mfk-white); border: 2px solid var(--mfk-border);
+      border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem;
+    }
+    .lab-controls { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1rem; }
+    .lab-controls label { font-weight: 700; font-size: 0.9rem; color: var(--mfk-slate-soft); }
+    #verb-select {
+      font-family: Inter, system-ui, sans-serif; font-size: 1.05rem; font-weight: 600;
+      padding: 0.55rem 0.8rem; border-radius: 12px; border: 2px solid var(--mfk-border);
+      background: #fff; color: var(--mfk-slate); max-width: 100%;
+    }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .chip {
+      font-size: 0.85rem; font-weight: 700; padding: 0.4rem 0.85rem; border-radius: 9999px;
+      border: 2px solid var(--mfk-border); background: #fff; color: var(--mfk-slate-soft);
+      cursor: pointer; transition: all 0.12s ease;
+    }
+    .chip[aria-pressed="true"] { background: var(--mfk-skill-french, #1d4ed8); border-color: var(--mfk-skill-french, #1d4ed8); color: #fff; }
+
+    .tense-tabs { display: flex; gap: 0.5rem; margin: 1rem 0 0.25rem; flex-wrap: wrap; }
+    .tense-tab {
+      font-family: Fredoka, system-ui, sans-serif; font-size: 1rem; font-weight: 600;
+      padding: 0.55rem 1.1rem; border-radius: 14px 14px 0 0;
+      border: 2px solid var(--mfk-border); border-bottom: none;
+      background: #f8fafc; color: var(--mfk-slate-soft); cursor: pointer;
+    }
+    .tense-tab[aria-selected="true"] { background: #fff; color: var(--mfk-skill-french, #1d4ed8); border-color: var(--mfk-skill-french, #1d4ed8); }
+    .tense-tab small { display: block; font-family: Inter, system-ui, sans-serif; font-size: 0.72rem; font-weight: 500; color: var(--mfk-slate-faint); }
+    .tense-tab[aria-selected="true"] small { color: var(--mfk-skill-french, #1d4ed8); }
+
+    .verb-head {
+      border: 2px solid var(--mfk-skill-french, #1d4ed8); border-top: none; border-radius: 0 0 14px 14px;
+      padding: 1.1rem 1.25rem; background: var(--mfk-skill-french-bg, #dbeafe);
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1rem;
+    }
+    .verb-head .infinitive { font-family: Fredoka, system-ui, sans-serif; font-size: 2rem; font-weight: 700; color: var(--mfk-slate); }
+    .verb-head .english { font-size: 1.05rem; color: var(--mfk-slate-soft); font-style: italic; }
+    .pill-group {
+      font-size: 0.78rem; font-weight: 700; padding: 0.28rem 0.7rem; border-radius: 9999px;
+      background: #fff; color: var(--mfk-skill-french, #1d4ed8); border: 1.5px solid var(--mfk-skill-french, #1d4ed8);
+    }
+    .tip-box {
+      margin-top: 0.9rem; background: #fffbeb; border: 2px dashed #f59e0b; border-radius: 12px;
+      padding: 0.7rem 0.95rem; font-size: 0.93rem; line-height: 1.5; color: var(--mfk-slate);
+    }
+    .tip-box strong { color: #b45309; }
+
+    .conj-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    .conj-table th {
+      text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--mfk-slate-faint); padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--mfk-border);
+    }
+    .conj-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .conj-table tr:last-child td { border-bottom: none; }
+    .conj-table tr.speaking td { background: #eff6ff; }
+    .conj-table tr.speaking .form { color: var(--mfk-skill-french, #1d4ed8); }
+    .subject { font-weight: 700; color: var(--mfk-slate-soft); white-space: nowrap; }
+    .form { font-family: Fredoka, system-ui, sans-serif; font-size: 1.45rem; font-weight: 600; color: var(--mfk-slate); }
+    .speak-btn {
+      font-size: 1.25rem; line-height: 1; background: #eff6ff; border: 2px solid #bfdbfe;
+      border-radius: 12px; padding: 0.4rem 0.6rem; cursor: pointer; transition: transform 0.08s ease;
+    }
+    .speak-btn:hover { transform: scale(1.12); background: #dbeafe; }
+    .speak-btn:disabled { opacity: 0.45; cursor: default; transform: none; }
+
+    .listen-all {
+      margin-top: 1rem; font-family: Fredoka, system-ui, sans-serif; font-size: 1.05rem; font-weight: 600;
+      background: var(--mfk-skill-french, #1d4ed8); color: #fff; border: none; border-radius: 9999px;
+      padding: 0.7rem 1.6rem; cursor: pointer; transition: transform 0.08s ease;
+    }
+    .listen-all:hover:not(:disabled) { transform: scale(1.04); }
+    .listen-all:disabled { opacity: 0.5; cursor: default; }
+    .voice-note { margin-top: 0.6rem; font-size: 0.85rem; color: var(--mfk-slate-soft); display: none; }
+    .voice-note.show { display: block; }
+
+    .how-it-works { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.85rem; margin-top: 1rem; }
+    .how-card { background: var(--mfk-white); border: 2px solid var(--mfk-border); border-radius: 14px; padding: 0.95rem 1.05rem; }
+    .how-card .step-emoji { font-size: 1.6rem; }
+    .how-card h3 { margin: 0.35rem 0 0.25rem; font-size: 1.02rem; }
+    .how-card p { margin: 0; font-size: 0.9rem; color: var(--mfk-slate-soft); line-height: 1.5; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="New · Languages"
+      title="French Corner 🇫🇷"
+      subtitle="Verbs are the engine of French. Pick one below, flip through the tenses, and tap 🔊 to hear every form spoken aloud."
+    ></mfk-page-hero>
+
+    <section id="lab" aria-label="Conjugation lab">
+      <div class="lab-card">
+        <div class="lab-controls">
+          <label for="verb-select">Choose a verb:</label>
+          <select id="verb-select" aria-label="Choose a verb"></select>
+        </div>
+        <div class="chip-row" id="group-chips" role="group" aria-label="Filter by verb group">
+          <button class="chip" data-group="all" aria-pressed="true">All verbs</button>
+          <button class="chip" data-group="er" aria-pressed="false">-er verbs</button>
+          <button class="chip" data-group="ir" aria-pressed="false">-ir verbs</button>
+          <button class="chip" data-group="re" aria-pressed="false">-re verbs</button>
+          <button class="chip" data-group="irregular" aria-pressed="false">Tricky ones ⭐</button>
+        </div>
+
+        <div class="tense-tabs" id="tense-tabs" role="tablist" aria-label="Tenses"></div>
+
+        <div class="verb-head">
+          <span class="infinitive" id="verb-infinitive">—</span>
+          <span class="english" id="verb-english"></span>
+          <span class="pill-group" id="verb-group-pill"></span>
+        </div>
+        <div class="tip-box" id="verb-tip" hidden><strong>🔎 Detective note:</strong> <span id="verb-tip-text"></span></div>
+
+        <table class="conj-table" aria-label="Conjugation table">
+          <thead>
+            <tr><th>Who</th><th>Says</th><th aria-label="Listen">🔊</th></tr>
+          </thead>
+          <tbody id="conj-body"></tbody>
+        </table>
+
+        <button class="listen-all" id="listen-all">🔊 Listen to all six</button>
+        <p class="voice-note" id="voice-note"></p>
+      </div>
+    </section>
+
+    <section aria-label="How it works" style="margin-top:2rem">
+      <h2>How to use the lab</h2>
+      <div class="how-it-works">
+        <div class="how-card">
+          <div class="step-emoji">🎯</div>
+          <h3>1. Pick a verb</h3>
+          <p>Start with <strong>parler</strong> — it's the pattern for thousands of -er verbs. Filter by group when you're ready for trickier ones.</p>
+        </div>
+        <div class="how-card">
+          <div class="step-emoji">🔄</div>
+          <h3>2. Flip the tense</h3>
+          <p><strong>Présent</strong> is right now, <strong>passé composé</strong> is already done, <strong>futur</strong> will happen. Same verb, three time machines.</p>
+        </div>
+        <div class="how-card">
+          <div class="step-emoji">🔊</div>
+          <h3>3. Say it out loud</h3>
+          <p>Tap the speaker on any row to hear it, then repeat it yourself. French lives in your mouth, not just your eyes!</p>
+        </div>
+      </div>
+    </section>
+
+    <mfk-parent-note
+      title="For grown-ups"
+      summary="A conjugation lab over a structured verb dataset — 15 high-frequency French verbs across three tenses, rendered from a single JSON file so new verbs can be added without touching the page."
+      skill="French basics"
+      minutes="10 min"
+      body="Pronunciation uses the device's built-in French text-to-speech voice (Web Speech API) — no audio files to download, and any verb added to the dataset is speakable immediately. Voice quality varies by device; iPhones and most Chromebooks ship a good French voice. The passé composé forms for aller and venir are shown in the masculine singular; the detective note explains the agreement rule for girls and groups."
+    ></mfk-parent-note>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero,parentNote"></script>
+  <script>
+    (function () {
+      "use strict";
+      var DATA_URL = "/french/data/verbs.json?v=20261005";
+      var SUBJECT_DISPLAY = { "je": "je", "tu": "tu", "il/elle/on": "il / elle / on", "nous": "nous", "vous": "vous", "ils/elles": "ils / elles" };
+      var SUBJECT_SPEECH = { "je": "je", "tu": "tu", "il/elle/on": "il", "nous": "nous", "vous": "vous", "ils/elles": "ils" };
+      var VOWELS = "aeiouyhéèêëàâîïôöùûüœæ";
+
+      var state = { data: null, verb: null, tense: "present", group: "all" };
+      var $ = function (id) { return document.getElementById(id); };
+
+      function esc(s) {
+        return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      }
+
+      /* ---------- speech ---------- */
+      var frenchVoice = null;
+      function refreshVoices() {
+        if (!("speechSynthesis" in window)) return;
+        var vs = speechSynthesis.getVoices().filter(function (v) {
+          return v.lang && v.lang.toLowerCase().indexOf("fr") === 0;
+        });
+        vs.sort(function (a, b) {
+          var aFr = a.lang.toLowerCase().indexOf("fr-fr") === 0 ? 0 : 1;
+          var bFr = b.lang.toLowerCase().indexOf("fr-fr") === 0 ? 0 : 1;
+          if (aFr !== bFr) return aFr - bFr;
+          return (b.localService ? 1 : 0) - (a.localService ? 1 : 0);
+        });
+        frenchVoice = vs[0] || null;
+      }
+      function voiceReady() {
+        if (!("speechSynthesis" in window)) {
+          showVoiceNote("This browser can't speak out loud — but you can still read every form!");
+          return false;
+        }
+        refreshVoices();
+        if (!frenchVoice) {
+          showVoiceNote("No French voice found on this device — the forms are all here to read and practice!");
+          return false;
+        }
+        return true;
+      }
+      function showVoiceNote(msg) {
+        var n = $("voice-note");
+        n.textContent = msg;
+        n.classList.add("show");
+      }
+      function speakPhrase(text, onend) {
+        speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(text);
+        u.lang = "fr-FR";
+        if (frenchVoice) u.voice = frenchVoice;
+        u.rate = 0.92;
+        if (onend) u.onend = onend;
+        u.onerror = function () { clearSpeaking(); };
+        speechSynthesis.speak(u);
+      }
+      function speechText(subjectKey, form) {
+        var subj = SUBJECT_SPEECH[subjectKey] || subjectKey;
+        if (subj === "je" && VOWELS.indexOf(form.charAt(0).toLowerCase()) !== -1) subj = "j'";
+        return subj === "j'" ? "j'" + form : subj + " " + form;
+      }
+      if ("speechSynthesis" in window) {
+        refreshVoices();
+        speechSynthesis.onvoiceschanged = refreshVoices;
+      }
+
+      function clearSpeaking() {
+        Array.prototype.forEach.call(document.querySelectorAll("#conj-body tr.speaking"), function (tr) {
+          tr.classList.remove("speaking");
+        });
+      }
+
+      function speakRow(subjectKey, form, rowEl) {
+        if (!voiceReady()) return;
+        clearSpeaking();
+        if (rowEl) rowEl.classList.add("speaking");
+        speakPhrase(speechText(subjectKey, form), clearSpeaking);
+      }
+
+      function speakAll() {
+        if (!voiceReady() || !state.verb) return;
+        var conj = state.verb.conjugations[state.tense];
+        var keys = state.data.pronouns.filter(function (p) { return conj[p]; });
+        var rows = document.querySelectorAll("#conj-body tr");
+        var i = 0;
+        var btn = $("listen-all");
+        btn.disabled = true;
+        clearSpeaking();
+        function next() {
+          if (i >= keys.length) { btn.disabled = false; clearSpeaking(); return; }
+          var k = keys[i];
+          if (rows[i]) rows[i].classList.add("speaking");
+          speakPhrase(speechText(k, conj[k]), function () {
+            if (rows[i]) rows[i].classList.remove("speaking");
+            i++;
+            next();
+          });
+        }
+        next();
+      }
+
+      /* ---------- rendering ---------- */
+      function groupLabel(v) {
+        if (v.group === "irregular") return "⭐ tricky verb";
+        return "-" + v.group + " verb" + (v.regular ? "" : " (irregular!)");
+      }
+
+      function visibleVerbs() {
+        return state.data.verbs.filter(function (v) {
+          return state.group === "all" || v.group === state.group;
+        });
+      }
+
+      function buildVerbSelect() {
+        var sel = $("verb-select");
+        sel.innerHTML = "";
+        visibleVerbs().forEach(function (v) {
+          var opt = document.createElement("option");
+          opt.value = v.infinitive;
+          opt.textContent = v.infinitive + " — " + v.english;
+          sel.appendChild(opt);
+        });
+        if (state.verb && visibleVerbs().some(function (v) { return v.infinitive === state.verb.infinitive; })) {
+          sel.value = state.verb.infinitive;
+        } else {
+          state.verb = visibleVerbs()[0] || null;
+          if (state.verb) sel.value = state.verb.infinitive;
+        }
+      }
+
+      function buildTenseTabs() {
+        var wrap = $("tense-tabs");
+        wrap.innerHTML = "";
+        state.data.tenses.forEach(function (t) {
+          var b = document.createElement("button");
+          b.className = "tense-tab";
+          b.setAttribute("role", "tab");
+          b.setAttribute("aria-selected", t.id === state.tense ? "true" : "false");
+          b.innerHTML = esc(t.label) + "<small>" + esc(t.kidHint) + "</small>";
+          b.addEventListener("click", function () {
+            state.tense = t.id;
+            if (state.verb) syncHash();
+            buildTenseTabs();
+            renderVerb();
+          });
+          wrap.appendChild(b);
+        });
+      }
+
+      function renderVerb() {
+        var v = state.verb;
+        if (!v) return;
+        $("verb-infinitive").textContent = v.infinitive;
+        $("verb-english").textContent = v.english;
+        $("verb-group-pill").textContent = groupLabel(v);
+        var tipBox = $("verb-tip");
+        if (v.tip) {
+          $("verb-tip-text").textContent = v.tip;
+          tipBox.hidden = false;
+        } else {
+          tipBox.hidden = true;
+        }
+        var conj = v.conjugations[state.tense] || {};
+        var body = $("conj-body");
+        body.innerHTML = "";
+        state.data.pronouns.forEach(function (p) {
+          var form = conj[p];
+          if (!form) return;
+          var tr = document.createElement("tr");
+          var tdSub = document.createElement("td");
+          tdSub.className = "subject";
+          tdSub.textContent = SUBJECT_DISPLAY[p] || p;
+          var tdForm = document.createElement("td");
+          tdForm.className = "form";
+          tdForm.setAttribute("lang", "fr");
+          tdForm.textContent = form;
+          var tdBtn = document.createElement("td");
+          var btn = document.createElement("button");
+          btn.className = "speak-btn";
+          btn.textContent = "🔊";
+          btn.setAttribute("aria-label", "Hear: " + p + " " + form);
+          btn.addEventListener("click", function () { speakRow(p, form, tr); });
+          tdBtn.appendChild(btn);
+          tr.appendChild(tdSub);
+          tr.appendChild(tdForm);
+          tr.appendChild(tdBtn);
+          body.appendChild(tr);
+        });
+      }
+
+      function syncHash() {
+        try {
+          history.replaceState(null, "", "#verb=" + encodeURIComponent(state.verb.infinitive) + "&tense=" + state.tense);
+        } catch (e) { /* ignore */ }
+      }
+
+      function initFromHash() {
+        var m = (location.hash || "").match(/verb=([^&]+)/);
+        if (m && state.data) {
+          var found = state.data.verbs.filter(function (v) { return v.infinitive === decodeURIComponent(m[1]); })[0];
+          if (found) {
+            if (found.group !== state.group && state.group !== "all") {
+              state.group = "all";
+              syncChips();
+            }
+            state.verb = found;
+          }
+        }
+        var tm = (location.hash || "").match(/tense=([^&]+)/);
+        if (tm && state.data && state.data.tenses.some(function (t) { return t.id === tm[1]; })) {
+          state.tense = tm[1];
+        }
+      }
+
+      function syncChips() {
+        Array.prototype.forEach.call(document.querySelectorAll("#group-chips .chip"), function (c) {
+          c.setAttribute("aria-pressed", c.getAttribute("data-group") === state.group ? "true" : "false");
+        });
+      }
+
+      /* ---------- events ---------- */
+      $("verb-select").addEventListener("change", function (e) {
+        var found = state.data.verbs.filter(function (v) { return v.infinitive === e.target.value; })[0];
+        if (found) { state.verb = found; syncHash(); renderVerb(); }
+      });
+      document.querySelectorAll("#group-chips .chip").forEach(function (c) {
+        c.addEventListener("click", function () {
+          state.group = c.getAttribute("data-group");
+          syncChips();
+          buildVerbSelect();
+          syncHash();
+          renderVerb();
+        });
+      });
+      $("listen-all").addEventListener("click", speakAll);
+
+      /* ---------- boot ---------- */
+      fetch(DATA_URL)
+        .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+        .then(function (data) {
+          state.data = data;
+          state.verb = data.verbs[0];
+          initFromHash();
+          buildVerbSelect();
+          buildTenseTabs();
+          renderVerb();
+        })
+        .catch(function () {
+          $("conj-body").innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--mfk-slate-faint);padding:2rem">Could not load the verbs — check your connection and refresh. 🥐</td></tr>';
+        });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

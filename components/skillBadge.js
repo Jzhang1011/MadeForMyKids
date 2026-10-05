@@ -1,7 +1,7 @@
 /**
- * <mfk-skill-badge skill="typing|mac|math|stem|writing|movie" icon="optional override">
+ * <mfk-skill-badge skill="typing|mac|math|stem|writing|movie|money|french" icon="optional override">
  *
- * Skills: Typing, Mac, Math, STEM, Writing, Movie.
+ * Skills: Typing, Mac, Math, STEM, Writing, Movie, Money, French.
  * Helpers: MFK.skill.normalize(skill), MFK.skill.label(skill), MFK.skill.icon(skill), MFK.skill.meta(skill)
  */
 (function () {
@@ -30,6 +30,9 @@
     film: "movie",
     media: "movie",
     watch: "movie",
+    french: "french",
+    francais: "french",
+    "français": "french",
   };
 
   const MAP = {
@@ -74,6 +77,13 @@
       icon: "🎬",
       bg: "var(--mfk-skill-movie-bg, #e0f2fe)",
       fg: "var(--mfk-skill-movie, #0284c7)",
+    },
+    french: {
+      id: "french",
+      label: "French",
+      icon: "🇫🇷",
+      bg: "var(--mfk-skill-french-bg, #dbeafe)",
+      fg: "var(--mfk-skill-french, #1d4ed8)",
     },
   };
 
