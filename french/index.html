@@ -94,31 +94,30 @@
     .how-card h3 { margin: 0.35rem 0 0.25rem; font-size: 1.02rem; }
     .how-card p { margin: 0; font-size: 0.9rem; color: var(--mfk-slate-soft); line-height: 1.5; }
 
-    /* ---------- practice game ---------- */
+/* ---------- matching game ---------- */
     .game-score-line { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-weight: 700; color: var(--mfk-slate-soft); font-size: 0.95rem; }
-    .game-prompt { text-align: center; margin: 1.1rem 0 0.5rem; }
-    .prompt-kicker { font-weight: 700; color: var(--mfk-skill-french, #1d4ed8); font-size: 0.95rem; margin-bottom: 0.3rem; }
-    .prompt-form { font-family: Fredoka, system-ui, sans-serif; font-size: 2.6rem; font-weight: 700; color: var(--mfk-slate); line-height: 1.15; }
-    .prompt-meta { color: var(--mfk-slate-soft); font-size: 0.95rem; margin-top: 0.35rem; }
-    .game-prompt .speak-btn { margin-top: 0.6rem; }
-    .game-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.6rem; margin-top: 1rem; }
-    .opt-btn {
-      font-family: Fredoka, system-ui, sans-serif; font-size: 1.15rem; font-weight: 600;
-      padding: 0.8rem 0.5rem; border-radius: 14px; border: 2px solid var(--mfk-border);
+    .match-board { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+    @media (max-width: 560px) { .match-board { gap: 0.6rem; } }
+    .match-col { display: flex; flex-direction: column; gap: 0.55rem; }
+    .match-card {
+      font-family: Fredoka, system-ui, sans-serif; font-size: 1.25rem; font-weight: 600;
+      padding: 0.75rem 0.6rem; border-radius: 14px; border: 2px solid var(--mfk-border);
       background: #fff; color: var(--mfk-slate); cursor: pointer; transition: all 0.12s ease;
+      text-align: center;
     }
-    .opt-btn:hover:not(:disabled) { border-color: var(--mfk-skill-french, #1d4ed8); transform: translateY(-2px); }
-    .opt-btn:disabled { cursor: default; }
-    .opt-btn.correct { background: #dcfce7; border-color: #16a34a; color: #166534; }
-    .opt-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
-    .opt-btn.dim { opacity: 0.5; }
+    .match-card:hover:not(:disabled) { border-color: var(--mfk-skill-french, #1d4ed8); transform: translateY(-2px); }
+    .match-card.selected { border-color: var(--mfk-skill-french, #1d4ed8); background: #eff6ff; box-shadow: 0 0 0 2px #bfdbfe; }
+    .match-card.matched { background: #dcfce7; border-color: #16a34a; color: #166534; cursor: default; }
+    .match-card.wrong-pick { animation: mfk-shake 0.35s ease; border-color: #dc2626; }
+    @keyframes mfk-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+    .match-card:disabled { cursor: default; }
     .game-feedback { min-height: 2.4rem; text-align: center; font-size: 1.05rem; font-weight: 600; margin-top: 0.9rem; line-height: 1.4; }
     .game-feedback.good { color: #16a34a; }
     .game-feedback.meh { color: var(--mfk-slate-soft); }
-    .game-next { display: block; margin: 0.3rem auto 0; }
     #game-stars { font-size: 2.6rem; }
     #game-done h3 { margin: 0.5rem 0 0.3rem; font-size: 1.5rem; }
     #game-done p { color: var(--mfk-slate-soft); margin: 0 0 1rem; }
+    .link-btn { background: none; border: none; color: var(--mfk-skill-french, #1d4ed8); font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 0.9rem; padding: 0; font-family: Inter, system-ui, sans-serif; }
   </style>
 </head>
 <body class="mfk-page">
@@ -150,6 +149,7 @@
           <span class="infinitive" id="verb-infinitive">—</span>
           <span class="english" id="verb-english"></span>
           <span class="pill-group" id="verb-group-pill"></span>
+          <button class="link-btn" id="practice-this-verb">Practice this verb →</button>
         </div>
         <div class="tip-box" id="verb-tip" hidden><strong>🔎 Detective note:</strong> <span id="verb-tip-text"></span></div>
 
@@ -165,23 +165,25 @@
       </div>
     </section>
 
-    <section id="practice" aria-label="Practice game" style="margin-top:2.25rem">
+<section id="practice" aria-label="Matching game" style="margin-top:2.25rem">
       <h2>Practice: match it! 🎮</h2>
-      <p style="color:var(--mfk-slate-soft);max-width:38rem">Two mini-games in one: hear a form and find <em>who</em> says it, then flip it around and pick the <em>right form</em>. Ten rounds, no pressure — every answer teaches you something.</p>
+      <p style="color:var(--mfk-slate-soft);max-width:38rem">Subjects on the left, verb forms on the right — all shuffled! Tap one of each to make a pair. Present tense, six pairs per game.</p>
       <div class="lab-card">
         <div id="game-start" style="text-align:center">
           <div style="font-size:2.5rem">🎮</div>
-          <h3>Ready to play?</h3>
-          <p style="color:var(--mfk-slate-soft)">10 rounds. Odd rounds: match the <strong>who</strong>. Even rounds: pick the <strong>right form</strong>. Tap 🔊 any time to hear it.</p>
-          <button class="listen-all" id="game-start-btn">▶ Start practice</button>
+          <div class="lab-controls" style="justify-content:center">
+            <label for="practice-verb-select">Practice verb:</label>
+            <select id="practice-verb-select" aria-label="Choose a verb to practice"></select>
+          </div>
+          <button class="listen-all" id="game-start-btn">▶ Start matching</button>
         </div>
         <div id="game-play" hidden>
-          <mfk-progress-bar id="game-progress" value="0" label="Round 1 of 10"></mfk-progress-bar>
-          <div class="game-score-line"><span id="game-score">Score: 0 / 10</span><span id="game-streak"></span></div>
-          <div class="game-prompt" id="game-prompt"></div>
-          <div class="game-options" id="game-options"></div>
+          <div class="game-score-line"><span id="game-score">Pairs: 0 / 6</span><span id="game-mistakes">Mistakes: 0</span></div>
+          <div class="match-board">
+            <div class="match-col" id="match-subjects" aria-label="Subjects"></div>
+            <div class="match-col" id="match-forms" aria-label="Verb forms"></div>
+          </div>
           <div class="game-feedback" id="game-feedback"></div>
-          <button class="listen-all game-next" id="game-next" hidden>Next →</button>
         </div>
         <div id="game-done" hidden style="text-align:center">
           <div id="game-stars"></div>
@@ -461,8 +463,8 @@
       });
       $("listen-all").addEventListener("click", speakAll);
 
-      /* ---------- practice game ---------- */
-      var game = { round: 0, score: 0, streak: 0, used: {}, current: null, mode: "A", ROUNDS: 10 };
+      /* ---------- matching game ---------- */
+      var match = { verb: null, selSubj: null, selForm: null, matched: 0, mistakes: 0 };
       var PRAISE = ["Bravo! 🎉", "Exactement! ⭐", "Parfait! 💪", "Génial! 🌟", "Oui! Magnifique! 🔥"];
 
       function shuffle(a) {
@@ -473,162 +475,154 @@
         return a;
       }
 
-      function pickQuestion() {
-        var verbs = state.data.verbs, tenses = state.data.tenses, pronouns = state.data.pronouns;
-        for (var tries = 0; tries < 60; tries++) {
-          var v = verbs[Math.floor(Math.random() * verbs.length)];
-          var t = tenses[Math.floor(Math.random() * tenses.length)];
-          var p = pronouns[Math.floor(Math.random() * pronouns.length)];
-          var key = v.infinitive + "|" + t.id + "|" + p;
-          if (!game.used[key]) { game.used[key] = true; return { verb: v, tense: t, pronoun: p }; }
-        }
-        return {
-          verb: verbs[Math.floor(Math.random() * verbs.length)],
-          tense: tenses[Math.floor(Math.random() * tenses.length)],
-          pronoun: pronouns[Math.floor(Math.random() * pronouns.length)]
-        };
-      }
-
-      function updateScoreLine() {
-        $("game-score").textContent = "Score: " + game.score + " / " + game.ROUNDS;
-        $("game-streak").textContent = game.streak >= 2 ? "🔥 Streak: " + game.streak : "";
-      }
-
-      function makeOpt(label, isCorrect, isFr) {
-        var b = document.createElement("button");
-        b.className = "opt-btn";
-        b.textContent = label;
-        b.setAttribute("data-correct", isCorrect ? "1" : "0");
-        if (isFr) b.setAttribute("lang", "fr");
-        b.addEventListener("click", function () { answer(isCorrect, b); });
-        return b;
-      }
-
-      function renderRound() {
-        var q = game.current;
-        var conj = q.verb.conjugations[q.tense.id];
-        var form = conj[q.pronoun];
-        var prompt = $("game-prompt");
-        var opts = $("game-options");
-        var fb = $("game-feedback");
-        fb.textContent = "";
-        fb.className = "game-feedback";
-        $("game-next").hidden = true;
-        opts.innerHTML = "";
-        if (game.mode === "A") {
-          prompt.innerHTML =
-            '<div class="prompt-kicker">Who says it? 🤔</div>' +
-            '<div class="prompt-form" lang="fr">' + esc(form) + "</div>" +
-            '<div class="prompt-meta">' + esc(q.verb.infinitive) + " — " + esc(q.verb.english) + " · " + esc(q.tense.label) + "</div>" +
-            '<button class="speak-btn" id="prompt-speak" aria-label="Hear the word">🔊 hear it</button>';
-          $("prompt-speak").addEventListener("click", function () {
-            if (voiceReady()) speakPhrase(form);
-          });
-          state.data.pronouns.forEach(function (p) {
-            opts.appendChild(makeOpt(SUBJECT_DISPLAY[p] || p, p === q.pronoun, false));
-          });
-          if (voiceReady()) speakPhrase(form);
-        } else {
-          prompt.innerHTML =
-            '<div class="prompt-kicker">Say it right! 🗣️</div>' +
-            '<div class="prompt-form">' + esc(SUBJECT_DISPLAY[q.pronoun] || q.pronoun) + "</div>" +
-            '<div class="prompt-meta">' + esc(q.verb.infinitive) + " — " + esc(q.verb.english) + " · " + esc(q.tense.label) + "</div>";
-          var seenForms = {};
-          seenForms[form] = true;
-          var distractForms = [];
-          shuffle(state.data.pronouns.slice()).forEach(function (p) {
-            if (p === q.pronoun) return;
-            var f = conj[p];
-            if (!seenForms[f]) { seenForms[f] = true; distractForms.push(f); }
-          });
-          var choices = shuffle(
-            [{ form: form, ok: true }].concat(
-              distractForms.slice(0, 3).map(function (f) { return { form: f, ok: false }; })
-            )
-          );
-          choices.forEach(function (ch) {
-            opts.appendChild(makeOpt(ch.form, ch.ok, true));
-          });
-        }
-      }
-
-      function answer(isCorrect, btn) {
-        var q = game.current;
-        var conj = q.verb.conjugations[q.tense.id];
-        var form = conj[q.pronoun];
-        var full = speechText(q.pronoun, form);
-        var fb = $("game-feedback");
-        Array.prototype.forEach.call($("game-options").children, function (b) {
-          b.disabled = true;
-          if (b.getAttribute("data-correct") === "1") b.classList.add("correct");
-          else b.classList.add("dim");
+      function buildPracticeSelect() {
+        var sel = $("practice-verb-select");
+        sel.innerHTML = "";
+        var surprise = document.createElement("option");
+        surprise.value = "__surprise__";
+        surprise.textContent = "🎲 Surprise me!";
+        sel.appendChild(surprise);
+        state.data.verbs.forEach(function (v) {
+          var opt = document.createElement("option");
+          opt.value = v.infinitive;
+          opt.textContent = v.infinitive + " — " + v.english;
+          sel.appendChild(opt);
         });
-        if (isCorrect) {
-          game.score++;
-          game.streak++;
-          fb.textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)];
-          fb.classList.add("good");
-        } else {
-          btn.classList.remove("dim");
-          btn.classList.add("wrong");
-          game.streak = 0;
-          fb.textContent = "Good try! It's « " + full + " » — you'll get the next one! 💛";
-          fb.classList.add("meh");
+      }
+
+      function updateMatchScore() {
+        $("game-score").textContent = "Pairs: " + match.matched + " / 6";
+        $("game-mistakes").textContent = "Mistakes: " + match.mistakes;
+      }
+
+      function renderMatchBoard() {
+        var subjCol = $("match-subjects"), formCol = $("match-forms");
+        subjCol.innerHTML = "";
+        formCol.innerHTML = "";
+        var conj = match.verb.conjugations.present;
+        shuffle(state.data.pronouns.slice()).forEach(function (p) {
+          var b = document.createElement("button");
+          b.className = "match-card";
+          b.textContent = SUBJECT_DISPLAY[p] || p;
+          b.setAttribute("data-key", p);
+          b.setAttribute("aria-label", "Subject: " + p);
+          b.addEventListener("click", function () { pickCard(b, "subj", p); });
+          subjCol.appendChild(b);
+        });
+        shuffle(state.data.pronouns.slice()).forEach(function (p) {
+          var b = document.createElement("button");
+          b.className = "match-card";
+          b.textContent = conj[p];
+          b.setAttribute("lang", "fr");
+          b.setAttribute("data-key", conj[p]);
+          b.setAttribute("aria-label", "Verb form: " + conj[p] + ". Tap to hear it.");
+          b.addEventListener("click", function () { pickCard(b, "form", conj[p]); });
+          formCol.appendChild(b);
+        });
+        updateMatchScore();
+      }
+
+      function pickCard(btn, type, key) {
+        if (btn.disabled) return;
+        if (type === "form" && voiceReady()) speakPhrase(key);
+        var cur = type === "subj" ? match.selSubj : match.selForm;
+        if (cur === btn) {
+          btn.classList.remove("selected");
+          if (type === "subj") match.selSubj = null; else match.selForm = null;
+          return;
         }
-        updateScoreLine();
-        if (voiceReady()) speakPhrase(full);
-        var next = $("game-next");
-        next.textContent = game.round >= game.ROUNDS ? "See my score →" : "Next →";
-        next.hidden = false;
+        if (cur) cur.classList.remove("selected");
+        btn.classList.add("selected");
+        if (type === "subj") match.selSubj = btn; else match.selForm = btn;
+        if (match.selSubj && match.selForm) checkPair();
       }
 
-      function nextRound() {
-        game.round++;
-        game.current = pickQuestion();
-        game.mode = game.round % 2 === 1 ? "A" : "B";
-        renderRound();
-        updateScoreLine();
-        var bar = $("game-progress");
-        bar.setAttribute("value", Math.round(((game.round - 1) / game.ROUNDS) * 100));
-        bar.setAttribute("label", "Round " + game.round + " of " + game.ROUNDS);
+      function checkPair() {
+        var subjKey = match.selSubj.getAttribute("data-key");
+        var formVal = match.selForm.getAttribute("data-key");
+        var sBtn = match.selSubj, fBtn = match.selForm;
+        match.selSubj = null;
+        match.selForm = null;
+        var fb = $("game-feedback");
+        // value-based match: je/il forms are identical in -er verbs, and both are right
+        if (match.verb.conjugations.present[subjKey] === formVal) {
+          sBtn.classList.remove("selected");
+          fBtn.classList.remove("selected");
+          sBtn.classList.add("matched");
+          fBtn.classList.add("matched");
+          sBtn.disabled = true;
+          fBtn.disabled = true;
+          match.matched++;
+          fb.textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)];
+          fb.className = "game-feedback good";
+          if (voiceReady()) speakPhrase(speechText(subjKey, formVal));
+          updateMatchScore();
+          if (match.matched >= 6) setTimeout(endMatch, 900);
+        } else {
+          match.mistakes++;
+          sBtn.classList.remove("selected");
+          fBtn.classList.remove("selected");
+          sBtn.classList.add("wrong-pick");
+          fBtn.classList.add("wrong-pick");
+          fb.textContent = "Not quite — try again! 💛";
+          fb.className = "game-feedback meh";
+          setTimeout(function () {
+            sBtn.classList.remove("wrong-pick");
+            fBtn.classList.remove("wrong-pick");
+          }, 400);
+          updateMatchScore();
+        }
       }
 
-      function endGame() {
+      function endMatch() {
         $("game-play").hidden = true;
         $("game-done").hidden = false;
-        var s = game.score, stars, title, msg;
-        if (s >= 9) { stars = "⭐⭐⭐"; title = "Incroyable!"; msg = "You got " + s + " out of " + game.ROUNDS + " — a true French star!"; }
-        else if (s >= 7) { stars = "⭐⭐"; title = "Très bien!"; msg = "You got " + s + " out of " + game.ROUNDS + " — almost perfect!"; }
-        else if (s >= 5) { stars = "⭐"; title = "Bien!"; msg = "You got " + s + " out of " + game.ROUNDS + " — solid! Play again to beat it."; }
-        else { stars = "💪"; title = "Keep going!"; msg = "You got " + s + " out of " + game.ROUNDS + ". Every round makes you stronger — try again!"; }
+        var m = match.mistakes, stars, title, msg;
+        if (m === 0) { stars = "⭐⭐⭐"; title = "Incroyable!"; msg = "All 6 pairs, zero mistakes — parfait!"; }
+        else if (m <= 2) { stars = "⭐⭐"; title = "Très bien!"; msg = "All 6 pairs with just " + m + " mistake" + (m === 1 ? "" : "s") + " — super!"; }
+        else { stars = "⭐"; title = "Bien joué!"; msg = "You matched all 6 pairs! Play again to beat " + m + " mistakes."; }
         $("game-stars").textContent = stars;
         $("game-final-title").textContent = title;
         $("game-final-msg").textContent = msg;
-        var bar = $("game-progress");
-        bar.setAttribute("value", 100);
-        bar.setAttribute("label", "Done!");
-      }
-
-      function startGame() {
-        if (!state.data) return;
-        speechSynthesisSafeCancel();
-        game.round = 0; game.score = 0; game.streak = 0; game.used = {};
-        $("game-start").hidden = true;
-        $("game-done").hidden = true;
-        $("game-play").hidden = false;
-        nextRound();
       }
 
       function speechSynthesisSafeCancel() {
         try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch (e) { /* ignore */ }
       }
 
-      $("game-start-btn").addEventListener("click", startGame);
-      $("game-again").addEventListener("click", startGame);
-      $("game-next").addEventListener("click", function () {
-        if (game.round >= game.ROUNDS) endGame();
-        else nextRound();
-      });
+      function startMatchGame() {
+        if (!state.data) return;
+        speechSynthesisSafeCancel();
+        var selVal = $("practice-verb-select").value;
+        if (selVal === "__surprise__") {
+          match.verb = state.data.verbs[Math.floor(Math.random() * state.data.verbs.length)];
+        } else {
+          var found = state.data.verbs.filter(function (v) { return v.infinitive === selVal; })[0];
+          match.verb = found || state.data.verbs[0];
+        }
+        match.selSubj = null;
+        match.selForm = null;
+        match.matched = 0;
+        match.mistakes = 0;
+        $("game-feedback").textContent = "";
+        $("game-feedback").className = "game-feedback";
+        $("game-start").hidden = true;
+        $("game-done").hidden = true;
+        $("game-play").hidden = false;
+        renderMatchBoard();
+      }
+
+      function practiceThisVerb() {
+        if (!state.data || !state.verb) return;
+        buildPracticeSelect();
+        $("practice-verb-select").value = state.verb.infinitive;
+        document.getElementById("practice").scrollIntoView({ behavior: "smooth" });
+        startMatchGame();
+      }
+
+      $("game-start-btn").addEventListener("click", startMatchGame);
+      $("game-again").addEventListener("click", startMatchGame);
+      $("practice-this-verb").addEventListener("click", practiceThisVerb);
 
       /* ---------- boot ---------- */
       fetch(DATA_URL)
@@ -638,6 +632,7 @@
           state.verb = data.verbs[0];
           initFromHash();
           buildVerbSelect();
+          buildPracticeSelect();
           buildTenseTabs();
           renderVerb();
         })
