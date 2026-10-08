@@ -153,6 +153,20 @@
       font-size: 0.8rem;
       color: #94a3b8;
     }
+    /* Compact variant (attribute: compact) — slim one-line bar for fixed-viewport game pages */
+    footer.compact { padding: 0.65rem 0; }
+    footer.compact .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    footer.compact .brand { margin: 0; font-size: 0.95rem; }
+    footer.compact .links { display: flex; gap: 1.1rem; margin: 0; padding: 0; list-style: none; }
+    footer.compact .links a { font-size: 0.82rem; color: #cbd5e1; }
+    footer.compact .links a:hover { color: var(--mfk-coral-light, #ff9a55); }
+    footer.compact .copy { font-size: 0.78rem; }
   `;
 
   function escapeHtml(str) {
@@ -179,7 +193,7 @@
 
   class MfkFooter extends HTMLElement {
     static get observedAttributes() {
-      return ["brand"];
+      return ["brand", "compact"];
     }
 
     constructor() {
@@ -208,12 +222,14 @@
     }
 
     renderSkeleton() {
+      const compact = this.hasAttribute("compact");
       this.shadowRoot.innerHTML = `
         <style>${STYLES}</style>
-        <footer>
+        <footer${compact ? ' class="compact"' : ""}>
           <div class="inner">
-            <p class="brand">MadeForMyKids</p>
-            <p class="mission">Loading…</p>
+            ${compact
+              ? `<p class="brand">MadeForMyKids</p><p class="copy">Loading…</p>`
+              : `<p class="brand">MadeForMyKids</p><p class="mission">Loading…</p>`}
           </div>
         </footer>
       `;
@@ -222,8 +238,28 @@
     render() {
       const nav = this._nav || FALLBACK_NAV;
       const brand = this.brand;
-      const footer = nav.footer || FALLBACK_NAV.footer;
       const year = new Date().getFullYear();
+
+      if (this.hasAttribute("compact")) {
+        this.shadowRoot.innerHTML = `
+          <style>${STYLES}</style>
+          <footer class="compact">
+            <div class="inner">
+              <p class="brand">${escapeHtml(brand)}</p>
+              <ul class="links" aria-label="Quick links">
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/parents/">Parents</a></li>
+                <li><a href="/privacy/">Privacy</a></li>
+                <li><a href="/terms/">Terms</a></li>
+              </ul>
+              <p class="copy">© ${year} ${escapeHtml(brand)}</p>
+            </div>
+          </footer>
+        `;
+        return;
+      }
+
+      const footer = nav.footer || FALLBACK_NAV.footer;
       const learn = footer.learn || [];
       const parents = footer.parents || [];
       const resources = footer.resources || [];
