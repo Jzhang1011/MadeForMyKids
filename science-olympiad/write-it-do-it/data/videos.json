@@ -1,1 +1,110 @@
-{"meta":{"lastReviewed":"2026-10-09","note":"Curated WIDI strategy resources. Teaching references only — not official Science Olympiad guidance. The 2027 Division B rules manual takes precedence."},"resources":[{"captions":null,"duration":null,"id":"sciovirtual-guide","keyMethods":["Number steps and organize related steps into sections.","Establish a shared coordinate system, orientation, and reference direction.","Identify the exact piece, connection point, orientation, and relative position.","Use consistent names for pieces and parts.","Estimate distance consistently using agreed reference units.","Make reversible changes before irreversible ones.","Review unclear instructions and practice with a partner."],"relatedActivity":{"href":"instruction-lab.html","label":"Practice in the Instruction Lab"},"skillTags":["Writer Strategy","Builder Strategy"],"source":"ScioVirtual","title":"Write It, Do It (WIDI) — Strategy Guide","type":"guide","url":"https://learn.sciovirtual.org/widi-write-it-do-it","watchFor":"How they split the event into writer skills and doer skills — and the 'temporary before permanent' building rule."},{"captions":null,"duration":null,"id":"soinc-bootcamp-2024","keyMethods":[],"relatedActivity":{"href":"index.html","label":"Start the 6-lesson path"},"skillTags":["Scoring","Writer Strategy","Official"],"source":"Science Olympiad (soinc.org)","title":"2024 Virtual Bootcamp — Write It Do It (Divisions B & C)","type":"guide","url":"https://www.soinc.org/2024-virtual-bootcamp-videos-resources","watchFor":"The official framing of the event: introductory video, slides, and the live session recording from Science Olympiad itself."}]}
+{
+  "meta": {
+    "lastReviewed": "2026-10-09",
+    "note": "Curated WIDI strategy resources. Teaching references only — not official Science Olympiad guidance. The 2027 Division B rules manual takes precedence."
+  },
+  "resources": [
+    {
+      "id": "gt-2024-workshop",
+      "type": "video",
+      "title": "Write It Do It Div. B/C Workshop | SciOly@GT 2024 Event Workshop Series",
+      "source": "Science Olympiad at Georgia Tech",
+      "url": "https://www.youtube.com/watch?v=L2VCu20boEo",
+      "duration": "1:02:48",
+      "captions": true,
+      "skillTags": [
+        "Scoring",
+        "Writer Strategy",
+        "Time Management"
+      ],
+      "watchFor": "How they break down the scoring categories, how to organize the writer's description, managing the clock, and deciding which details actually deserve attention.",
+      "relatedActivity": {
+        "label": "Practice in the Instruction Lab",
+        "href": "instruction-lab.html"
+      }
+    },
+    {
+      "id": "macomb-2025-review",
+      "type": "video",
+      "title": "Write It Do It 2025",
+      "source": "Macomb Science Olympiad",
+      "url": "https://www.youtube.com/watch?v=f_WEybmeWrI",
+      "duration": "19:01",
+      "captions": true,
+      "skillTags": [
+        "Writer Strategy",
+        "Builder Strategy"
+      ],
+      "watchFor": "Bullet-point instructions, estimating distances consistently, and observing the model without touching it when the event rules prohibit touching.",
+      "relatedActivity": {
+        "label": "Try the observation drills",
+        "href": "observe.html"
+      }
+    },
+    {
+      "id": "uchicago-10-tips",
+      "type": "video",
+      "title": "UCSO Winter Workshop 2022 - Write it, Do It B/C: 10 Tips for Teams",
+      "source": "U. Chicago Science Olympiad (UCSO)",
+      "url": "https://www.youtube.com/watch?v=z_sgJgvd9eg",
+      "duration": "13:15",
+      "captions": true,
+      "skillTags": [
+        "Writer Strategy",
+        "Builder Strategy"
+      ],
+      "watchFor": "Ten concise team tips from their 2022 winter workshop. Note: this video is unlisted, so this direct link is the only way to reach it — and as a 2022 recording, treat it as strategy reference, not current rules.",
+      "relatedActivity": {
+        "label": "Try a blind build",
+        "href": "build.html"
+      }
+    },
+    {
+      "captions": null,
+      "duration": null,
+      "id": "sciovirtual-guide",
+      "keyMethods": [
+        "Number steps and organize related steps into sections.",
+        "Establish a shared coordinate system, orientation, and reference direction.",
+        "Identify the exact piece, connection point, orientation, and relative position.",
+        "Use consistent names for pieces and parts.",
+        "Estimate distance consistently using agreed reference units.",
+        "Make reversible changes before irreversible ones.",
+        "Review unclear instructions and practice with a partner."
+      ],
+      "relatedActivity": {
+        "href": "instruction-lab.html",
+        "label": "Practice in the Instruction Lab"
+      },
+      "skillTags": [
+        "Writer Strategy",
+        "Builder Strategy"
+      ],
+      "source": "ScioVirtual",
+      "title": "Write It, Do It (WIDI) — Strategy Guide",
+      "type": "guide",
+      "url": "https://learn.sciovirtual.org/widi-write-it-do-it",
+      "watchFor": "How they split the event into writer skills and doer skills — and the 'temporary before permanent' building rule."
+    },
+    {
+      "captions": null,
+      "duration": null,
+      "id": "soinc-bootcamp-2024",
+      "keyMethods": [],
+      "relatedActivity": {
+        "href": "index.html",
+        "label": "Start the 6-lesson path"
+      },
+      "skillTags": [
+        "Scoring",
+        "Writer Strategy",
+        "Official"
+      ],
+      "source": "Science Olympiad (soinc.org)",
+      "title": "2024 Virtual Bootcamp — Write It Do It (Divisions B & C)",
+      "type": "guide",
+      "url": "https://www.soinc.org/2024-virtual-bootcamp-videos-resources",
+      "watchFor": "The official framing of the event: introductory video, slides, and the live session recording from Science Olympiad itself."
+    }
+  ]
+}
