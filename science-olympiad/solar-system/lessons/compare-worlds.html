@@ -48,7 +48,7 @@
         <p class="solar-verdict" id="compare-contrast" style="font-weight:600"></p>
         <p class="fine">Data: NASA planetary fact sheets, reviewed 2026-10-09. Temperatures are day–night averages; pressures are surface values.</p>
       </div>
-      <div class="solar-watchfor"><strong>🤔 Use the contrast:</strong> look at your two worlds. Which <em>single factor</em> explains most of the difference between them — distance, atmosphere, or magnetic field? Write your answer, then check it in Step 3.</div>
+      <div class="solar-watchfor"><strong>🤔 Use the contrast:</strong> look at your two worlds. Which <em>single factor</em> explains most of the difference between them — distance, atmosphere, gravity, or magnetic field? The 🔍 contrast line under the comparator is your answer key — score your prediction against it.</div>
       <textarea class="solar-selfcheck" id="predict" rows="2" placeholder="The biggest difference-maker is…"></textarea>
     </section>
 
@@ -71,7 +71,7 @@
         <div class="solar-card">
           <div class="card-icon">🧊</div>
           <h3>Mars: the stripped world</h3>
-          <p>About 4 billion years ago Mars lost its global magnetic field. Without that shield, the solar wind spent eons stripping the atmosphere into space — NASA's MAVEN spacecraft has measured the escape happening today. Thin air can't trap heat or keep water liquid: rivers became ice and dust.</p>
+          <p>The leading account: about 4 billion years ago Mars lost its global magnetic field, and without that shield the solar wind spent eons stripping the atmosphere into space — NASA's MAVEN spacecraft measures the escape still happening today. Mars is also much smaller than Earth or Venus, so its weaker gravity holds gas less tightly. Thin air can't trap heat or keep water liquid: rivers became ice and dust.</p>
         </div>
       </div>
 
@@ -101,12 +101,12 @@
             <text x="475" y="18" fill="#aab4dd">today</text>
           </g>
         </svg>
-        <figcaption class="solar-note" style="text-align:center">Each step caused the next: no magnetic shield → solar wind erosion → thin atmosphere → water frozen or lost. Break any link and Mars might have stayed wet.</figcaption>
+        <figcaption class="solar-note" style="text-align:center">The leading account of how Mars dried out — MAVEN sees the stripping step still happening today, though scientists are still testing how much each link mattered. One caution: a magnetic field can <em>slow</em> atmospheric loss, but it doesn't decide who keeps an atmosphere — Venus has no global field and still holds 92 bar. Mars is smaller, with weaker gravity, so gas escapes more easily.</figcaption>
       </figure>
 
       <div class="solar-misconception"><strong>Common misconception:</strong> "Mars is cold just because it's farther from the Sun." Distance contributes — but the stripped atmosphere is the bigger story. Lesson 1 already proved distance isn't destiny: Venus is farther than Mercury and far hotter. Same logic applies here.</div>
 
-      <div class="solar-fact"><strong>About magnetic fields:</strong> scientists investigate magnetic fields as one factor that can protect an atmosphere — Mars's story is the evidence. It isn't a universal requirement for habitability (tidally-heated ocean worlds may do without one), but losing one can be catastrophic.</div>
+      <div class="solar-fact"><strong>About magnetic fields:</strong> scientists investigate magnetic fields as one factor that can <em>slow</em> atmospheric loss — Mars's story is the evidence. It isn't a universal requirement, and it doesn't decide who keeps an atmosphere: Venus has no global field yet holds 92 bar, because its Earth-like size and gravity hold gas tightly. (This matters for Lesson 3: icy moons can hide oceans with no magnetic shield at all.)</div>
     </section>
 
     <!-- STEP 4: PRACTICE -->
@@ -173,9 +173,9 @@
 
       // EXPLORE — side-by-side world comparator (data: NASA fact sheets, reviewed 2026-10-09)
       var WORLDS = {
-        venus: { name: "Venus", icon: "🟠", dist: "0.72 AU", atm: "96.5% CO₂", pressure: "92 bar", temp: "464 °C", water: "Possibly ancient oceans — boiled away", field: "No global field" },
-        earth: { name: "Earth", icon: "🌍", dist: "1.00 AU", atm: "78% N₂, 21% O₂", pressure: "1 bar", temp: "15 °C", water: "Liquid oceans today", field: "Strong global field" },
-        mars:  { name: "Mars",  icon: "🔴", dist: "1.52 AU", atm: "95% CO₂", pressure: "0.006 bar", temp: "−63 °C", water: "Ancient rivers — now ice", field: "No global field (crustal remnants)" }
+        venus: { name: "Venus", icon: "🟠", dist: "0.72 AU", atm: "96.5% CO₂", pressure: "92 bar", temp: "464 °C", gravity: "0.90 g", water: "Possibly ancient oceans — boiled away", field: "No global field" },
+        earth: { name: "Earth", icon: "🌍", dist: "1.00 AU", atm: "78% N₂, 21% O₂", pressure: "1 bar", temp: "15 °C", gravity: "1.00 g", water: "Liquid oceans today", field: "Strong global field" },
+        mars:  { name: "Mars",  icon: "🔴", dist: "1.52 AU", atm: "95% CO₂", pressure: "0.006 bar", temp: "−63 °C", gravity: "0.38 g", water: "Ancient rivers — now polar caps + underground ice; no stable surface liquid water", field: "No global field (crustal remnants)" }
       };
       var CONTRAST = {
         "earth|mars": "Closest pair in distance — farthest apart in fate. The difference is almost entirely atmosphere: kept vs. stripped.",
@@ -188,6 +188,7 @@
           '<div class="k">atmosphere</div><div class="v" style="font-size:1.05rem">' + w.atm + "</div>" +
           '<div class="k">surface pressure</div><div class="v" style="font-size:1.05rem">' + w.pressure + "</div>" +
           '<div class="k">avg. temperature</div><div class="v" style="font-size:1.05rem">' + w.temp + "</div>" +
+          '<div class="k">surface gravity</div><div class="v" style="font-size:1.05rem">' + w.gravity + "</div>" +
           '<div class="k">water story</div><div class="v" style="font-size:1.05rem">' + w.water + "</div>" +
           '<div class="k">magnetic field</div><div class="v" style="font-size:1.05rem">' + w.field + "</div></div>";
       }
@@ -236,12 +237,12 @@
           text: "Earth's global magnetic field helps habitability mainly by…",
           options: [
             "Warming the planet directly",
-            "Deflecting the solar wind so the atmosphere isn't stripped away",
+            "Deflecting the solar wind, slowing the stripping of the atmosphere",
             "Creating the oceans",
             "Blocking all radiation from the Sun"
           ],
           answer: 1,
-          why: "The field is a shield, not a heater. Scientists investigate it as one factor protecting atmospheres — Mars is what happens without one. (It doesn't block all radiation, and it didn't create the oceans.)"
+          why: "The field is a shield, not a heater: it deflects the solar wind and slows atmospheric stripping. Scientists investigate it as one factor — Mars shows what losing one can accelerate, and Venus (no field, 92 bar) shows it isn't the decider. (It doesn't block all radiation, and it didn't create the oceans.)"
         },
         {
           text: "Which is the better scientific explanation?",
@@ -264,15 +265,15 @@
       // REVIEW — exit check + gated completion
       SOLAR.quiz("exit-quiz", [
         {
-          text: "Mars once had rivers and lakes. What changed?",
+          text: "Venus also has no global magnetic field. So why didn't it lose its atmosphere like Mars?",
           options: [
-            "Mars moved farther from the Sun",
-            "It lost its global magnetic field, the solar wind stripped its atmosphere, and the thin air couldn't keep water liquid",
-            "Its volcanoes froze the water",
-            "Nothing changed — the rivers are still flowing underground today"
+            "Because Venus is closer to the Sun",
+            "Venus is nearly Earth's size, so its stronger gravity holds gas tightly — a field slows loss but doesn't decide who keeps an atmosphere",
+            "Venus's volcanoes constantly replace all lost air",
+            "Magnetic fields have no effect on atmospheres at all"
           ],
           answer: 1,
-          why: "That's the full chain from the timeline: field fades → wind strips air → thin atmosphere → water frozen or lost. One link breaks the whole story."
+          why: "This is the question the whole lesson builds to. Mars is small (0.38 g), so once the solar wind got in, gas escaped easily. Venus kept its 92 bar through size and gravity. The field is one factor, not the decider."
         },
         {
           text: "Why can't distance from the Sun alone explain why Venus is scorching and Mars is freezing?",
