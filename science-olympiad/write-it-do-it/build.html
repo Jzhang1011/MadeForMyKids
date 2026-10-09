@@ -331,13 +331,17 @@
         $("phase-review").scrollIntoView();
       }
 
-      function setMode(m) {
-        mode = m;
-        $("mode-blind").setAttribute("aria-pressed", m === "blind" ? "true" : "false");
-        $("mode-guided").setAttribute("aria-pressed", m === "guided" ? "true" : "false");
-        $("mode-sub").textContent = m === "blind"
+      function syncModeUI() {
+        $("mode-blind").setAttribute("aria-pressed", mode === "blind" ? "true" : "false");
+        $("mode-guided").setAttribute("aria-pressed", mode === "guided" ? "true" : "false");
+        $("mode-sub").textContent = mode === "blind"
           ? "Read the description, rebuild the structure on the grid — the target stays hidden until you submit."
           : "Study the target, then rebuild it from memory and understanding. Good warm-up before going blind.";
+      }
+
+      function setMode(m) {
+        mode = m;
+        syncModeUI();
         renderBrief();
       }
 
@@ -352,8 +356,9 @@
         });
         sel.addEventListener("change", function () { loadChallenge(sel.value); });
         var q = params();
-        setMode(q.get("mode") === "guided" ? "guided" : "blind");
+        mode = q.get("mode") === "guided" ? "guided" : "blind";
         loadChallenge(q.get("c") || challenges[0].id);
+        syncModeUI();
 
         $("mode-blind").addEventListener("click", function () { setMode("blind"); });
         $("mode-guided").addEventListener("click", function () { setMode("guided"); });
