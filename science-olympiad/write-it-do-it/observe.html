@@ -18,6 +18,7 @@
     <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
     <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Observe Like an Engineer 🔍</h1>
     <p class="widi-section-sub">Every good instruction starts with careful looking. Inspect every model in the same order, so nothing gets missed.</p>
+    <div id="lesson-watch"></div>
 
     <!-- The 7-step framework -->
     <div class="widi-panel">
@@ -36,7 +37,7 @@
     </div>
 
     <!-- Activity 1: count -->
-    <div class="widi-panel">
+    <div class="widi-panel" id="drill-1">
       <h2>Drill 1. Count the pieces <span class="widi-tag">Inventory</span></h2>
       <p class="widi-note">How many individual pieces (rods + connectors) make up this structure? Count rods and connectors separately, then total.</p>
       <div class="widi-two">
@@ -97,11 +98,7 @@
       <p class="widi-note" style="margin-top:0.8rem"><strong>Rule of thumb:</strong> never identify a piece by color alone when several pieces share that color. Name the exact piece, the exact connection point, and the exact location.</p>
     </div>
 
-    <div class="widi-panel" style="background:var(--mfk-tint)">
-      <h2>Ready for the next step?</h2>
-      <p class="widi-note">Good observing is only half the event. Now turn what you see into instructions someone else can build from.</p>
-      <a class="widi-btn primary" href="instruction-lab.html">Write instructions →</a>
-    </div>
+    <div id="lesson-review"></div>
   </main>
 
   <mfk-footer></mfk-footer>
@@ -144,6 +141,12 @@
       }
 
       WIDI.store.recordVisit("observe");
+      WIDI.lessonFrame({
+        n: 1, title: "Observe Like an Engineer", videoId: "macomb-2025-review", practiceId: "drill-1",
+        strategyTip: "Inspect in the same order every time: inventory, orientation, structure, connections, position, details, review. Skipped steps become holes in your instructions.",
+        reviewQ: "Can you name the 7 inspection steps in order — and which one do most beginners skip? (It's step 4: Connections.)",
+        nextHref: "instruction-lab.html", nextLabel: "Lesson 2: Write Clear Instructions"
+      });
       fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
         var byId = {};
         data.challenges.forEach(function (c) { byId[c.id] = c; });

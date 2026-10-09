@@ -204,3 +204,7 @@
   .mfk-page { background:#fff; }
   .widi-panel { break-inside:avoid; box-shadow:none; }
 }
+.widi-details { border:1px solid var(--mfk-border); border-radius:12px; padding:0.7rem 1rem; margin-top:0.8rem; background:#fff; }
+.widi-details summary { cursor:pointer; font-size:0.95rem; }
+.widi-details summary::-webkit-details-marker { color:var(--mfk-skill-widi); }
+.widi-details[open] summary { margin-bottom:0.6rem; }

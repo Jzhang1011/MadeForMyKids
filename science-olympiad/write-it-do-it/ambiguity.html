@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Find and Fix Ambiguity — Write It Do It — MadeForMyKids</title>
+  <meta name="description" content="Learn to spot unclear instructions, explain why they fail, and rewrite them so a builder gets it right." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="assets/widi.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <main class="widi-wrap">
+    <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
+    <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Find and Fix Ambiguity 🔎</h1>
+    <p class="widi-section-sub">An ambiguous instruction isn't wrong — it's worse. Two builders read it two ways and build two different structures.</p>
+    <div id="lesson-watch"></div>
+
+    <div class="widi-panel" id="amb-practice">
+      <h2>The test: could two builders disagree?</h2>
+      <p class="widi-note">Read each sentence below. If two reasonable builders could build different things from it, it's ambiguous. Rewrite it, then compare with the model answer.</p>
+      <div id="exercises"></div>
+    </div>
+
+    <details class="widi-details">
+      <summary><strong>Ambiguity patterns to memorize</strong></summary>
+      <ul class="widi-steps">
+        <li><strong>Piece identity:</strong> "the red piece" when several red pieces exist. Fix: name color + length + which one.</li>
+        <li><strong>Direction:</strong> "on the left" with no reference. Fix: "on the left <em>of what</em>."</li>
+        <li><strong>Orientation:</strong> "put the connector down" with no facing. Fix: name which way every opening faces.</li>
+        <li><strong>Connection points:</strong> "attach A to B" with no ends or openings. Fix: "the rod's left end into the connector's right-facing opening."</li>
+        <li><strong>Relative position:</strong> "near the middle." Fix: anchor to a reference edge + a distance.</li>
+        <li><strong>Missing steps:</strong> jumping from step 2 to step 5. Fix: number every step; check the inventory at the end.</li>
+      </ul>
+    </details>
+
+    <div id="lesson-review"></div>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="assets/widi.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      WIDI.store.recordVisit("ambiguity");
+
+      var EXERCISES = [
+        {
+          bad: "\u201cAttach the red piece to the blue piece.\u201d",
+          why: "Which red piece? There are two on the table. Which end? Which opening on the blue connector?",
+          model: "\u201cPlug the right end of the 3-long red rod into the upward-facing opening of the blue straight connector at C3.\u201d",
+          fixed: "Names the exact piece (3-long red rod, right end), the exact connection point (upward-facing opening), and the exact location (C3)."
+        },
+        {
+          bad: "\u201cPut it on the left.\u201d",
+          why: "Left of what? The board? The last piece? Another builder puts it somewhere else entirely.",
+          model: "\u201cPlace the elbow connector two squares to the left of the front-left straight connector, openings facing front and right.\u201d",
+          fixed: "Anchors the direction to a named reference point, adds a distance, and states the orientation."
+        },
+        {
+          bad: "\u201cAdd the last two pieces near the middle.\u201d",
+          why: "Which two pieces? 'Near the middle' could be any of nine squares — and the step order is missing.",
+          model: "\u201cStep 7: Place a 2-long yellow rod vertically at D4\u2013D5. Step 8: Cap its top end with the remaining tee connector, open side facing up.\u201d",
+          fixed: "Numbers the steps, names each piece exactly, and gives grid positions instead of 'near'."
+        }
+      ];
+
+      var box = document.getElementById("exercises");
+      var doneCount = 0;
+      EXERCISES.forEach(function (ex, i) {
+        var div = document.createElement("div");
+        div.className = "widi-panel";
+        div.style.marginTop = "0.8rem";
+        div.innerHTML =
+          "<h3>Exercise " + (i + 1) + "</h3>" +
+          '<div class="widi-quote">' + esc(ex.bad) + "</div>" +
+          '<p class="widi-note"><strong>Why it fails:</strong> ' + esc(ex.why) + "</p>" +
+          '<label style="font-weight:700" for="rw-' + i + '">Your rewrite:</label>' +
+          '<textarea class="widi-write-area" id="rw-' + i + '" style="min-height:80px;margin-top:0.4rem" placeholder="Rewrite the sentence so two builders would build the same thing…"></textarea>' +
+          '<div style="margin-top:0.6rem"><button class="widi-toolbtn primary" id="cmp-' + i + '">Compare with model answer</button></div>' +
+          '<div class="widi-feedback" id="fb-' + i + '"></div>';
+        box.appendChild(div);
+        document.getElementById("cmp-" + i).addEventListener("click", function () {
+          var fb = document.getElementById("fb-" + i);
+          fb.className = "widi-feedback show good";
+          fb.innerHTML = "<strong>Model answer:</strong> " + esc(ex.model) + "<br><strong>What changed:</strong> " + esc(ex.fixed);
+          doneCount++;
+          if (doneCount >= EXERCISES.length) WIDI.store.recordLesson("ambiguity");
+          var mine = document.getElementById("rw-" + i).value.trim();
+          if (mine) {
+            var note = document.createElement("p");
+            note.className = "widi-note";
+            note.innerHTML = "<strong>Your version:</strong> " + esc(mine);
+            fb.appendChild(note);
+          }
+        });
+      });
+
+      WIDI.lessonFrame({
+        n: 4, title: "Find and Fix Ambiguity", videoId: "uchicago-10-tips", practiceId: "amb-practice",
+        strategyTip: "Before calling any instruction done, ask: could two reasonable builders build different things from this sentence? If yes, rewrite it.",
+        reviewQ: "Pick any sentence you wrote in the Instruction Lab and run the two-builder test on it. What did you find?",
+        nextHref: "partner.html", nextLabel: "Lesson 5: Practice with a Partner"
+      });
+    })();
+  </script>
+</body>
+</html>

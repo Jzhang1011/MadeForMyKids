@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Improve Your Strategy — Write It Do It — MadeForMyKids</title>
+  <meta name="description" content="Organize instructions, manage practice time, review for omissions, and learn which details actually matter." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="assets/widi.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <main class="widi-wrap">
+    <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
+    <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Improve Your Strategy 📈</h1>
+    <p class="widi-section-sub">Good builders aren't faster hands — they're better systems. Four habits separate strong teams from stuck ones.</p>
+    <div id="lesson-watch"></div>
+
+    <div class="widi-panel" id="strat-practice">
+      <h2>The 4 habits</h2>
+      <ol class="widi-steps">
+        <li><strong>Organize before you write.</strong> Number every step. Group related steps into sections. Build the base first, then connections, then details.</li>
+        <li><strong>Manage your practice time.</strong> In practice, give the writer a fixed window and the builder a fixed window — then compare. Rushing the writing is where most points are lost.</li>
+        <li><strong>Review for omissions.</strong> Before calling instructions done: does every piece in the inventory appear? Does every rod end plug into a named opening?</li>
+        <li><strong>Decide which details matter.</strong> Not every detail scores. Piece identity, connections, and positions decide the build; decorative description doesn't. Spend words where points live.</li>
+      </ol>
+      <p class="widi-note">These are practice habits drawn from team workshops — not official rules. The current 2027 rules manual is the only authority on event format and timing.</p>
+    </div>
+
+    <details class="widi-details">
+      <summary><strong>Deep dive: organizing long instructions</strong></summary>
+      <ul class="widi-steps">
+        <li>Write the overview first: one or two sentences describing the whole structure.</li>
+        <li>Define the reference system once at the top — then never redefine it mid-instructions.</li>
+        <li>Build independent subassemblies separately, then describe joining them.</li>
+        <li>Make reversible changes before irreversible ones: place before you fasten, position before you commit.</li>
+        <li>End with an inventory check: count pieces in the instructions against the parts list.</li>
+      </ul>
+    </details>
+
+    <details class="widi-details">
+      <summary><strong>Deep dive: time management in practice</strong></summary>
+      <ul class="widi-steps">
+        <li>Agree on direction words with your partner <em>before</em> the timer starts — north/south/east/west or a clock face beats "left" and "right."</li>
+        <li>Agree on a distance unit (a knuckle, a finger width) so estimates are consistent.</li>
+        <li>The writer's scarcest resource is clarity, not speed. A calm, complete description beats a rushed, hole-filled one.</li>
+        <li>Save decorative details for last — if time runs short, the structure must already be buildable.</li>
+      </ul>
+      <p class="widi-note">Want the full workshop version? Watch the <a href="https://www.youtube.com/watch?v=L2VCu20boEo" target="_blank" rel="noopener">Georgia Tech 2024 WIDI workshop</a> (about an hour: scoring categories, writer structure, when a detail isn't worth the time).</p>
+    </details>
+
+    <div class="widi-panel">
+      <h2>Strategy checklist</h2>
+      <p class="widi-note">Check each box honestly — this completes the lesson.</p>
+      <ul class="widi-rubric" id="strat-checklist">
+        <li><input type="checkbox" id="s1" /><label for="s1"><strong>My partner and I agreed on direction words</strong> (e.g. north/south/east/west or clock face) before practicing.</label></li>
+        <li><input type="checkbox" id="s2" /><label for="s2"><strong>My instructions are numbered</strong> and build the base before the details.</label></li>
+        <li><input type="checkbox" id="s3" /><label for="s3"><strong>Every piece in the inventory appears</strong> in my instructions — nothing missing, nothing extra.</label></li>
+        <li><input type="checkbox" id="s4" /><label for="s4"><strong>Every rod end plugs into a named opening</strong> — I traced each one.</label></li>
+        <li><input type="checkbox" id="s5" /><label for="s5"><strong>I reviewed for omissions</strong> instead of stopping at the first draft.</label></li>
+      </ul>
+      <div class="widi-feedback" id="strat-fb"></div>
+      <button class="widi-toolbtn primary" id="btn-strat-done">Complete lesson</button>
+    </div>
+
+    <div id="lesson-review"></div>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="assets/widi.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      WIDI.store.recordVisit("strategy");
+      WIDI.lessonFrame({
+        n: 6, title: "Improve Your Strategy", videoId: "gt-2024-workshop", practiceId: "strat-practice",
+        strategyTip: "Systems beat speed: agreed direction words, numbered steps, an inventory check at the end. Practice the system, not just the build.",
+        reviewQ: "Which of the 4 habits would have saved you the most points on your last build?",
+        nextHref: "challenge-library.html", nextLabel: "Keep practicing in the library"
+      });
+
+      document.getElementById("btn-strat-done").addEventListener("click", function () {
+        var boxes = document.querySelectorAll("#strat-checklist input[type=checkbox]");
+        var checked = 0;
+        boxes.forEach(function (b) { if (b.checked) checked++; });
+        var el = document.getElementById("strat-fb");
+        if (checked === boxes.length) {
+          el.className = "widi-feedback show good";
+          el.innerHTML = "<strong>5/5 — strategy lesson complete!</strong> You've finished all 6 lessons. The rest is practice: same partner, timed rounds, compare, rewrite, repeat.";
+          WIDI.store.recordLesson("improve");
+        } else {
+          el.className = "widi-feedback show bad";
+          el.innerHTML = "<strong>" + checked + "/5.</strong> Unchecked habits are exactly what costs points. Try one in your next practice round, then come back.";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -388,5 +388,47 @@
     store: store,
     ERROR_LABEL: ERROR_LABEL,
     ERROR_TIP: ERROR_TIP,
+    /* Lesson template framing: optional video intro up top, review + next-lesson footer.
+       Call as WIDI.lessonFrame({ n, title, videoId, practiceId, reviewQ, strategyTip, nextHref, nextLabel }).
+       Videos are optional — a "skip to practice" link is always shown. */
+    lessonFrame: function (o) {
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      var watch = document.getElementById("lesson-watch");
+      var review = document.getElementById("lesson-review");
+      function render(video) {
+        if (watch) {
+          var vHtml = "";
+          if (video && video.url) {
+            vHtml = '<div class="widi-video-card" style="margin-bottom:0.8rem">' +
+              '<h3>🎬 ' + esc(video.title) + '</h3>' +
+              '<div class="widi-video-meta"><span>' + esc(video.source) + "</span>" +
+              (video.duration ? "<span>⏱ " + esc(video.duration) + "</span>" : "") +
+              (video.captions ? "<span>💬 Captions</span>" : "") + "</div>" +
+              '<p class="widi-note" style="margin:0"><strong>Watch for:</strong> ' + esc(video.watchFor || "") + "</p>" +
+              '<div style="display:flex;gap:0.5rem;flex-wrap:wrap">' +
+              '<a class="widi-toolbtn primary" href="' + esc(video.url) + '" target="_blank" rel="noopener" style="text-decoration:none">▶ Watch</a>' +
+              (o.practiceId ? '<a class="widi-toolbtn" href="#' + o.practiceId + '" style="text-decoration:none">Skip to practice ↓</a>' : "") +
+              "</div></div>";
+          } else if (o.practiceId) {
+            vHtml = '<p><a class="widi-btn ghost" href="#' + o.practiceId + '">Skip to practice ↓</a></p>';
+          }
+          watch.innerHTML = '<p class="widi-section-sub" style="margin-top:0"><strong>Lesson ' + o.n + ":</strong> " + esc(o.title) + ' <span class="widi-note">— video optional</span></p>' + vHtml;
+        }
+        if (review) {
+          review.innerHTML = '<div class="widi-panel" style="background:var(--mfk-tint)">' +
+            "<h2>Review &amp; next step</h2>" +
+            '<p class="widi-note"><strong>Strategy reminder:</strong> ' + esc(o.strategyTip || "") + "</p>" +
+            '<p class="widi-note"><strong>Check yourself:</strong> ' + esc(o.reviewQ || "") + "</p>" +
+            (o.nextHref ? '<a class="widi-btn primary" href="' + o.nextHref + '">' + esc(o.nextLabel || "Next lesson") + " →</a>" : "") +
+            "</div>";
+        }
+      }
+      if (o.videoId) {
+        fetch("data/videos.json").then(function (r) { return r.json(); }).then(function (data) {
+          var v = (data.resources || []).filter(function (x) { return x.id === o.videoId && x.url; })[0];
+          render(v || null);
+        }).catch(function () { render(null); });
+      } else { render(null); }
+    },
   };
 })();

@@ -18,6 +18,7 @@
     <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
     <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Write Better Instructions ✏️</h1>
     <p class="widi-section-sub">Your writing is the whole event. Follow the workflow, check for ambiguity, then self-score.</p>
+    <div id="lesson-watch"></div>
 
     <!-- Guided workflow -->
     <div class="widi-panel">
@@ -34,7 +35,7 @@
       </ol>
     </div>
 
-    <div class="widi-panel" style="margin-top:0.8rem">
+    <div class="widi-panel" id="write-practice" style="margin-top:0.8rem">
       <div style="display:flex;flex-wrap:wrap;gap:0.8rem;align-items:center;margin-bottom:1rem">
         <label for="challenge-select" style="font-weight:700">Structure:</label>
         <select id="challenge-select" style="font-size:1rem;padding:0.5rem 0.7rem;border-radius:10px;border:2px solid var(--mfk-border);max-width:100%"></select>
@@ -61,6 +62,8 @@
     <div class="widi-panel">
       <h2>Rubric self-check</h2>
       <p class="widi-note">Check each box honestly. A useful instruction lets another person build the <em>same</em> structure — not just a similar one.</p>
+      <details class="widi-details">
+        <summary><strong>Rubric self-check (6 items) — open after you write</strong></summary>
       <ul class="widi-rubric" id="rubric">
         <li><input type="checkbox" id="r1" /><label for="r1"><strong>Reference orientation stated.</strong> I said which edge faces the builder (front/back/left/right are meaningless without it).</label></li>
         <li><input type="checkbox" id="r2" /><label for="r2"><strong>Every piece named.</strong> Each rod has a color and length; each connector has a type — no "the red thing."</label></li>
@@ -71,7 +74,9 @@
       </ul>
       <div class="widi-feedback" id="rubric-fb"></div>
       <button class="widi-toolbtn primary" id="btn-score">Score my checklist</button>
+      </details>
     </div>
+    <div id="lesson-review"></div>
 
     <div class="widi-panel">
       <h2>Weak vs. improved — same structure</h2>
@@ -198,6 +203,12 @@
       }
 
       WIDI.store.recordVisit("write");
+      WIDI.lessonFrame({
+        n: 2, title: "Write Clear Instructions", videoId: "gt-2024-workshop", practiceId: "write-practice",
+        strategyTip: "Every instruction follows the same pattern: piece identity + exact connection + orientation + relative position. If a sentence is missing one of the four, rewrite it.",
+        reviewQ: "Why is \u201cPut the red piece over there\u201d weaker than \u201cPlug the left end of the 3-long red rod into the right-facing opening of the elbow at B2\u201d? Name all four missing pieces.",
+        nextHref: "build.html", nextLabel: "Lesson 3: Build from Text"
+      });
       fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
         challenges = data.challenges;
         var sel = $("challenge-select");

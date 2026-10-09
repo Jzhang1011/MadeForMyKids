@@ -18,6 +18,7 @@
     <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
     <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Build from Words 🧱</h1>
     <p class="widi-section-sub" id="mode-sub">Read the description, rebuild the structure on the grid — the target stays hidden until you submit.</p>
+    <div id="lesson-watch"></div>
 
     <div class="widi-panel" style="margin-top:0.8rem">
       <div style="display:flex;flex-wrap:wrap;gap:0.8rem;align-items:center;margin-bottom:1rem">
@@ -34,6 +35,7 @@
 
     <!-- BUILD PHASE -->
     <div id="phase-build">
+    <div id="build-practice"></div>
       <div class="widi-builder" style="margin-top:1.2rem">
         <div class="widi-palette">
           <h3>Pieces <span id="inv-note" class="widi-note"></span></h3>
@@ -74,6 +76,7 @@
       <h2 class="widi-section-title">Error analysis</h2>
       <ul class="widi-errors" id="rev-errors"></ul>
       <div id="recommend-box" style="margin-top:1rem"></div>
+      <div id="lesson-review"></div>
       <div class="widi-toolrow" style="margin-top:1.5rem">
         <button class="widi-toolbtn" id="btn-retry">🔄 Try again</button>
         <a class="widi-toolbtn primary" id="btn-next" href="#" style="text-decoration:none">Next challenge →</a>
@@ -434,6 +437,12 @@
 
       // init
       WIDI.store.recordVisit("build");
+      WIDI.lessonFrame({
+        n: 3, title: "Build from Text", videoId: "uchicago-10-tips", practiceId: "build-practice",
+        strategyTip: "Build in the order the instructions give — base first, then connections. When a placement fails, the reason tells you which sentence to distrust.",
+        reviewQ: "After your review, which single sentence of the description caused your biggest mismatch — and how would you rewrite it?",
+        nextHref: "ambiguity.html", nextLabel: "Lesson 4: Find and Fix Ambiguity"
+      });
       fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
         challenges = data.challenges;
         var sel = $("challenge-select");

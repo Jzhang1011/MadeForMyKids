@@ -19,10 +19,10 @@
       <div>
         <span class="widi-eyebrow">🔧 Science Olympiad · Division B</span>
         <h1>Can You Describe It So Someone Else Can Build It?</h1>
-        <p class="widi-dek">Train your eyes, sharpen your instructions, and turn a mental picture into a real structure. Ten original practice challenges with rods and connectors — no account, no signup.</p>
+        <p class="widi-dek">Learn to observe carefully, write clear instructions, and build models that match the original.</p>
         <div class="widi-cta-row">
-          <a class="widi-btn primary" href="build.html">Start a Challenge</a>
-          <a class="widi-btn ghost" href="observe.html">Learn the Strategy</a>
+          <a class="widi-btn primary" href="observe.html">Start Lesson 1</a>
+          <a class="widi-btn ghost" href="challenge-library.html">Explore All Challenges</a>
         </div>
         <div id="continue-banner" hidden style="margin-top:0.9rem"></div>
         <div class="widi-rules-note">
@@ -32,7 +32,14 @@
           are still marked "coming soon," so we don't claim tournament compliance yet.
         </div>
       </div>
-      <div class="widi-hero-fig" id="hero-fig" aria-label="Example challenge structure"></div>
+      <div class="widi-hero-fig" id="hero-fig" aria-label="Example challenge structure">
+        <video id="hero-video" controls preload="none" playsinline
+               aria-label="How Write It Do It Works — 60-second introduction"
+               style="width:100%;border-radius:14px;display:none">
+          <source src="assets/how-widi-works.mp4" type="video/mp4" />
+          Sorry — your browser can't play this video.
+        </video>
+      </div>
     </div>
   </section>
 
@@ -40,6 +47,36 @@
     <h2 class="widi-section-title">Your 6-lesson path</h2>
     <p class="widi-section-sub">Watch → Learn → Observe → Write → Rebuild → Compare → Improve. Checkmarks are earned from real completed activities on this device.</p>
     <div class="widi-cards" id="lesson-path"></div>
+
+    <h2 class="widi-section-title">Choose how to practice</h2>
+    <p class="widi-section-sub">Three ways in — pick the one that fits right now.</p>
+    <div class="widi-cards">
+      <div class="widi-card">
+        <div class="card-icon">🖥️</div>
+        <h3>Practice on Screen</h3>
+        <p>Use the digital model builder — reconstruct structures from written instructions, with hints when you're stuck.</p>
+        <div class="card-meta"><span>Self-paced</span><span>Instant feedback</span></div>
+        <a class="widi-btn primary" href="build.html">Open the builder</a>
+      </div>
+      <div class="widi-card">
+        <div class="card-icon">👥</div>
+        <h3>Practice with a Partner</h3>
+        <p>Complete a printable, real-world activity — one writes, one builds, then you compare and fix the sentences.</p>
+        <div class="card-meta"><span>Printable</span><span>Team skill</span></div>
+        <a class="widi-btn primary" href="partner.html">Get the pack</a>
+      </div>
+      <div class="widi-card">
+        <div class="card-icon">🎯</div>
+        <h3>Improve My Weak Spots</h3>
+        <p>Revisit the skills your mistakes point to — drills picked from your actual build history on this device.</p>
+        <div class="card-meta"><span>Personalized</span><span>Based on your builds</span></div>
+        <a class="widi-btn primary" href="#weak-spots">See my weak spots</a>
+      </div>
+    </div>
+
+    <h2 class="widi-section-title" id="weak-spots">Your weak spots 🎯</h2>
+    <p class="widi-section-sub">Built from your real build history — never invented.</p>
+    <div id="weak-spots-body"><p class="widi-note">Loading…</p></div>
 
     <h2 class="widi-section-title">The learning loop</h2>
     <p class="widi-section-sub">Observe → Describe → Build → Compare → Improve. Pick where to start.</p>
@@ -113,9 +150,9 @@
         { id: "observe", n: 1, icon: "🔍", title: "Observe Like an Engineer", href: "observe.html", time: "15 min", desc: "Practice inventory, viewpoint, and major structure." },
         { id: "write", n: 2, icon: "✏️", title: "Write Instructions That Work", href: "instruction-lab.html", time: "20 min", desc: "Clear piece names, numbered steps, exact connections." },
         { id: "build", n: 3, icon: "🧱", title: "Build from Text", href: "build.html", time: "20 min", desc: "Reconstruct a model without seeing the target." },
-        { id: "ambiguity", n: 4, icon: "🔎", title: "Find the Ambiguity", href: "observe.html", time: "10 min", desc: "Compare two instructions; name the vaguer one and why." },
+        { id: "ambiguity", n: 4, icon: "🔎", title: "Find and Fix Ambiguity", href: "ambiguity.html", time: "10 min", desc: "Rewrite vague sentences; compare with model answers." },
         { id: "partner", n: 5, icon: "👥", title: "Partner Challenge", href: "partner.html", time: "25 min", desc: "Physical write-and-rebuild with a partner." },
-        { id: "improve", n: 6, icon: "📈", title: "Improve from Errors", href: "build.html", time: "15 min", desc: "Review mismatches; rewrite the sentence that caused them." }
+        { id: "improve", n: 6, icon: "📈", title: "Improve Your Strategy", href: "strategy.html", time: "15 min", desc: "Systems that save points: organization, time, review." }
       ];
       var PAGE_NAMES = {
         observe: ["Observe Like an Engineer", "observe.html"],
@@ -126,11 +163,20 @@
         library: ["Challenge Library", "challenge-library.html"]
       };
 
-      // Hero figure: render challenge 006 (The Square)
-      fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
-        var ch = data.challenges.filter(function (c) { return c.id === "widi-b-006"; })[0];
-        if (ch) document.getElementById("hero-fig").innerHTML = WIDI.renderSVG({ pieces: ch.targetModel.pieces }, { cell: 40 });
-      });
+      // Hero: show the intro video when it exists; otherwise the example figure.
+      fetch("assets/how-widi-works.mp4", { method: "HEAD" }).then(function (r) {
+        if (r.ok) {
+          var v = document.getElementById("hero-video");
+          v.style.display = "block";
+          v.poster = "";
+        } else { renderHeroFig(); }
+      }).catch(renderHeroFig);
+      function renderHeroFig() {
+        fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
+          var ch = data.challenges.filter(function (c) { return c.id === "widi-b-006"; })[0];
+          if (ch) document.getElementById("hero-fig").insertAdjacentHTML("afterbegin", WIDI.renderSVG({ pieces: ch.targetModel.pieces }, { cell: 40 }));
+        });
+      }
 
       var s = WIDI.store.summary();
       var doneIds = s.lessonIds || {};
@@ -183,7 +229,45 @@
         });
       });
 
-      // Progress strip — real saved activity only
+      // Weak spots: from real error history, mapped to skill tags and drill candidates.
+      (function renderWeakSpots() {
+        var body = document.getElementById("weak-spots-body");
+        var ERROR_TAG = {
+          "missing-piece": "observation", "extra-piece": "observation",
+          "wrong-position": "spatial-vocabulary", "out-of-bounds": "spatial-vocabulary",
+          "wrong-orientation": "orientation", "wrong-color": "piece-identification",
+          "floating": "connections", "overlap": "connections"
+        };
+        var d = WIDI.store.load();
+        var builds = d.builds || {};
+        var counts = {};
+        Object.keys(builds).forEach(function (id) {
+          Object.keys(builds[id].errors || {}).forEach(function (t) { counts[t] = (counts[t] || 0) + builds[id].errors[t]; });
+        });
+        var ranked = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
+        if (!ranked.length) {
+          body.innerHTML = '<div class="widi-panel"><p class="widi-note" style="margin:0"><strong>No mistakes logged yet.</strong> Complete a <a href="build.html">blind build</a> and your weak spots will appear here with drills picked for you.</p></div>';
+          return;
+        }
+        fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
+          var done = {};
+          Object.keys(builds).forEach(function (id) { if ((builds[id].best || 0) >= 95) done[id] = true; });
+          var html = '<div class="widi-cards">';
+          ranked.slice(0, 3).forEach(function (t) {
+            var tag = ERROR_TAG[t];
+            var label = WIDI.ERROR_LABEL[t] || t;
+            var cands = data.challenges.filter(function (c) { return !done[c.id] && (c.skillTags || []).indexOf(tag) >= 0; });
+            var pick = cands[0];
+            html += '<div class="widi-card"><div class="card-icon">🎯</div>' +
+              "<h3>" + esc(label) + "</h3>" +
+              "<p>Happened <strong>" + counts[t] + "×</strong> across your builds. Trains: " + esc(tag.replace(/-/g, " ")) + ".</p>" +
+              (pick ? '<a class="widi-btn ghost" href="build.html?c=' + pick.id + '">Drill: ' + esc(pick.title) + " →</a>"
+                    : '<p class="widi-note">You\u2019ve aced every drill for this skill — nice.</p>') +
+              "</div>";
+          });
+          body.innerHTML = html + "</div>";
+        });
+      })();
       document.getElementById("st-lessons").textContent = s.lessons + "/6";
       document.getElementById("st-completed").textContent = s.completed;
       document.getElementById("st-accuracy").textContent = s.latestAccuracy === null ? "—" : s.latestAccuracy + "%";

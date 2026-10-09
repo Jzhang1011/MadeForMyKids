@@ -18,6 +18,7 @@
     <p class="widi-no-print" style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
     <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Practice with a Partner 👥</h1>
     <p class="widi-section-sub widi-no-print">WIDI is a team event: one person writes, another builds, and the builder never sees the original. The screen can't teach that — a partner can.</p>
+    <div id="lesson-watch" class="widi-no-print"></div>
 
     <!-- The routine -->
     <div class="widi-panel widi-no-print">
@@ -110,6 +111,8 @@
       <p class="widi-note widi-no-print" id="reflect-note">Reflection autosaves on this device.</p>
     </div>
 
+    <div id="lesson-review" class="widi-no-print"></div>
+    <div id="lesson-review" class="widi-no-print"></div>
     <div class="widi-panel widi-no-print" style="background:var(--mfk-tint)">
       <h2>Take it offline</h2>
       <p class="widi-note">Print the practice pack: target card, both worksheets, checklist, and reflection — everything above, minus the buttons.</p>
@@ -241,6 +244,18 @@
       }
 
       WIDI.store.recordVisit("partner");
+      WIDI.lessonFrame({
+        n: 5, title: "Practice with a Partner", videoId: "macomb-2025-review", practiceId: null,
+        strategyTip: "The writer watches silently while the builder works — no hints, no pointing. Every confusion the builder logs is a sentence to rewrite.",
+        reviewQ: "Which sentence caused the biggest difference between the two builds?",
+        nextHref: "strategy.html", nextLabel: "Lesson 6: Improve Your Strategy"
+      });
+      WIDI.lessonFrame({
+        n: 5, title: "Practice with a Partner", videoId: "macomb-2025-review", practiceId: null,
+        strategyTip: "The writer watches silently while the builder works — no hints, no pointing. Every confusion the builder logs is a sentence to rewrite.",
+        reviewQ: "Which sentence caused the biggest difference between the two builds?",
+        nextHref: "strategy.html", nextLabel: "Lesson 6: Improve Your Strategy"
+      });
       fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
         challenges = data.challenges;
         var sel = $("challenge-select");

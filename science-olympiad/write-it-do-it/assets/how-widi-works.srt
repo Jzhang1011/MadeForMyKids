@@ -1,0 +1,75 @@
+1
+00:00:00,000 --> 00:00:02,850
+Can you describe it so someone else can build it?
+
+2
+00:00:02,930 --> 00:00:08,470
+In Science Olympiad's Write It Do It, one partner studies a structure and writes instructions.
+
+3
+00:00:08,550 --> 00:00:12,297
+The other partner rebuilds it, without ever seeing the original.
+
+4
+00:00:12,377 --> 00:00:14,450
+No pointing. No peeking. Just words.
+
+5
+00:00:14,530 --> 00:00:18,157
+This is a team event, and the instructions are the whole game.
+
+6
+00:00:18,237 --> 00:00:20,808
+The closer the match, the higher the score.
+
+7
+00:00:21,500 --> 00:00:22,372
+Here's the trap.
+
+8
+00:00:22,452 --> 00:00:27,092
+The writer looks at the structure, and writes: "Put the red piece over there."
+
+9
+00:00:27,790 --> 00:00:30,682
+The builder has to guess. And builds... this.
+
+10
+00:00:30,762 --> 00:00:32,664
+Wrong spot. Loose connections.
+
+11
+00:00:32,744 --> 00:00:34,990
+Vague words build the wrong thing.
+
+12
+00:00:35,690 --> 00:00:38,234
+Now the same structure, with precise words.
+
+13
+00:00:38,314 --> 00:00:45,007
+"Plug the left end of the three-long red rod into the right-facing opening of the straight connector at C two."
+
+14
+00:00:45,087 --> 00:00:48,851
+"Plug the right end into a second straight connector at G two."
+
+15
+00:00:48,931 --> 00:00:51,413
+Every piece named. Every connection exact.
+
+16
+00:00:51,493 --> 00:00:53,690
+Precise words build the right thing.
+
+17
+00:00:54,390 --> 00:00:56,134
+Ready to try it yourself?
+
+18
+00:00:56,214 --> 00:00:58,322
+Watch, learn, practice, build.
+
+19
+00:00:58,402 --> 00:01:01,758
+Start Lesson One, at Made For My Kids dot com.
