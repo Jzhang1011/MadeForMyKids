@@ -21,16 +21,18 @@
 
     <!-- STEP 1: WATCH -->
     <section class="solar-step" aria-label="Step 1: Watch">
-      <h2><span class="step-num">1</span> Watch</h2>
+      <h2><span class="step-num">1</span> Watch <span class="solar-note">~2 min</span></h2>
       <p class="solar-hook">What makes a world a possible home for life — and why isn't it just about distance from the Sun?</p>
       <div id="lesson-video"></div>
-      <div class="solar-watchfor"><strong>Watch for:</strong> how NASA scientists decide which of the seven TRAPPIST-1 planets <em>might</em> have liquid water — and what they'd still need to check.</div>
+      <div class="solar-watchfor"><strong>Watch for:</strong> how many planets NASA announced, and why three of them got all the attention.</div>
     </section>
 
     <!-- STEP 2: EXPLORE -->
     <section class="solar-step" id="explore" aria-label="Step 2: Explore">
-      <h2><span class="step-num">2</span> Explore</h2>
+      <h2><span class="step-num">2</span> Explore <span class="solar-note">~3 min</span></h2>
       <p>Drag the slider to move a rocky planet closer to or farther from a Sun-like star. Watch what happens to its temperature — and whether it lands in the habitable zone.</p>
+      <div class="solar-watchfor"><strong>🔮 Predict first:</strong> if you move the planet from 1.0 AU to 0.7 AU, what happens to its temperature? And will the model match Venus's <em>real</em> temperature of 464 °C? Write your guess, then test it.</div>
+      <textarea class="solar-selfcheck" id="predict" rows="2" placeholder="My prediction…"></textarea>
       <div class="solar-widget">
         <label for="dist">Distance from the star: <span id="dist-val">1.00</span> AU <span class="solar-note" style="color:#aab4dd">(1 AU = Earth–Sun distance)</span></label>
         <input type="range" id="dist" min="0.3" max="2" step="0.01" value="1" aria-label="Distance from star in AU" />
@@ -39,22 +41,24 @@
           <div><div class="v" id="ro-zone">Habitable zone</div><div class="k">verdict</div></div>
         </div>
         <p class="solar-verdict" id="ro-note">Earth sits here — liquid water is possible.</p>
-        <p class="fine">Simplified model: equilibrium temperature for a rocky planet with Earth's reflectivity around a Sun-like star. Real planets also need the right atmosphere, a magnetic field, and more — which is exactly why distance alone isn't enough. Markers: Mercury 0.39 · Venus 0.72 · Earth 1.00 · Mars 1.52 AU.</p>
+        <div class="solar-misconception" style="background:#fef2f2;border-color:#fca5a5;margin:0.9rem 0 0"><strong>⚠️ What this model can't do:</strong> it shows what <em>distance alone</em> suggests. Real surface temperatures also depend on atmosphere, clouds, and reflectivity — at Venus's orbit the model says about 27 °C, but the real Venus is 464 °C. That gap <em>is</em> the lesson.</div>
+        <p class="fine">Simplified equilibrium-temperature model for a rocky planet with Earth's reflectivity around a Sun-like star. The 0.95–1.4 AU edges are a classroom simplification — published habitable-zone limits differ, and the outer edge is the disputed one. Real habitability also depends on factors scientists investigate — atmosphere, geology, and possibly a magnetic field — which is exactly why distance alone isn't enough. Markers: Mercury 0.39 · Venus 0.72 · Earth 1.00 · Mars 1.52 AU.</p>
       </div>
-      <p><strong>Try this:</strong> park the slider at Venus's distance (0.72 AU). The model says it should be warm but fine. Reality: Venus is the hottest planet in the solar system. Something else is going on — read on.</p>
+      <div class="solar-watchfor"><strong>🤔 Model vs. reality:</strong> you predicted, you tested — now explain. In one sentence, what does the gap between the model's 27 °C and Venus's real 464 °C tell you about what the model is missing?</div>
+      <p><strong>Now read on</strong> to check your explanation against the real answer.</p>
     </section>
 
     <!-- STEP 3: UNDERSTAND -->
     <section class="solar-step" aria-label="Step 3: Understand">
-      <h2><span class="step-num">3</span> Understand</h2>
+      <h2><span class="step-num">3</span> Understand <span class="solar-note">~4 min</span></h2>
 
       <h3>The three ingredients</h3>
       <p>Scientists look for three things when they ask whether a world could support life as we know it:</p>
-      <ol>
-        <li><strong>Liquid water</strong> — the solvent where life's chemistry happens.</li>
-        <li><strong>An energy source</strong> — usually starlight, but tidal flexing (like on Europa) can work too.</li>
-        <li><strong>The right chemistry</strong> — elements like carbon, hydrogen, nitrogen, oxygen, phosphorus, and sulfur.</li>
-      </ol>
+      <div class="solar-cards" style="margin:0.8rem 0">
+        <div class="solar-card"><div class="card-icon">💧</div><h3>Liquid water</h3><p>The solvent where life's chemistry happens.</p></div>
+        <div class="solar-card"><div class="card-icon">⚡</div><h3>Energy</h3><p>Usually starlight — but tidal flexing works too (Europa).</p></div>
+        <div class="solar-card"><div class="card-icon">🧪</div><h3>Chemistry</h3><p>Carbon, hydrogen, nitrogen, oxygen, phosphorus, sulfur.</p></div>
+      </div>
       <p>Liquid water is the one we can hunt for from light-years away, so the <strong>habitable zone</strong> — the range of distances where a rocky planet <em>could</em> have liquid water on its surface — is where the search starts.</p>
 
       <h3>The mystery of Venus</h3>
@@ -62,12 +66,38 @@
       <table class="solar-table">
         <caption>Average surface temperatures and atmospheres. Source: NASA planetary fact sheets, reviewed 2026-10-09.</caption>
         <tr><th>Planet</th><th>Distance</th><th>Atmosphere</th><th class="num">Avg. surface temp</th></tr>
-        <tr><td>Mercury</td><td>0.39 AU</td><td>Almost none</td><td class="num">167 °C</td></tr>
+        <tr><td>Mercury</td><td>0.39 AU</td><td>Almost none</td><td class="num">167 °C <span class="solar-note">(day–night average)</span></td></tr>
         <tr><td>Venus</td><td>0.72 AU</td><td>96.5% CO₂, ~92× Earth's pressure</td><td class="num">464 °C</td></tr>
         <tr><td>Earth</td><td>1.00 AU</td><td>Nitrogen–oxygen</td><td class="num">15 °C</td></tr>
       </table>
-      <p>Venus is nearly <strong>three times hotter than Mercury</strong> despite being almost twice as far from the Sun. The culprit is its atmosphere: thick carbon dioxide traps escaping heat in a <strong>runaway greenhouse effect</strong>. Early Venus may have had oceans — the greenhouse effect may have boiled them away.</p>
+      <p>Venus is nearly <strong>three times hotter than Mercury</strong> despite being almost twice as far from the Sun — and remember, Mercury's 167 °C already averages its 430 °C dayside with its −180 °C nightside. The culprit is Venus's atmosphere: thick carbon dioxide traps escaping heat in a <strong>runaway greenhouse effect</strong>. Early Venus may have had oceans — the greenhouse effect may have boiled them away.</p>
       <div class="solar-fact"><strong>The lesson:</strong> distance sets the starting temperature, but the <em>atmosphere</em> decides the final one. Earth's greenhouse effect warms us by a comfortable ~33 °C; Venus's version turned it into an oven.</div>
+
+      <figure style="margin:1.2rem 0">
+        <svg viewBox="0 0 560 230" role="img" aria-label="Greenhouse effect comparison: Earth lets some heat escape to space, Venus traps most of it">
+          <text x="140" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#0f766e">Earth</text>
+          <rect x="20" y="186" width="240" height="14" fill="#8b9a6d"/>
+          <rect x="20" y="126" width="240" height="60" fill="#bae6fd" opacity="0.55"/>
+          <text x="140" y="118" text-anchor="middle" font-size="11" fill="#0369a1">thin atmosphere</text>
+          <line x1="80" y1="34" x2="108" y2="176" stroke="#f5b942" stroke-width="3"/>
+          <line x1="200" y1="34" x2="172" y2="176" stroke="#f5b942" stroke-width="3"/>
+          <path d="M118 176 q -8 -22 0 -44 q 8 -22 0 -44" stroke="#dc2626" stroke-width="2.5" fill="none"/>
+          <path d="M168 176 q -8 -22 0 -44 q 8 -22 0 -44" stroke="#dc2626" stroke-width="2.5" fill="none"/>
+          <text x="140" y="222" text-anchor="middle" font-size="12" fill="#0f766e">avg 15 °C — some heat escapes</text>
+          <text x="420" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#c2410c">Venus</text>
+          <rect x="300" y="186" width="240" height="14" fill="#a08a6d"/>
+          <rect x="300" y="96" width="240" height="90" fill="#fdba74" opacity="0.7"/>
+          <text x="420" y="88" text-anchor="middle" font-size="11" fill="#c2410c">thick CO₂ atmosphere</text>
+          <line x1="360" y1="34" x2="388" y2="176" stroke="#f5b942" stroke-width="3"/>
+          <line x1="480" y1="34" x2="452" y2="176" stroke="#f5b942" stroke-width="3"/>
+          <path d="M398 176 q -8 -14 0 -28" stroke="#dc2626" stroke-width="2.5" fill="none"/>
+          <path d="M398 148 q 10 12 20 2" stroke="#dc2626" stroke-width="2" fill="none" opacity="0.65"/>
+          <path d="M448 176 q -8 -14 0 -28" stroke="#dc2626" stroke-width="2.5" fill="none"/>
+          <path d="M448 148 q 10 12 20 2" stroke="#dc2626" stroke-width="2" fill="none" opacity="0.65"/>
+          <text x="420" y="222" text-anchor="middle" font-size="12" fill="#c2410c">avg 464 °C — heat can't escape</text>
+        </svg>
+        <figcaption class="solar-note" style="text-align:center">Sunlight (yellow) warms both planets. Earth's thin atmosphere lets much of the heat (red) radiate back to space; Venus's thick CO₂ blanket bounces it back down — the runaway greenhouse effect.</figcaption>
+      </figure>
 
       <h3>The habitable zone is a starting point, not a guarantee</h3>
       <p>Being in the habitable zone means liquid water is <em>possible</em> — nothing more. Mars sits at its outer edge but its thin atmosphere can't keep the surface warm today. And some worlds far outside it, like Europa and Enceladus, may hide liquid-water oceans beneath ice, warmed by tidal energy instead of sunlight.</p>
@@ -79,14 +109,14 @@
 
     <!-- STEP 4: PRACTICE -->
     <section class="solar-step" id="practice" aria-label="Step 4: Practice">
-      <h2><span class="step-num">4</span> Practice</h2>
+      <h2><span class="step-num">4</span> Practice <span class="solar-note">~3 min</span></h2>
       <p class="solar-note">Try each question before checking — you'll get an explanation either way.</p>
       <div id="quiz"></div>
     </section>
 
     <!-- STEP 5: APPLY -->
     <section class="solar-step" aria-label="Step 5: Apply">
-      <h2><span class="step-num">5</span> Apply</h2>
+      <h2><span class="step-num">5</span> Apply <span class="solar-note">~2 min</span></h2>
       <p><strong>The headline test.</strong> A news site announces: <em>"Earth 2.0 found! New planet orbits at 1.05 AU around a Sun-like star."</em> You're the scientist asked to comment on air. Name <strong>two measurements</strong> you'd want before agreeing with the headline, and say what each one would tell you.</p>
       <textarea class="solar-selfcheck" id="apply-answer" rows="4" placeholder="Type your two measurements and what each would reveal…"></textarea>
       <p style="margin-top:0.6rem"><button class="solar-btn ghost" id="apply-reveal" type="button">Show a model answer</button></p>
@@ -97,7 +127,7 @@
 
     <!-- STEP 6: REVIEW -->
     <section class="solar-step" aria-label="Step 6: Review">
-      <h2><span class="step-num">6</span> Review</h2>
+      <h2><span class="step-num">6</span> Review <span class="solar-note">~1 min</span></h2>
       <div class="solar-takeaways">
         <strong>Three key takeaways</strong>
         <ol>
@@ -109,12 +139,15 @@
       <div class="solar-misconception"><strong>Misconception check:</strong> "This exoplanet is in the habitable zone, so it definitely has life." Why is that wrong? <span class="solar-note">Answer: the zone only means liquid water is possible; atmosphere, and actual evidence, decide the rest.</span></div>
       <p><strong>Self-check:</strong> in your own words, why is Venus hotter than Mercury?</p>
       <textarea class="solar-selfcheck" id="selfcheck" rows="3" placeholder="Explain it like you'd tell a teammate…"></textarea>
+      <h3 style="margin-top:1.2rem">Exit check</h3>
+      <p class="solar-note">Two quick questions. Finish these plus the practice set to unlock completion.</p>
+      <div id="exit-quiz"></div>
       <div class="solar-next">
         <div>
           <strong>Lesson complete?</strong>
-          <p id="done-msg">Mark it done to earn your checkmark on the hub.</p>
+          <p id="done-msg">Answer all practice and exit-check questions to unlock the checkmark.</p>
         </div>
-        <button class="solar-btn primary" id="btn-done" type="button">✓ Mark lesson complete</button>
+        <button class="solar-btn primary" id="btn-done" type="button" disabled>✓ Mark lesson complete</button>
       </div>
       <p class="solar-note"><strong>Next up:</strong> Lesson 2 — <em>Compare Worlds: Venus, Earth, Mars</em> (coming soon). Return to the <a href="../index.html">Learning Center</a> to continue.</p>
     </section>
@@ -184,7 +217,7 @@
           text: "Three exoplanets orbit Sun-like stars at 0.5 AU, 1.1 AU, and 2.3 AU. Which is the best habitability candidate to study first?",
           options: ["The one at 0.5 AU — closest to the star, so warmest", "The one at 1.1 AU", "The one at 2.3 AU — farthest, so most stable", "They are equally good candidates"],
           answer: 1,
-          why: "For a Sun-like star the habitable zone sits roughly around 0.95–1.4 AU. At 1.1 AU, liquid water is possible — the other two are well outside it. (You'd still check its atmosphere next!)"
+          why: "In our simplified classroom model the Sun-like habitable zone sits around 0.95–1.4 AU (published limits differ). At 1.1 AU, liquid water is possible — the other two are well outside it. (You'd still check its atmosphere next!)"
         },
         {
           text: "Which is the better scientific statement?",
@@ -204,8 +237,42 @@
         this.textContent = m.classList.contains("show") ? "Hide the model answer" : "Show a model answer";
       });
 
-      // REVIEW — completion
+      // REVIEW — exit check + gated completion (both quizzes must be finished)
+      SOLAR.quiz("exit-quiz", [
+        {
+          text: "A rocky planet orbits at 1.2 AU around a Sun-like star but has almost no atmosphere. Could liquid water exist on its surface?",
+          options: [
+            "Yes — it's in the habitable zone, so water is guaranteed",
+            "Unlikely — with almost no atmosphere to trap heat, the surface would be far too cold",
+            "Yes — no atmosphere means nothing blocks the sunlight",
+            "Unlikely — it's too close to the star"
+          ],
+          answer: 1,
+          why: "1.2 AU is inside our classroom habitable zone, but the zone only means water is possible. With almost no atmosphere there is no greenhouse warming — the surface would sit near the −60 °C the model predicts, and water would freeze."
+        },
+        {
+          text: "A telescope finds a planet squarely in its star's habitable zone. What's the most honest headline?",
+          options: [
+            "“Life found on new planet”",
+            "“Possible water world: atmosphere check needed”",
+            "“Earth 2.0 confirmed”",
+            "“Planet too far away to matter”"
+          ],
+          answer: 1,
+          why: "The habitable zone is a starting filter, not a conclusion. “Possible water world” respects the evidence; “atmosphere check needed” names the next measurement — exactly how scientists actually talk about these finds."
+        }
+      ]);
+
       var btnDone = document.getElementById("btn-done");
+      var quizzesDone = { quiz: false, "exit-quiz": false };
+      function refreshDone() {
+        if (quizzesDone.quiz && quizzesDone["exit-quiz"]) {
+          btnDone.disabled = false;
+          document.getElementById("done-msg").textContent = "All questions answered — mark it done to earn your checkmark on the hub.";
+        }
+      }
+      document.getElementById("quiz").addEventListener("solar:quizdone", function () { quizzesDone.quiz = true; refreshDone(); });
+      document.getElementById("exit-quiz").addEventListener("solar:quizdone", function () { quizzesDone["exit-quiz"] = true; refreshDone(); });
       if (SOLAR.store.isDone("habitability")) {
         btnDone.textContent = "✓ Completed";
         btnDone.disabled = true;

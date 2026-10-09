@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lesson 2: Compare Worlds — Solar System Learning Center</title>
+  <meta name="description" content="Lesson 2: Earth, Venus, and Mars started with similar ingredients — three atmospheres, three fates. Compare worlds and use the contrast to explain why." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="../assets/solar.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <main class="solar-wrap solar-body">
+    <p class="solar-crumb"><a href="../index.html">Solar System Learning Center</a> → Lesson 2</p>
+    <h1 class="solar-lesson-title">Compare Worlds</h1>
+    <p class="solar-lesson-meta">⏱ ~15 min · 🎯 You will be able to use the Venus–Earth–Mars contrast to explain how atmospheres, water loss, and magnetic fields decide a planet's fate.</p>
+
+    <!-- STEP 1: WATCH -->
+    <section class="solar-step" aria-label="Step 1: Watch">
+      <h2><span class="step-num">1</span> Watch <span class="solar-note">~2 min</span></h2>
+      <p class="solar-hook">Mars and Earth started out surprisingly alike — thick air, flowing water. So why is one a blue marble and the other a frozen desert?</p>
+      <div id="lesson-video"></div>
+      <div class="solar-watchfor"><strong>Watch for:</strong> what Earth has that Mars is missing — and what the solar wind does to a planet without it.</div>
+    </section>
+
+    <!-- STEP 2: EXPLORE -->
+    <section class="solar-step" id="explore" aria-label="Step 2: Explore">
+      <h2><span class="step-num">2</span> Explore <span class="solar-note">~3 min</span></h2>
+      <p><strong>🔮 Predict first:</strong> which two worlds do you expect to be most alike — and which pair will surprise you most? Pick any two and compare.</p>
+      <div class="solar-widget">
+        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.8rem">
+          <label style="margin:0">World A
+            <select id="world-a" aria-label="First world to compare" style="display:block;margin-top:0.3rem;font-size:1rem;padding:0.3rem 0.5rem;border-radius:8px">
+              <option value="earth">Earth</option><option value="venus">Venus</option><option value="mars">Mars</option>
+            </select>
+          </label>
+          <label style="margin:0">World B
+            <select id="world-b" aria-label="Second world to compare" style="display:block;margin-top:0.3rem;font-size:1rem;padding:0.3rem 0.5rem;border-radius:8px">
+              <option value="mars">Mars</option><option value="venus">Venus</option><option value="earth">Earth</option>
+            </select>
+          </label>
+        </div>
+        <div class="readout" id="compare-out" style="display:grid;grid-template-columns:1fr 1fr"></div>
+        <p class="solar-verdict" id="compare-contrast" style="font-weight:600"></p>
+        <p class="fine">Data: NASA planetary fact sheets, reviewed 2026-10-09. Temperatures are day–night averages; pressures are surface values.</p>
+      </div>
+      <div class="solar-watchfor"><strong>🤔 Use the contrast:</strong> look at your two worlds. Which <em>single factor</em> explains most of the difference between them — distance, atmosphere, or magnetic field? Write your answer, then check it in Step 3.</div>
+      <textarea class="solar-selfcheck" id="predict" rows="2" placeholder="The biggest difference-maker is…"></textarea>
+    </section>
+
+    <!-- STEP 3: UNDERSTAND -->
+    <section class="solar-step" aria-label="Step 3: Understand">
+      <h2><span class="step-num">3</span> Understand <span class="solar-note">~4 min</span></h2>
+      <p>Three rocky planets, similar starting ingredients — three completely different fates. (You already know Venus's story from Lesson 1; here it's one line, because the <em>comparison</em> is the point.)</p>
+
+      <div class="solar-cards" style="margin:0.8rem 0">
+        <div class="solar-card">
+          <div class="card-icon">🔥</div>
+          <h3>Venus: the oven</h3>
+          <p>Runaway greenhouse effect — thick CO₂ trapped the heat, and any early oceans boiled away. <span class="solar-note">Lesson 1 covered this; it's here for contrast.</span></p>
+        </div>
+        <div class="solar-card">
+          <div class="card-icon">🌍</div>
+          <h3>Earth: the survivor</h3>
+          <p>Right distance <em>plus</em> a global magnetic field deflecting the solar wind <em>plus</em> active geology recycling carbon. The atmosphere stayed balanced — so the water stayed liquid.</p>
+        </div>
+        <div class="solar-card">
+          <div class="card-icon">🧊</div>
+          <h3>Mars: the stripped world</h3>
+          <p>About 4 billion years ago Mars lost its global magnetic field. Without that shield, the solar wind spent eons stripping the atmosphere into space — NASA's MAVEN spacecraft has measured the escape happening today. Thin air can't trap heat or keep water liquid: rivers became ice and dust.</p>
+        </div>
+      </div>
+
+      <h3>How Mars lost its water — the chain of events</h3>
+      <figure style="margin:1rem 0">
+        <svg viewBox="0 0 560 150" role="img" aria-label="Timeline of Mars losing its water: thick atmosphere and rivers, magnetic field fades, solar wind strips atmosphere, cold thin desert remains">
+          <g font-size="12" fill="#eef1ff" text-anchor="middle">
+            <circle cx="70" cy="55" r="26" fill="#4f9cf7" opacity="0.85"/>
+            <text x="70" y="112">thick air</text><text x="70" y="128">+ rivers</text>
+            <text x="70" y="18" fill="#aab4dd">4+ billion yrs ago</text>
+            <line x1="104" y1="55" x2="150" y2="55" stroke="#4f7cff" stroke-width="2"/>
+            <polygon points="150,55 140,49 140,61" fill="#4f7cff"/>
+            <circle cx="205" cy="55" r="26" fill="#8b94c4" opacity="0.8"/>
+            <line x1="205" y1="29" x2="205" y2="81" stroke="#f5b942" stroke-width="2" stroke-dasharray="5 4"/>
+            <text x="205" y="112">magnetic field</text><text x="205" y="128">fades</text>
+            <text x="205" y="18" fill="#aab4dd">~4 billion yrs ago</text>
+            <line x1="239" y1="55" x2="285" y2="55" stroke="#4f7cff" stroke-width="2"/>
+            <polygon points="285,55 275,49 275,61" fill="#4f7cff"/>
+            <circle cx="340" cy="55" r="26" fill="#c2b280" opacity="0.8"/>
+            <g stroke="#f5b942" stroke-width="2"><line x1="352" y1="30" x2="372" y2="20"/><line x1="354" y1="55" x2="376" y2="55"/><line x1="352" y1="80" x2="372" y2="90"/></g>
+            <text x="340" y="112">solar wind</text><text x="340" y="128">strips air away</text>
+            <text x="340" y="18" fill="#aab4dd">over billions of years</text>
+            <line x1="374" y1="55" x2="420" y2="55" stroke="#4f7cff" stroke-width="2"/>
+            <polygon points="420,55 410,49 410,61" fill="#4f7cff"/>
+            <circle cx="475" cy="55" r="26" fill="#e07a5f" opacity="0.85"/>
+            <text x="475" y="112">thin, cold,</text><text x="475" y="128">dry desert</text>
+            <text x="475" y="18" fill="#aab4dd">today</text>
+          </g>
+        </svg>
+        <figcaption class="solar-note" style="text-align:center">Each step caused the next: no magnetic shield → solar wind erosion → thin atmosphere → water frozen or lost. Break any link and Mars might have stayed wet.</figcaption>
+      </figure>
+
+      <div class="solar-misconception"><strong>Common misconception:</strong> "Mars is cold just because it's farther from the Sun." Distance contributes — but the stripped atmosphere is the bigger story. Lesson 1 already proved distance isn't destiny: Venus is farther than Mercury and far hotter. Same logic applies here.</div>
+
+      <div class="solar-fact"><strong>About magnetic fields:</strong> scientists investigate magnetic fields as one factor that can protect an atmosphere — Mars's story is the evidence. It isn't a universal requirement for habitability (tidally-heated ocean worlds may do without one), but losing one can be catastrophic.</div>
+    </section>
+
+    <!-- STEP 4: PRACTICE -->
+    <section class="solar-step" id="practice" aria-label="Step 4: Practice">
+      <h2><span class="step-num">4</span> Practice <span class="solar-note">~3 min</span></h2>
+      <p class="solar-note">Try each question before checking — you'll get an explanation either way.</p>
+      <div id="quiz"></div>
+    </section>
+
+    <!-- STEP 5: APPLY -->
+    <section class="solar-step" aria-label="Step 5: Apply">
+      <h2><span class="step-num">5</span> Apply <span class="solar-note">~2 min</span></h2>
+      <p><strong>Two candidates, one distance.</strong> Two exoplanets orbit at the same distance around similar stars. Planet A has a thick carbon-dioxide atmosphere. Planet B's star is extremely active, with a fierce stellar wind — and B shows almost no atmosphere at all. Which is the better habitability candidate, and what <em>single measurement</em> would most change your mind?</p>
+      <textarea class="solar-selfcheck" id="apply-answer" rows="4" placeholder="My pick and the measurement that could flip it…"></textarea>
+      <p style="margin-top:0.6rem"><button class="solar-btn ghost" id="apply-reveal" type="button">Show a model answer</button></p>
+      <div class="solar-feedback" id="apply-model">
+        <strong>Model answer.</strong> Planet A is the better candidate: an atmosphere can trap heat and support liquid water, while B looks like Mars after the stripping — thin air, frozen surface. The measurement that could flip it: <strong>water vapor (or surface water) on B anyway</strong> — e.g., a subsurface ocean like Europa's, which doesn't need an atmosphere. Or the reverse flip: finding A's atmosphere is a runaway greenhouse like Venus would sink A instead. One measurement, honestly weighed, beats a confident guess.
+      </div>
+    </section>
+
+    <!-- STEP 6: REVIEW -->
+    <section class="solar-step" aria-label="Step 6: Review">
+      <h2><span class="step-num">6</span> Review <span class="solar-note">~1 min</span></h2>
+      <div class="solar-takeaways">
+        <strong>Three key takeaways</strong>
+        <ol>
+          <li>Venus, Earth, and Mars started alike — their <em>atmospheres</em> wrote three different endings.</li>
+          <li>Mars lost its global magnetic field ~4 billion years ago; the solar wind then stripped its air (MAVEN measures the escape today).</li>
+          <li>Distance is only a starting point. Compare atmospheres before predicting a planet's fate.</li>
+        </ol>
+      </div>
+      <div class="solar-misconception"><strong>Misconception check:</strong> "Mars is cold because it's far from the Sun." What's missing? <span class="solar-note">Answer: the stripped atmosphere — thin air can't trap heat, and Venus proves distance alone doesn't decide temperature.</span></div>
+      <p><strong>Self-check:</strong> explain the Mars water-loss chain in your own words — field, wind, air, water.</p>
+      <textarea class="solar-selfcheck" id="selfcheck" rows="3" placeholder="First this happened, then…"></textarea>
+      <h3 style="margin-top:1.2rem">Exit check</h3>
+      <p class="solar-note">Two quick questions. Finish these plus the practice set to unlock completion.</p>
+      <div id="exit-quiz"></div>
+      <div class="solar-next">
+        <div>
+          <strong>Lesson complete?</strong>
+          <p id="done-msg">Answer all practice and exit-check questions to unlock the checkmark.</p>
+        </div>
+        <button class="solar-btn primary" id="btn-done" type="button" disabled>✓ Mark lesson complete</button>
+      </div>
+      <p class="solar-note"><strong>Next up:</strong> Lesson 3 — <em>Hidden Oceans &amp; Icy Worlds</em> (coming soon). Return to the <a href="../index.html">Learning Center</a> to continue.</p>
+    </section>
+
+    <p class="solar-source">Sources: NASA planetary fact sheets (atmospheres, pressures, temperatures) · NASA Goddard / MAVEN — "Solar Wind Strips Martian Atmosphere" (public domain visualization) · NASA Mars Exploration (ancient water evidence). Reviewed 2026-10-09. Event scope: <a href="https://www.soinc.org/solar-system-b" target="_blank" rel="noopener">soinc.org/solar-system-b</a>.</p>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="../assets/solar.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      // WATCH — verified NASA video (live 2026-10-09)
+      document.getElementById("lesson-video").innerHTML = SOLAR.embedPlayer(
+        "https://www.youtube.com/watch?v=gX5JCYBZpcg",
+        "NASA | Solar Wind Strips Martian Atmosphere"
+      );
+
+      // EXPLORE — side-by-side world comparator (data: NASA fact sheets, reviewed 2026-10-09)
+      var WORLDS = {
+        venus: { name: "Venus", icon: "🟠", dist: "0.72 AU", atm: "96.5% CO₂", pressure: "92 bar", temp: "464 °C", water: "Possibly ancient oceans — boiled away", field: "No global field" },
+        earth: { name: "Earth", icon: "🌍", dist: "1.00 AU", atm: "78% N₂, 21% O₂", pressure: "1 bar", temp: "15 °C", water: "Liquid oceans today", field: "Strong global field" },
+        mars:  { name: "Mars",  icon: "🔴", dist: "1.52 AU", atm: "95% CO₂", pressure: "0.006 bar", temp: "−63 °C", water: "Ancient rivers — now ice", field: "No global field (crustal remnants)" }
+      };
+      var CONTRAST = {
+        "earth|mars": "Closest pair in distance — farthest apart in fate. The difference is almost entirely atmosphere: kept vs. stripped.",
+        "earth|venus": "Same neighborhood, opposite endings. Venus shows what happens when the greenhouse effect runs away.",
+        "mars|venus": "The two cautionary tales: Venus kept too much atmosphere, Mars lost almost all of its."
+      };
+      function card(w) {
+        return '<div><div class="v" style="font-size:1.6rem">' + w.icon + " " + w.name + "</div>" +
+          '<div class="k">distance</div><div class="v" style="font-size:1.05rem">' + w.dist + "</div>" +
+          '<div class="k">atmosphere</div><div class="v" style="font-size:1.05rem">' + w.atm + "</div>" +
+          '<div class="k">surface pressure</div><div class="v" style="font-size:1.05rem">' + w.pressure + "</div>" +
+          '<div class="k">avg. temperature</div><div class="v" style="font-size:1.05rem">' + w.temp + "</div>" +
+          '<div class="k">water story</div><div class="v" style="font-size:1.05rem">' + w.water + "</div>" +
+          '<div class="k">magnetic field</div><div class="v" style="font-size:1.05rem">' + w.field + "</div></div>";
+      }
+      var selA = document.getElementById("world-a"), selB = document.getElementById("world-b");
+      function renderCompare() {
+        var a = selA.value, b = selB.value;
+        if (a === b) {
+          document.getElementById("compare-out").innerHTML = '<p style="grid-column:1/-1">Pick two <em>different</em> worlds to see the contrast.</p>';
+          document.getElementById("compare-contrast").textContent = "";
+          return;
+        }
+        document.getElementById("compare-out").innerHTML = card(WORLDS[a]) + card(WORLDS[b]);
+        var key = [a, b].sort().join("|");
+        document.getElementById("compare-contrast").textContent = "🔍 " + (CONTRAST[key] || "");
+      }
+      selA.addEventListener("change", renderCompare);
+      selB.addEventListener("change", renderCompare);
+      renderCompare();
+
+      // PRACTICE
+      SOLAR.quiz("quiz", [
+        {
+          text: "Why is Mars's atmosphere so thin today?",
+          options: [
+            "Mars drifted farther from the Sun over time",
+            "Volcanoes blew the atmosphere into space",
+            "After Mars lost its global magnetic field, the solar wind stripped the atmosphere away over billions of years",
+            "Mars never had a thick atmosphere"
+          ],
+          answer: 2,
+          wrongWhy: "Mars did have a thick atmosphere — dry riverbeds and lake deposits prove surface water once flowed.",
+          why: "MAVEN measurements show ions escaping Mars today. Once the magnetic shield faded ~4 billion years ago, nothing deflected the solar wind, and erosion did the rest."
+        },
+        {
+          text: "Surface pressure: Venus 92 bar, Earth 1 bar, Mars 0.006 bar. What does Mars's number tell you?",
+          options: [
+            "Mars's atmosphere is the best at trapping heat",
+            "With ~150× less air than Earth, Mars can barely trap heat — and liquid water can't stay stable on its surface",
+            "Pressure doesn't affect temperature",
+            "Mars must have the strongest greenhouse effect"
+          ],
+          answer: 1,
+          why: "1 ÷ 0.006 ≈ 167 — Mars has roughly 1/167th of Earth's air. Thin air means heat radiates straight to space, which is a big reason Mars averages −63 °C."
+        },
+        {
+          text: "Earth's global magnetic field helps habitability mainly by…",
+          options: [
+            "Warming the planet directly",
+            "Deflecting the solar wind so the atmosphere isn't stripped away",
+            "Creating the oceans",
+            "Blocking all radiation from the Sun"
+          ],
+          answer: 1,
+          why: "The field is a shield, not a heater. Scientists investigate it as one factor protecting atmospheres — Mars is what happens without one. (It doesn't block all radiation, and it didn't create the oceans.)"
+        },
+        {
+          text: "Which is the better scientific explanation?",
+          options: [
+            "“Mars is cold because it's farther from the Sun than Earth.”",
+            "“Mars is cold partly because of its distance — but mostly because its thin, stripped atmosphere can't trap heat. Venus proves distance alone doesn't decide temperature.”"
+          ],
+          answer: 1,
+          why: "The second explanation uses the Lesson 1 contrast as evidence and names the actual mechanism. Distance-only thinking fails the Venus test."
+        }
+      ]);
+
+      // APPLY — model answer reveal
+      document.getElementById("apply-reveal").addEventListener("click", function () {
+        var m = document.getElementById("apply-model");
+        m.classList.toggle("show");
+        this.textContent = m.classList.contains("show") ? "Hide the model answer" : "Show a model answer";
+      });
+
+      // REVIEW — exit check + gated completion
+      SOLAR.quiz("exit-quiz", [
+        {
+          text: "Mars once had rivers and lakes. What changed?",
+          options: [
+            "Mars moved farther from the Sun",
+            "It lost its global magnetic field, the solar wind stripped its atmosphere, and the thin air couldn't keep water liquid",
+            "Its volcanoes froze the water",
+            "Nothing changed — the rivers are still flowing underground today"
+          ],
+          answer: 1,
+          why: "That's the full chain from the timeline: field fades → wind strips air → thin atmosphere → water frozen or lost. One link breaks the whole story."
+        },
+        {
+          text: "Why can't distance from the Sun alone explain why Venus is scorching and Mars is freezing?",
+          options: [
+            "It can — Venus is closer, Mars is farther, that's the whole story",
+            "Because atmospheres decide: Venus traps heat in a runaway greenhouse while Mars lost its heat-trapping blanket",
+            "Because Venus spins backwards",
+            "Because Mars is smaller"
+          ],
+          answer: 1,
+          why: "Venus (0.72 AU) is hotter than Mercury (0.39 AU) — distance already failed once. Atmospheres write the ending."
+        }
+      ]);
+
+      var btnDone = document.getElementById("btn-done");
+      var quizzesDone = { quiz: false, "exit-quiz": false };
+      function refreshDone() {
+        if (quizzesDone.quiz && quizzesDone["exit-quiz"]) {
+          btnDone.disabled = false;
+          document.getElementById("done-msg").textContent = "All questions answered — mark it done to earn your checkmark on the hub.";
+        }
+      }
+      document.getElementById("quiz").addEventListener("solar:quizdone", function () { quizzesDone.quiz = true; refreshDone(); });
+      document.getElementById("exit-quiz").addEventListener("solar:quizdone", function () { quizzesDone["exit-quiz"] = true; refreshDone(); });
+      if (SOLAR.store.isDone("compare-worlds")) {
+        btnDone.textContent = "✓ Completed";
+        btnDone.disabled = true;
+        document.getElementById("done-msg").textContent = "Done — your checkmark is on the hub.";
+      }
+      btnDone.addEventListener("click", function () {
+        SOLAR.completeLesson("compare-worlds");
+        btnDone.textContent = "✓ Completed";
+        btnDone.disabled = true;
+        document.getElementById("done-msg").textContent = "Done — your checkmark is on the hub.";
+      });
+    })();
+  </script>
+</body>
+</html>

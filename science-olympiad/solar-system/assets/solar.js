@@ -94,10 +94,7 @@
         done.innerHTML = "<strong>You got " + correct + " of " + questions.length + ".</strong> " +
           (opts.onDone ? opts.onDone(correct, questions.length) : "");
         host.appendChild(done);
-        if (opts.onDone) {
-          var evt = new CustomEvent("solar:quizdone", { detail: { correct: correct, total: questions.length } });
-          host.dispatchEvent(evt);
-        }
+        host.dispatchEvent(new CustomEvent("solar:quizdone", { detail: { correct: correct, total: questions.length } }));
       }
     });
   }
