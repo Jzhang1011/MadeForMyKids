@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solar System Learning Center — MadeForMyKids</title>
+  <meta name="description" content="Explore the Solar System and think like a planetary scientist. A guided Division B course on habitability within and beyond the Solar System: watch, explore, practice, and prepare for Science Olympiad." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="assets/solar.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <section class="solar-hero">
+    <div class="solar-hero-in">
+      <div>
+        <span class="solar-eyebrow">🪐 Science Olympiad · Division B · 2027 season</span>
+        <h1>Explore the Solar System. Think Like a Planetary Scientist.</h1>
+        <p class="solar-dek">Discover how worlds form, compare planets and moons, investigate the evidence, and prepare for Science Olympiad.</p>
+        <div class="solar-btn-row">
+          <a class="solar-btn primary" href="lessons/habitability.html">Start Learning</a>
+          <a class="solar-btn ghost" href="#journey">Explore the Solar System</a>
+        </div>
+        <div id="continue-banner" style="margin-top:0.9rem"></div>
+        <div class="solar-rules-note">
+          <strong>2027 focus:</strong> this event tests <em>habitability within and beyond the Solar System</em>
+          (<a href="https://www.soinc.org/solar-system-b" target="_blank" rel="noopener">official event page</a>).
+          The 2027 rules manual isn't posted yet, so competition format and scoring here are practice-only until it's verified.
+        </div>
+      </div>
+      <figure class="solar-hero-fig" aria-label="Diagram of the habitable zone around the Sun">
+        <svg viewBox="0 0 400 300" role="img" aria-label="The Sun with a highlighted habitable zone band where Earth and Mars orbit">
+          <defs>
+            <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ffd76e"/><stop offset="60%" stop-color="#f5a942"/><stop offset="100%" stop-color="#f5a942" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <g stroke="#2a3568" stroke-width="1" fill="none" opacity="0.8">
+            <circle cx="200" cy="150" r="35"/><circle cx="200" cy="150" r="65"/>
+            <circle cx="200" cy="150" r="90"/><circle cx="200" cy="150" r="137"/>
+          </g>
+          <circle cx="200" cy="150" r="106" fill="none" stroke="#2dd4bf" stroke-width="40" opacity="0.25"/>
+          <circle cx="200" cy="150" r="44" fill="url(#sunGlow)"/>
+          <circle cx="200" cy="150" r="20" fill="#ffcf5c"/>
+          <circle cx="200" cy="115" r="4" fill="#c2b280"/><text x="200" y="104" fill="#8b94c4" font-size="10" text-anchor="middle">Mercury</text>
+          <circle cx="265" cy="150" r="7" fill="#e8a54b"/><text x="265" y="136" fill="#8b94c4" font-size="10" text-anchor="middle">Venus</text>
+          <circle cx="200" cy="240" r="8" fill="#4f9cf7"/><text x="200" y="258" fill="#8b94c4" font-size="10" text-anchor="middle">Earth</text>
+          <circle cx="63" cy="150" r="6" fill="#e07a5f"/><text x="63" y="136" fill="#8b94c4" font-size="10" text-anchor="middle">Mars</text>
+          <text x="330" y="52" fill="#2dd4bf" font-size="11" text-anchor="middle">habitable zone</text>
+          <line x1="322" y1="58" x2="298" y2="82" stroke="#2dd4bf" stroke-width="1.5"/>
+        </svg>
+        <figcaption>The habitable zone: where a rocky planet <em>could</em> keep liquid water — if its atmosphere cooperates.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <main class="solar-wrap">
+    <h2 class="solar-section-title" id="journey">Your learning journey</h2>
+    <p class="solar-section-sub">Watch → Explore → Understand → Practice → Challenge → Review. Built around the 2027 event focus: habitability, within and beyond the Solar System.</p>
+    <div class="solar-cards" id="module-cards"></div>
+
+    <h2 class="solar-section-title">Choose your learning mode</h2>
+    <p class="solar-section-sub">Three ways in — pick the one that fits right now.</p>
+    <div class="solar-cards">
+      <div class="solar-card">
+        <div class="card-icon">📖</div>
+        <h3>Learn</h3>
+        <p>Follow the guided course, one lesson at a time, from habitability basics to competition prep.</p>
+        <div class="card-meta"><span>Guided path</span><span>~15–20 min each</span></div>
+        <a class="solar-btn primary" href="lessons/habitability.html">Start Lesson 1</a>
+      </div>
+      <div class="solar-card">
+        <div class="card-icon">🔬</div>
+        <h3>Explore</h3>
+        <p>Jump into any lesson's interactive — the habitable-zone explorer is live now; planet comparison and evidence tools arrive with their lessons.</p>
+        <div class="card-meta"><span>Hands-on</span><span>Self-paced</span></div>
+        <a class="solar-btn primary" href="lessons/habitability.html#explore">Open the explorer</a>
+      </div>
+      <div class="solar-card">
+        <div class="card-icon">✅</div>
+        <h3>Practice</h3>
+        <p>Every lesson ends with practice questions that explain the why — plus a deeper challenge to stretch your reasoning.</p>
+        <div class="card-meta"><span>Instant feedback</span><span>Explanations</span></div>
+        <a class="solar-btn primary" href="lessons/habitability.html#practice">Try the questions</a>
+      </div>
+    </div>
+
+    <h2 class="solar-section-title">Daily science discovery</h2>
+    <p class="solar-section-sub">One real discovery, refreshed daily — each one connects to something you'll learn in the course.</p>
+    <div class="solar-discover" id="discovery"></div>
+
+    <h2 class="solar-section-title">Your progress</h2>
+    <p class="solar-section-sub">Saved on this device only — no account needed.</p>
+    <div class="solar-cards">
+      <div class="solar-card">
+        <div class="card-icon">📊</div>
+        <h3>Course progress</h3>
+        <p id="st-summary">Loading…</p>
+        <div class="card-meta"><span id="st-lessons">0 lessons done</span><span id="st-accuracy">— accuracy</span></div>
+        <p style="margin-top:0.5rem"><button class="solar-btn ghost" id="btn-reset" type="button">Reset progress</button></p>
+      </div>
+    </div>
+
+    <p class="solar-source">Scope: <a href="https://www.soinc.org/solar-system-b" target="_blank" rel="noopener">soinc.org/solar-system-b</a> (reviewed 2026-10-09) · Facts: NASA Solar System Exploration, NASA Exoplanets, NASA/JPL (reviewed 2026-10-09). The official 2027 rules manual is not yet published — format, scoring, and permitted resources are not stated here.</p>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="assets/solar.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+      fetch("data/curriculum.json").then(function (r) { return r.json(); }).then(function (c) {
+        var host = document.getElementById("module-cards");
+        host.innerHTML = "";
+        c.modules.forEach(function (m) {
+          var lesson = (m.lessons && m.lessons[0]) || {};
+          var live = lesson.status === "live";
+          var done = live && SOLAR.store.isDone(lesson.id);
+          var card = document.createElement("div");
+          card.className = "solar-card" + (done ? " done" : "");
+          card.innerHTML =
+            (done ? '<span class="done-badge">✓ Done</span>' : (!live ? '<span class="soon-badge">Coming soon</span>' : "")) +
+            '<div class="card-icon">' + esc(m.icon) + "</div>" +
+            "<h3>" + esc(m.title) + "</h3>" +
+            "<p>" + esc(m.blurb) + "</p>" +
+            '<div class="card-meta"><span>' + esc(m.time) + "</span><span>Lesson " + (lesson.n || "?") + "</span></div>" +
+            (live
+              ? '<a class="solar-btn primary" href="' + esc(lesson.href) + '">' + (done ? "Review" : "Start") + " →</a>"
+              : '<span class="solar-note">Unlocks after the sample lesson is validated.</span>');
+          host.appendChild(card);
+        });
+
+        // Continue banner
+        var firstOpen = null;
+        c.modules.forEach(function (m) {
+          var l = (m.lessons && m.lessons[0]) || {};
+          if (l.status === "live" && !SOLAR.store.isDone(l.id) && !firstOpen) firstOpen = l;
+        });
+        if (firstOpen) {
+          document.getElementById("continue-banner").innerHTML =
+            '<a class="solar-btn primary" href="' + esc(firstOpen.href) + '">Continue: Lesson ' + firstOpen.n + " — " + esc(firstOpen.title) + " →</a>";
+        }
+
+        // Daily discovery — deterministic by date
+        var d = c.dailyDiscoveries || [];
+        if (d.length) {
+          var now = new Date();
+          var dayIndex = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
+          var item = d[dayIndex % d.length];
+          document.getElementById("discovery").innerHTML =
+            '<div class="big">' + esc(item.icon) + "</div>" +
+            "<div><h3>" + esc(item.title) + "</h3><p>" + esc(item.text) +
+            ' <a href="' + esc(item.url) + '" target="_blank" rel="noopener">Source: ' + esc(item.source) + " →</a></p></div>";
+        }
+      }).catch(function () {
+        document.getElementById("module-cards").innerHTML = '<p class="solar-note">Could not load the curriculum. Check your connection and refresh.</p>';
+      });
+
+      // Progress summary
+      var s = SOLAR.store.stats();
+      document.getElementById("st-summary").textContent =
+        s.lessonsDone === 0 ? "No lessons completed yet — start with Lesson 1 above."
+          : s.lessonsDone + " lesson" + (s.lessonsDone === 1 ? "" : "s") + " completed. Keep going!";
+      document.getElementById("st-lessons").textContent = s.lessonsDone + " lessons done";
+      document.getElementById("st-accuracy").textContent = s.accuracy === null ? "— accuracy" : s.accuracy + "% quiz accuracy";
+      document.getElementById("btn-reset").addEventListener("click", function () {
+        if (confirm("Reset all Solar System progress on this device?")) { SOLAR.store.reset(); location.reload(); }
+      });
+    })();
+  </script>
+</body>
+</html>

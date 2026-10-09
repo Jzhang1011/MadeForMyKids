@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lesson 1: What Makes a World Habitable? — Solar System Learning Center</title>
+  <meta name="description" content="Lesson 1: why liquid water, energy, and chemistry decide habitability — and why Venus is hotter than Mercury. Watch, explore, practice, and review." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="../assets/solar.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <main class="solar-wrap solar-body">
+    <p class="solar-crumb"><a href="../index.html">Solar System Learning Center</a> → Lesson 1</p>
+    <h1 class="solar-lesson-title">What Makes a World Habitable?</h1>
+    <p class="solar-lesson-meta">⏱ ~15 min · 🎯 You will be able to explain the three ingredients of habitability and why atmosphere — not just distance — decides a planet's fate.</p>
+
+    <!-- STEP 1: WATCH -->
+    <section class="solar-step" aria-label="Step 1: Watch">
+      <h2><span class="step-num">1</span> Watch</h2>
+      <p class="solar-hook">What makes a world a possible home for life — and why isn't it just about distance from the Sun?</p>
+      <div id="lesson-video"></div>
+      <div class="solar-watchfor"><strong>Watch for:</strong> how NASA scientists decide which of the seven TRAPPIST-1 planets <em>might</em> have liquid water — and what they'd still need to check.</div>
+    </section>
+
+    <!-- STEP 2: EXPLORE -->
+    <section class="solar-step" id="explore" aria-label="Step 2: Explore">
+      <h2><span class="step-num">2</span> Explore</h2>
+      <p>Drag the slider to move a rocky planet closer to or farther from a Sun-like star. Watch what happens to its temperature — and whether it lands in the habitable zone.</p>
+      <div class="solar-widget">
+        <label for="dist">Distance from the star: <span id="dist-val">1.00</span> AU <span class="solar-note" style="color:#aab4dd">(1 AU = Earth–Sun distance)</span></label>
+        <input type="range" id="dist" min="0.3" max="2" step="0.01" value="1" aria-label="Distance from star in AU" />
+        <div class="readout">
+          <div><div class="v" id="ro-temp">−18 °C</div><div class="k">estimated temperature</div></div>
+          <div><div class="v" id="ro-zone">Habitable zone</div><div class="k">verdict</div></div>
+        </div>
+        <p class="solar-verdict" id="ro-note">Earth sits here — liquid water is possible.</p>
+        <p class="fine">Simplified model: equilibrium temperature for a rocky planet with Earth's reflectivity around a Sun-like star. Real planets also need the right atmosphere, a magnetic field, and more — which is exactly why distance alone isn't enough. Markers: Mercury 0.39 · Venus 0.72 · Earth 1.00 · Mars 1.52 AU.</p>
+      </div>
+      <p><strong>Try this:</strong> park the slider at Venus's distance (0.72 AU). The model says it should be warm but fine. Reality: Venus is the hottest planet in the solar system. Something else is going on — read on.</p>
+    </section>
+
+    <!-- STEP 3: UNDERSTAND -->
+    <section class="solar-step" aria-label="Step 3: Understand">
+      <h2><span class="step-num">3</span> Understand</h2>
+
+      <h3>The three ingredients</h3>
+      <p>Scientists look for three things when they ask whether a world could support life as we know it:</p>
+      <ol>
+        <li><strong>Liquid water</strong> — the solvent where life's chemistry happens.</li>
+        <li><strong>An energy source</strong> — usually starlight, but tidal flexing (like on Europa) can work too.</li>
+        <li><strong>The right chemistry</strong> — elements like carbon, hydrogen, nitrogen, oxygen, phosphorus, and sulfur.</li>
+      </ol>
+      <p>Liquid water is the one we can hunt for from light-years away, so the <strong>habitable zone</strong> — the range of distances where a rocky planet <em>could</em> have liquid water on its surface — is where the search starts.</p>
+
+      <h3>The mystery of Venus</h3>
+      <p>Mercury is closest to the Sun. So Mercury should be the hottest planet, right? Look at the real numbers:</p>
+      <table class="solar-table">
+        <caption>Average surface temperatures and atmospheres. Source: NASA planetary fact sheets, reviewed 2026-10-09.</caption>
+        <tr><th>Planet</th><th>Distance</th><th>Atmosphere</th><th class="num">Avg. surface temp</th></tr>
+        <tr><td>Mercury</td><td>0.39 AU</td><td>Almost none</td><td class="num">167 °C</td></tr>
+        <tr><td>Venus</td><td>0.72 AU</td><td>96.5% CO₂, ~92× Earth's pressure</td><td class="num">464 °C</td></tr>
+        <tr><td>Earth</td><td>1.00 AU</td><td>Nitrogen–oxygen</td><td class="num">15 °C</td></tr>
+      </table>
+      <p>Venus is nearly <strong>three times hotter than Mercury</strong> despite being almost twice as far from the Sun. The culprit is its atmosphere: thick carbon dioxide traps escaping heat in a <strong>runaway greenhouse effect</strong>. Early Venus may have had oceans — the greenhouse effect may have boiled them away.</p>
+      <div class="solar-fact"><strong>The lesson:</strong> distance sets the starting temperature, but the <em>atmosphere</em> decides the final one. Earth's greenhouse effect warms us by a comfortable ~33 °C; Venus's version turned it into an oven.</div>
+
+      <h3>The habitable zone is a starting point, not a guarantee</h3>
+      <p>Being in the habitable zone means liquid water is <em>possible</em> — nothing more. Mars sits at its outer edge but its thin atmosphere can't keep the surface warm today. And some worlds far outside it, like Europa and Enceladus, may hide liquid-water oceans beneath ice, warmed by tidal energy instead of sunlight.</p>
+      <div class="solar-misconception"><strong>Common misconception:</strong> "Closer to the Sun always means hotter." Venus breaks this rule completely. Always check the atmosphere before predicting a planet's temperature.</div>
+
+      <h3>Beyond the solar system</h3>
+      <p>The same three-ingredient test applies to exoplanets. In 2017 NASA announced <strong>TRAPPIST-1</strong>: seven Earth-size planets around one small star, 40 light-years away, with three in the habitable zone. Telescopes like Webb are now reading their atmospheres for water vapor and other chemical clues — exactly the follow-up checks this lesson is about.</p>
+    </section>
+
+    <!-- STEP 4: PRACTICE -->
+    <section class="solar-step" id="practice" aria-label="Step 4: Practice">
+      <h2><span class="step-num">4</span> Practice</h2>
+      <p class="solar-note">Try each question before checking — you'll get an explanation either way.</p>
+      <div id="quiz"></div>
+    </section>
+
+    <!-- STEP 5: APPLY -->
+    <section class="solar-step" aria-label="Step 5: Apply">
+      <h2><span class="step-num">5</span> Apply</h2>
+      <p><strong>The headline test.</strong> A news site announces: <em>"Earth 2.0 found! New planet orbits at 1.05 AU around a Sun-like star."</em> You're the scientist asked to comment on air. Name <strong>two measurements</strong> you'd want before agreeing with the headline, and say what each one would tell you.</p>
+      <textarea class="solar-selfcheck" id="apply-answer" rows="4" placeholder="Type your two measurements and what each would reveal…"></textarea>
+      <p style="margin-top:0.6rem"><button class="solar-btn ghost" id="apply-reveal" type="button">Show a model answer</button></p>
+      <div class="solar-feedback" id="apply-model">
+        <strong>Model answer.</strong> (1) <strong>Atmospheric composition</strong> — measured from starlight filtering through the atmosphere. It tells you whether greenhouse gases would make the surface temperate like Earth or a runaway oven like Venus. (2) <strong>The planet's size/mass or a direct temperature measurement</strong> — tells you whether it's actually rocky and whether liquid water is plausible. Distance alone earned it a headline; these two decide whether the headline survives.
+      </div>
+    </section>
+
+    <!-- STEP 6: REVIEW -->
+    <section class="solar-step" aria-label="Step 6: Review">
+      <h2><span class="step-num">6</span> Review</h2>
+      <div class="solar-takeaways">
+        <strong>Three key takeaways</strong>
+        <ol>
+          <li>Habitability needs liquid water, an energy source, and the right chemistry.</li>
+          <li>The habitable zone marks where liquid water is <em>possible</em> — atmosphere decides the reality.</li>
+          <li>Venus proves distance isn't destiny: its runaway greenhouse effect makes it hotter than Mercury.</li>
+        </ol>
+      </div>
+      <div class="solar-misconception"><strong>Misconception check:</strong> "This exoplanet is in the habitable zone, so it definitely has life." Why is that wrong? <span class="solar-note">Answer: the zone only means liquid water is possible; atmosphere, and actual evidence, decide the rest.</span></div>
+      <p><strong>Self-check:</strong> in your own words, why is Venus hotter than Mercury?</p>
+      <textarea class="solar-selfcheck" id="selfcheck" rows="3" placeholder="Explain it like you'd tell a teammate…"></textarea>
+      <div class="solar-next">
+        <div>
+          <strong>Lesson complete?</strong>
+          <p id="done-msg">Mark it done to earn your checkmark on the hub.</p>
+        </div>
+        <button class="solar-btn primary" id="btn-done" type="button">✓ Mark lesson complete</button>
+      </div>
+      <p class="solar-note"><strong>Next up:</strong> Lesson 2 — <em>Compare Worlds: Venus, Earth, Mars</em> (coming soon). Return to the <a href="../index.html">Learning Center</a> to continue.</p>
+    </section>
+
+    <p class="solar-source">Sources: NASA planetary fact sheets (Mercury, Venus, Earth temperatures &amp; atmospheres) · NASA/JPL TRAPPIST-1 announcement (7 planets, 40 ly, 3 in habitable zone) · NASA Science — Solar System &amp; Exoplanets. Reviewed 2026-10-09. Event scope: <a href="https://www.soinc.org/solar-system-b" target="_blank" rel="noopener">soinc.org/solar-system-b</a>.</p>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="../assets/solar.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      // WATCH — verified NASA video (live 2026-10-09)
+      document.getElementById("lesson-video").innerHTML = SOLAR.embedPlayer(
+        "https://www.youtube.com/watch?v=bnKFaAS30X8",
+        "NASA & TRAPPIST-1: A Treasure Trove of Planets Found"
+      );
+
+      // EXPLORE — habitable-zone explorer (simplified equilibrium-temperature model)
+      var dist = document.getElementById("dist");
+      function update() {
+        var d = parseFloat(dist.value);
+        document.getElementById("dist-val").textContent = d.toFixed(2);
+        // T_eq = 278.5 * (1-A)^0.25 / sqrt(d), A = 0.3 (Earth-like)
+        var tK = 278.5 * Math.pow(0.7, 0.25) / Math.sqrt(d);
+        var tC = tK - 273.15;
+        document.getElementById("ro-temp").textContent = Math.round(tC) + " °C";
+        var zone, note;
+        if (d < 0.95) { zone = "Too hot"; note = "Inside the inner edge — any surface water would boil away."; }
+        else if (d <= 1.4) { zone = "Habitable zone"; note = "Liquid water is possible here — if the atmosphere cooperates."; }
+        else { zone = "Too cold"; note = "Beyond the outer edge — water would freeze (unless tidal heating helps)."; }
+        document.getElementById("ro-zone").textContent = zone;
+        document.getElementById("ro-note").textContent = note;
+      }
+      dist.addEventListener("input", update);
+      update();
+
+      // PRACTICE
+      SOLAR.quiz("quiz", [
+        {
+          text: "Liquid water is the top thing scientists look for because…",
+          options: [
+            "It is the rarest substance in the universe",
+            "It is the solvent where life's chemistry happens, as far as we know",
+            "It makes planets look blue from space",
+            "It reflects sunlight and keeps planets cool"
+          ],
+          answer: 1,
+          why: "Life as we know it runs its chemistry dissolved in liquid water. That's why the whole search starts with 'where could water stay liquid?'"
+        },
+        {
+          text: "Venus is hotter than Mercury mainly because…",
+          options: [
+            "It is closer to the Sun than Mercury",
+            "Its thick carbon-dioxide atmosphere traps heat in a runaway greenhouse effect",
+            "It spins so slowly that heat builds up",
+            "It has more active volcanoes than Mercury"
+          ],
+          answer: 1,
+          wrongWhy: "Venus is farther from the Sun than Mercury (0.72 vs 0.39 AU) — distance predicts the opposite.",
+          why: "Venus's 96.5% CO₂ atmosphere, about 92 times Earth's surface pressure, traps escaping heat. Distance sets the starting point; atmosphere decides the final temperature."
+        },
+        {
+          text: "Three exoplanets orbit Sun-like stars at 0.5 AU, 1.1 AU, and 2.3 AU. Which is the best habitability candidate to study first?",
+          options: ["The one at 0.5 AU — closest to the star, so warmest", "The one at 1.1 AU", "The one at 2.3 AU — farthest, so most stable", "They are equally good candidates"],
+          answer: 1,
+          why: "For a Sun-like star the habitable zone sits roughly around 0.95–1.4 AU. At 1.1 AU, liquid water is possible — the other two are well outside it. (You'd still check its atmosphere next!)"
+        },
+        {
+          text: "Which is the better scientific statement?",
+          options: [
+            "“This planet is in the habitable zone, so it has life.”",
+            "“This planet is in the habitable zone, so liquid water is possible on its surface — but we need atmospheric data before saying more.”"
+          ],
+          answer: 1,
+          why: "The habitable zone is a starting filter, not a conclusion. The second statement respects what the evidence actually shows — and names the next measurement."
+        }
+      ]);
+
+      // APPLY — model answer reveal
+      document.getElementById("apply-reveal").addEventListener("click", function () {
+        var m = document.getElementById("apply-model");
+        m.classList.toggle("show");
+        this.textContent = m.classList.contains("show") ? "Hide the model answer" : "Show a model answer";
+      });
+
+      // REVIEW — completion
+      var btnDone = document.getElementById("btn-done");
+      if (SOLAR.store.isDone("habitability")) {
+        btnDone.textContent = "✓ Completed";
+        btnDone.disabled = true;
+        document.getElementById("done-msg").textContent = "Done — your checkmark is on the hub.";
+      }
+      btnDone.addEventListener("click", function () {
+        SOLAR.completeLesson("habitability");
+        btnDone.textContent = "✓ Completed";
+        btnDone.disabled = true;
+        document.getElementById("done-msg").textContent = "Done — your checkmark is on the hub.";
+      });
+    })();
+  </script>
+</body>
+</html>

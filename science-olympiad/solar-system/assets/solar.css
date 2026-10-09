@@ -1,0 +1,149 @@
+/* Solar System learning experience — shared styles.
+   Light lesson backgrounds; deep-space hero only. Pairs with /components/theme.css. */
+
+:root {
+  --solar-space: #0b1026;
+  --solar-space-2: #141b3d;
+  --solar-accent: #4f7cff;
+  --solar-gold: #f5b942;
+  --solar-teal: #2dd4bf;
+}
+
+.solar-wrap { max-width: 960px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+
+/* ---------- buttons ---------- */
+.solar-btn {
+  font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1.02rem;
+  padding: 0.75rem 1.5rem; border-radius: 999px; border: 2px solid var(--solar-accent);
+  cursor: pointer; text-decoration: none; display: inline-block; transition: transform 0.12s ease;
+}
+.solar-btn:hover { transform: translateY(-2px); }
+.solar-btn.primary { background: var(--solar-accent); color: #fff; }
+.solar-btn.ghost { background: #fff; color: var(--solar-accent); }
+.solar-btn-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; }
+
+/* ---------- hero (dark) ---------- */
+.solar-hero { background: radial-gradient(1200px 500px at 70% -10%, var(--solar-space-2), var(--solar-space)); color: #eef1ff; }
+.solar-hero-in { max-width: 1100px; margin: 0 auto; padding: 3rem 1.25rem 2.5rem; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: center; }
+@media (max-width: 760px) { .solar-hero-in { grid-template-columns: 1fr; } }
+.solar-eyebrow { display: inline-block; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--solar-gold); margin-bottom: 0.6rem; }
+.solar-hero h1 { font-family: Fredoka, system-ui, sans-serif; font-size: 2.4rem; line-height: 1.15; margin: 0 0 0.8rem; color: #fff; }
+.solar-dek { font-size: 1.08rem; line-height: 1.6; color: #c9d2f2; margin: 0 0 0.4rem; }
+.solar-hero-fig { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); border-radius: 20px; padding: 1rem; }
+.solar-hero-fig svg { width: 100%; height: auto; display: block; }
+.solar-hero-fig figcaption { font-size: 0.8rem; color: #aab4dd; margin-top: 0.5rem; text-align: center; }
+.solar-rules-note {
+  margin-top: 1.2rem; font-size: 0.82rem; line-height: 1.5; color: #d8def7;
+  background: rgba(245,185,66,0.1); border: 1px solid rgba(245,185,66,0.45); border-radius: 12px; padding: 0.7rem 0.9rem;
+}
+.solar-rules-note a { color: var(--solar-gold); }
+
+/* ---------- section titles / cards ---------- */
+.solar-section-title { font-family: Fredoka, system-ui, sans-serif; font-size: 1.6rem; color: var(--mfk-slate); margin: 2.5rem 0 0.4rem; }
+.solar-section-sub { color: var(--mfk-slate-soft); margin: 0 0 1.2rem; }
+.solar-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+.solar-card {
+  background: #fff; border: 2px solid var(--mfk-border); border-radius: 18px; padding: 1.2rem;
+  display: flex; flex-direction: column; gap: 0.5rem; position: relative;
+}
+.solar-card h3 { font-family: Fredoka, system-ui, sans-serif; margin: 0; font-size: 1.12rem; color: var(--mfk-slate); }
+.solar-card p { margin: 0; color: var(--mfk-slate-soft); font-size: 0.95rem; line-height: 1.55; }
+.solar-card .card-icon { font-size: 1.8rem; }
+.solar-card .card-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--mfk-slate-soft); }
+.solar-card .card-meta span { background: var(--mfk-cream); border-radius: 999px; padding: 0.15rem 0.6rem; }
+.solar-card .solar-btn { margin-top: auto; align-self: flex-start; font-size: 0.95rem; padding: 0.6rem 1.2rem; }
+.solar-card.done { border-color: var(--solar-teal); }
+.solar-card .done-badge {
+  position: absolute; top: 0.9rem; right: 0.9rem; background: var(--solar-teal); color: #fff;
+  font-size: 0.75rem; font-weight: 700; border-radius: 999px; padding: 0.15rem 0.6rem;
+}
+.solar-card .soon-badge {
+  position: absolute; top: 0.9rem; right: 0.9rem; background: var(--mfk-cream); color: var(--mfk-slate-soft);
+  font-size: 0.75rem; font-weight: 700; border-radius: 999px; padding: 0.15rem 0.6rem; border: 1px solid var(--mfk-border);
+}
+
+/* ---------- daily discovery ---------- */
+.solar-discover {
+  background: linear-gradient(135deg, #10163a, #1b2452); color: #eef1ff; border-radius: 18px;
+  padding: 1.4rem 1.5rem; display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: center; margin-top: 1rem;
+}
+.solar-discover .big { font-size: 2.6rem; }
+.solar-discover h3 { font-family: Fredoka, system-ui, sans-serif; margin: 0 0 0.3rem; color: #fff; font-size: 1.15rem; }
+.solar-discover p { margin: 0; color: #c9d2f2; line-height: 1.6; font-size: 0.97rem; }
+.solar-discover a { color: var(--solar-gold); }
+
+/* ---------- lesson template ---------- */
+.solar-crumb { font-size: 0.85rem; color: var(--mfk-slate-soft); margin: 1.2rem 0 0; }
+.solar-crumb a { color: var(--solar-accent); }
+.solar-lesson-title { font-family: Fredoka, system-ui, sans-serif; font-size: 2rem; color: var(--mfk-slate); margin: 0.4rem 0 0.3rem; }
+.solar-lesson-meta { color: var(--mfk-slate-soft); font-size: 0.92rem; margin-bottom: 1.5rem; }
+
+.solar-step { background: #fff; border: 2px solid var(--mfk-border); border-radius: 18px; padding: 1.4rem; margin: 1.2rem 0; }
+.solar-step > h2 { font-family: Fredoka, system-ui, sans-serif; font-size: 1.3rem; color: var(--mfk-slate); margin: 0 0 0.6rem; display: flex; align-items: center; gap: 0.5rem; }
+.solar-step > h2 .step-num {
+  background: var(--solar-accent); color: #fff; font-size: 0.85rem; width: 1.7rem; height: 1.7rem;
+  border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.solar-hook { font-size: 1.15rem; font-weight: 600; color: var(--mfk-slate); margin: 0 0 0.8rem; }
+.solar-embed { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000; margin: 0.6rem 0; }
+.solar-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.solar-note { font-size: 0.85rem; color: var(--mfk-slate-soft); }
+.solar-note a { color: var(--solar-accent); }
+.solar-watchfor { background: #f0f4ff; border-left: 4px solid var(--solar-accent); border-radius: 0 10px 10px 0; padding: 0.6rem 0.9rem; margin: 0.8rem 0; font-size: 0.95rem; }
+.solar-watchfor strong { color: var(--mfk-slate); }
+
+.solar-body p { line-height: 1.7; color: var(--mfk-slate); margin: 0.7rem 0; }
+.solar-body h3 { font-family: Fredoka, system-ui, sans-serif; color: var(--mfk-slate); margin: 1.2rem 0 0.4rem; font-size: 1.08rem; }
+.solar-body ul, .solar-body ol { line-height: 1.7; color: var(--mfk-slate); }
+.solar-misconception {
+  background: #fff7ed; border: 1px solid #fed7aa; border-radius: 12px; padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.95rem;
+}
+.solar-misconception strong { color: #c2410c; }
+.solar-fact { background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 12px; padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.95rem; }
+.solar-fact strong { color: #0f766e; }
+
+.solar-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.92rem; }
+.solar-table th, .solar-table td { border: 1px solid var(--mfk-border); padding: 0.55rem 0.7rem; text-align: left; }
+.solar-table th { background: #f0f4ff; color: var(--mfk-slate); font-family: Fredoka, system-ui, sans-serif; font-weight: 600; }
+.solar-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.solar-table caption { caption-side: bottom; font-size: 0.8rem; color: var(--mfk-slate-soft); padding-top: 0.4rem; }
+
+/* explore widget */
+.solar-widget { background: var(--solar-space); color: #eef1ff; border-radius: 14px; padding: 1.2rem; margin: 1rem 0; }
+.solar-widget label { display: block; font-weight: 600; margin-bottom: 0.4rem; }
+.solar-widget input[type="range"] { width: 100%; accent-color: var(--solar-gold); }
+.solar-widget .readout { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.8rem; }
+.solar-widget .readout div { background: rgba(255,255,255,0.07); border-radius: 10px; padding: 0.6rem 0.9rem; }
+.solar-widget .readout .v { font-size: 1.3rem; font-weight: 700; color: #fff; }
+.solar-widget .readout .k { font-size: 0.78rem; color: #aab4dd; }
+.solar-verdict { margin-top: 0.9rem; font-weight: 700; font-size: 1.05rem; }
+.solar-widget .fine { font-size: 0.8rem; color: #aab4dd; margin-top: 0.7rem; line-height: 1.5; }
+
+/* quiz */
+.solar-quiz-q { border-top: 1px solid var(--mfk-border); padding: 1rem 0; }
+.solar-quiz-q:first-of-type { border-top: 0; }
+.solar-quiz-q .q-text { font-weight: 600; color: var(--mfk-slate); margin-bottom: 0.6rem; line-height: 1.55; }
+.solar-quiz-opts { display: flex; flex-direction: column; gap: 0.45rem; }
+.solar-quiz-opt {
+  text-align: left; background: #fff; border: 2px solid var(--mfk-border); border-radius: 12px;
+  padding: 0.65rem 0.9rem; font-size: 0.97rem; cursor: pointer; line-height: 1.5; color: var(--mfk-slate);
+}
+.solar-quiz-opt:hover:not(:disabled) { border-color: var(--solar-accent); }
+.solar-quiz-opt:disabled { cursor: default; opacity: 0.75; }
+.solar-quiz-opt.correct { border-color: #16a34a; background: #f0fdf4; opacity: 1; }
+.solar-quiz-opt.wrong { border-color: #dc2626; background: #fef2f2; opacity: 1; }
+.solar-feedback { border-radius: 12px; padding: 0.8rem 1rem; margin-top: 0.7rem; font-size: 0.95rem; line-height: 1.6; display: none; }
+.solar-feedback.show { display: block; }
+.solar-feedback.good { background: #f0fdf4; border: 1px solid #86efac; }
+.solar-feedback.bad { background: #fef2f2; border: 1px solid #fca5a5; }
+.solar-feedback strong { display: block; margin-bottom: 0.2rem; }
+
+/* review */
+.solar-takeaways { background: #f0f4ff; border-radius: 14px; padding: 1rem 1.2rem; margin: 0.8rem 0; }
+.solar-takeaways li { margin: 0.4rem 0; line-height: 1.6; }
+.solar-selfcheck { width: 100%; border: 2px solid var(--mfk-border); border-radius: 12px; padding: 0.7rem; font-size: 0.95rem; font-family: inherit; margin-top: 0.5rem; }
+.solar-next { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; background: #fff; border: 2px solid var(--mfk-border); border-radius: 18px; padding: 1.2rem 1.4rem; margin: 1.5rem 0; }
+.solar-next p { margin: 0; color: var(--mfk-slate-soft); }
+
+.solar-source { font-size: 0.8rem; color: var(--mfk-slate-soft); margin-top: 2rem; border-top: 1px solid var(--mfk-border); padding-top: 0.8rem; }
+.solar-source a { color: var(--solar-accent); }
