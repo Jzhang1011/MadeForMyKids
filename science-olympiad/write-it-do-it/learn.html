@@ -52,22 +52,30 @@
       function tagHtml(tags) {
         return (tags || []).map(function (t) { return '<span class="widi-tag">' + esc(t) + "</span>"; }).join("");
       }
+      function ytEmbed(url) {
+        var m = String(url || "").match(/[?&]v=([A-Za-z0-9_-]{11})/);
+        return m ? "https://www.youtube.com/embed/" + m[1] : null;
+      }
 
       function videoCard(r) {
         var el = document.createElement("div");
         el.className = "widi-video-card";
+        var embed = ytEmbed(r.url);
         el.innerHTML =
           "<h3>" + esc(r.title) + "</h3>" +
           '<div class="widi-video-meta"><span>📺 ' + esc(r.source) + "</span>" +
           (r.duration ? "<span>⏱ " + esc(r.duration) + "</span>" : "") +
           (r.captions ? "<span>💬 Captions available</span>" : "") + "</div>" +
+          (embed
+            ? '<div class="widi-embed"><iframe src="' + embed + '" title="' + esc(r.title) + '" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>' +
+              '<p class="widi-note" style="margin:0"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">Watch on YouTube →</a></p>'
+            : "") +
           '<div style="display:flex;flex-wrap:wrap;gap:0.3rem">' + tagHtml(r.skillTags) + "</div>" +
           '<p class="widi-note" style="margin:0"><strong>Watch for:</strong> ' + esc(r.watchFor) + "</p>" +
           (r.keyMethods && r.keyMethods.length ? '<p class="widi-note" style="margin:0"><strong>Key methods:</strong></p><ul class="widi-steps" style="margin-top:0.2rem">' +
             r.keyMethods.map(function (m) { return "<li>" + esc(m) + "</li>"; }).join("") + "</ul>" : "") +
           '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:auto">' +
-          '<a class="widi-toolbtn primary" href="' + esc(r.url) + '" target="_blank" rel="noopener" style="text-decoration:none">▶ Watch</a>' +
-          (r.relatedActivity ? '<a class="widi-toolbtn" href="' + esc(r.relatedActivity.href) + '" style="text-decoration:none">' + esc(r.relatedActivity.label) + " →</a>" : "") +
+          (r.relatedActivity ? '<a class="widi-toolbtn primary" href="' + esc(r.relatedActivity.href) + '" style="text-decoration:none">' + esc(r.relatedActivity.label) + " →</a>" : "") +
           "</div>";
         return el;
       }

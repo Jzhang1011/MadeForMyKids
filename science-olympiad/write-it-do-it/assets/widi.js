@@ -393,22 +393,29 @@
        Videos are optional — a "skip to practice" link is always shown. */
     lessonFrame: function (o) {
       function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      function ytEmbed(url) {
+        var m = String(url || "").match(/[?&]v=([A-Za-z0-9_-]{11})/);
+        return m ? "https://www.youtube.com/embed/" + m[1] : null;
+      }
       var watch = document.getElementById("lesson-watch");
       var review = document.getElementById("lesson-review");
       function render(video) {
         if (watch) {
           var vHtml = "";
           if (video && video.url) {
+            var embed = ytEmbed(video.url);
             vHtml = '<div class="widi-video-card" style="margin-bottom:0.8rem">' +
               '<h3>🎬 ' + esc(video.title) + '</h3>' +
               '<div class="widi-video-meta"><span>' + esc(video.source) + "</span>" +
               (video.duration ? "<span>⏱ " + esc(video.duration) + "</span>" : "") +
               (video.captions ? "<span>💬 Captions</span>" : "") + "</div>" +
+              (embed
+                ? '<div class="widi-embed"><iframe src="' + embed + '" title="' + esc(video.title) + '" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>' +
+                  '<p class="widi-note" style="margin:0.2rem 0 0.4rem"><a href="' + esc(video.url) + '" target="_blank" rel="noopener">Watch on YouTube →</a></p>'
+                : '<div style="display:flex;gap:0.5rem;flex-wrap:wrap"><a class="widi-toolbtn primary" href="' + esc(video.url) + '" target="_blank" rel="noopener" style="text-decoration:none">▶ Watch</a></div>') +
               '<p class="widi-note" style="margin:0"><strong>Watch for:</strong> ' + esc(video.watchFor || "") + "</p>" +
-              '<div style="display:flex;gap:0.5rem;flex-wrap:wrap">' +
-              '<a class="widi-toolbtn primary" href="' + esc(video.url) + '" target="_blank" rel="noopener" style="text-decoration:none">▶ Watch</a>' +
-              (o.practiceId ? '<a class="widi-toolbtn" href="#' + o.practiceId + '" style="text-decoration:none">Skip to practice ↓</a>' : "") +
-              "</div></div>";
+              (o.practiceId ? '<p style="margin:0.4rem 0 0"><a class="widi-toolbtn" href="#' + o.practiceId + '" style="text-decoration:none">Skip to practice ↓</a></p>' : "") +
+              "</div>";
           } else if (o.practiceId) {
             vHtml = '<p><a class="widi-btn ghost" href="#' + o.practiceId + '">Skip to practice ↓</a></p>';
           }
