@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Practice with a Partner — Write It Do It — MadeForMyKids</title>
+  <meta name="description" content="Physical WIDI partner practice: printable writer and builder worksheets, comparison checklist, and practice timers. No account needed." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="assets/widi.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <main class="widi-wrap">
+    <p class="widi-no-print" style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
+    <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Practice with a Partner 👥</h1>
+    <p class="widi-section-sub widi-no-print">WIDI is a team event: one person writes, another builds, and the builder never sees the original. The screen can't teach that — a partner can.</p>
+
+    <!-- The routine -->
+    <div class="widi-panel widi-no-print">
+      <h2>How a practice round works</h2>
+      <ol class="widi-steps">
+        <li><strong>Set the target.</strong> The writer picks a challenge below (or builds a physical model from rods and connectors). Only the writer looks at it.</li>
+        <li><strong>Writer observes and writes.</strong> Numbered instructions, no touching the model while writing if your practice rules say so. Builder looks away.</li>
+        <li><strong>Builder rebuilds.</strong> Using <em>only</em> the written instructions and the allowed pieces. The writer watches silently — no hints, no pointing.</li>
+        <li><strong>Compare.</strong> Put both structures side by side. Work through the checklist below.</li>
+        <li><strong>Rewrite.</strong> Find the sentence responsible for each mismatch and rewrite it. That's where the learning lives.</li>
+      </ol>
+      <p class="widi-note"><strong>Fair play:</strong> the writer never sees the builder's reconstruction in progress, and the builder never sees the target until the comparison.</p>
+    </div>
+
+    <!-- Challenge picker + timer -->
+    <div class="widi-panel widi-no-print">
+      <h2>1. Pick a challenge &amp; set a timer</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:0.8rem;align-items:center;margin-bottom:1rem">
+        <label for="challenge-select" style="font-weight:700">Challenge:</label>
+        <select id="challenge-select" style="font-size:1rem;padding:0.5rem 0.7rem;border-radius:10px;border:2px solid var(--mfk-border);max-width:100%"></select>
+        <span id="diff-badge"></span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center">
+        <span style="font-weight:700">Practice timer:</span>
+        <button class="widi-toolbtn" id="timer-5">⏱ 5-minute sprint</button>
+        <button class="widi-toolbtn" id="timer-25">⏱ 25-minute practice</button>
+        <button class="widi-toolbtn" id="timer-stop" hidden>⏹ Stop</button>
+        <span id="timer-display" style="font-size:1.4rem;font-weight:800;font-variant-numeric:tabular-nums"></span>
+      </div>
+      <p class="widi-note">Practice timing only — not official competition timing. The 2027 rules manual sets the real event limits.</p>
+    </div>
+
+    <!-- Writer's target card (printable) -->
+    <div class="widi-panel" id="writer-card">
+      <h2>2. Writer's target card <span class="widi-tag">Writer only</span></h2>
+      <p class="widi-note widi-no-print">Writer: study this model, then write your instructions on the worksheet below. Builder: look away!</p>
+      <div class="widi-two">
+        <div class="widi-fig" id="target-fig"></div>
+        <div>
+          <p><strong>Piece inventory</strong></p>
+          <ul id="target-inv" style="margin:0.4rem 0 0 1.1rem;padding:0;font-size:0.95rem"></ul>
+          <p class="widi-note" id="ref-note" style="margin-top:0.6rem"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Writer worksheet -->
+    <div class="widi-panel">
+      <h2>3. Writer worksheet <span class="widi-tag">Numbered instructions</span></h2>
+      <p class="widi-note widi-no-print">Write one step per line. Start with your overview and reference orientation, then number the build steps. Autosaves on this device.</p>
+      <div id="writer-lines"></div>
+      <div class="widi-no-print" style="margin-top:0.6rem;display:flex;gap:0.6rem;align-items:center">
+        <button class="widi-toolbtn" id="btn-more-lines">+ Add lines</button>
+        <span class="widi-note" id="writer-save-note"></span>
+      </div>
+    </div>
+
+    <!-- Builder worksheet -->
+    <div class="widi-panel">
+      <h2>4. Builder worksheet <span class="widi-tag">Confusing steps log</span></h2>
+      <p class="widi-note widi-no-print">Builder: as you build, write down every step that confused you — the step number and what was unclear. Don't ask the writer; just log it.</p>
+      <div id="builder-lines"></div>
+    </div>
+
+    <!-- Comparison checklist -->
+    <div class="widi-panel">
+      <h2>5. Comparison checklist</h2>
+      <p class="widi-note">Put both structures side by side. Check every box that applies, then fix the responsible sentences.</p>
+      <ul class="widi-rubric" id="compare-checklist">
+        <li><input type="checkbox" id="cc1" /><label for="cc1"><strong>Missing or extra pieces.</strong> Count both structures — do the inventories match?</label></li>
+        <li><input type="checkbox" id="cc2" /><label for="cc2"><strong>Wrong piece or size.</strong> Same shape, wrong color or length?</label></li>
+        <li><input type="checkbox" id="cc3" /><label for="cc3"><strong>Incorrect orientation.</strong> Right piece, pointing the wrong way?</label></li>
+        <li><input type="checkbox" id="cc4" /><label for="cc4"><strong>Incorrect location or spacing.</strong> Right piece, wrong square?</label></li>
+        <li><input type="checkbox" id="cc5" /><label for="cc5"><strong>Incorrect connection.</strong> Ends plugged into the wrong openings — or nothing?</label></li>
+        <li><input type="checkbox" id="cc6" /><label for="cc6"><strong>Unclear or missing instruction.</strong> A step the builder had to guess at?</label></li>
+        <li><input type="checkbox" id="cc7" /><label for="cc7"><strong>Construction order or stability.</strong> Built in an order that made it fall apart?</label></li>
+      </ul>
+    </div>
+
+    <!-- Reflection -->
+    <div class="widi-panel">
+      <h2>6. Reflection</h2>
+      <p class="widi-note"><strong>Which sentence caused the biggest difference?</strong> Quote it, then rewrite it below.</p>
+      <label for="reflect-bad" style="font-weight:700">The sentence that caused the biggest difference:</label>
+      <textarea class="widi-write-area widi-no-print" id="reflect-bad" style="min-height:90px;margin:0.4rem 0 0.8rem" placeholder="Copy the exact sentence here…"></textarea>
+      <div class="widi-quote widi-print-only" id="reflect-bad-print" style="min-height:3rem;margin:0.4rem 0 0.8rem"></div>
+      <label for="reflect-fix" style="font-weight:700">My rewritten sentence:</label>
+      <textarea class="widi-write-area widi-no-print" id="reflect-fix" style="min-height:90px;margin-top:0.4rem" placeholder="Rewrite it so a stranger could build it…"></textarea>
+      <div class="widi-quote widi-print-only" id="reflect-fix-print" style="min-height:3rem;margin-top:0.4rem"></div>
+      <p class="widi-note widi-no-print" id="reflect-note">Reflection autosaves on this device.</p>
+    </div>
+
+    <div class="widi-panel widi-no-print" style="background:var(--mfk-tint)">
+      <h2>Take it offline</h2>
+      <p class="widi-note">Print the practice pack: target card, both worksheets, checklist, and reflection — everything above, minus the buttons.</p>
+      <button class="widi-toolbtn primary" id="btn-print">🖨 Print practice pack</button>
+    </div>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="assets/widi.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      function $(id) { return document.getElementById(id); }
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      var challenges = [], ch = null;
+      var LS_W = "mfk_widi_partner_writer_";
+      var LS_B = "mfk_widi_partner_builder_";
+      var LS_R = "mfk_widi_partner_reflect_";
+      var saveTimer = null;
+
+      function loadChallenge(id) {
+        ch = challenges.filter(function (c) { return c.id === id; })[0] || challenges[0];
+        $("challenge-select").value = ch.id;
+        $("diff-badge").innerHTML = '<span class="widi-diff d' + ch.difficulty + '">Level ' + ch.difficulty + "</span>";
+        $("target-fig").innerHTML = WIDI.renderSVG({ pieces: ch.targetModel.pieces }, { cell: 40 });
+        $("target-inv").innerHTML = ch.pieceInventory.map(function (e) {
+          return "<li>" + (e.pieceType === "rod" ? esc(e.quantity + "× " + e.color + " rod (length " + e.length + ")") : esc(e.quantity + "× " + e.kind + " connector")) + "</li>";
+        }).join("");
+        $("ref-note").innerHTML = "<strong>Reference:</strong> " + esc(ch.referenceOrientation);
+        loadLines();
+      }
+
+      /* --- writer worksheet: numbered lines, autosaved --- */
+      function writerKey() { return LS_W + ch.id; }
+      function builderKey() { return LS_B + ch.id; }
+      function getLines(key, n) {
+        var v = [];
+        try { v = JSON.parse(localStorage.getItem(key) || "[]"); } catch (e) {}
+        while (v.length < n) v.push("");
+        return v.slice(0, n);
+      }
+      function buildLineInputs(boxId, key, count, numbered, placeholder) {
+        var box = $(boxId);
+        box.innerHTML = "";
+        var vals = getLines(key, count);
+        vals.forEach(function (val, i) {
+          var row = document.createElement("div");
+          row.style.cssText = "display:flex;gap:0.5rem;align-items:flex-start;margin-bottom:0.4rem";
+          var num = document.createElement("span");
+          num.textContent = (i + 1) + ".";
+          num.style.cssText = "font-weight:800;min-width:1.8rem;text-align:right;padding-top:0.55rem;color:var(--mfk-skill-widi)";
+          var inp = document.createElement(numbered ? "input" : "textarea");
+          inp.value = val;
+          inp.placeholder = placeholder;
+          inp.style.cssText = "flex:1;font-size:0.95rem;padding:0.5rem 0.7rem;border-radius:10px;border:2px solid var(--mfk-border);font-family:Inter,system-ui,sans-serif" + (numbered ? "" : ";min-height:2.2rem;resize:vertical");
+          if (numbered) inp.type = "text";
+          inp.setAttribute("data-i", i);
+          inp.addEventListener("input", function () { scheduleSave(boxId, key); });
+          row.appendChild(num); row.appendChild(inp);
+          box.appendChild(row);
+        });
+        // print mirror
+        var printDiv = document.createElement("div");
+        printDiv.className = "widi-print-only";
+        printDiv.innerHTML = vals.map(function (v, i) {
+          return "<p style='border-bottom:1px solid #ccc;padding:0.35rem 0;min-height:1.4rem'><strong>" + (i + 1) + ".</strong> " + esc(v) + "</p>";
+        }).join("");
+        box.appendChild(printDiv);
+      }
+      function readLines(boxId) {
+        var vals = [];
+        Array.prototype.forEach.call($(boxId).querySelectorAll("[data-i]"), function (el) { vals.push(el.value); });
+        return vals;
+      }
+      function scheduleSave(boxId, key) {
+        clearTimeout(saveTimer);
+        var note = boxId === "writer-lines" ? $("writer-save-note") : null;
+        if (note) note.textContent = "Saving…";
+        saveTimer = setTimeout(function () {
+          try { localStorage.setItem(key, JSON.stringify(readLines(boxId))); } catch (e) {}
+          if (note) note.textContent = "Saved ✓";
+        }, 900);
+      }
+      var writerCount = 10;
+      function loadLines() {
+        buildLineInputs("writer-lines", writerKey(), writerCount, true, "Step…");
+        buildLineInputs("builder-lines", builderKey(), 6, false, "Step # — what was confusing…");
+      }
+
+      /* --- practice timer (not official timing) --- */
+      var timerInt = null, timerEnd = 0;
+      function stopTimer() {
+        clearInterval(timerInt); timerInt = null;
+        $("timer-stop").hidden = true;
+        $("timer-display").textContent = "";
+      }
+      function startTimer(mins) {
+        stopTimer();
+        timerEnd = Date.now() + mins * 60 * 1000;
+        $("timer-stop").hidden = false;
+        function tick() {
+          var left = Math.max(0, timerEnd - Date.now());
+          var m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
+          $("timer-display").textContent = m + ":" + (s < 10 ? "0" : "") + s;
+          if (left <= 0) { stopTimer(); $("timer-display").textContent = "Time!"; }
+        }
+        tick();
+        timerInt = setInterval(tick, 500);
+      }
+
+      /* --- reflection autosave --- */
+      function loadReflect() {
+        var v = { bad: "", fix: "" };
+        try { v = JSON.parse(localStorage.getItem(LS_R + ch.id) || '{"bad":"","fix":""}'); } catch (e) {}
+        $("reflect-bad").value = v.bad || "";
+        $("reflect-fix").value = v.fix || "";
+        $("reflect-bad-print").textContent = v.bad || "";
+        $("reflect-fix-print").textContent = v.fix || "";
+      }
+      function saveReflect() {
+        var v = { bad: $("reflect-bad").value, fix: $("reflect-fix").value };
+        try { localStorage.setItem(LS_R + ch.id, JSON.stringify(v)); } catch (e) {}
+        WIDI.store.recordLesson("partner");
+        $("reflect-bad-print").textContent = v.bad;
+        $("reflect-fix-print").textContent = v.fix;
+        $("reflect-note").textContent = "Reflection saved ✓";
+      }
+
+      WIDI.store.recordVisit("partner");
+      fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
+        challenges = data.challenges;
+        var sel = $("challenge-select");
+        challenges.forEach(function (c) {
+          var o = document.createElement("option");
+          o.value = c.id; o.textContent = c.title + " (Level " + c.difficulty + ")";
+          sel.appendChild(o);
+        });
+        sel.addEventListener("change", function () { loadChallenge(sel.value); loadReflect(); });
+        var q = new URLSearchParams(location.search);
+        loadChallenge(q.get("c") || challenges[0].id);
+        loadReflect();
+
+        $("btn-more-lines").addEventListener("click", function () {
+          writerCount += 5;
+          scheduleSave("writer-lines", writerKey());
+          setTimeout(function () { buildLineInputs("writer-lines", writerKey(), writerCount, true, "Step…"); }, 50);
+        });
+        var rT = null;
+        ["reflect-bad", "reflect-fix"].forEach(function (id) {
+          $(id).addEventListener("input", function () {
+            clearTimeout(rT);
+            $("reflect-note").textContent = "Saving…";
+            rT = setTimeout(saveReflect, 900);
+          });
+        });
+        $("timer-5").addEventListener("click", function () { startTimer(5); });
+        $("timer-25").addEventListener("click", function () { startTimer(25); });
+        $("timer-stop").addEventListener("click", stopTimer);
+        $("btn-print").addEventListener("click", function () { window.print(); });
+      });
+    })();
+  </script>
+</body>
+</html>

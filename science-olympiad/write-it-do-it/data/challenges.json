@@ -11,6 +11,13 @@
     "Name the reference edge first — which row faces you?",
     "The rod's two ends each plug into a connector. Say which side of each connector."
    ],
+   "skillTags": [
+    "observation",
+   "piece-identification",
+   "spatial-vocabulary",
+   "connections",
+   "physical-construction"
+   ],
    "id": "widi-b-001",
    "learningObjectives": [
     "Count pieces precisely",
@@ -72,6 +79,12 @@
     "The elbow connector is the key piece — which two directions do its openings face?",
     "Build the horizontal arm first, then the vertical arm.",
     "Say whether each rod runs left-right or front-back."
+   ],
+   "skillTags": [
+    "orientation",
+   "connections",
+   "observation",
+   "physical-construction"
    ],
    "id": "widi-b-002",
    "learningObjectives": [
@@ -154,6 +167,12 @@
     "Notice the symmetry: the left and right sides mirror each other.",
     "Describe one post completely, then say 'mirror it on the right.'",
     "The two elbows face different directions — which way does each opening point?"
+   ],
+   "skillTags": [
+    "orientation",
+   "spatial-vocabulary",
+   "connections",
+   "physical-construction"
    ],
    "id": "widi-b-003",
    "learningObjectives": [
@@ -253,6 +272,11 @@
     "The stem attaches to the middle of the bar, not the end.",
     "Count the rods: two form the bar, one forms the stem."
    ],
+   "skillTags": [
+    "orientation",
+   "connections",
+   "sequencing"
+   ],
    "id": "widi-b-004",
    "learningObjectives": [
     "Describe a 3-way connection",
@@ -349,6 +373,11 @@
     "Trace the path with your finger: right, then back, then left.",
     "The two elbows are mirror images — describe each one's openings.",
     "The two horizontal rods sit on different rows. Name both rows."
+   ],
+   "skillTags": [
+    "orientation",
+   "spatial-vocabulary",
+   "sequencing"
    ],
    "id": "widi-b-005",
    "learningObjectives": [
@@ -447,6 +476,11 @@
     "All four corners are elbows, but each faces a different direction.",
     "Go around the square clockwise and name each corner's openings.",
     "A loop has no loose ends — every rod end must plug into a corner."
+   ],
+   "skillTags": [
+    "orientation",
+   "connections",
+   "observation"
    ],
    "id": "widi-b-006",
    "learningObjectives": [
@@ -548,6 +582,13 @@
     "The cross connector has four openings — one per arm.",
     "Describe the center first, then go arm by arm: front, back, left, right.",
     "All four rods are identical. What keeps them distinct is direction."
+   ],
+   "skillTags": [
+    "observation",
+   "spatial-vocabulary",
+   "sequencing",
+   "connections",
+   "time-management"
    ],
    "id": "widi-b-007",
    "learningObjectives": [
@@ -661,6 +702,12 @@
     "Build the vertical mast bottom-to-top first.",
     "The two T connectors are stacked — one arm points right, the other points left.",
     "For each T, name which side is closed. That's what distinguishes them."
+   ],
+   "skillTags": [
+    "orientation",
+   "piece-identification",
+   "sequencing",
+   "time-management"
    ],
    "id": "widi-b-008",
    "learningObjectives": [
@@ -782,6 +829,12 @@
     "Describe the first step fully, then say how the second step shifts.",
     "Watch the elbows — each turn needs its openings named."
    ],
+   "skillTags": [
+    "spatial-vocabulary",
+   "orientation",
+   "sequencing",
+   "time-management"
+   ],
    "id": "widi-b-009",
    "learningObjectives": [
     "Describe a repeating step pattern",
@@ -895,6 +948,12 @@
     "Three parts: the base, the pole, the flag. Describe them in that order.",
     "The T connector joins the base to the pole — which side of the T is closed?",
     "The flag hangs off the top of the pole. Which way does the elbow turn?"
+   ],
+   "skillTags": [
+    "orientation",
+   "connections",
+   "ambiguity",
+   "time-management"
    ],
    "id": "widi-b-010",
    "learningObjectives": [

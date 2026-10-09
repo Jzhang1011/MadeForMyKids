@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Observe Like an Engineer — Write It Do It — MadeForMyKids</title>
-  <meta name="description" content="Train your observation skills: count pieces, spot differences, and find bad connections before you write a word." />
+  <meta name="description" content="Train your observation skills with a systematic 7-step inspection: inventory, orientation, structure, connections, position, details, review." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -17,11 +17,27 @@
   <main class="widi-wrap">
     <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
     <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Observe Like an Engineer 🔍</h1>
-    <p class="widi-section-sub">Every good instruction starts with careful looking. Three drills — no writing yet.</p>
+    <p class="widi-section-sub">Every good instruction starts with careful looking. Inspect every model in the same order, so nothing gets missed.</p>
+
+    <!-- The 7-step framework -->
+    <div class="widi-panel">
+      <h2>The 7-step inspection</h2>
+      <p class="widi-note">Run through these steps in order <em>before</em> you write a word. Writers who skip steps write instructions with holes in them.</p>
+      <ol class="widi-steps">
+        <li><strong>Inventory:</strong> count each type of piece separately — rods by color and length, connectors by kind.</li>
+        <li><strong>Orientation:</strong> fix your viewpoint. Name the base, front, back, left, and right — and say which edge faces you.</li>
+        <li><strong>Structure:</strong> find the major sections and any independent subassemblies you could build separately.</li>
+        <li><strong>Connections:</strong> for every rod, record which pieces it connects, <em>where</em> they connect, and <em>how</em> (which opening, which end).</li>
+        <li><strong>Position:</strong> describe relative placement — direction and distance from a fixed reference point.</li>
+        <li><strong>Details:</strong> capture colors, sizes, angles, and anything else that scores points.</li>
+        <li><strong>Review:</strong> check for missing pieces and ambiguous descriptions before you call it done.</li>
+      </ol>
+      <p class="widi-note" style="margin-top:0.8rem">Not every object fits the same coordinate system. Pick a reference system that makes <em>this</em> model easy to describe — a grid, a clock face, "front-left corner" — and define it clearly at the top of your instructions.</p>
+    </div>
 
     <!-- Activity 1: count -->
     <div class="widi-panel">
-      <h2>1. Count the pieces</h2>
+      <h2>Drill 1. Count the pieces <span class="widi-tag">Inventory</span></h2>
       <p class="widi-note">How many individual pieces (rods + connectors) make up this structure? Count rods and connectors separately, then total.</p>
       <div class="widi-two">
         <div class="widi-fig" id="count-fig"></div>
@@ -38,7 +54,7 @@
 
     <!-- Activity 2: spot the difference -->
     <div class="widi-panel">
-      <h2>2. Spot the difference</h2>
+      <h2>Drill 2. Spot the difference <span class="widi-tag">Details</span> <span class="widi-tag">Orientation</span></h2>
       <p class="widi-note">These two structures look almost identical. Compare them square by square — how many pieces are different?</p>
       <div class="widi-two">
         <div class="widi-fig" id="diff-a"></div>
@@ -50,10 +66,41 @@
 
     <!-- Activity 3: find the bad connection -->
     <div class="widi-panel">
-      <h2>3. Find the bad connection</h2>
+      <h2>Drill 3. Find the bad connection <span class="widi-tag">Connections</span></h2>
       <p class="widi-note">One piece in this structure isn't properly connected — a rod end floats with nothing to plug into. <strong>Click the floating piece.</strong></p>
       <div class="widi-fig" id="float-fig" style="max-width:560px"></div>
       <div class="widi-feedback" id="float-fb"></div>
+    </div>
+
+    <!-- Activity 4 (new): what's missing from the observation? -->
+    <div class="widi-panel">
+      <h2>Drill 4. What's missing? <span class="widi-tag">Review</span></h2>
+      <p class="widi-note">A student observed the model below and wrote up these notes before writing instructions. <strong>Which inspection step did they skip?</strong></p>
+      <div class="widi-two">
+        <div class="widi-fig" id="missing-fig"></div>
+        <div>
+          <div class="widi-quote" id="missing-notes">
+            "The model has 1 red rod (3 long) and 2 straight connectors. The front edge faces me. The rod runs left to right across the middle. Everything is red."
+          </div>
+          <div class="widi-quiz-opts" id="missing-opts" style="margin-top:0.8rem"></div>
+          <div class="widi-feedback" id="missing-fb"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 5 (new): which description is clearer? -->
+    <div class="widi-panel">
+      <h2>Drill 5. Which description is clearer? <span class="widi-tag">Connections</span> <span class="widi-tag">Ambiguity</span></h2>
+      <p class="widi-note">Both sentences try to describe the same connection. <strong>Pick the one a builder could actually follow</strong> — then check why.</p>
+      <div class="widi-quiz-opts" id="clear-opts" style="max-width:640px"></div>
+      <div class="widi-feedback" id="clear-fb"></div>
+      <p class="widi-note" style="margin-top:0.8rem"><strong>Rule of thumb:</strong> never identify a piece by color alone when several pieces share that color. Name the exact piece, the exact connection point, and the exact location.</p>
+    </div>
+
+    <div class="widi-panel" style="background:var(--mfk-tint)">
+      <h2>Ready for the next step?</h2>
+      <p class="widi-note">Good observing is only half the event. Now turn what you see into instructions someone else can build from.</p>
+      <a class="widi-btn primary" href="instruction-lab.html">Write instructions →</a>
     </div>
   </main>
 
@@ -70,12 +117,38 @@
         el.className = "widi-feedback show " + (good ? "good" : "bad");
         el.innerHTML = html;
       }
+      function quiz(optsId, fbId, activityId, options, correctIdx, explainGood, explainBad) {
+        var box = $(optsId), done = false;
+        options.forEach(function (text, i) {
+          var b = document.createElement("button");
+          b.innerHTML = text;
+          b.addEventListener("click", function () {
+            if (done) return;
+            done = true;
+            var correct = i === correctIdx;
+            WIDI.store.recordObserve(activityId, correct);
+            checkObserveLessons();
+            Array.prototype.forEach.call(box.children, function (x) { x.disabled = true; });
+            b.classList.add(correct ? "correct" : "wrong");
+            fb(fbId, correct, correct ? explainGood : explainBad);
+          });
+          box.appendChild(b);
+        });
+      }
+      /* Lesson completion is attempt-based and honest: finishing the drills, not acing them. */
+      function checkObserveLessons() {
+        var o = (WIDI.store.load().observe) || {};
+        function tried(id) { return o[id] && o[id].attempts > 0; }
+        if (tried("count-pieces") && tried("spot-difference") && tried("bad-connection")) WIDI.store.recordLesson("observe");
+        if (tried("missing-step") && tried("clearer-description")) WIDI.store.recordLesson("ambiguity");
+      }
 
+      WIDI.store.recordVisit("observe");
       fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
         var byId = {};
         data.challenges.forEach(function (c) { byId[c.id] = c; });
 
-        /* --- Activity 1: count pieces in 006 (The Square: 8 pieces) --- */
+        /* --- Drill 1: count pieces in 006 (The Square: 8 pieces) --- */
         var sq = byId["widi-b-006"];
         $("count-fig").innerHTML = WIDI.renderSVG({ pieces: sq.targetModel.pieces }, { cell: 40 });
         var total = sq.targetModel.pieces.length; // 8
@@ -83,20 +156,19 @@
           var v = parseInt($("count-input").value, 10);
           var correct = v === total;
           WIDI.store.recordObserve("count-pieces", correct);
+          checkObserveLessons();
           if (correct) fb("count-fb", true, "<strong>Correct — 8 pieces.</strong> 4 yellow rods and 4 elbow connectors. Systematic counting (rods first, then connectors) beats eyeballing every time.");
           else fb("count-fb", false, "<strong>Not quite.</strong> Try again: count all the rods first, then all the connectors, then add them. Don't count the grid squares — count the pieces.");
         });
 
-        /* --- Activity 2: spot the difference in 003 (one rod moved) --- */
+        /* --- Drill 2: spot the difference in 003 (one elbow mirrored) --- */
         var gate = byId["widi-b-003"].targetModel.pieces;
         var gateB = JSON.parse(JSON.stringify(gate));
-        // Introduce exactly one difference: mirror the front-left elbow's openings.
         gateB.forEach(function (p) {
           if (p.t === "conn" && p.kind === "elbow" && p.x === 1 && p.y === 4) p.rot = "SW";
         });
         $("diff-a").innerHTML = WIDI.renderSVG({ pieces: gate }, { cell: 36 });
-        var bSvg = WIDI.renderSVG({ pieces: gateB }, { cell: 36 });
-        $("diff-b").innerHTML = bSvg;
+        $("diff-b").innerHTML = WIDI.renderSVG({ pieces: gateB }, { cell: 36 });
         var diffDone = false;
         [0, 1, 2, 3].forEach(function (n) {
           var b = document.createElement("button");
@@ -106,30 +178,28 @@
             diffDone = true;
             var correct = n === 1;
             WIDI.store.recordObserve("spot-difference", correct);
+            checkObserveLessons();
             Array.prototype.forEach.call($("diff-opts").children, function (x) { x.disabled = true; });
             b.classList.add(correct ? "correct" : "wrong");
             if (correct) fb("diff-fb", true, "<strong>Exactly one.</strong> The front-left elbow's openings were mirrored — a classic competition error. The fix in words: \"openings face front and right\" vs. \"front and left.\" One word changes the whole structure.");
             else {
               fb("diff-fb", false, "<strong>Look closer.</strong> There is exactly <strong>one</strong> difference: compare the front-left elbow's openings in both pictures.");
-              // highlight the changed cell in B
               $("diff-b").innerHTML = WIDI.renderSVG({ pieces: gateB }, { cell: 36, highlightCells: [[1, 4]] });
             }
           });
           $("diff-opts").appendChild(b);
         });
 
-        /* --- Activity 3: floating piece in 002 --- */
+        /* --- Drill 3: floating piece in 002 --- */
         var corner = JSON.parse(JSON.stringify(byId["widi-b-002"].targetModel.pieces));
-        // disconnect: move the vertical rod one square back (y 3->4 => occupies (2,4),(2,5); cap at (2,5) overlaps -> move cap too? simpler: shift rod right by 1)
         var floatIdx = -1;
         corner.forEach(function (p, i) {
-          if (p.t === "rod" && p.dir === "V") { p.x = 3; floatIdx = i; } // now its ends touch nothing
+          if (p.t === "rod" && p.dir === "V") { p.x = 3; floatIdx = i; }
         });
-        var svg = WIDI.renderSVG({ pieces: corner }, {
+        $("float-fig").innerHTML = WIDI.renderSVG({ pieces: corner }, {
           cell: 40,
           pieceAttrs: function (i) { return 'data-i="' + i + '" style="cursor:pointer"'; }
         });
-        $("float-fig").innerHTML = svg;
         var done = false;
         $("float-fig").querySelector("svg").addEventListener("click", function (evt) {
           if (done) return;
@@ -138,9 +208,29 @@
           done = true;
           var correct = parseInt(t.dataset.i, 10) === floatIdx;
           WIDI.store.recordObserve("bad-connection", correct);
+          checkObserveLessons();
           if (correct) fb("float-fb", true, "<strong>Found it!</strong> That vertical rod's ends plug into nothing — it floats one square away from the elbow. In your instructions, prevent this by tracing every rod end-to-end: <em>\"the rod's lower end plugs into the elbow's upward opening.\"</em>");
           else fb("float-fb", false, "<strong>Not that one.</strong> That piece is properly connected. Look for a rod end with empty grid next to it — nothing for it to plug into.");
         });
+
+        /* --- Drill 4: what's missing from the observation? (challenge 001) --- */
+        var first = byId["widi-b-001"];
+        $("missing-fig").innerHTML = WIDI.renderSVG({ pieces: first.targetModel.pieces }, { cell: 44 });
+        quiz("missing-opts", "missing-fb", "missing-step", [
+          "<strong>Inventory</strong> — the piece count is wrong",
+          "<strong>Connections</strong> — it never says how the rod ends plug into the connectors",
+          "<strong>Details</strong> — it never mentions the rod's color"
+        ], 1,
+          "<strong>Exactly.</strong> The notes count pieces, set orientation, and describe position — but never record <em>which end plugs into which opening</em>. That's step 4, Connections, and it's the step most beginners skip. (The color <em>is</em> mentioned, and the count is right.)",
+          "<strong>Not quite.</strong> Re-read the notes against the 7 steps: the count is right, orientation is set, and color is mentioned. What's never recorded is <em>how the pieces connect</em> — which rod end goes into which connector opening. That's the Connections step.");
+
+        /* --- Drill 5: which description is clearer? --- */
+        quiz("clear-opts", "clear-fb", "clearer-description", [
+          "<strong>A.</strong> \u201cAttach the red piece to the blue piece.\u201d",
+          "<strong>B.</strong> \u201cPlug the left end of the 3-long red rod into the right-facing opening of the blue elbow connector at B2.\u201d"
+        ], 1,
+          "<strong>B, by a mile.</strong> It names the <em>exact piece</em> (3-long red rod, left end), the <em>exact connection point</em> (right-facing opening of the blue elbow), and the <em>exact location</em> (B2). A fails on all three — and with several red pieces on the table, color alone identifies nothing.",
+          "<strong>Look again.</strong> A says \u201cthe red piece\u201d — but which red piece? Which end? Which opening? B answers all three: exact piece, exact connection point, exact location. In competition, A builds three different structures in three different builders' hands.");
       });
     })();
   </script>

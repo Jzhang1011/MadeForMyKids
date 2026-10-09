@@ -54,10 +54,12 @@
           <div id="board"></div>
           <p class="widi-kbd-hint">Click a piece in the palette, then click the grid to place it. Click a placed piece to select it — <kbd>R</kbd> rotates, <kbd>Delete</kbd> removes.</p>
           <div class="widi-toolrow">
+            <button class="widi-toolbtn" id="btn-hint">💡 Hint <span id="hint-count"></span></button>
             <button class="widi-toolbtn" id="btn-undo">↩ Undo</button>
             <button class="widi-toolbtn danger" id="btn-reset-board">Reset board</button>
             <button class="widi-toolbtn primary" id="btn-submit">Submit for review →</button>
           </div>
+          <div id="hint-box" hidden style="margin-top:0.6rem"></div>
         </div>
       </div>
     </div>
@@ -71,6 +73,7 @@
       </div>
       <h2 class="widi-section-title">Error analysis</h2>
       <ul class="widi-errors" id="rev-errors"></ul>
+      <div id="recommend-box" style="margin-top:1rem"></div>
       <div class="widi-toolrow" style="margin-top:1.5rem">
         <button class="widi-toolbtn" id="btn-retry">🔄 Try again</button>
         <a class="widi-toolbtn primary" id="btn-next" href="#" style="text-decoration:none">Next challenge →</a>
@@ -94,6 +97,7 @@
       var selPalette = null; // {kind:'rod',color,len,dir} | {kind:'conn',kind,rot}
       var selPiece = -1;
       var rodDir = "H";
+      var hintLevel = 0; // progressive hints: 1 = nudge, 2 = specific, 3 = most specific
 
       function $(id) { return document.getElementById(id); }
       function params() { return new URLSearchParams(location.search); }
@@ -195,10 +199,15 @@
         } else {
           p = { t: "conn", kind: selPalette.kind, rot: selPalette.rot, x: cell.x, y: cell.y };
         }
-        // bounds + overlap pre-check
-        var test = { pieces: placed.concat([p]) };
-        var bad = WIDI.validate(test).some(function (i) { return (i.type === "out-of-bounds" || i.type === "overlap") && i.piece === placed.length; });
-        if (bad) { flashHint("That doesn't fit there — off the grid or overlapping."); return; }
+        // specific pre-check: off the grid vs. overlapping (clear reasons, not just "doesn't fit")
+        var cells = WIDI.cellsOf(p);
+        var offGrid = cells.some(function (c) { return c[0] < 0 || c[0] > 7 || c[1] < 0 || c[1] > 7; });
+        if (offGrid) { flashHint("That hangs off the grid — it needs " + cells.length + " square(s) of room inside the 8×8 board."); return; }
+        var occupied = {};
+        placed.forEach(function (q, qi) { WIDI.cellsOf(q).forEach(function (c) { occupied[c[0] + "," + c[1]] = qi; }); });
+        var hit = null;
+        cells.some(function (c) { if (occupied[c[0] + "," + c[1]] !== undefined) { hit = occupied[c[0] + "," + c[1]]; return true; } return false; });
+        if (hit !== null) { flashHint("That overlaps the " + WIDI.pieceName(placed[hit]) + " already there — pick an empty spot."); return; }
         pushUndo();
         placed.push(p);
         selPiece = placed.length - 1;
@@ -274,7 +283,8 @@
       function loadChallenge(id) {
         ch = challenges.filter(function (c) { return c.id === id; })[0] || challenges[0];
         chIndex = challenges.indexOf(ch);
-        placed = []; undoStack = []; selPalette = null; selPiece = -1;
+        placed = []; undoStack = []; selPalette = null; selPiece = -1; hintLevel = 0;
+        $("hint-box").hidden = true; $("hint-box").innerHTML = ""; $("hint-count").textContent = "";
         $("challenge-select").value = ch.id;
         $("diff-badge").innerHTML = '<span class="widi-diff d' + ch.difficulty + '">Level ' + ch.difficulty + "</span>";
         renderBrief(); renderPalette(); renderBoard(); updateSelActions(); updateUndoBtn();
@@ -299,6 +309,73 @@
 
       function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
 
+      /* Progressive hints: each level is more specific; the answer is never placed for you. */
+      function showHint() {
+        var hints = ch.hints || [];
+        if (hintLevel >= 3) { flashHint("That was the most specific hint. Stuck? Try the guided build to study the target first."); return; }
+        hintLevel++;
+        var text = hints[hintLevel - 1] || "Re-read the description one sentence at a time and check each piece off as you place it.";
+        var box = $("hint-box");
+        box.hidden = false;
+        box.innerHTML = '<div class="widi-hintbox"><strong>Hint ' + hintLevel + ' of 3:</strong> ' + esc(text) + "</div>";
+        $("hint-count").textContent = "(" + hintLevel + "/3)";
+      }
+
+      /* Honest "possible cause" for each mismatch: the software can't know the
+         writer's intent, so it suggests where the instructions may have failed. */
+      var ERROR_CAUSE = {
+        "missing-piece": "the instructions may never have mentioned this piece, or a step got skipped. Re-read the description sentence by sentence and check each piece off.",
+        "extra-piece": "the instructions may have been unclear about the piece count, or when the build was supposed to stop.",
+        "wrong-position": "the instructions may have said something vague like \u201cnear the middle\u201d instead of anchoring to a reference edge plus a distance.",
+        "wrong-orientation": "the instructions may not have said which way this piece points \u2014 or which way the connector openings face.",
+        "wrong-color": "the instructions may not have named this piece's color clearly.",
+        "floating": "the instructions may not have said what this rod end plugs into. Every end needs a named opening.",
+        "overlap": "the build order in the instructions may have led two pieces into the same square.",
+        "out-of-bounds": "the described positions may not fit inside the grid."
+      };
+
+      /* Error type -> skill tag, for the targeted drill recommendation. */
+      var ERROR_TAG = {
+        "missing-piece": "observation", "extra-piece": "observation",
+        "wrong-position": "spatial-vocabulary", "out-of-bounds": "spatial-vocabulary",
+        "wrong-orientation": "orientation", "wrong-color": "piece-identification",
+        "floating": "connections", "overlap": "connections"
+      };
+
+      function recommendDrill() {
+        var box = $("recommend-box");
+        var counts = {};
+        var lastErrors = [];
+        try {
+          var d = WIDI.store.load();
+          if (d.builds && d.builds[ch.id] && d.builds[ch.id].errors) {
+            var he = d.builds[ch.id].errors;
+            Object.keys(he).forEach(function (t) { counts[t] = (counts[t] || 0) + he[t]; lastErrors.push(t); });
+          }
+        } catch (e) {}
+        var topType = null, topN = 0;
+        Object.keys(counts).forEach(function (t) { if (counts[t] > topN) { topN = counts[t]; topType = t; } });
+        if (!topType) {
+          box.innerHTML = '<div class="widi-hintbox"><strong>Perfect match!</strong> Try a harder challenge, or take it to the real world with a <a href="partner.html">partner practice</a>.</div>';
+          return;
+        }
+        var wantTag = ERROR_TAG[topType];
+        var done = {};
+        try {
+          var dd = WIDI.store.load();
+          Object.keys(dd.builds || {}).forEach(function (id) { if ((dd.builds[id].best || 0) >= 95) done[id] = true; });
+        } catch (e2) {}
+        var cands = challenges.filter(function (c) { return c.id !== ch.id && !done[c.id] && (c.skillTags || []).indexOf(wantTag) >= 0; });
+        var label = WIDI.ERROR_LABEL[topType] || topType;
+        if (cands.length) {
+          var pick = cands[0];
+          box.innerHTML = '<div class="widi-hintbox"><strong>\uD83C\uDFAF Recommended next drill:</strong> <a href="build.html?c=' + pick.id + '">' + esc(pick.title) + '</a>' +
+            ' \u2014 it trains <strong>' + wantTag.replace(/-/g, " ") + '</strong>, your most frequent error area (' + esc(label) + ').</div>';
+        } else {
+          box.innerHTML = '<div class="widi-hintbox"><strong>Keep practicing!</strong> Your most frequent error area is <strong>' + esc(label) + '</strong> (' + wantTag.replace(/-/g, " ") + '). Replay this challenge or try the <a href="observe.html">observation drills</a>.</div>';
+        }
+      }
+
       function submit() {
         if (!placed.length) { flashHint("Place some pieces first!"); return; }
         var issues = WIDI.validate({ pieces: placed });
@@ -307,6 +384,8 @@
         var target = { pieces: ch.targetModel.pieces };
         var res = WIDI.compare(target, { pieces: placed });
         WIDI.store.recordBuild(ch.id, res.accuracy, res.errors);
+        WIDI.store.recordLesson("build");
+        try { if ((WIDI.store.load().builds[ch.id].attempts || 0) >= 2) WIDI.store.recordLesson("improve"); } catch (e) {}
         $("phase-build").hidden = true;
         $("phase-review").hidden = false;
         $("rev-score").textContent = res.accuracy + "%";
@@ -320,10 +399,18 @@
           res.errors.forEach(function (e) {
             var li = document.createElement("li");
             li.innerHTML = '<span class="err-type">' + (WIDI.ERROR_LABEL[e.type] || e.type) + "</span><p>" + esc(e.message) + "</p>" +
-              '<p class="tip"><strong>Next time:</strong> ' + esc(WIDI.ERROR_TIP[e.type] || "") + "</p>";
+              '<p class="tip"><strong>Next time:</strong> ' + esc(WIDI.ERROR_TIP[e.type] || "") + "</p>" +
+              '<p class="cause" style="font-size:0.88rem;color:var(--mfk-ink-soft)"><strong>Possible cause in the instructions:</strong> ' + esc(ERROR_CAUSE[e.type] || "compare the mismatched piece against the description — the wording that produced it is the lesson.") + "</p>";
             ul.appendChild(li);
           });
         }
+        if (hintLevel > 0) {
+          var hn = document.createElement("p");
+          hn.className = "widi-note";
+          hn.textContent = "You used " + hintLevel + " hint" + (hintLevel === 1 ? "" : "s") + " on this attempt.";
+          ul.parentNode.insertBefore(hn, ul);
+        }
+        recommendDrill();
         var next = challenges[(chIndex + 1) % challenges.length];
         var nb = $("btn-next");
         nb.textContent = "Next: " + next.title + " →";
@@ -346,6 +433,7 @@
       }
 
       // init
+      WIDI.store.recordVisit("build");
       fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
         challenges = data.challenges;
         var sel = $("challenge-select");
@@ -375,6 +463,7 @@
           if (!placed.length || confirm("Clear the whole board?")) { pushUndo(); placed = []; selPiece = -1; renderPalette(); renderBoard(); updateSelActions(); updateUndoBtn(); }
         });
         $("btn-submit").addEventListener("click", submit);
+        $("btn-hint").addEventListener("click", showHint);
         $("btn-retry").addEventListener("click", function () {
           placed = []; undoStack = []; selPiece = -1;
           renderPalette(); renderBoard(); updateSelActions(); updateUndoBtn();

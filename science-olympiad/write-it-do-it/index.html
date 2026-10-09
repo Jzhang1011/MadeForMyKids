@@ -24,6 +24,7 @@
           <a class="widi-btn primary" href="build.html">Start a Challenge</a>
           <a class="widi-btn ghost" href="observe.html">Learn the Strategy</a>
         </div>
+        <div id="continue-banner" hidden style="margin-top:0.9rem"></div>
         <div class="widi-rules-note">
           <strong>A note for parents:</strong> timed and competition-style modes here are <em>practice simulations</em>.
           The official 2027 rules manual takes precedence — 2027 season resources on the
@@ -36,6 +37,10 @@
   </section>
 
   <main class="widi-wrap">
+    <h2 class="widi-section-title">Your 6-lesson path</h2>
+    <p class="widi-section-sub">Watch → Learn → Observe → Write → Rebuild → Compare → Improve. Checkmarks are earned from real completed activities on this device.</p>
+    <div class="widi-cards" id="lesson-path"></div>
+
     <h2 class="widi-section-title">The learning loop</h2>
     <p class="widi-section-sub">Observe → Describe → Build → Compare → Improve. Pick where to start.</p>
     <div class="widi-cards">
@@ -61,19 +66,32 @@
         <a class="widi-btn ghost" href="build.html">Start building</a>
       </div>
       <div class="widi-card">
+        <div class="card-icon">👥</div>
+        <h3>Practice with a Partner</h3>
+        <p>The real event needs two people. Printable writer and builder worksheets, a comparison checklist, and practice timers.</p>
+        <div class="card-meta"><span>25 min</span><span>Team skill</span><span>Printable</span></div>
+        <a class="widi-btn ghost" href="partner.html">Start practicing</a>
+      </div>
+      <div class="widi-card">
         <div class="card-icon">📚</div>
         <h3>Challenge Library</h3>
-        <p>Browse all 10 original practice structures, from a 3-piece warm-up to competition-style builds. Pick your difficulty.</p>
+        <p>Browse all 10 original practice structures, from a 3-piece warm-up to competition-style builds. Filter by skill or difficulty.</p>
         <div class="card-meta"><span>10 challenges</span><span>Levels 1–3</span><span>Self-paced</span></div>
         <a class="widi-btn ghost" href="challenge-library.html">Browse challenges</a>
       </div>
     </div>
 
+    <h2 class="widi-section-title">Learn WIDI strategies 🎬</h2>
+    <p class="widi-section-sub">Curated workshops and guides — each one leads into a practice activity.</p>
+    <div class="widi-cards" id="video-strip"></div>
+    <p><a class="widi-btn ghost" href="learn.html">Browse all strategy resources →</a></p>
+
     <div class="widi-progress" id="progress-strip" aria-label="Your progress">
+      <div class="stat"><small>Lessons completed</small><strong id="st-lessons">0/6</strong></div>
       <div class="stat"><small>Challenges completed</small><strong id="st-completed">0</strong></div>
       <div class="stat"><small>Latest accuracy</small><strong id="st-accuracy">—</strong></div>
       <div class="stat"><small>Most common error</small><strong id="st-error" style="font-size:1.05rem">—</strong></div>
-      <div class="stat"><small>Keep going</small><span style="font-size:0.9rem" id="st-next">Start with "First Steps" in the library.</span><br><button class="reset-link" id="btn-reset">Reset progress</button></div>
+      <div class="stat"><small>Keep going</small><span style="font-size:0.9rem" id="st-next">Start with Lesson 1 below.</span><br><button class="reset-link" id="btn-reset">Reset progress</button></div>
     </div>
 
     <div class="widi-panel">
@@ -88,20 +106,93 @@
   <script src="assets/widi.js"></script>
   <script>
     (function () {
+      "use strict";
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+      var LESSONS = [
+        { id: "observe", n: 1, icon: "🔍", title: "Observe Like an Engineer", href: "observe.html", time: "15 min", desc: "Practice inventory, viewpoint, and major structure." },
+        { id: "write", n: 2, icon: "✏️", title: "Write Instructions That Work", href: "instruction-lab.html", time: "20 min", desc: "Clear piece names, numbered steps, exact connections." },
+        { id: "build", n: 3, icon: "🧱", title: "Build from Text", href: "build.html", time: "20 min", desc: "Reconstruct a model without seeing the target." },
+        { id: "ambiguity", n: 4, icon: "🔎", title: "Find the Ambiguity", href: "observe.html", time: "10 min", desc: "Compare two instructions; name the vaguer one and why." },
+        { id: "partner", n: 5, icon: "👥", title: "Partner Challenge", href: "partner.html", time: "25 min", desc: "Physical write-and-rebuild with a partner." },
+        { id: "improve", n: 6, icon: "📈", title: "Improve from Errors", href: "build.html", time: "15 min", desc: "Review mismatches; rewrite the sentence that caused them." }
+      ];
+      var PAGE_NAMES = {
+        observe: ["Observe Like an Engineer", "observe.html"],
+        write: ["Write Better Instructions", "instruction-lab.html"],
+        build: ["Build from Words", "build.html"],
+        partner: ["Practice with a Partner", "partner.html"],
+        learn: ["Learn WIDI Strategies", "learn.html"],
+        library: ["Challenge Library", "challenge-library.html"]
+      };
+
       // Hero figure: render challenge 006 (The Square)
       fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
         var ch = data.challenges.filter(function (c) { return c.id === "widi-b-006"; })[0];
         if (ch) document.getElementById("hero-fig").innerHTML = WIDI.renderSVG({ pieces: ch.targetModel.pieces }, { cell: 40 });
       });
-      // Progress strip
+
       var s = WIDI.store.summary();
+      var doneIds = s.lessonIds || {};
+
+      // Lesson path with real checkmarks
+      var lp = document.getElementById("lesson-path");
+      LESSONS.forEach(function (L) {
+        var done = !!doneIds[L.id];
+        var card = document.createElement("div");
+        card.className = "widi-card";
+        card.innerHTML =
+          '<div class="card-icon">' + (done ? "✅" : L.icon) + "</div>" +
+          "<h3>Lesson " + L.n + ": " + esc(L.title) + "</h3>" +
+          "<p>" + esc(L.desc) + "</p>" +
+          '<div class="card-meta"><span>' + L.time + "</span>" + (done ? "<span>Done ✓</span>" : "<span>Not started</span>") + "</div>" +
+          '<a class="widi-btn ' + (done ? "ghost" : "primary") + '" href="' + L.href + '">' + (done ? "Review" : "Start lesson") + "</a>";
+        lp.appendChild(card);
+      });
+
+      // Continue banner + 5-minute lesson: first incomplete lesson
+      var firstOpen = LESSONS.filter(function (L) { return !doneIds[L.id]; })[0];
+      var banner = document.getElementById("continue-banner");
+      if (s.lastVisit && PAGE_NAMES[s.lastVisit.page]) {
+        var pn = PAGE_NAMES[s.lastVisit.page];
+        banner.hidden = false;
+        banner.innerHTML = '<a class="widi-btn ghost" href="' + pn[1] + '">👋 Continue where you left off: ' + esc(pn[0]) + " →</a>";
+      } else if (firstOpen) {
+        banner.hidden = false;
+        banner.innerHTML = '<a class="widi-btn ghost" href="' + firstOpen.href + '">⚡ Start a 5-minute lesson: ' + esc(firstOpen.title) + " →</a>";
+      }
+
+      // Video strip from the curated data (videos only, max 3)
+      fetch("data/videos.json").then(function (r) { return r.json(); }).then(function (data) {
+        var strip = document.getElementById("video-strip");
+        var vids = (data.resources || []).filter(function (r) { return r.type === "video" && r.url; }).slice(0, 3);
+        if (!vids.length) {
+          strip.innerHTML = '<div class="widi-card"><div class="card-icon">🎬</div><h3>Strategy videos coming soon</h3><p>We\u2019re verifying workshop links before publishing them.</p><div class="card-meta"><span>Check back shortly</span></div><a class="widi-btn ghost" href="learn.html">Open the library</a></div>';
+          return;
+        }
+        vids.forEach(function (r) {
+          var card = document.createElement("div");
+          card.className = "widi-card";
+          card.innerHTML =
+            '<div class="card-icon">🎬</div>' +
+            "<h3>" + esc(r.title) + "</h3>" +
+            "<p>" + esc(r.source) + (r.duration ? " · " + esc(r.duration) : "") + "</p>" +
+            '<div class="card-meta">' + (r.skillTags || []).map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("") + "</div>" +
+            '<a class="widi-btn ghost" href="learn.html">Watch &amp; practice →</a>';
+          strip.appendChild(card);
+        });
+      });
+
+      // Progress strip — real saved activity only
+      document.getElementById("st-lessons").textContent = s.lessons + "/6";
       document.getElementById("st-completed").textContent = s.completed;
       document.getElementById("st-accuracy").textContent = s.latestAccuracy === null ? "—" : s.latestAccuracy + "%";
       document.getElementById("st-error").textContent = s.topError ? (WIDI.ERROR_LABEL[s.topError] || s.topError) : "—";
       var next = document.getElementById("st-next");
-      if (s.completed === 0) next.textContent = 'Start with "First Steps" in the library.';
+      if (firstOpen) next.textContent = "Next up: Lesson " + firstOpen.n + " — " + firstOpen.title + ".";
       else if (s.topError) next.textContent = "Most errors: " + (WIDI.ERROR_LABEL[s.topError] || s.topError) + ". " + (WIDI.ERROR_TIP[s.topError] || "");
-      else next.textContent = "Try the next difficulty level in the library.";
+      else if (s.completed === 0) next.textContent = "Start with Lesson 1 above.";
+      else next.textContent = "All lessons done — try the partner challenge or a harder build.";
       document.getElementById("btn-reset").addEventListener("click", function () {
         if (confirm("Reset all Write It Do It progress on this device?")) { WIDI.store.reset(); location.reload(); }
       });

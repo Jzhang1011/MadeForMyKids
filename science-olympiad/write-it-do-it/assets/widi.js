@@ -323,6 +323,17 @@
       d.observe[activityId] = o;
       store.save(d);
     },
+    recordLesson: function (id) {
+      var d = store.load();
+      d.lessons = d.lessons || {};
+      if (!d.lessons[id]) d.lessons[id] = { done: Date.now() };
+      store.save(d);
+    },
+    recordVisit: function (page) {
+      var d = store.load();
+      d.lastVisit = { page: page, at: Date.now() };
+      store.save(d);
+    },
     summary: function () {
       var d = store.load();
       var builds = d.builds || {};
@@ -337,7 +348,8 @@
       });
       var topErr = null, topN = 0;
       Object.keys(errCounts).forEach(function (t) { if (errCounts[t] > topN) { topN = errCounts[t]; topErr = t; } });
-      return { completed: completed, latestAccuracy: latestAcc, topError: topErr, builds: builds };
+      var lessons = (d.lessons && Object.keys(d.lessons).length) || 0;
+      return { completed: completed, latestAccuracy: latestAcc, topError: topErr, builds: builds, lessons: lessons, lessonIds: (d.lessons || {}), lastVisit: d.lastVisit || null, observe: d.observe || {} };
     },
   };
 

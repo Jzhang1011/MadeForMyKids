@@ -19,11 +19,14 @@
     <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Challenge Library 📚</h1>
     <p class="widi-section-sub">Ten original structures, ordered easy → hard. All models were built and validated with the site's own piece system — rods and connectors on an 8×8 grid.</p>
 
-    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.2rem" role="group" aria-label="Filter by difficulty">
-      <button class="widi-toolbtn" data-f="all" aria-pressed="true">All</button>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.6rem" role="group" aria-label="Filter by difficulty">
+      <button class="widi-toolbtn" data-f="all" aria-pressed="true">All levels</button>
       <button class="widi-toolbtn" data-f="1" aria-pressed="false">Level 1</button>
       <button class="widi-toolbtn" data-f="2" aria-pressed="false">Level 2</button>
       <button class="widi-toolbtn" data-f="3" aria-pressed="false">Level 3</button>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.2rem" role="group" aria-label="Filter by skill">
+      <button class="widi-toolbtn" data-s="all" aria-pressed="true">All skills</button>
     </div>
 
     <div class="widi-lib-grid" id="lib-grid"></div>
@@ -44,37 +47,70 @@
       function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
       var grid = document.getElementById("lib-grid");
       var all = [];
+      var diffFilter = "all", skillFilter = "all";
+      var SKILL_LABEL = {
+        "observation": "Observation", "piece-identification": "Piece ID", "orientation": "Orientation",
+        "spatial-vocabulary": "Spatial vocab", "connections": "Connections", "sequencing": "Sequencing",
+        "ambiguity": "Ambiguity", "time-management": "Time mgmt", "physical-construction": "Physical build"
+      };
 
-      function render(filter) {
+      function render() {
         grid.innerHTML = "";
         var done = WIDI.store.load().builds || {};
+        var shown = 0;
         all.forEach(function (c) {
-          if (filter !== "all" && String(c.difficulty) !== filter) return;
+          if (diffFilter !== "all" && String(c.difficulty) !== diffFilter) return;
+          if (skillFilter !== "all" && (c.skillTags || []).indexOf(skillFilter) < 0) return;
+          shown++;
           var card = document.createElement("div");
           card.className = "widi-lib-card";
           var best = done[c.id] ? done[c.id].best : null;
+          var tags = (c.skillTags || []).map(function (t) { return '<span class="widi-tag">' + (SKILL_LABEL[t] || t) + "</span>"; }).join("");
           card.innerHTML =
             '<div class="thumb">' + WIDI.renderSVG({ pieces: c.targetModel.pieces }, { cell: 26, labels: false }) + "</div>" +
             '<div class="body"><h3>' + esc(c.title) + "</h3>" +
             '<div class="row"><span class="widi-diff d' + c.difficulty + '">Level ' + c.difficulty + "</span>" +
             (best !== null ? '<span class="widi-diff d1">Best: ' + best + "%</span>" : "") +
             (c.mode === "practice" ? '<span class="widi-diff d3">Practice sim</span>' : "") + "</div>" +
+            '<div class="row" style="margin-top:0.3rem">' + tags + "</div>" +
             '<p class="obj">' + esc(c.learningObjectives.join(" · ")) + "</p>" +
             '<p class="obj">' + c.targetModel.pieces.length + " pieces</p>" +
             '<div class="actions"><a class="widi-toolbtn" href="instruction-lab.html?c=' + c.id + '" style="text-decoration:none">✏️ Write</a>' +
             '<a class="widi-toolbtn primary" href="build.html?c=' + c.id + '" style="text-decoration:none">🧱 Build</a></div></div>';
           grid.appendChild(card);
         });
+        if (!shown) grid.innerHTML = '<p class="widi-note">No challenges match both filters — try widening one.</p>';
       }
 
       fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
         all = data.challenges;
-        render("all");
+        // skill filter buttons from tags actually in use
+        var seen = {};
+        all.forEach(function (c) { (c.skillTags || []).forEach(function (t) { seen[t] = true; }); });
+        var skillGroup = document.querySelector('[aria-label="Filter by skill"]');
+        Object.keys(SKILL_LABEL).filter(function (t) { return seen[t]; }).forEach(function (t) {
+          var b = document.createElement("button");
+          b.className = "widi-toolbtn";
+          b.dataset.s = t;
+          b.setAttribute("aria-pressed", "false");
+          b.textContent = SKILL_LABEL[t];
+          skillGroup.appendChild(b);
+        });
+        render();
         document.querySelectorAll("[data-f]").forEach(function (b) {
           b.addEventListener("click", function () {
             document.querySelectorAll("[data-f]").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
             b.setAttribute("aria-pressed", "true");
-            render(b.dataset.f);
+            diffFilter = b.dataset.f;
+            render();
+          });
+        });
+        document.querySelectorAll("[data-s]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            document.querySelectorAll("[data-s]").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+            b.setAttribute("aria-pressed", "true");
+            skillFilter = b.dataset.s;
+            render();
           });
         });
       });

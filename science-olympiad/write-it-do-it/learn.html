@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Learn WIDI Strategies — Write It Do It — MadeForMyKids</title>
+  <meta name="description" content="Curated Write It Do It strategy videos and guides: scoring, writer strategy, builder strategy, and time management. Each resource leads into a practice activity." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="assets/widi.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <main class="widi-wrap">
+    <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
+    <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Learn WIDI Strategies 🎬</h1>
+    <p class="widi-section-sub">Curated workshops and guides from Science Olympiad teams and coaches. Every resource leads into a practice activity — watch, then do.</p>
+
+    <div class="widi-panel" style="background:var(--mfk-tint)">
+      <p class="widi-note" style="margin:0"><strong>Teaching references, not rulebooks.</strong> These recordings and guides teach strategy; only the <a href="https://www.soinc.org/write-it-do-it-b" target="_blank" rel="noopener">official 2027 Division B rules manual</a> defines the event. Where they disagree, the manual wins. Last reviewed: <span id="last-reviewed">—</span>.</p>
+    </div>
+
+    <h2 class="widi-section-title">Strategy videos</h2>
+    <div class="widi-cards" id="video-grid" style="margin-top:0.8rem"></div>
+
+    <h2 class="widi-section-title">Written guides</h2>
+    <div class="widi-cards" id="guide-grid" style="margin-top:0.8rem"></div>
+
+    <div class="widi-panel">
+      <h2>Official resources</h2>
+      <ul class="widi-steps">
+        <li><strong><a href="https://www.soinc.org/write-it-do-it-b" target="_blank" rel="noopener">2027 WIDI Division B event page</a></strong> — official event framing and rule checks. 2027 season resources are still marked "coming soon."</li>
+        <li><strong><a href="https://www.soinc.org/2024-virtual-bootcamp-videos-resources" target="_blank" rel="noopener">2024 Virtual Bootcamp videos &amp; resources</a></strong> — Science Olympiad's own WIDI intro video, slides, and live session recording.</li>
+      </ul>
+      <p class="widi-note">MadeForMyKids is not affiliated with or endorsed by Science Olympiad, Inc.</p>
+    </div>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="assets/widi.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      WIDI.store.recordVisit("learn");
+
+      function tagHtml(tags) {
+        return (tags || []).map(function (t) { return '<span class="widi-tag">' + esc(t) + "</span>"; }).join("");
+      }
+
+      function videoCard(r) {
+        var el = document.createElement("div");
+        el.className = "widi-video-card";
+        el.innerHTML =
+          "<h3>" + esc(r.title) + "</h3>" +
+          '<div class="widi-video-meta"><span>📺 ' + esc(r.source) + "</span>" +
+          (r.duration ? "<span>⏱ " + esc(r.duration) + "</span>" : "") +
+          (r.captions ? "<span>💬 Captions available</span>" : "") + "</div>" +
+          '<div style="display:flex;flex-wrap:wrap;gap:0.3rem">' + tagHtml(r.skillTags) + "</div>" +
+          '<p class="widi-note" style="margin:0"><strong>Watch for:</strong> ' + esc(r.watchFor) + "</p>" +
+          (r.keyMethods && r.keyMethods.length ? '<p class="widi-note" style="margin:0"><strong>Key methods:</strong></p><ul class="widi-steps" style="margin-top:0.2rem">' +
+            r.keyMethods.map(function (m) { return "<li>" + esc(m) + "</li>"; }).join("") + "</ul>" : "") +
+          '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:auto">' +
+          '<a class="widi-toolbtn primary" href="' + esc(r.url) + '" target="_blank" rel="noopener" style="text-decoration:none">▶ Watch</a>' +
+          (r.relatedActivity ? '<a class="widi-toolbtn" href="' + esc(r.relatedActivity.href) + '" style="text-decoration:none">' + esc(r.relatedActivity.label) + " →</a>" : "") +
+          "</div>";
+        return el;
+      }
+
+      fetch("data/videos.json").then(function (r) { return r.json(); }).then(function (data) {
+        document.getElementById("last-reviewed").textContent = (data.meta && data.meta.lastReviewed) || "—";
+        var vg = document.getElementById("video-grid");
+        var gg = document.getElementById("guide-grid");
+        (data.resources || []).forEach(function (r) {
+          if (!r.url) return; // never publish an unverified link
+          (r.type === "video" ? vg : gg).appendChild(videoCard(r));
+        });
+        if (!vg.children.length) vg.innerHTML = '<p class="widi-note">Video links are being verified — check back soon.</p>';
+      });
+    })();
+  </script>
+</body>
+</html>
