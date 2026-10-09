@@ -118,6 +118,13 @@
 .solar-widget .readout .k { font-size: 0.78rem; color: #aab4dd; }
 .solar-verdict { margin-top: 0.9rem; font-weight: 700; font-size: 1.05rem; }
 .solar-widget .fine { font-size: 0.8rem; color: #aab4dd; margin-top: 0.7rem; line-height: 1.5; }
+/* Light callout boxes inside the dark widget need dark text */
+.solar-widget .solar-misconception,
+.solar-widget .solar-fact,
+.solar-widget .solar-watchfor { color: #1f2937; }
+.solar-widget .solar-misconception .solar-note,
+.solar-widget .solar-fact .solar-note,
+.solar-widget .solar-watchfor .solar-note { color: #4b5563; }
 
 /* quiz */
 .solar-quiz-q { border-top: 1px solid var(--mfk-border); padding: 1rem 0; }
