@@ -112,8 +112,11 @@
     <!-- STEP 4: PRACTICE -->
     <section class="solar-step" id="practice" aria-label="Step 4: Practice">
       <h2><span class="step-num">4</span> Practice <span class="solar-note">~3 min</span></h2>
-      <p class="solar-note">Try each question before checking — you'll get an explanation either way.</p>
-      <div id="quiz"></div>
+      <div id="practice-wrap">
+        <p class="solar-note">5 questions per round, drawn from this lesson's 14-question bank — a balanced mix across the key ideas. Try each one before checking.</p>
+        <div id="quiz"></div>
+        <p><button class="solar-btn ghost" id="btn-retry" type="button">🔀 New set of 5</button></p>
+      </div>
     </section>
 
     <!-- STEP 5: APPLY -->
@@ -209,52 +212,51 @@
       selB.addEventListener("change", renderCompare);
       renderCompare();
 
-      // PRACTICE
-      SOLAR.quiz("quiz", [
-        {
-          text: "Which best explains why Mars's atmosphere is so thin today?",
-          options: [
-            "Mars drifted farther from the Sun over time",
-            "A single event blasted the atmosphere away all at once",
-            "Several processes over billions of years — including solar-wind-driven escape and sputtering — plus Mars's small size and weak gravity making gas harder to hold",
-            "Mars never had a thick atmosphere"
-          ],
-          answer: 2,
-          wrongWhy: "Mars did have a thicker atmosphere — dry riverbeds and lake deposits prove liquid water once flowed at the surface.",
-          why: "MAVEN investigates multiple loss processes still happening today. No single cause explains it: solar-wind-driven escape, sputtering, and Mars's weak gravity all contributed."
-        },
-        {
-          text: "Surface pressure: Venus 92 bar, Earth 1 bar, Mars 0.006 bar. What does Mars's number tell you?",
-          options: [
-            "Mars's atmosphere is the best at trapping heat",
-            "With ~150× less air than Earth, Mars can barely trap heat — and liquid water can't stay stable on its surface",
-            "Pressure doesn't affect temperature",
-            "Mars must have the strongest greenhouse effect"
-          ],
-          answer: 1,
-          why: "1 ÷ 0.006 ≈ 167 — Mars has roughly 1/167th of Earth's air. Thin air means heat radiates straight to space, which is a big reason Mars averages −63 °C."
-        },
-        {
-          text: "Earth's global magnetic field helps habitability mainly by…",
-          options: [
-            "Warming the planet directly",
-            "Deflecting the solar wind, slowing the stripping of the atmosphere",
-            "Creating the oceans",
-            "Blocking all radiation from the Sun"
-          ],
-          answer: 1,
-          why: "The field is a shield, not a heater: it deflects the solar wind and slows atmospheric stripping. Scientists investigate it as one factor — Mars shows what losing one can accelerate, and Venus (no field, 92 bar) shows it isn't the decider. (It doesn't block all radiation, and it didn't create the oceans.)"
-        },
-        {
-          text: "Which is the better scientific explanation?",
-          options: [
-            "“Mars is cold because it's farther from the Sun than Earth.”",
-            "“Mars is cold partly because of its distance — but mostly because its thin, stripped atmosphere can't trap heat. Venus proves distance alone doesn't decide temperature.”"
-          ],
-          answer: 1,
-          why: "The second explanation uses the Lesson 1 contrast as evidence and names the actual mechanism. Distance-only thinking fails the Venus test."
+      // PRACTICE — 5 balanced questions per round from the tagged bank (14 questions)
+      function shuffle(a) {
+        a = a.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = a[i]; a[i] = a[j]; a[j] = t;
         }
-      ]);
+        return a;
+      }
+      function pickFive(bank) {
+        var groups = ["core", "comparison", "cause-effect", "evidence"];
+        var picked = [], used = {};
+        groups.forEach(function (g) {
+          var cands = bank.filter(function (q) { return q.tags[0] === g && !used[q.id]; });
+          if (cands.length) {
+            var q = cands[Math.floor(Math.random() * cands.length)];
+            picked.push(q); used[q.id] = true;
+          }
+        });
+        var rest = bank.filter(function (q) { return !used[q.id]; });
+        if (rest.length && picked.length < 5) picked.push(rest[Math.floor(Math.random() * rest.length)]);
+        // Shuffle option order per render so re-attempts feel fresh
+        return shuffle(picked).map(function (q) {
+          var order = shuffle(q.options.map(function (_, i) { return i; }));
+          return {
+            text: q.text,
+            options: order.map(function (i) { return q.options[i]; }),
+            answer: order.indexOf(q.answer),
+            why: q.why, wrongWhy: q.wrongWhy
+          };
+        });
+      }
+      function renderPractice(bank) {
+        // Fresh node drops the previous round's listeners
+        var oldHost = document.getElementById("quiz");
+        var host = oldHost.cloneNode(false);
+        oldHost.replaceWith(host);
+        SOLAR.quiz("quiz", pickFive(bank));
+      }
+      fetch("../data/questions-compare-worlds.json").then(function (r) { return r.json(); }).then(function (bank) {
+        renderPractice(bank.questions);
+        document.getElementById("btn-retry").addEventListener("click", function () { renderPractice(bank.questions); });
+      }).catch(function () {
+        document.getElementById("quiz").innerHTML = '<p class="solar-note">Could not load the question bank. Check your connection and refresh.</p>';
+      });
 
       // APPLY — evidence-based challenge (single question, immediate feedback)
       SOLAR.quiz("apply-quiz", [
@@ -306,7 +308,7 @@
           document.getElementById("done-msg").textContent = "All questions answered — mark it done to earn your checkmark on the hub.";
         }
       }
-      document.getElementById("quiz").addEventListener("solar:quizdone", function () { quizzesDone.quiz = true; refreshDone(); });
+      document.getElementById("practice-wrap").addEventListener("solar:quizdone", function () { quizzesDone.quiz = true; refreshDone(); });
       document.getElementById("exit-quiz").addEventListener("solar:quizdone", function () { quizzesDone["exit-quiz"] = true; refreshDone(); });
       if (SOLAR.store.isDone("compare-worlds")) {
         btnDone.textContent = "✓ Completed";
