@@ -1,0 +1,1027 @@
+{
+ "challenges": [
+  {
+   "commonErrors": [
+    "missing-piece",
+    "wrong-position"
+   ],
+   "difficulty": 1,
+   "hints": [
+    "Start by counting: how many pieces total?",
+    "Name the reference edge first — which row faces you?",
+    "The rod's two ends each plug into a connector. Say which side of each connector."
+   ],
+   "id": "widi-b-001",
+   "learningObjectives": [
+    "Count pieces precisely",
+    "Name colors and lengths",
+    "Describe a straight connection"
+   ],
+   "mode": "learning",
+   "pieceInventory": [
+    {
+     "color": "red",
+     "length": 3,
+     "pieceType": "rod",
+     "quantity": 1
+    },
+    {
+     "kind": "straight",
+     "pieceType": "connector",
+     "quantity": 2
+    }
+   ],
+   "referenceOrientation": "The front edge (row 1) faces you. Columns A (left) to H (right).",
+   "sourceType": "original",
+   "targetModel": {
+    "pieces": [
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 2,
+      "y": 1
+     },
+     {
+      "color": "red",
+      "dir": "H",
+      "len": 3,
+      "t": "rod",
+      "x": 3,
+      "y": 1
+     },
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 6,
+      "y": 1
+     }
+    ]
+   },
+   "title": "First Steps",
+   "buildDescription": "Place one straight connector so its two openings face left and right. Connect a red rod (length 3) to its right opening so the rod runs left-to-right. Connect a second straight connector to the right end of the rod, with its openings facing left and right."
+  },
+  {
+   "commonErrors": [
+    "wrong-orientation",
+    "missing-piece"
+   ],
+   "difficulty": 1,
+   "hints": [
+    "The elbow connector is the key piece — which two directions do its openings face?",
+    "Build the horizontal arm first, then the vertical arm.",
+    "Say whether each rod runs left-right or front-back."
+   ],
+   "id": "widi-b-002",
+   "learningObjectives": [
+    "Describe a turn",
+    "Name connector openings",
+    "Use front/back/left/right with a reference"
+   ],
+   "mode": "learning",
+   "pieceInventory": [
+    {
+     "color": "blue",
+     "length": 2,
+     "pieceType": "rod",
+     "quantity": 2
+    },
+    {
+     "kind": "elbow",
+     "pieceType": "connector",
+     "quantity": 1
+    },
+    {
+     "kind": "straight",
+     "pieceType": "connector",
+     "quantity": 2
+    }
+   ],
+   "referenceOrientation": "The front edge (row 1) faces you. Columns A (left) to H (right).",
+   "sourceType": "original",
+   "targetModel": {
+    "pieces": [
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 5,
+      "y": 2
+     },
+     {
+      "color": "blue",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 3,
+      "y": 2
+     },
+     {
+      "kind": "elbow",
+      "rot": "NE",
+      "t": "conn",
+      "x": 2,
+      "y": 2
+     },
+     {
+      "color": "blue",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 2,
+      "y": 3
+     },
+     {
+      "kind": "straight",
+      "rot": "NS",
+      "t": "conn",
+      "x": 2,
+      "y": 5
+     }
+    ]
+   },
+   "title": "The Corner",
+   "buildDescription": "Place an elbow connector with its openings facing back and right. Connect a blue rod (length 2) to the right opening, running left-to-right, and cap its far end with a straight connector (openings facing left and right). Connect a second blue rod (length 2) to the back opening, running front-to-back, and cap its far end with a straight connector (openings facing front and back)."
+  },
+  {
+   "commonErrors": [
+    "wrong-orientation",
+    "wrong-position"
+   ],
+   "difficulty": 1,
+   "hints": [
+    "Notice the symmetry: the left and right sides mirror each other.",
+    "Describe one post completely, then say 'mirror it on the right.'",
+    "The two elbows face different directions — which way does each opening point?"
+   ],
+   "id": "widi-b-003",
+   "learningObjectives": [
+    "Describe symmetry",
+    "Sequence a build base-first",
+    "Mirror left and right"
+   ],
+   "mode": "learning",
+   "pieceInventory": [
+    {
+     "color": "yellow",
+     "length": 3,
+     "pieceType": "rod",
+     "quantity": 3
+    },
+    {
+     "kind": "elbow",
+     "pieceType": "connector",
+     "quantity": 2
+    },
+    {
+     "pieceType": "connector",
+     "kind": "straight",
+     "quantity": 2
+    }
+   ],
+   "referenceOrientation": "The front edge (row 1) faces you. Columns A (left) to H (right).",
+   "sourceType": "original",
+   "targetModel": {
+    "pieces": [
+     {
+      "color": "yellow",
+      "dir": "V",
+      "len": 3,
+      "t": "rod",
+      "x": 1,
+      "y": 1
+     },
+     {
+      "color": "yellow",
+      "dir": "V",
+      "len": 3,
+      "t": "rod",
+      "x": 5,
+      "y": 1
+     },
+     {
+      "kind": "elbow",
+      "rot": "SE",
+      "t": "conn",
+      "x": 1,
+      "y": 4
+     },
+     {
+      "color": "yellow",
+      "dir": "H",
+      "len": 3,
+      "t": "rod",
+      "x": 2,
+      "y": 4
+     },
+     {
+      "kind": "elbow",
+      "rot": "SW",
+      "t": "conn",
+      "x": 5,
+      "y": 4
+     },
+     {
+      "t": "conn",
+      "kind": "straight",
+      "rot": "NS",
+      "x": 1,
+      "y": 0
+     },
+     {
+      "t": "conn",
+      "kind": "straight",
+      "rot": "NS",
+      "x": 5,
+      "y": 0
+     }
+    ]
+   },
+   "title": "The Gate",
+   "buildDescription": "Place two yellow rods (length 3) running front-to-back, three squares apart — one on the left, one on the right. Cap the front end of each with a straight connector (openings facing front and back). At the back end of the left rod, place an elbow with openings facing front and right; at the back end of the right rod, place an elbow with openings facing front and left. Join the two elbows with a yellow rod (length 3) running left-to-right."
+  },
+  {
+   "commonErrors": [
+    "wrong-orientation",
+    "wrong-position",
+    "missing-piece"
+   ],
+   "difficulty": 2,
+   "hints": [
+    "The T connector has three openings and one closed side — which side is closed?",
+    "The stem attaches to the middle of the bar, not the end.",
+    "Count the rods: two form the bar, one forms the stem."
+   ],
+   "id": "widi-b-004",
+   "learningObjectives": [
+    "Describe a 3-way connection",
+    "Distinguish the stem from the bar",
+    "Use centered/offset language"
+   ],
+   "mode": "learning",
+   "pieceInventory": [
+    {
+     "color": "green",
+     "length": 2,
+     "pieceType": "rod",
+     "quantity": 3
+    },
+    {
+     "kind": "tee",
+     "pieceType": "connector",
+     "quantity": 1
+    },
+    {
+     "kind": "straight",
+     "pieceType": "connector",
+     "quantity": 3
+    }
+   ],
+   "referenceOrientation": "The front edge (row 1) faces you. Columns A (left) to H (right).",
+   "sourceType": "original",
+   "targetModel": {
+    "pieces": [
+     {
+      "color": "green",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 1,
+      "y": 1
+     },
+     {
+      "kind": "tee",
+      "rot": "S",
+      "t": "conn",
+      "x": 3,
+      "y": 1
+     },
+     {
+      "color": "green",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 4,
+      "y": 1
+     },
+     {
+      "color": "green",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 3,
+      "y": 2
+     },
+     {
+      "kind": "straight",
+      "rot": "NS",
+      "t": "conn",
+      "x": 3,
+      "y": 4
+     },
+     {
+      "t": "conn",
+      "kind": "straight",
+      "rot": "EW",
+      "x": 0,
+      "y": 1
+     },
+     {
+      "t": "conn",
+      "kind": "straight",
+      "rot": "EW",
+      "x": 6,
+      "y": 1
+     }
+    ]
+   },
+   "title": "T-Junction",
+   "buildDescription": "Build the bar: lay a green rod (length 2) running left-to-right. Attach a T connector to its right end with the closed side facing front (openings face back, left, and right). Attach a second green rod (length 2) to the T's right opening, running left-to-right. Cap both free ends of the bar with straight connectors (openings facing left and right). Build the stem: attach a green rod (length 2) to the T's back opening, running front-to-back, and cap its far end with a straight connector (openings facing front and back)."
+  },
+  {
+   "commonErrors": [
+    "wrong-orientation",
+    "wrong-position"
+   ],
+   "difficulty": 2,
+   "hints": [
+    "Trace the path with your finger: right, then back, then left.",
+    "The two elbows are mirror images — describe each one's openings.",
+    "The two horizontal rods sit on different rows. Name both rows."
+   ],
+   "id": "widi-b-005",
+   "learningObjectives": [
+    "Track a path through turns",
+    "Describe direction changes",
+    "Keep left/right consistent"
+   ],
+   "mode": "learning",
+   "pieceInventory": [
+    {
+     "color": "red",
+     "length": 2,
+     "pieceType": "rod",
+     "quantity": 3
+    },
+    {
+     "kind": "elbow",
+     "pieceType": "connector",
+     "quantity": 2
+    },
+    {
+     "kind": "straight",
+     "pieceType": "connector",
+     "quantity": 2
+    }
+   ],
+   "referenceOrientation": "The front edge (row 1) faces you. Columns A (left) to H (right).",
+   "sourceType": "original",
+   "targetModel": {
+    "pieces": [
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 0,
+      "y": 1
+     },
+     {
+      "color": "red",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 1,
+      "y": 1
+     },
+     {
+      "kind": "elbow",
+      "rot": "NW",
+      "t": "conn",
+      "x": 3,
+      "y": 1
+     },
+     {
+      "color": "red",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 3,
+      "y": 2
+     },
+     {
+      "kind": "elbow",
+      "rot": "SW",
+      "t": "conn",
+      "x": 3,
+      "y": 4
+     },
+     {
+      "color": "red",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 1,
+      "y": 4
+     },
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 0,
+      "y": 4
+     }
+    ]
+   },
+   "title": "Zigzag",
+   "buildDescription": "Place a straight connector with openings facing left and right. Attach a red rod (length 2) to its right opening, running left-to-right. Attach an elbow to the rod's right end with openings facing left and back. Attach a red rod (length 2) to the elbow's back opening, running front-to-back. Attach a second elbow to the rod's back end with openings facing front and left. Attach a red rod (length 2) to this elbow's left opening, running left-to-right, and cap the free end with a straight connector (openings facing left and right)."
+  },
+  {
+   "commonErrors": [
+    "wrong-orientation",
+    "missing-piece",
+    "floating"
+   ],
+   "difficulty": 2,
+   "hints": [
+    "All four corners are elbows, but each faces a different direction.",
+    "Go around the square clockwise and name each corner's openings.",
+    "A loop has no loose ends — every rod end must plug into a corner."
+   ],
+   "id": "widi-b-006",
+   "learningObjectives": [
+    "Describe a closed loop",
+    "Verify every corner",
+    "Use repeated-pattern language"
+   ],
+   "mode": "learning",
+   "pieceInventory": [
+    {
+     "color": "yellow",
+     "length": 2,
+     "pieceType": "rod",
+     "quantity": 4
+    },
+    {
+     "kind": "elbow",
+     "pieceType": "connector",
+     "quantity": 4
+    }
+   ],
+   "referenceOrientation": "The front edge (row 1) faces you. Columns A (left) to H (right).",
+   "sourceType": "original",
+   "targetModel": {
+    "pieces": [
+     {
+      "kind": "elbow",
+      "rot": "NE",
+      "t": "conn",
+      "x": 1,
+      "y": 1
+     },
+     {
+      "color": "yellow",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 2,
+      "y": 1
+     },
+     {
+      "kind": "elbow",
+      "rot": "NW",
+      "t": "conn",
+      "x": 4,
+      "y": 1
+     },
+     {
+      "color": "yellow",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 4,
+      "y": 2
+     },
+     {
+      "kind": "elbow",
+      "rot": "SW",
+      "t": "conn",
+      "x": 4,
+      "y": 4
+     },
+     {
+      "color": "yellow",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 2,
+      "y": 4
+     },
+     {
+      "kind": "elbow",
+      "rot": "SE",
+      "t": "conn",
+      "x": 1,
+      "y": 4
+     },
+     {
+      "color": "yellow",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 1,
+      "y": 2
+     }
+    ]
+   },
+   "title": "The Square",
+   "buildDescription": "Build a square loop, going clockwise from the front-left corner. Place an elbow with openings facing back and right. Attach a yellow rod (length 2) to its right opening, running left-to-right. Attach an elbow with openings facing back and left. Attach a yellow rod (length 2) to its back opening, running front-to-back. Attach an elbow with openings facing front and left. Attach a yellow rod (length 2) to its left opening, running left-to-right. Attach an elbow with openings facing front and right. Attach a final yellow rod (length 2) to its front opening, running front-to-back, closing the loop."
+  },
+  {
+   "commonErrors": [
+    "missing-piece",
+    "wrong-position",
+    "wrong-orientation"
+   ],
+   "difficulty": 3,
+   "hints": [
+    "The cross connector has four openings — one per arm.",
+    "Describe the center first, then go arm by arm: front, back, left, right.",
+    "All four rods are identical. What keeps them distinct is direction."
+   ],
+   "id": "widi-b-007",
+   "learningObjectives": [
+    "Describe a 4-way connection",
+    "Organize instructions by arm",
+    "Check quantities carefully"
+   ],
+   "mode": "learning",
+   "pieceInventory": [
+    {
+     "color": "blue",
+     "length": 2,
+     "pieceType": "rod",
+     "quantity": 4
+    },
+    {
+     "kind": "cross",
+     "pieceType": "connector",
+     "quantity": 1
+    },
+    {
+     "kind": "straight",
+     "pieceType": "connector",
+     "quantity": 4
+    }
+   ],
+   "referenceOrientation": "The front edge (row 1) faces you. Columns A (left) to H (right).",
+   "sourceType": "original",
+   "targetModel": {
+    "pieces": [
+     {
+      "kind": "cross",
+      "rot": "X",
+      "t": "conn",
+      "x": 3,
+      "y": 3
+     },
+     {
+      "color": "blue",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 3,
+      "y": 4
+     },
+     {
+      "kind": "straight",
+      "rot": "NS",
+      "t": "conn",
+      "x": 3,
+      "y": 6
+     },
+     {
+      "color": "blue",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 3,
+      "y": 1
+     },
+     {
+      "kind": "straight",
+      "rot": "NS",
+      "t": "conn",
+      "x": 3,
+      "y": 0
+     },
+     {
+      "color": "blue",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 4,
+      "y": 3
+     },
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 6,
+      "y": 3
+     },
+     {
+      "color": "blue",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 1,
+      "y": 3
+     },
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 0,
+      "y": 3
+     }
+    ]
+   },
+   "title": "Crossroads",
+   "buildDescription": "Place a cross connector at the center. Attach four blue rods (length 2), one to each opening — front, back, left, and right. Cap each rod's free end with a straight connector: front-back openings for the front and back rods, left-right openings for the left and right rods."
+  },
+  {
+   "commonErrors": [
+    "wrong-orientation",
+    "wrong-position",
+    "missing-piece"
+   ],
+   "difficulty": 3,
+   "hints": [
+    "Build the vertical mast bottom-to-top first.",
+    "The two T connectors are stacked — one arm points right, the other points left.",
+    "For each T, name which side is closed. That's what distinguishes them."
+   ],
+   "id": "widi-b-008",
+   "learningObjectives": [
+    "Describe stacked junctions",
+    "Distinguish mirrored arms",
+    "Sequence bottom-to-top"
+   ],
+   "mode": "learning",
+   "pieceInventory": [
+    {
+     "color": "green",
+     "length": 2,
+     "pieceType": "rod",
+     "quantity": 4
+    },
+    {
+     "kind": "tee",
+     "pieceType": "connector",
+     "quantity": 2
+    },
+    {
+     "kind": "straight",
+     "pieceType": "connector",
+     "quantity": 4
+    }
+   ],
+   "referenceOrientation": "The front edge (row 1) faces you. Columns A (left) to H (right).",
+   "sourceType": "original",
+   "targetModel": {
+    "pieces": [
+     {
+      "kind": "straight",
+      "rot": "NS",
+      "t": "conn",
+      "x": 3,
+      "y": 0
+     },
+     {
+      "color": "green",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 3,
+      "y": 1
+     },
+     {
+      "kind": "tee",
+      "rot": "W",
+      "t": "conn",
+      "x": 3,
+      "y": 3
+     },
+     {
+      "color": "green",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 3,
+      "y": 4
+     },
+     {
+      "kind": "tee",
+      "rot": "E",
+      "t": "conn",
+      "x": 3,
+      "y": 6
+     },
+     {
+      "kind": "straight",
+      "rot": "NS",
+      "t": "conn",
+      "x": 3,
+      "y": 7
+     },
+     {
+      "color": "green",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 4,
+      "y": 3
+     },
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 6,
+      "y": 3
+     },
+     {
+      "color": "green",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 1,
+      "y": 6
+     },
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 0,
+      "y": 6
+     }
+    ]
+   },
+   "title": "Double-T Antenna",
+   "buildDescription": "Build a vertical mast from front to back. Start with a straight connector (openings facing front and back). Attach a green rod (length 2), running front-to-back. Attach a T connector with its closed side facing left (openings face front, back, and right). Attach another green rod (length 2), running front-to-back. Attach a second T connector with its closed side facing right (openings face front, back, and left). Finish with a straight connector (openings facing front and back). Now the arms: to the first T's right opening, attach a green rod (length 2) running left-to-right, capped with a straight connector (openings left-right). To the second T's left opening, attach a green rod (length 2) running left-to-right, capped with a straight connector (openings left-right)."
+  },
+  {
+   "commonErrors": [
+    "wrong-orientation",
+    "wrong-position",
+    "floating"
+   ],
+   "difficulty": 3,
+   "hints": [
+    "Each step is the same shape: flat, turn, up, turn, flat.",
+    "Describe the first step fully, then say how the second step shifts.",
+    "Watch the elbows — each turn needs its openings named."
+   ],
+   "id": "widi-b-009",
+   "learningObjectives": [
+    "Describe a repeating step pattern",
+    "Track position changes per step",
+    "Combine horizontal and vertical language"
+   ],
+   "mode": "learning",
+   "pieceInventory": [
+    {
+     "color": "red",
+     "length": 2,
+     "pieceType": "rod",
+     "quantity": 4
+    },
+    {
+     "kind": "elbow",
+     "pieceType": "connector",
+     "quantity": 3
+    },
+    {
+     "kind": "straight",
+     "pieceType": "connector",
+     "quantity": 2
+    }
+   ],
+   "referenceOrientation": "The front edge (row 1) faces you. Columns A (left) to H (right).",
+   "sourceType": "original",
+   "targetModel": {
+    "pieces": [
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 0,
+      "y": 1
+     },
+     {
+      "color": "red",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 1,
+      "y": 1
+     },
+     {
+      "kind": "elbow",
+      "rot": "NW",
+      "t": "conn",
+      "x": 3,
+      "y": 1
+     },
+     {
+      "color": "red",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 3,
+      "y": 2
+     },
+     {
+      "kind": "elbow",
+      "rot": "SE",
+      "t": "conn",
+      "x": 3,
+      "y": 4
+     },
+     {
+      "color": "red",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 4,
+      "y": 4
+     },
+     {
+      "kind": "elbow",
+      "rot": "NW",
+      "t": "conn",
+      "x": 6,
+      "y": 4
+     },
+     {
+      "color": "red",
+      "dir": "V",
+      "len": 2,
+      "t": "rod",
+      "x": 6,
+      "y": 5
+     },
+     {
+      "kind": "straight",
+      "rot": "NS",
+      "t": "conn",
+      "x": 6,
+      "y": 7
+     }
+    ]
+   },
+   "title": "Staircase",
+   "buildDescription": "Start at the front-left with a straight connector (openings facing left and right). Attach a red rod (length 2) to its right opening, running left-to-right. Attach an elbow with openings facing left and back. Attach a red rod (length 2) to its back opening, running front-to-back. Attach an elbow with openings facing front and right. Attach a red rod (length 2) to its right opening, running left-to-right. Attach an elbow with openings facing left and back. Attach a final red rod (length 2) to its back opening, running front-to-back, and cap the end with a straight connector (openings facing front and back)."
+  },
+  {
+   "commonErrors": [
+    "wrong-orientation",
+    "missing-piece",
+    "wrong-position",
+    "floating"
+   ],
+   "difficulty": 3,
+   "hints": [
+    "Three parts: the base, the pole, the flag. Describe them in that order.",
+    "The T connector joins the base to the pole — which side of the T is closed?",
+    "The flag hangs off the top of the pole. Which way does the elbow turn?"
+   ],
+   "id": "widi-b-010",
+   "learningObjectives": [
+    "Assemble a multi-part structure",
+    "Describe base, pole, and flag separately",
+    "Write competition-style instructions"
+   ],
+   "mode": "practice",
+   "pieceInventory": [
+    {
+     "color": "blue",
+     "length": 2,
+     "pieceType": "rod",
+     "quantity": 2
+    },
+    {
+     "color": "blue",
+     "length": 3,
+     "pieceType": "rod",
+     "quantity": 1
+    },
+    {
+     "color": "red",
+     "length": 2,
+     "pieceType": "rod",
+     "quantity": 1
+    },
+    {
+     "kind": "tee",
+     "pieceType": "connector",
+     "quantity": 1
+    },
+    {
+     "kind": "elbow",
+     "pieceType": "connector",
+     "quantity": 1
+    },
+    {
+     "kind": "straight",
+     "pieceType": "connector",
+     "quantity": 3
+    }
+   ],
+   "practiceNote": "Practice simulation — piece counts and layout are original, not the official 2027 tournament setup.",
+   "referenceOrientation": "The front edge (row 1) faces you. Columns A (left) to H (right).",
+   "sourceType": "original",
+   "targetModel": {
+    "pieces": [
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 0,
+      "y": 0
+     },
+     {
+      "color": "blue",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 1,
+      "y": 0
+     },
+     {
+      "kind": "tee",
+      "rot": "S",
+      "t": "conn",
+      "x": 3,
+      "y": 0
+     },
+     {
+      "color": "blue",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 4,
+      "y": 0
+     },
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 6,
+      "y": 0
+     },
+     {
+      "color": "blue",
+      "dir": "V",
+      "len": 3,
+      "t": "rod",
+      "x": 3,
+      "y": 1
+     },
+     {
+      "kind": "elbow",
+      "rot": "SW",
+      "t": "conn",
+      "x": 3,
+      "y": 4
+     },
+     {
+      "color": "red",
+      "dir": "H",
+      "len": 2,
+      "t": "rod",
+      "x": 1,
+      "y": 4
+     },
+     {
+      "kind": "straight",
+      "rot": "EW",
+      "t": "conn",
+      "x": 0,
+      "y": 4
+     }
+    ]
+   },
+   "title": "The Flag",
+   "buildDescription": "Build the base: a straight connector (openings facing left and right), then a blue rod (length 2) running left-to-right, then a T connector with its closed side facing front (openings face back, left, and right). Attach a blue rod (length 2) to the T's right opening, running left-to-right, then a straight connector (openings facing left and right). Raise the pole: attach a blue rod (length 3) to the T's back opening, running front-to-back. At the top of the pole, attach an elbow with openings facing front and left. Attach a red rod (length 2) to its left opening, running left-to-right, and cap the end with a straight connector (openings facing left and right)."
+  }
+ ],
+ "meta": {
+  "division": "B",
+  "event": "Write It Do It",
+  "gridSize": 8,
+  "note": "Original models created for MadeForMyKids practice. Not official Science Olympiad content.",
+  "referenceDefault": "The front edge (row 1) faces you. Columns run A (left) to H (right); rows run 1 (front) to 8 (back).",
+  "season": "2027"
+ }
+}

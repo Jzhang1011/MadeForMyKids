@@ -33,6 +33,9 @@
     french: "french",
     francais: "french",
     "français": "french",
+    widi: "widi",
+    "write it do it": "widi",
+    "science olympiad": "widi",
   };
 
   const MAP = {
@@ -84,6 +87,13 @@
       icon: "🇫🇷",
       bg: "var(--mfk-skill-french-bg, #dbeafe)",
       fg: "var(--mfk-skill-french, #1d4ed8)",
+    },
+    widi: {
+      id: "widi",
+      label: "Science Olympiad",
+      icon: "🔧",
+      bg: "var(--mfk-skill-widi-bg, #cffafe)",
+      fg: "var(--mfk-skill-widi, #0891b2)",
     },
   };
 

@@ -1,1 +1,114 @@
-[{"ages":"6+","blurb":"Guided typing practice with a friendly fox guide — accuracy, rhythm, and confidence for young fingers on the keyboard.","href":"/typing.html","keywords":"typing keyboard fox home row accuracy speed touch type","title":"Fox Typing Adventure"},{"ages":"8+","blurb":"Short writing reps that build real sentence muscles — story builder for younger writers, writer's studio for older ones.","href":"/writing/workout.html","keywords":"writing sentences story builder essay writer studio","title":"Writing Gym"},{"ages":"10+","blurb":"AMC-style math problem bank to stretch problem-solving. Warm-ups through contest-level challenges for curious minds.","href":"/amc/","keywords":"math amc contest problems problem solving arithmetic olympiad","title":"Olympiad Forge"},{"ages":"5+","blurb":"Movie learning for families — use films as a learning tool together, not another review site.","href":"/movie/","keywords":"movie film family watch cinema","title":"Watch to Grow"},{"ages":"8+","blurb":"What can $100 do? A story, six detective checks, and a real dividend-stock picker for young investors.","href":"/money/","keywords":"money investing finance dividends stocks investor savings","title":"Money Lab"},{"ages":"8+","blurb":"A story about $100: spend it on candy, or put the money machine to work? Includes the interactive 5-year jar game.","href":"/money/#story","keywords":"money story candy compound interest jar game savings","title":"Money Lab: the $100 decision"},{"ages":"8+","blurb":"The six filters from the dividend screener, translated into kid language — each paired with its grown-up term.","href":"/money/#checks","keywords":"money detective checks screener filters dividends stocks","title":"Money Lab: the 6 detective checks"},{"ages":"8+","blurb":"Your turn, detective — six sliders over 275 real dividend stocks. Find companies strong enough to pay you every year.","href":"/money/#picker","keywords":"money picker stocks dividends screener tool","title":"Money Lab: dividend picker"},{"ages":"","blurb":"Every topic, grouped by subject — Words & stories, Numbers & money, Watch & explore. Ages are a guide, not a gate.","href":"/learn/","keywords":"learn topics subjects browse catalog","title":"Explore topics"},{"ages":"","blurb":"How MadeForMyKids works, practice tips, and answers for grown-ups.","href":"/parents/","keywords":"parents guide about help faq how it works","title":"For parents"},{"ages":"","blurb":"Daily practice paths across skills.","href":"/practice/","keywords":"practice daily routine","title":"Practice"},{"ages":"","blurb":"Learning games for kids.","href":"/games/","keywords":"games play fun","title":"Games"},{"ages":"8+","blurb":"Verbs are the engine of French — pick a verb, flip through three tenses, and hear every form spoken aloud.","href":"/french/","keywords":"french francais verbs conjugation parler etre avoir tense present passe compose futur pronunciation speak","title":"French Corner"},{"ages":"8+","blurb":"The conjugation lab: choose from 15 French verbs, hear each form with the speaker button, or listen to all six at once.","href":"/french/#lab","keywords":"french conjugation lab verbs listen pronunciation present tense","title":"French Corner: Conjugation Lab"},{"ages":"8+","blurb":"Match the six subjects to their verb forms in this memory-style pairing game. Pick any verb (or surprise me) — present tense.","href":"/french/#practice","keywords":"french practice game match subjects verbs pairing exercise","title":"French Corner: Matching game"}]
+[
+ {
+  "ages": "6+",
+  "blurb": "Guided typing practice with a friendly fox guide — accuracy, rhythm, and confidence for young fingers on the keyboard.",
+  "href": "/typing.html",
+  "keywords": "typing keyboard fox home row accuracy speed touch type",
+  "title": "Fox Typing Adventure"
+ },
+ {
+  "ages": "8+",
+  "blurb": "Short writing reps that build real sentence muscles — story builder for younger writers, writer's studio for older ones.",
+  "href": "/writing/workout.html",
+  "keywords": "writing sentences story builder essay writer studio",
+  "title": "Writing Gym"
+ },
+ {
+  "ages": "10+",
+  "blurb": "AMC-style math problem bank to stretch problem-solving. Warm-ups through contest-level challenges for curious minds.",
+  "href": "/amc/",
+  "keywords": "math amc contest problems problem solving arithmetic olympiad",
+  "title": "Olympiad Forge"
+ },
+ {
+  "ages": "5+",
+  "blurb": "Movie learning for families — use films as a learning tool together, not another review site.",
+  "href": "/movie/",
+  "keywords": "movie film family watch cinema",
+  "title": "Watch to Grow"
+ },
+ {
+  "ages": "8+",
+  "blurb": "What can $100 do? A story, six detective checks, and a real dividend-stock picker for young investors.",
+  "href": "/money/",
+  "keywords": "money investing finance dividends stocks investor savings",
+  "title": "Money Lab"
+ },
+ {
+  "ages": "8+",
+  "blurb": "A story about $100: spend it on candy, or put the money machine to work? Includes the interactive 5-year jar game.",
+  "href": "/money/#story",
+  "keywords": "money story candy compound interest jar game savings",
+  "title": "Money Lab: the $100 decision"
+ },
+ {
+  "ages": "8+",
+  "blurb": "The six filters from the dividend screener, translated into kid language — each paired with its grown-up term.",
+  "href": "/money/#checks",
+  "keywords": "money detective checks screener filters dividends stocks",
+  "title": "Money Lab: the 6 detective checks"
+ },
+ {
+  "ages": "8+",
+  "blurb": "Your turn, detective — six sliders over 275 real dividend stocks. Find companies strong enough to pay you every year.",
+  "href": "/money/#picker",
+  "keywords": "money picker stocks dividends screener tool",
+  "title": "Money Lab: dividend picker"
+ },
+ {
+  "ages": "",
+  "blurb": "Every topic, grouped by subject — Words & stories, Numbers & money, Watch & explore. Ages are a guide, not a gate.",
+  "href": "/learn/",
+  "keywords": "learn topics subjects browse catalog",
+  "title": "Explore topics"
+ },
+ {
+  "ages": "",
+  "blurb": "How MadeForMyKids works, practice tips, and answers for grown-ups.",
+  "href": "/parents/",
+  "keywords": "parents guide about help faq how it works",
+  "title": "For parents"
+ },
+ {
+  "ages": "",
+  "blurb": "Daily practice paths across skills.",
+  "href": "/practice/",
+  "keywords": "practice daily routine",
+  "title": "Practice"
+ },
+ {
+  "ages": "",
+  "blurb": "Learning games for kids.",
+  "href": "/games/",
+  "keywords": "games play fun",
+  "title": "Games"
+ },
+ {
+  "ages": "8+",
+  "blurb": "Verbs are the engine of French — pick a verb, flip through three tenses, and hear every form spoken aloud.",
+  "href": "/french/",
+  "keywords": "french francais verbs conjugation parler etre avoir tense present passe compose futur pronunciation speak",
+  "title": "French Corner"
+ },
+ {
+  "ages": "8+",
+  "blurb": "The conjugation lab: choose from 15 French verbs, hear each form with the speaker button, or listen to all six at once.",
+  "href": "/french/#lab",
+  "keywords": "french conjugation lab verbs listen pronunciation present tense",
+  "title": "French Corner: Conjugation Lab"
+ },
+ {
+  "ages": "8+",
+  "blurb": "Match the six subjects to their verb forms in this memory-style pairing game. Pick any verb (or surprise me) — present tense.",
+  "href": "/french/#practice",
+  "keywords": "french practice game match subjects verbs pairing exercise",
+  "title": "French Corner: Matching game"
+ },
+ {
+  "title": "Write It Do It Practice Center",
+  "blurb": "Science Olympiad Division B training: observe structures, write precise instructions, and rebuild from words. 10 original challenges.",
+  "href": "/science-olympiad/write-it-do-it/",
+  "keywords": "science olympiad write it do it widi division b technical writing spatial instructions build challenge rods connectors",
+  "ages": "10+"
+ }
+]

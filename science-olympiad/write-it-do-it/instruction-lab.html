@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Write Better Instructions — Write It Do It — MadeForMyKids</title>
+  <meta name="description" content="Practice writing precise construction instructions with a rubric checklist, then compare weak vs. improved examples." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="assets/widi.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <main class="widi-wrap">
+    <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
+    <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Write Better Instructions ✏️</h1>
+    <p class="widi-section-sub">Study the structure, write instructions a partner could build from, then self-check against the rubric.</p>
+
+    <div class="widi-panel" style="margin-top:0.8rem">
+      <div style="display:flex;flex-wrap:wrap;gap:0.8rem;align-items:center;margin-bottom:1rem">
+        <label for="challenge-select" style="font-weight:700">Structure:</label>
+        <select id="challenge-select" style="font-size:1rem;padding:0.5rem 0.7rem;border-radius:10px;border:2px solid var(--mfk-border);max-width:100%"></select>
+        <span id="diff-badge"></span>
+      </div>
+      <div class="widi-two">
+        <div>
+          <div class="widi-fig" id="target-fig"></div>
+          <p class="widi-note" id="ref-note" style="margin-top:0.6rem"></p>
+        </div>
+        <div>
+          <label for="instructions" style="font-weight:700">Your instructions:</label>
+          <textarea class="widi-textarea" id="instructions" placeholder="Step 1: State which edge faces the builder…"></textarea>
+          <div style="display:flex;gap:0.6rem;margin-top:0.7rem;flex-wrap:wrap;align-items:center">
+            <button class="widi-toolbtn primary" id="btn-save">Save draft</button>
+            <button class="widi-toolbtn" id="btn-load">Load saved</button>
+            <span class="widi-note" id="word-count"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="widi-panel">
+      <h2>Rubric self-check</h2>
+      <p class="widi-note">Check each box honestly. A useful instruction lets another person build the <em>same</em> structure — not just a similar one.</p>
+      <ul class="widi-rubric" id="rubric">
+        <li><input type="checkbox" id="r1" /><label for="r1"><strong>Reference orientation stated.</strong> I said which edge faces the builder (front/back/left/right are meaningless without it).</label></li>
+        <li><input type="checkbox" id="r2" /><label for="r2"><strong>Every piece named.</strong> Each rod has a color and length; each connector has a type — no "the red thing."</label></li>
+        <li><input type="checkbox" id="r3" /><label for="r3"><strong>Logical build order.</strong> Base or starting structure first, then connections, then secondary pieces.</label></li>
+        <li><input type="checkbox" id="r4" /><label for="r4"><strong>Connections explicit.</strong> Every rod end plugs into a named connector opening — I traced each one.</label></li>
+        <li><input type="checkbox" id="r5" /><label for="r5"><strong>Positions unambiguous.</strong> Distances and directions given (e.g. "two squares left of…"), not "near" or "by."</label></li>
+        <li><input type="checkbox" id="r6" /><label for="r6"><strong>Quantities check out.</strong> My instruction uses exactly the pieces in the inventory — nothing missing, nothing extra.</label></li>
+      </ul>
+      <div class="widi-feedback" id="rubric-fb"></div>
+      <button class="widi-toolbtn primary" id="btn-score">Score my checklist</button>
+    </div>
+
+    <div class="widi-panel">
+      <h2>Weak vs. improved — same structure</h2>
+      <p class="widi-note">Both describe "First Steps" (straight connector – red rod – straight connector). Only one builds it correctly.</p>
+      <div class="widi-example">
+        <div class="ex weak"><h4>🚫 Weak</h4><p>"Put the red piece on the blue thing and add another piece beside it."</p><p><strong>Why it fails:</strong> connectors aren't blue, "on" and "beside" don't say which opening, and the rod length is never mentioned.</p></div>
+        <div class="ex strong"><h4>✅ Improved</h4><p>"Place a straight connector with its openings facing left and right. Connect a red rod (length 3) to its right opening so the rod runs left-to-right. Connect a second straight connector to the right end of the rod, openings facing left and right."</p><p><strong>Why it works:</strong> every piece named with size, every connection traced, left/right anchored to the front edge.</p></div>
+      </div>
+      <p class="widi-note"><strong>Partner tip:</strong> hand your written instructions to a partner without showing them the structure. Time them building it, then compare — every difference is a lesson about a specific sentence you wrote.</p>
+    </div>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="assets/widi.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      function $(id) { return document.getElementById(id); }
+      var challenges = [], ch = null;
+      var LS_DRAFT = "mfk_widi_draft_";
+
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+      function loadChallenge(id) {
+        ch = challenges.filter(function (c) { return c.id === id; })[0] || challenges[0];
+        $("challenge-select").value = ch.id;
+        $("diff-badge").innerHTML = '<span class="widi-diff d' + ch.difficulty + '">Level ' + ch.difficulty + "</span>";
+        $("target-fig").innerHTML = WIDI.renderSVG({ pieces: ch.targetModel.pieces }, { cell: 40 });
+        $("ref-note").innerHTML = "<strong>Reference:</strong> " + esc(ch.referenceOrientation) +
+          " Piece inventory: " + ch.pieceInventory.map(function (e) {
+            return e.pieceType === "rod" ? e.quantity + "× " + e.color + " rod (" + e.length + ")" : e.quantity + "× " + e.kind;
+          }).join(", ") + ".";
+        loadDraft(true);
+      }
+
+      function draftKey() { return LS_DRAFT + ch.id; }
+      function loadDraft(silent) {
+        var v = "";
+        try { v = localStorage.getItem(draftKey()) || ""; } catch (e) {}
+        $("instructions").value = v;
+        updateCount();
+        if (!silent) $("word-count").textContent = v ? "Draft loaded." : "No saved draft for this structure yet.";
+      }
+
+      function updateCount() {
+        var words = $("instructions").value.trim().split(/\s+/).filter(Boolean).length;
+        $("word-count").textContent = words + (words === 1 ? " word" : " words");
+      }
+
+      fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
+        challenges = data.challenges;
+        var sel = $("challenge-select");
+        challenges.forEach(function (c) {
+          var o = document.createElement("option");
+          o.value = c.id; o.textContent = c.title + " (Level " + c.difficulty + ")";
+          sel.appendChild(o);
+        });
+        sel.addEventListener("change", function () { loadChallenge(sel.value); });
+        var q = new URLSearchParams(location.search);
+        loadChallenge(q.get("c") || challenges[0].id);
+
+        $("instructions").addEventListener("input", updateCount);
+        $("btn-save").addEventListener("click", function () {
+          try { localStorage.setItem(draftKey(), $("instructions").value); } catch (e) {}
+          WIDI.store.recordWriting(ch.id);
+          $("word-count").textContent = "Draft saved on this device.";
+        });
+        $("btn-load").addEventListener("click", function () { loadDraft(false); });
+        $("btn-score").addEventListener("click", function () {
+          var boxes = $("rubric").querySelectorAll("input[type=checkbox]");
+          var checked = 0;
+          boxes.forEach(function (b) { if (b.checked) checked++; });
+          var el = $("rubric-fb");
+          el.className = "widi-feedback show " + (checked === 6 ? "good" : "bad");
+          if (checked === 6) el.innerHTML = "<strong>6/6 — rubric complete!</strong> Now the real test: give these instructions to a partner (or try the <a href='build.html'>blind build</a>) and see if the structure comes back identical.";
+          else el.innerHTML = "<strong>" + checked + "/6.</strong> Unchecked items are exactly where a builder would get lost. Fix those sentences before calling the instructions done.";
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Observe Like an Engineer — Write It Do It — MadeForMyKids</title>
+  <meta name="description" content="Train your observation skills: count pieces, spot differences, and find bad connections before you write a word." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="assets/widi.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <main class="widi-wrap">
+    <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
+    <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Observe Like an Engineer 🔍</h1>
+    <p class="widi-section-sub">Every good instruction starts with careful looking. Three drills — no writing yet.</p>
+
+    <!-- Activity 1: count -->
+    <div class="widi-panel">
+      <h2>1. Count the pieces</h2>
+      <p class="widi-note">How many individual pieces (rods + connectors) make up this structure? Count rods and connectors separately, then total.</p>
+      <div class="widi-two">
+        <div class="widi-fig" id="count-fig"></div>
+        <div>
+          <label for="count-input" style="font-weight:700">Total pieces:</label>
+          <div style="display:flex;gap:0.6rem;margin-top:0.4rem">
+            <input id="count-input" type="number" min="1" max="20" style="font-size:1.1rem;padding:0.5rem 0.7rem;border-radius:10px;border:2px solid var(--mfk-border);width:7rem" />
+            <button class="widi-toolbtn primary" id="count-check">Check</button>
+          </div>
+          <div class="widi-feedback" id="count-fb"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 2: spot the difference -->
+    <div class="widi-panel">
+      <h2>2. Spot the difference</h2>
+      <p class="widi-note">These two structures look almost identical. Compare them square by square — how many pieces are different?</p>
+      <div class="widi-two">
+        <div class="widi-fig" id="diff-a"></div>
+        <div class="widi-fig" id="diff-b"></div>
+      </div>
+      <div class="widi-quiz-opts" id="diff-opts" style="max-width:420px"></div>
+      <div class="widi-feedback" id="diff-fb"></div>
+    </div>
+
+    <!-- Activity 3: find the bad connection -->
+    <div class="widi-panel">
+      <h2>3. Find the bad connection</h2>
+      <p class="widi-note">One piece in this structure isn't properly connected — a rod end floats with nothing to plug into. <strong>Click the floating piece.</strong></p>
+      <div class="widi-fig" id="float-fig" style="max-width:560px"></div>
+      <div class="widi-feedback" id="float-fb"></div>
+    </div>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="assets/widi.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      function $(id) { return document.getElementById(id); }
+      function fb(id, good, html) {
+        var el = $(id);
+        el.className = "widi-feedback show " + (good ? "good" : "bad");
+        el.innerHTML = html;
+      }
+
+      fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
+        var byId = {};
+        data.challenges.forEach(function (c) { byId[c.id] = c; });
+
+        /* --- Activity 1: count pieces in 006 (The Square: 8 pieces) --- */
+        var sq = byId["widi-b-006"];
+        $("count-fig").innerHTML = WIDI.renderSVG({ pieces: sq.targetModel.pieces }, { cell: 40 });
+        var total = sq.targetModel.pieces.length; // 8
+        $("count-check").addEventListener("click", function () {
+          var v = parseInt($("count-input").value, 10);
+          var correct = v === total;
+          WIDI.store.recordObserve("count-pieces", correct);
+          if (correct) fb("count-fb", true, "<strong>Correct — 8 pieces.</strong> 4 yellow rods and 4 elbow connectors. Systematic counting (rods first, then connectors) beats eyeballing every time.");
+          else fb("count-fb", false, "<strong>Not quite.</strong> Try again: count all the rods first, then all the connectors, then add them. Don't count the grid squares — count the pieces.");
+        });
+
+        /* --- Activity 2: spot the difference in 003 (one rod moved) --- */
+        var gate = byId["widi-b-003"].targetModel.pieces;
+        var gateB = JSON.parse(JSON.stringify(gate));
+        // Introduce exactly one difference: mirror the front-left elbow's openings.
+        gateB.forEach(function (p) {
+          if (p.t === "conn" && p.kind === "elbow" && p.x === 1 && p.y === 4) p.rot = "SW";
+        });
+        $("diff-a").innerHTML = WIDI.renderSVG({ pieces: gate }, { cell: 36 });
+        var bSvg = WIDI.renderSVG({ pieces: gateB }, { cell: 36 });
+        $("diff-b").innerHTML = bSvg;
+        var diffDone = false;
+        [0, 1, 2, 3].forEach(function (n) {
+          var b = document.createElement("button");
+          b.textContent = n + (n === 1 ? " difference" : " differences");
+          b.addEventListener("click", function () {
+            if (diffDone) return;
+            diffDone = true;
+            var correct = n === 1;
+            WIDI.store.recordObserve("spot-difference", correct);
+            Array.prototype.forEach.call($("diff-opts").children, function (x) { x.disabled = true; });
+            b.classList.add(correct ? "correct" : "wrong");
+            if (correct) fb("diff-fb", true, "<strong>Exactly one.</strong> The front-left elbow's openings were mirrored — a classic competition error. The fix in words: \"openings face front and right\" vs. \"front and left.\" One word changes the whole structure.");
+            else {
+              fb("diff-fb", false, "<strong>Look closer.</strong> There is exactly <strong>one</strong> difference: compare the front-left elbow's openings in both pictures.");
+              // highlight the changed cell in B
+              $("diff-b").innerHTML = WIDI.renderSVG({ pieces: gateB }, { cell: 36, highlightCells: [[1, 4]] });
+            }
+          });
+          $("diff-opts").appendChild(b);
+        });
+
+        /* --- Activity 3: floating piece in 002 --- */
+        var corner = JSON.parse(JSON.stringify(byId["widi-b-002"].targetModel.pieces));
+        // disconnect: move the vertical rod one square back (y 3->4 => occupies (2,4),(2,5); cap at (2,5) overlaps -> move cap too? simpler: shift rod right by 1)
+        var floatIdx = -1;
+        corner.forEach(function (p, i) {
+          if (p.t === "rod" && p.dir === "V") { p.x = 3; floatIdx = i; } // now its ends touch nothing
+        });
+        var svg = WIDI.renderSVG({ pieces: corner }, {
+          cell: 40,
+          pieceAttrs: function (i) { return 'data-i="' + i + '" style="cursor:pointer"'; }
+        });
+        $("float-fig").innerHTML = svg;
+        var done = false;
+        $("float-fig").querySelector("svg").addEventListener("click", function (evt) {
+          if (done) return;
+          var t = evt.target.closest(".widi-piece");
+          if (!t || t.dataset.i === undefined) return;
+          done = true;
+          var correct = parseInt(t.dataset.i, 10) === floatIdx;
+          WIDI.store.recordObserve("bad-connection", correct);
+          if (correct) fb("float-fb", true, "<strong>Found it!</strong> That vertical rod's ends plug into nothing — it floats one square away from the elbow. In your instructions, prevent this by tracing every rod end-to-end: <em>\"the rod's lower end plugs into the elbow's upward opening.\"</em>");
+          else fb("float-fb", false, "<strong>Not that one.</strong> That piece is properly connected. Look for a rod end with empty grid next to it — nothing for it to plug into.");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Challenge Library — Write It Do It — MadeForMyKids</title>
+  <meta name="description" content="Browse 10 original Write It Do It practice structures for Science Olympiad Division B, from warm-ups to competition-style builds." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="assets/widi.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <main class="widi-wrap">
+    <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
+    <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Challenge Library 📚</h1>
+    <p class="widi-section-sub">Ten original structures, ordered easy → hard. All models were built and validated with the site's own piece system — rods and connectors on an 8×8 grid.</p>
+
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.2rem" role="group" aria-label="Filter by difficulty">
+      <button class="widi-toolbtn" data-f="all" aria-pressed="true">All</button>
+      <button class="widi-toolbtn" data-f="1" aria-pressed="false">Level 1</button>
+      <button class="widi-toolbtn" data-f="2" aria-pressed="false">Level 2</button>
+      <button class="widi-toolbtn" data-f="3" aria-pressed="false">Level 3</button>
+    </div>
+
+    <div class="widi-lib-grid" id="lib-grid"></div>
+
+    <div class="widi-panel">
+      <h2>About these challenges</h2>
+      <p class="widi-note">Every challenge is an original MadeForMyKids creation — not copied from any Science Olympiad test. Difficulty reflects real structural complexity (turns, junctions, symmetry), not just piece count. "The Flag" is marked as a practice simulation: it mimics competition style, but official 2027 tournament setups come only from the <a href="https://www.soinc.org/write-it-do-it-b" target="_blank" rel="noopener">official rules</a>.</p>
+    </div>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="assets/widi.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      var grid = document.getElementById("lib-grid");
+      var all = [];
+
+      function render(filter) {
+        grid.innerHTML = "";
+        var done = WIDI.store.load().builds || {};
+        all.forEach(function (c) {
+          if (filter !== "all" && String(c.difficulty) !== filter) return;
+          var card = document.createElement("div");
+          card.className = "widi-lib-card";
+          var best = done[c.id] ? done[c.id].best : null;
+          card.innerHTML =
+            '<div class="thumb">' + WIDI.renderSVG({ pieces: c.targetModel.pieces }, { cell: 26, labels: false }) + "</div>" +
+            '<div class="body"><h3>' + esc(c.title) + "</h3>" +
+            '<div class="row"><span class="widi-diff d' + c.difficulty + '">Level ' + c.difficulty + "</span>" +
+            (best !== null ? '<span class="widi-diff d1">Best: ' + best + "%</span>" : "") +
+            (c.mode === "practice" ? '<span class="widi-diff d3">Practice sim</span>' : "") + "</div>" +
+            '<p class="obj">' + esc(c.learningObjectives.join(" · ")) + "</p>" +
+            '<p class="obj">' + c.targetModel.pieces.length + " pieces</p>" +
+            '<div class="actions"><a class="widi-toolbtn" href="instruction-lab.html?c=' + c.id + '" style="text-decoration:none">✏️ Write</a>' +
+            '<a class="widi-toolbtn primary" href="build.html?c=' + c.id + '" style="text-decoration:none">🧱 Build</a></div></div>";
+          grid.appendChild(card);
+        });
+      }
+
+      fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
+        all = data.challenges;
+        render("all");
+        document.querySelectorAll("[data-f]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            document.querySelectorAll("[data-f]").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+            b.setAttribute("aria-pressed", "true");
+            render(b.dataset.f);
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

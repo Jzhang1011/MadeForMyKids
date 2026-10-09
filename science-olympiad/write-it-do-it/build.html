@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Build from Words — Write It Do It — MadeForMyKids</title>
+  <meta name="description" content="Reconstruct a structure from written instructions without seeing the target, then compare and debug your build." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="assets/widi.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <main class="widi-wrap">
+    <p style="margin:1.2rem 0 0"><a href="index.html" style="color:var(--mfk-skill-widi);font-weight:700">← WIDI home</a></p>
+    <h1 style="font-family:Fredoka,system-ui,sans-serif;font-size:2rem;margin:0.4rem 0">Build from Words 🧱</h1>
+    <p class="widi-section-sub" id="mode-sub">Read the description, rebuild the structure on the grid — the target stays hidden until you submit.</p>
+
+    <div class="widi-panel" style="margin-top:0.8rem">
+      <div style="display:flex;flex-wrap:wrap;gap:0.8rem;align-items:center;margin-bottom:1rem">
+        <label for="challenge-select" style="font-weight:700">Challenge:</label>
+        <select id="challenge-select" style="font-size:1rem;padding:0.5rem 0.7rem;border-radius:10px;border:2px solid var(--mfk-border);max-width:100%"></select>
+        <span id="diff-badge"></span>
+        <div role="group" aria-label="Build mode" style="display:flex;gap:0.4rem;margin-left:auto">
+          <button class="widi-toolbtn" id="mode-blind" aria-pressed="true">🙈 Blind build</button>
+          <button class="widi-toolbtn" id="mode-guided" aria-pressed="false">👀 Guided build</button>
+        </div>
+      </div>
+      <div id="brief-box"></div>
+    </div>
+
+    <!-- BUILD PHASE -->
+    <div id="phase-build">
+      <div class="widi-builder" style="margin-top:1.2rem">
+        <div class="widi-palette">
+          <h3>Pieces <span id="inv-note" class="widi-note"></span></h3>
+          <div class="widi-orient-row" id="orient-row" hidden>
+            <button class="widi-pal-btn" id="orient-h" aria-pressed="true">↔ Horizontal</button>
+            <button class="widi-pal-btn" id="orient-v" aria-pressed="false">↕ Vertical</button>
+          </div>
+          <div id="palette"></div>
+          <div id="sel-actions" hidden>
+            <p class="widi-note" style="margin:0.4rem 0"><strong>Selected piece:</strong> <span id="sel-name"></span></p>
+            <div style="display:flex;gap:0.4rem">
+              <button class="widi-pal-btn" id="btn-rotate">🔁 Rotate</button>
+              <button class="widi-pal-btn" id="btn-delete">🗑 Delete</button>
+            </div>
+          </div>
+        </div>
+        <div class="widi-board-wrap">
+          <div id="board"></div>
+          <p class="widi-kbd-hint">Click a piece in the palette, then click the grid to place it. Click a placed piece to select it — <kbd>R</kbd> rotates, <kbd>Delete</kbd> removes.</p>
+          <div class="widi-toolrow">
+            <button class="widi-toolbtn" id="btn-undo">↩ Undo</button>
+            <button class="widi-toolbtn danger" id="btn-reset-board">Reset board</button>
+            <button class="widi-toolbtn primary" id="btn-submit">Submit for review →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEW PHASE -->
+    <div id="phase-review" hidden>
+      <div class="widi-score"><strong id="rev-score">0%</strong><span>structural match — practice estimate, not an official score</span></div>
+      <div class="widi-compare">
+        <div><h3>Target</h3><div class="widi-fig" id="rev-target"></div></div>
+        <div><h3>Your build</h3><div class="widi-fig" id="rev-build"></div></div>
+      </div>
+      <h2 class="widi-section-title">Error analysis</h2>
+      <ul class="widi-errors" id="rev-errors"></ul>
+      <div class="widi-toolrow" style="margin-top:1.5rem">
+        <button class="widi-toolbtn" id="btn-retry">🔄 Try again</button>
+        <a class="widi-toolbtn primary" id="btn-next" href="#" style="text-decoration:none">Next challenge →</a>
+        <a class="widi-toolbtn" href="challenge-library.html" style="text-decoration:none">Library</a>
+      </div>
+    </div>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="assets/widi.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var CELL = 46, PAD = 26;
+      var challenges = [], ch = null, chIndex = 0;
+      var mode = "blind"; // or 'guided'
+      var placed = [];    // model pieces
+      var undoStack = [];
+      var selPalette = null; // {kind:'rod',color,len,dir} | {kind:'conn',kind,rot}
+      var selPiece = -1;
+      var rodDir = "H";
+
+      function $(id) { return document.getElementById(id); }
+      function params() { return new URLSearchParams(location.search); }
+
+      function inventory() {
+        var inv = {};
+        ch.pieceInventory.forEach(function (e) {
+          var k = e.pieceType === "rod" ? "rod:" + e.color + ":" + e.length : "conn:" + e.kind;
+          inv[k] = { entry: e, total: e.quantity, left: e.quantity };
+        });
+        placed.forEach(function (p) {
+          var k = p.t === "rod" ? "rod:" + p.color + ":" + p.len : "conn:" + p.kind;
+          if (inv[k]) inv[k].left--;
+        });
+        return inv;
+      }
+
+      function paletteKey(sel) {
+        return sel.kind === "rod" ? "rod:" + sel.color + ":" + sel.len : "conn:" + sel.kind;
+      }
+
+      function renderPalette() {
+        var inv = inventory(), pal = $("palette");
+        pal.innerHTML = "";
+        var groups = {};
+        Object.keys(inv).forEach(function (k) {
+          var e = inv[k].entry;
+          var g = e.pieceType === "rod" ? "Rods" : "Connectors";
+          (groups[g] = groups[g] || []).push({ k: k, e: e, left: inv[k].left });
+        });
+        ["Rods", "Connectors"].forEach(function (g) {
+          if (!groups[g]) return;
+          var gd = document.createElement("div");
+          gd.className = "widi-pal-group";
+          gd.innerHTML = "<p>" + g + "</p>";
+          groups[g].forEach(function (it) {
+            var b = document.createElement("button");
+            b.className = "widi-pal-btn";
+            b.disabled = it.left <= 0;
+            var label;
+            if (it.e.pieceType === "rod") {
+              var col = WIDI.ROD_COLORS[it.e.color];
+              label = '<span><span class="widi-swatch" style="background:' + col.fill + '"></span>' +
+                it.e.color + " rod ×" + it.e.length + "</span>";
+            } else {
+              label = "<span>" + it.e.kind + " connector</span>";
+            }
+            b.innerHTML = label + '<span class="count">' + it.left + "</span>";
+            b.setAttribute("aria-pressed", selPalette && paletteKey(selPalette) === it.k ? "true" : "false");
+            b.addEventListener("click", function () { selectPalette(it); });
+            gd.appendChild(b);
+          });
+          pal.appendChild(gd);
+        });
+        var showOrient = selPalette && selPalette.kind === "rod";
+        $("orient-row").hidden = !showOrient;
+        $("orient-h").setAttribute("aria-pressed", rodDir === "H" ? "true" : "false");
+        $("orient-v").setAttribute("aria-pressed", rodDir === "V" ? "true" : "false");
+      }
+
+      function selectPalette(it) {
+        if (it.left <= 0) return;
+        var e = it.e;
+        if (e.pieceType === "rod") selPalette = { kind: "rod", color: e.color, len: e.length, dir: rodDir };
+        else selPalette = { kind: "conn", kind: e.kind, rot: defaultRot(e.kind) };
+        selPiece = -1;
+        renderPalette(); renderBoard(); updateSelActions();
+      }
+
+      function defaultRot(kind) {
+        return kind === "straight" ? "EW" : kind === "elbow" ? "NE" : kind === "tee" ? "N" : "X";
+      }
+      function nextRot(kind, rot) {
+        var seq = { straight: ["EW", "NS"], elbow: ["NE", "SE", "SW", "NW"], tee: ["N", "E", "S", "W"], cross: ["X"] };
+        var s = seq[kind], i = s.indexOf(rot);
+        return s[(i + 1) % s.length];
+      }
+
+      function pushUndo() { undoStack.push(JSON.stringify(placed)); if (undoStack.length > 60) undoStack.shift(); }
+
+      function svgCellFromEvent(evt) {
+        var svg = $("board").querySelector("svg");
+        var r = svg.getBoundingClientRect();
+        var vbW = 8 * CELL + PAD * 2, vbH = 8 * CELL + PAD * 2;
+        var x = (evt.clientX - r.left) * (vbW / r.width);
+        var y = (evt.clientY - r.top) * (vbH / r.height);
+        var c = Math.floor((x - PAD) / CELL), rr = 7 - Math.floor((y - PAD) / CELL);
+        if (c < 0 || c > 7 || rr < 0 || rr > 7) return null;
+        return { x: c, y: rr };
+      }
+
+      function tryPlace(cell) {
+        if (!selPalette) { flashHint("Pick a piece from the palette first."); return; }
+        var inv = inventory();
+        if ((inv[paletteKey(selPalette)] || { left: 0 }).left <= 0) { flashHint("None of those left — delete one from the board to reuse it."); return; }
+        var p;
+        if (selPalette.kind === "rod") {
+          p = { t: "rod", color: selPalette.color, len: selPalette.len, x: cell.x, y: cell.y, dir: rodDir };
+        } else {
+          p = { t: "conn", kind: selPalette.kind, rot: selPalette.rot, x: cell.x, y: cell.y };
+        }
+        // bounds + overlap pre-check
+        var test = { pieces: placed.concat([p]) };
+        var bad = WIDI.validate(test).some(function (i) { return (i.type === "out-of-bounds" || i.type === "overlap") && i.piece === placed.length; });
+        if (bad) { flashHint("That doesn't fit there — off the grid or overlapping."); return; }
+        pushUndo();
+        placed.push(p);
+        selPiece = placed.length - 1;
+        renderPalette(); renderBoard(); updateSelActions(); updateUndoBtn();
+      }
+
+      function renderBoard() {
+        var svg = WIDI.renderSVG({ pieces: placed }, {
+          cell: CELL, pieceAttrs: function (i) {
+            return 'data-i="' + i + '"' + (i === selPiece ? ' data-sel="1"' : "");
+          }
+        });
+        $("board").innerHTML = svg;
+        var svgEl = $("board").querySelector("svg");
+        // mark selected
+        if (selPiece >= 0) {
+          var g = svgEl.querySelector('[data-i="' + selPiece + '"]');
+          if (g) g.classList.add("selected");
+        }
+        svgEl.addEventListener("click", function (evt) {
+          var t = evt.target.closest(".widi-piece");
+          if (t && t.dataset.i !== undefined) {
+            selPiece = parseInt(t.dataset.i, 10);
+            selPalette = null;
+            renderPalette(); renderBoard(); updateSelActions();
+            return;
+          }
+          var cell = svgCellFromEvent(evt);
+          if (cell) tryPlace(cell);
+        });
+      }
+
+      function updateSelActions() {
+        var show = selPiece >= 0 && placed[selPiece];
+        $("sel-actions").hidden = !show;
+        if (show) {
+          var p = placed[selPiece];
+          $("sel-name").textContent = WIDI.pieceName(p) + (p.t === "rod" ? " (" + p.dir + ")" : " (" + p.rot + ")");
+        }
+      }
+
+      function updateUndoBtn() { $("btn-undo").disabled = undoStack.length === 0; }
+
+      var hintTimer = null;
+      function flashHint(msg) {
+        var el = $("inv-note");
+        el.textContent = msg;
+        clearTimeout(hintTimer);
+        hintTimer = setTimeout(function () { el.textContent = ""; }, 2600);
+      }
+
+      function rotateSelected() {
+        if (selPiece < 0 || !placed[selPiece]) return;
+        pushUndo();
+        var p = placed[selPiece];
+        if (p.t === "rod") p.dir = p.dir === "H" ? "V" : "H";
+        else p.rot = nextRot(p.kind, p.rot);
+        var bad = WIDI.validate({ pieces: placed }).some(function (i) {
+          return (i.type === "out-of-bounds" || i.type === "overlap") && i.piece === selPiece;
+        });
+        if (bad) { placed = JSON.parse(undoStack.pop()); flashHint("Can't rotate there — off the grid or overlapping."); }
+        renderBoard(); updateSelActions();
+      }
+
+      function deleteSelected() {
+        if (selPiece < 0 || !placed[selPiece]) return;
+        pushUndo();
+        placed.splice(selPiece, 1);
+        selPiece = -1;
+        renderPalette(); renderBoard(); updateSelActions(); updateUndoBtn();
+      }
+
+      function loadChallenge(id) {
+        ch = challenges.filter(function (c) { return c.id === id; })[0] || challenges[0];
+        chIndex = challenges.indexOf(ch);
+        placed = []; undoStack = []; selPalette = null; selPiece = -1;
+        $("challenge-select").value = ch.id;
+        $("diff-badge").innerHTML = '<span class="widi-diff d' + ch.difficulty + '">Level ' + ch.difficulty + "</span>";
+        renderBrief(); renderPalette(); renderBoard(); updateSelActions(); updateUndoBtn();
+        $("phase-build").hidden = false;
+        $("phase-review").hidden = true;
+      }
+
+      function renderBrief() {
+        var box = $("brief-box");
+        var ref = "<p class='widi-note' style='margin:0 0 0.6rem'><strong>Reference:</strong> " + esc(ch.referenceOrientation) + "</p>";
+        if (mode === "blind") {
+          box.innerHTML = ref +
+            "<div style='background:#f8fafc;border:2px solid var(--mfk-border);border-radius:12px;padding:1rem 1.1rem'>" +
+            "<p style='font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--mfk-slate-soft);margin:0 0 0.4rem'>Written instructions — build only from these words</p>" +
+            "<p style='font-size:1rem;line-height:1.65;margin:0'>" + esc(ch.buildDescription) + "</p></div>";
+        } else {
+          box.innerHTML = ref + "<div class='widi-fig' style='max-width:420px' id='guided-target'></div>" +
+            "<p class='widi-note'>Guided mode: study the target, then rebuild it. Use this to learn the builder before going blind.</p>";
+          $("guided-target").innerHTML = WIDI.renderSVG({ pieces: ch.targetModel.pieces }, { cell: 34 });
+        }
+      }
+
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+      function submit() {
+        if (!placed.length) { flashHint("Place some pieces first!"); return; }
+        var issues = WIDI.validate({ pieces: placed });
+        var floating = issues.filter(function (i) { return i.type === "floating"; }).length;
+        if (floating && !confirm(floating + " piece end(s) aren't connected to anything. Submit anyway?")) return;
+        var target = { pieces: ch.targetModel.pieces };
+        var res = WIDI.compare(target, { pieces: placed });
+        WIDI.store.recordBuild(ch.id, res.accuracy, res.errors);
+        $("phase-build").hidden = true;
+        $("phase-review").hidden = false;
+        $("rev-score").textContent = res.accuracy + "%";
+        $("rev-target").innerHTML = WIDI.renderSVG(target, { cell: 40 });
+        $("rev-build").innerHTML = WIDI.renderSVG({ pieces: placed }, { cell: 40 });
+        var ul = $("rev-errors");
+        ul.innerHTML = "";
+        if (!res.errors.length) {
+          ul.innerHTML = '<li class="good"><span class="err-type">Perfect match</span><p>Every piece, connection, and orientation matches the target. Nice describing — or nice reading!</p></li>';
+        } else {
+          res.errors.forEach(function (e) {
+            var li = document.createElement("li");
+            li.innerHTML = '<span class="err-type">' + (WIDI.ERROR_LABEL[e.type] || e.type) + "</span><p>" + esc(e.message) + "</p>" +
+              '<p class="tip"><strong>Next time:</strong> ' + esc(WIDI.ERROR_TIP[e.type] || "") + "</p>";
+            ul.appendChild(li);
+          });
+        }
+        var next = challenges[(chIndex + 1) % challenges.length];
+        var nb = $("btn-next");
+        nb.textContent = "Next: " + next.title + " →";
+        nb.href = "build.html?c=" + next.id + "&mode=" + mode;
+        $("phase-review").scrollIntoView();
+      }
+
+      function setMode(m) {
+        mode = m;
+        $("mode-blind").setAttribute("aria-pressed", m === "blind" ? "true" : "false");
+        $("mode-guided").setAttribute("aria-pressed", m === "guided" ? "true" : "false");
+        $("mode-sub").textContent = m === "blind"
+          ? "Read the description, rebuild the structure on the grid — the target stays hidden until you submit."
+          : "Study the target, then rebuild it from memory and understanding. Good warm-up before going blind.";
+        renderBrief();
+      }
+
+      // init
+      fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
+        challenges = data.challenges;
+        var sel = $("challenge-select");
+        challenges.forEach(function (c) {
+          var o = document.createElement("option");
+          o.value = c.id; o.textContent = c.title + " (Level " + c.difficulty + ")";
+          sel.appendChild(o);
+        });
+        sel.addEventListener("change", function () { loadChallenge(sel.value); });
+        var q = params();
+        setMode(q.get("mode") === "guided" ? "guided" : "blind");
+        loadChallenge(q.get("c") || challenges[0].id);
+
+        $("mode-blind").addEventListener("click", function () { setMode("blind"); });
+        $("mode-guided").addEventListener("click", function () { setMode("guided"); });
+        $("orient-h").addEventListener("click", function () { rodDir = "H"; if (selPalette && selPalette.kind === "rod") selPalette.dir = "H"; renderPalette(); });
+        $("orient-v").addEventListener("click", function () { rodDir = "V"; if (selPalette && selPalette.kind === "rod") selPalette.dir = "V"; renderPalette(); });
+        $("btn-rotate").addEventListener("click", rotateSelected);
+        $("btn-delete").addEventListener("click", deleteSelected);
+        $("btn-undo").addEventListener("click", function () {
+          if (!undoStack.length) return;
+          placed = JSON.parse(undoStack.pop());
+          selPiece = -1; renderPalette(); renderBoard(); updateSelActions(); updateUndoBtn();
+        });
+        $("btn-reset-board").addEventListener("click", function () {
+          if (!placed.length || confirm("Clear the whole board?")) { pushUndo(); placed = []; selPiece = -1; renderPalette(); renderBoard(); updateSelActions(); updateUndoBtn(); }
+        });
+        $("btn-submit").addEventListener("click", submit);
+        $("btn-retry").addEventListener("click", function () {
+          placed = []; undoStack = []; selPiece = -1;
+          renderPalette(); renderBoard(); updateSelActions(); updateUndoBtn();
+          $("phase-build").hidden = false; $("phase-review").hidden = true;
+          window.scrollTo(0, 0);
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.target.tagName === "TEXTAREA" || e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+          if (e.key === "r" || e.key === "R") rotateSelected();
+          if ((e.key === "Delete" || e.key === "Backspace") && selPiece >= 0) deleteSelected();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

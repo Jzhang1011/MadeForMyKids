@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Write It Do It Practice Center — MadeForMyKids</title>
+  <meta name="description" content="Train for Science Olympiad's Write It Do It event: observe structures, write precise instructions, and rebuild from words. 10 original practice challenges for Division B." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <link rel="stylesheet" href="assets/widi.css" />
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+
+  <section class="widi-hero">
+    <div class="widi-hero-in">
+      <div>
+        <span class="widi-eyebrow">🔧 Science Olympiad · Division B</span>
+        <h1>Can You Describe It So Someone Else Can Build It?</h1>
+        <p class="widi-dek">Train your eyes, sharpen your instructions, and turn a mental picture into a real structure. Ten original practice challenges with rods and connectors — no account, no signup.</p>
+        <div class="widi-cta-row">
+          <a class="widi-btn primary" href="build.html">Start a Challenge</a>
+          <a class="widi-btn ghost" href="observe.html">Learn the Strategy</a>
+        </div>
+        <div class="widi-rules-note">
+          <strong>A note for parents:</strong> timed and competition-style modes here are <em>practice simulations</em>.
+          The official 2027 rules manual takes precedence — 2027 season resources on the
+          <a href="https://www.soinc.org/write-it-do-it-b" target="_blank" rel="noopener">official WIDI event page</a>
+          are still marked "coming soon," so we don't claim tournament compliance yet.
+        </div>
+      </div>
+      <div class="widi-hero-fig" id="hero-fig" aria-label="Example challenge structure"></div>
+    </div>
+  </section>
+
+  <main class="widi-wrap">
+    <h2 class="widi-section-title">The learning loop</h2>
+    <p class="widi-section-sub">Observe → Describe → Build → Compare → Improve. Pick where to start.</p>
+    <div class="widi-cards">
+      <div class="widi-card">
+        <div class="card-icon">🔍</div>
+        <h3>Observe Like an Engineer</h3>
+        <p>Learn to notice piece counts, orientations, connections, symmetry, and spatial relationships before you write a word.</p>
+        <div class="card-meta"><span>15 min</span><span>Starter</span><span>Observation</span></div>
+        <a class="widi-btn ghost" href="observe.html">Start observing</a>
+      </div>
+      <div class="widi-card">
+        <div class="card-icon">✏️</div>
+        <h3>Write Better Instructions</h3>
+        <p>Describe a structure with exact quantities, unambiguous reference points, and logical assembly steps. Self-check against the rubric.</p>
+        <div class="card-meta"><span>20 min</span><span>Starter</span><span>Technical writing</span></div>
+        <a class="widi-btn ghost" href="instruction-lab.html">Start writing</a>
+      </div>
+      <div class="widi-card">
+        <div class="card-icon">🧱</div>
+        <h3>Build from Words</h3>
+        <p>Follow a written description to reconstruct a structure without seeing the target — then compare and debug the differences.</p>
+        <div class="card-meta"><span>20 min</span><span>Core skill</span><span>Spatial reasoning</span></div>
+        <a class="widi-btn ghost" href="build.html">Start building</a>
+      </div>
+      <div class="widi-card">
+        <div class="card-icon">📚</div>
+        <h3>Challenge Library</h3>
+        <p>Browse all 10 original practice structures, from a 3-piece warm-up to competition-style builds. Pick your difficulty.</p>
+        <div class="card-meta"><span>10 challenges</span><span>Levels 1–3</span><span>Self-paced</span></div>
+        <a class="widi-btn ghost" href="challenge-library.html">Browse challenges</a>
+      </div>
+    </div>
+
+    <div class="widi-progress" id="progress-strip" aria-label="Your progress">
+      <div class="stat"><small>Challenges completed</small><strong id="st-completed">0</strong></div>
+      <div class="stat"><small>Latest accuracy</small><strong id="st-accuracy">—</strong></div>
+      <div class="stat"><small>Most common error</small><strong id="st-error" style="font-size:1.05rem">—</strong></div>
+      <div class="stat"><small>Keep going</small><span style="font-size:0.9rem" id="st-next">Start with "First Steps" in the library.</span><br><button class="reset-link" id="btn-reset">Reset progress</button></div>
+    </div>
+
+    <div class="widi-panel">
+      <h2>How Write It Do It works</h2>
+      <p class="widi-note">In the real event, one partner studies a structure and writes instructions; the other partner — who never sees the original — rebuilds it from those words alone. Scores reward how closely the reconstruction matches the target. Everything here trains that exact skill: first with guided activities, then with blind reconstructions you compare and debug yourself. Official rules: <a href="https://www.soinc.org/write-it-do-it-b" target="_blank" rel="noopener">soinc.org/write-it-do-it-b</a>.</p>
+    </div>
+  </main>
+
+  <mfk-footer></mfk-footer>
+  <script src="/components/header.js"></script>
+  <script src="/components/footer.js"></script>
+  <script src="assets/widi.js"></script>
+  <script>
+    (function () {
+      // Hero figure: render challenge 006 (The Square)
+      fetch("data/challenges.json").then(function (r) { return r.json(); }).then(function (data) {
+        var ch = data.challenges.filter(function (c) { return c.id === "widi-b-006"; })[0];
+        if (ch) document.getElementById("hero-fig").innerHTML = WIDI.renderSVG({ pieces: ch.targetModel.pieces }, { cell: 40 });
+      });
+      // Progress strip
+      var s = WIDI.store.summary();
+      document.getElementById("st-completed").textContent = s.completed;
+      document.getElementById("st-accuracy").textContent = s.latestAccuracy === null ? "—" : s.latestAccuracy + "%";
+      document.getElementById("st-error").textContent = s.topError ? (WIDI.ERROR_LABEL[s.topError] || s.topError) : "—";
+      var next = document.getElementById("st-next");
+      if (s.completed === 0) next.textContent = 'Start with "First Steps" in the library.';
+      else if (s.topError) next.textContent = "Most errors: " + (WIDI.ERROR_LABEL[s.topError] || s.topError) + ". " + (WIDI.ERROR_TIP[s.topError] || "");
+      else next.textContent = "Try the next difficulty level in the library.";
+      document.getElementById("btn-reset").addEventListener("click", function () {
+        if (confirm("Reset all Write It Do It progress on this device?")) { WIDI.store.reset(); location.reload(); }
+      });
+    })();
+  </script>
+</body>
+</html>
