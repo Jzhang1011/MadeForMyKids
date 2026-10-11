@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flashcards — Geometry Proofs Practice — MadeForMyKids</title>
+  <meta name="description" content="Flip through all 26 geometry proof reasons. Filter by segments, angles, or category, and mark the ones you're still learning." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .ol { text-decoration: overline; }
+
+    .flash-card {
+      background: var(--mfk-white); border: 2px solid var(--mfk-border);
+      border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem;
+    }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 1rem 0; }
+    .chip {
+      font-size: 0.85rem; font-weight: 700; padding: 0.4rem 0.85rem; border-radius: 9999px;
+      border: 2px solid var(--mfk-border); background: #fff; color: var(--mfk-slate-soft);
+      cursor: pointer; transition: all 0.12s ease;
+    }
+    .chip[aria-pressed="true"] {
+      background: var(--mfk-skill-math, #7c3aed); border-color: var(--mfk-skill-math, #7c3aed); color: #fff;
+    }
+    .deck-meta {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+      gap: 0.5rem; margin-bottom: 0.8rem; color: var(--mfk-slate-soft); font-size: 0.92rem; font-weight: 600;
+    }
+    .big-card {
+      perspective: 1200px; cursor: pointer; min-height: 300px;
+    }
+    .big-card-inner {
+      position: relative; width: 100%; min-height: 300px;
+      transition: transform 0.45s ease; transform-style: preserve-3d;
+    }
+    .big-card.flipped .big-card-inner { transform: rotateY(180deg); }
+    .big-face {
+      position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      border-radius: 16px; border: 2px solid var(--mfk-skill-math, #7c3aed);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 2rem; text-align: center; gap: 0.6rem;
+    }
+    .big-face.front { background: #faf5ff; }
+    .big-face.back { background: #fff; transform: rotateY(180deg); }
+    .big-face .fname { font-family: Fredoka, system-ui, sans-serif; font-size: 1.9rem; font-weight: 700; color: var(--mfk-slate); }
+    .big-face .fpill {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--mfk-skill-math, #7c3aed); background: #ede9fe; border-radius: 9999px; padding: 0.25rem 0.8rem;
+    }
+    .big-face .fstatement { font-size: 1.25rem; color: var(--mfk-slate); line-height: 1.6; }
+    .big-face .fkid {
+      font-size: 0.95rem; color: var(--mfk-slate-soft); line-height: 1.6;
+      background: #fffbeb; border: 2px dashed #f59e0b; border-radius: 12px; padding: 0.6rem 0.9rem;
+    }
+    .big-face .ftrigger { font-size: 0.88rem; color: var(--mfk-slate-faint); font-style: italic; }
+    .big-face .fhint { font-size: 0.82rem; color: var(--mfk-slate-faint); }
+    .flash-nav { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; align-items: center; }
+    .btn {
+      font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem;
+      background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none;
+      border-radius: 12px; padding: 0.6rem 1.2rem; cursor: pointer;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn-ghost {
+      background: #fff; color: var(--mfk-skill-math, #7c3aed);
+      border: 2px solid var(--mfk-skill-math, #7c3aed);
+    }
+    .btn-soft { background: #f1f5f9; color: var(--mfk-slate); border: 2px solid var(--mfk-border); }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · Flashcards"
+      title="Reason flashcards"
+      subtitle="Tap a card to flip it. Say the statement out loud before you look — that's what makes it stick."
+    ></mfk-page-hero>
+
+    <section class="flash-card" aria-label="Flashcard deck">
+      <div class="chip-row" id="filter-chips" role="group" aria-label="Filter cards"></div>
+      <div class="deck-meta">
+        <span id="deck-count"></span>
+        <span id="deck-feedback" aria-live="polite"></span>
+      </div>
+      <div class="big-card" id="big-card" role="button" tabindex="0" aria-label="Flashcard — activate to flip">
+        <div class="big-card-inner" id="big-card-inner"></div>
+      </div>
+      <div class="flash-nav">
+        <button class="btn btn-soft" id="btn-prev">← Prev</button>
+        <button class="btn btn-soft" id="btn-next">Next →</button>
+        <button class="btn btn-ghost" id="btn-shuffle">Shuffle</button>
+        <button class="btn" id="btn-know">Know it ✓</button>
+        <button class="btn btn-ghost" id="btn-learning">Still learning</button>
+      </div>
+    </section>
+    <a class="back-link" href="index.html">← Back to Geometry Proofs Practice</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/proofs.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Proofs.recordVisit();
+
+      var FILTERS = [
+        { id: "all", label: "All", test: function () { return true; } },
+        { id: "segments", label: "Segments", test: function (r) { return r.unit === "segments" || r.unit === "both"; } },
+        { id: "angles", label: "Angles", test: function (r) { return r.unit === "angles" || r.unit === "both"; } },
+        { id: "property", label: "Properties", test: function (r) { return r.category === "property"; } },
+        { id: "definition", label: "Definitions", test: function (r) { return r.category === "definition"; } },
+        { id: "postulate", label: "Postulates", test: function (r) { return r.category === "postulate"; } },
+        { id: "theorem", label: "Theorems", test: function (r) { return r.category === "theorem"; } }
+      ];
+
+      var allReasons = [];
+      var deck = [];
+      var idx = 0;
+      var activeFilter = "all";
+
+      var chipsEl = document.getElementById("filter-chips");
+      var cardEl = document.getElementById("big-card");
+      var innerEl = document.getElementById("big-card-inner");
+      var countEl = document.getElementById("deck-count");
+      var feedbackEl = document.getElementById("deck-feedback");
+
+      function catLabel(r) {
+        var c = r.category.charAt(0).toUpperCase() + r.category.slice(1);
+        var u = r.unit === "both" ? "Segments & angles" : (r.unit === "segments" ? "Segments" : "Angles");
+        var s = r.symbol === "equality" ? "· uses =" : (r.symbol === "congruence" ? "· uses ≅" : "· crosses = / ≅");
+        return c + " · " + u + " " + s;
+      }
+
+      function renderChips() {
+        chipsEl.innerHTML = "";
+        FILTERS.forEach(function (f) {
+          var b = document.createElement("button");
+          b.className = "chip";
+          b.textContent = f.label;
+          b.setAttribute("aria-pressed", f.id === activeFilter ? "true" : "false");
+          b.addEventListener("click", function () {
+            activeFilter = f.id;
+            applyFilter();
+            renderChips();
+          });
+          chipsEl.appendChild(b);
+        });
+      }
+
+      function applyFilter() {
+        var f = FILTERS.filter(function (x) { return x.id === activeFilter; })[0];
+        deck = allReasons.filter(f.test);
+        idx = 0;
+        renderCard();
+      }
+
+      function renderCard() {
+        cardEl.classList.remove("flipped");
+        feedbackEl.textContent = "";
+        if (!deck.length) {
+          innerEl.innerHTML = '<div class="big-face front"><div class="fname">No cards</div></div>' +
+            '<div class="big-face back"></div>';
+          countEl.textContent = "";
+          return;
+        }
+        var r = deck[idx];
+        countEl.textContent = "Card " + (idx + 1) + " of " + deck.length;
+        innerEl.innerHTML =
+          '<div class="big-face front">' +
+            '<div class="fpill">' + Proofs.esc(catLabel(r)) + '</div>' +
+            '<div class="fname">' + r.name + '</div>' +
+            '<div class="fhint">Tap to flip</div>' +
+          '</div>' +
+          '<div class="big-face back">' +
+            '<div class="fpill">' + Proofs.esc(catLabel(r)) + '</div>' +
+            '<div class="fname">' + r.name + '</div>' +
+            '<div class="fstatement">' + r.statement + '</div>' +
+            '<div class="fkid"><strong>Kid tip:</strong> ' + r.kid + '</div>' +
+            '<div class="ftrigger">Trigger: ' + r.trigger + '</div>' +
+          '</div>';
+      }
+
+      function flip() { cardEl.classList.toggle("flipped"); }
+      cardEl.addEventListener("click", flip);
+      cardEl.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); }
+      });
+
+      document.getElementById("btn-prev").addEventListener("click", function () {
+        if (!deck.length) return;
+        idx = (idx - 1 + deck.length) % deck.length;
+        renderCard();
+      });
+      document.getElementById("btn-next").addEventListener("click", function () {
+        if (!deck.length) return;
+        idx = (idx + 1) % deck.length;
+        renderCard();
+      });
+      document.getElementById("btn-shuffle").addEventListener("click", function () {
+        deck = Proofs.shuffle(deck);
+        idx = 0;
+        renderCard();
+        feedbackEl.textContent = "Shuffled.";
+      });
+      document.getElementById("btn-know").addEventListener("click", function () {
+        if (!deck.length) return;
+        Proofs.clearMiss(deck[idx].id);
+        feedbackEl.textContent = "Marked as known — it won't show up in weak-spot quizzes.";
+      });
+      document.getElementById("btn-learning").addEventListener("click", function () {
+        if (!deck.length) return;
+        Proofs.recordMiss(deck[idx].id);
+        feedbackEl.textContent = "Added to your weak spots — it'll come back in quizzes.";
+      });
+
+      renderChips();
+      Proofs.loadData().then(function (data) {
+        allReasons = data.reasons;
+        applyFilter();
+      }).catch(function () {
+        Proofs.showLoadError(document.querySelector(".flash-card"), "flashcards");
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

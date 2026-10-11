@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Justify It Quiz — Geometry Proofs Practice — MadeForMyKids</title>
+  <meta name="description" content="Given a statement, pick the right reason — just like the worksheet. Five questions per round, with your mistakes decoded at the end." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .ol { text-decoration: overline; }
+
+    .quiz-card {
+      background: var(--mfk-white); border: 2px solid var(--mfk-border);
+      border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem;
+    }
+    .quiz-top {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+      gap: 0.5rem; margin-bottom: 1rem; font-weight: 700; color: var(--mfk-slate-soft); font-size: 0.92rem;
+    }
+    .q-statement {
+      font-size: 1.25rem; line-height: 1.7; color: var(--mfk-slate);
+      background: #faf5ff; border: 2px solid #e9d5ff; border-radius: 14px;
+      padding: 1.1rem 1.25rem; margin-bottom: 1rem;
+    }
+    .opt {
+      display: block; width: 100%; text-align: left;
+      font-family: Inter, system-ui, sans-serif; font-size: 1.02rem; font-weight: 600;
+      background: #fff; border: 2px solid var(--mfk-border); border-radius: 12px;
+      padding: 0.8rem 1rem; margin-bottom: 0.6rem; cursor: pointer; color: var(--mfk-slate);
+      transition: all 0.12s ease;
+    }
+    .opt:hover:not(:disabled) { border-color: var(--mfk-skill-math, #7c3aed); background: #faf5ff; }
+    .opt:disabled { cursor: default; }
+    .opt.correct { border-color: #16a34a; background: #f0fdf4; color: #15803d; }
+    .opt.wrong { border-color: #dc2626; background: #fef2f2; color: #b91c1c; }
+    .opt.dim { opacity: 0.55; }
+    .feedback {
+      border-radius: 12px; padding: 0.9rem 1.1rem; margin-top: 0.6rem;
+      font-size: 0.98rem; line-height: 1.6;
+    }
+    .feedback.good { background: #f0fdf4; border: 2px solid #bbf7d0; color: #15803d; }
+    .feedback.bad { background: #fef2f2; border: 2px solid #fecaca; color: #991b1b; }
+    .feedback .kidtip { margin-top: 0.4rem; color: var(--mfk-slate); }
+    .btn {
+      font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem;
+      background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none;
+      border-radius: 12px; padding: 0.65rem 1.4rem; cursor: pointer; margin-top: 1rem;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn-ghost {
+      background: #fff; color: var(--mfk-skill-math, #7c3aed);
+      border: 2px solid var(--mfk-skill-math, #7c3aed);
+    }
+    .result-score {
+      font-family: Fredoka, system-ui, sans-serif; font-size: 2.6rem; font-weight: 700;
+      color: var(--mfk-slate); text-align: center; margin: 0.5rem 0;
+    }
+    .decoded {
+      background: #fffbeb; border: 2px solid #f59e0b; border-radius: 14px;
+      padding: 1rem 1.2rem; margin-top: 1rem;
+    }
+    .decoded h3 { margin: 0 0 0.5rem; color: #92400e; font-size: 1.15rem; }
+    .decoded .pattern { margin-bottom: 0.8rem; font-size: 0.95rem; line-height: 1.6; color: var(--mfk-slate); }
+    .decoded .pattern strong { color: #92400e; }
+    .decoded .pattern .ex { color: var(--mfk-slate-soft); font-size: 0.88rem; }
+    .quiz-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1rem; }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · Quiz"
+      title="Justify It"
+      subtitle="Read the statement, pick the reason — exactly like the worksheet. Five questions per round."
+    ></mfk-page-hero>
+
+    <section class="quiz-card" id="quiz-box" aria-label="Quiz"></section>
+    <a class="back-link" href="index.html">← Back to Geometry Proofs Practice</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/proofs.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Proofs.recordVisit();
+
+      var ROUND_SIZE = 5;
+      var box = document.getElementById("quiz-box");
+      var weakMode = /[?&]weak=1/.test(window.location.search);
+
+      var data = null;
+      var round = [];
+      var qi = 0;
+      var correct = 0;
+      var misses = []; // {pickedId, answerId}
+
+      function sameUnit(item, r) {
+        return item.unit === r.unit || item.unit === "both" || r.unit === "both";
+      }
+
+      function pickRound(items, weakIds) {
+        var pool = items;
+        var picked = [];
+        if (weakMode && weakIds.length) {
+          var weakPool = items.filter(function (it) { return weakIds.indexOf(it.answer) >= 0; });
+          if (weakPool.length) {
+            pool = weakPool;
+          }
+        }
+        var shuffled = Proofs.shuffle(pool);
+        var seg = 0, ang = 0;
+        shuffled.forEach(function (it) {
+          if (picked.length >= ROUND_SIZE) return;
+          var isSeg = it.unit === "segments";
+          if (isSeg && seg >= 3) return;
+          if (!isSeg && ang >= 3) return;
+          picked.push(it);
+          if (isSeg) seg++; else ang++;
+        });
+        if (picked.length < ROUND_SIZE) {
+          // fill from the full pool if the weak pool ran short
+          Proofs.shuffle(items).forEach(function (it) {
+            if (picked.length >= ROUND_SIZE) return;
+            if (picked.indexOf(it) < 0) picked.push(it);
+          });
+        }
+        return picked;
+      }
+
+      function buildOptions(item) {
+        var answer = data.byId[item.answer];
+        var ids = [item.answer];
+        var distract = [];
+        function add(id) {
+          if (id && ids.indexOf(id) < 0 && data.byId[id]) { ids.push(id); distract.push(data.byId[id]); }
+        }
+        add(item.trap);
+        var cands = Proofs.shuffle(data.reasons.filter(function (r) {
+          return r.id !== item.answer && sameUnit(item, r);
+        }));
+        cands.forEach(function (r) { if (distract.length < 3) add(r.id); });
+        // last-resort fill from any reason
+        Proofs.shuffle(data.reasons).forEach(function (r) { if (distract.length < 3) add(r.id); });
+        return Proofs.shuffle([answer].concat(distract));
+      }
+
+      function decodePattern(miss) {
+        var p = data.byId[miss.pickedId];
+        var a = data.byId[miss.answerId];
+        if (!p || !a) return null;
+        var isDT = function (x) { return x.category === "definition" || x.category === "theorem" || x.category === "postulate"; };
+        if (isDT(p) && isDT(a) && p.category !== a.category) {
+          return {
+            title: "Definition vs theorem confusion",
+            text: "A <strong>definition</strong> translates a word into math (or the reverse) — it never concludes anything new. " +
+                  "A <strong>theorem</strong> or <strong>postulate</strong> takes an if-then and concludes something. " +
+                  "If the statement ends with a brand-new conclusion (like ≅), reach for a theorem, not a definition.",
+            ex: "You picked “" + p.name + "” but the answer was “" + a.name + "”."
+          };
+        }
+        if (p.symbol !== "both" && a.symbol !== "both" && p.symbol !== a.symbol) {
+          return {
+            title: "Symbol mismatch: = vs ≅",
+            text: "Match the symbol. Reasons about <strong>=</strong> stay with =; reasons about <strong>≅</strong> stay with ≅. " +
+                  "Only the Definition of Congruence crosses the border between them.",
+            ex: "You picked “" + p.name + "” (" + p.symbol + ") but the answer was “" + a.name + "” (" + a.symbol + ")."
+          };
+        }
+        var pSub = p.id === "prop-subst", aSub = a.id === "prop-subst";
+        var pTr = /trans/.test(p.id), aTr = /trans/.test(a.id);
+        if ((pSub && aTr) || (pTr && aSub)) {
+          return {
+            title: "Substitution vs transitive mix-up",
+            text: "<strong>Substitution</strong> replaces one thing with something known to equal it. " +
+                  "<strong>Transitive</strong> chains two links: A→B and B→C gives A→C. " +
+                  "If nothing is being swapped out, it's not substitution.",
+            ex: "You picked “" + p.name + "” but the answer was “" + a.name + "”."
+          };
+        }
+        var se = null;
+        data.spotErrors.forEach(function (s) {
+          if (s.wrongId === miss.pickedId && s.rightId === miss.answerId) se = s;
+        });
+        if (se) {
+          return { title: "Same trap as the worksheet", text: se.rule, ex: "See “Spot the Error” for the full walkthrough." };
+        }
+        return null;
+      }
+
+      function renderQuestion() {
+        var item = round[qi];
+        var answer = data.byId[item.answer];
+        var options = buildOptions(item);
+        var html = '<div class="quiz-top"><span>Question ' + (qi + 1) + ' of ' + round.length + '</span>' +
+          '<span>Score: ' + correct + '</span></div>' +
+          '<div class="q-statement">' + item.statement + '</div>' +
+          '<div role="group" aria-label="Choose the reason">';
+        options.forEach(function (r, i) {
+          html += '<button class="opt" data-id="' + r.id + '">' + r.name + '</button>';
+        });
+        html += '</div><div id="q-feedback"></div>';
+        box.innerHTML = html;
+
+        var buttons = box.querySelectorAll(".opt");
+        var fb = document.getElementById("q-feedback");
+        var answered = false;
+        buttons.forEach(function (b) {
+          b.addEventListener("click", function () {
+            if (answered) return;
+            answered = true;
+            var pickedId = b.getAttribute("data-id");
+            var ok = pickedId === item.answer;
+            buttons.forEach(function (x) {
+              x.disabled = true;
+              var id = x.getAttribute("data-id");
+              if (id === item.answer) x.classList.add("correct");
+              else if (id === pickedId) x.classList.add("wrong");
+              else x.classList.add("dim");
+            });
+            if (ok) {
+              correct++;
+              fb.innerHTML = '<div class="feedback good"><strong>Correct.</strong>' +
+                '<div class="kidtip"><strong>Kid tip:</strong> ' + answer.kid + '</div>' +
+                '<button class="btn" id="q-next">Next →</button></div>';
+            } else {
+              misses.push({ pickedId: pickedId, answerId: item.answer });
+              Proofs.recordMiss(item.answer);
+              var picked = data.byId[pickedId];
+              fb.innerHTML = '<div class="feedback bad"><strong>Not quite.</strong> The reason is <strong>' + answer.name + '</strong>.' +
+                '<div class="kidtip"><strong>Kid tip:</strong> ' + answer.kid + '</div>' +
+                '<button class="btn" id="q-next">Next →</button></div>';
+            }
+            document.getElementById("q-next").addEventListener("click", function () {
+              qi++;
+              if (qi < round.length) renderQuestion();
+              else renderResults();
+            });
+          });
+        });
+      }
+
+      function renderResults() {
+        var pct = Proofs.recordQuizResult(correct, round.length);
+        var html = '<h2 style="margin-top:0">Round complete</h2>' +
+          '<div class="result-score">' + correct + ' / ' + round.length + '</div>' +
+          '<p style="text-align:center;color:var(--mfk-slate-soft)">' +
+          (correct === round.length ? "Perfect round — the Reasons column fears you now." :
+           correct >= 3 ? "Solid. Let's decode the misses below so they don't repeat." :
+           "Tough round — the decoded patterns below are exactly what to study next.") + '</p>';
+
+        if (misses.length) {
+          var seen = {};
+          var patterns = [];
+          misses.forEach(function (m) {
+            var d = decodePattern(m);
+            var key = d ? d.title + "|" + d.text : "other";
+            if (!seen[key]) { seen[key] = true; patterns.push(d ? { d: d, m: m } : { d: null, m: m }); }
+          });
+          html += '<div class="decoded"><h3>Your mistakes, decoded</h3>';
+          patterns.forEach(function (pt) {
+            if (pt.d) {
+              html += '<div class="pattern"><strong>' + pt.d.title + '.</strong> ' + pt.d.text +
+                '<div class="ex">' + pt.d.ex + '</div></div>';
+            } else {
+              var p = data.byId[pt.m.pickedId], a = data.byId[pt.m.answerId];
+              html += '<div class="pattern"><strong>Check the trigger words.</strong> Compare the statement\u2019s key words ' +
+                'against each reason\u2019s trigger line in the flashcards.' +
+                '<div class="ex">You picked “' + (p ? p.name : pt.m.pickedId) + '” but the answer was “' + (a ? a.name : pt.m.answerId) + '”.</div></div>';
+            }
+          });
+          html += '</div>';
+        }
+
+        html += '<div class="quiz-actions">' +
+          '<button class="btn" id="q-again">Play again</button>' +
+          (Proofs.getWeakReasons(1).length ? '<button class="btn btn-ghost" id="q-weak">Practice weak spots</button>' : '') +
+          '<a class="btn btn-ghost" href="flashcards.html" style="text-decoration:none">Review flashcards</a>' +
+          '</div>';
+        box.innerHTML = html;
+        document.getElementById("q-again").addEventListener("click", startRound);
+        var qw = document.getElementById("q-weak");
+        if (qw) qw.addEventListener("click", function () { window.location.search = "?weak=1"; });
+      }
+
+      function startRound() {
+        round = pickRound(data.quiz, Proofs.getWeakReasons(8));
+        qi = 0; correct = 0; misses = [];
+        renderQuestion();
+      }
+
+      Proofs.loadData().then(function (d) {
+        data = d;
+        startRound();
+      }).catch(function () {
+        Proofs.showLoadError(box, "quiz");
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

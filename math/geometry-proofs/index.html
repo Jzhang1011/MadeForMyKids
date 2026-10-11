@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Geometry Proofs Practice — MadeForMyKids</title>
+  <meta name="description" content="Master geometry proof reasons: flashcards, a Justify It quiz, a matching game, spot-the-error walkthroughs, and a reason picker — for segment and angle proofs." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .ol { text-decoration: overline; }
+
+    .proofs-card {
+      background: var(--mfk-white); border: 2px solid var(--mfk-border);
+      border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem;
+    }
+    .proofs-card > h2 { margin: 0 0 0.35rem; font-size: 1.5rem; color: var(--mfk-slate); }
+    .proofs-card > p.lede { margin: 0 0 1rem; color: var(--mfk-slate-soft); }
+
+    .video-wrap {
+      position: relative; width: 100%; padding-bottom: 56.25%;
+      border-radius: 14px; overflow: hidden; background: #0f172a;
+    }
+    .video-wrap iframe, .video-wrap video {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+    }
+    .video-card { margin-top: 1.25rem; }
+    .video-card h3 { margin: 0.8rem 0 0.25rem; font-size: 1.15rem; color: var(--mfk-slate); }
+    .video-card p { margin: 0.25rem 0; color: var(--mfk-slate-soft); font-size: 0.95rem; line-height: 1.55; }
+    .video-card .watchfor { font-size: 0.88rem; color: var(--mfk-slate-faint); }
+    .yt-link {
+      display: inline-block; margin-top: 0.4rem; font-weight: 700; font-size: 0.92rem;
+      color: var(--mfk-skill-math, #7c3aed); text-decoration: none;
+    }
+    .yt-link:hover { text-decoration: underline; }
+
+    .mode-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.9rem; margin-top: 1rem;
+    }
+    .mode-card {
+      display: block; background: #fff; border: 2px solid var(--mfk-border);
+      border-radius: 16px; padding: 1.1rem 1.2rem; text-decoration: none;
+      transition: transform 0.1s ease, border-color 0.1s ease;
+    }
+    .mode-card:hover { transform: translateY(-2px); border-color: var(--mfk-skill-math, #7c3aed); }
+    .mode-card .mode-icon { font-size: 1.7rem; }
+    .mode-card h3 { margin: 0.4rem 0 0.25rem; font-size: 1.12rem; color: var(--mfk-slate); }
+    .mode-card p { margin: 0; font-size: 0.9rem; color: var(--mfk-slate-soft); line-height: 1.5; }
+
+    .tellapart-group { margin-top: 1.25rem; }
+    .tellapart-group > h3 { margin: 0 0 0.2rem; font-size: 1.2rem; color: var(--mfk-slate); }
+    .tellapart-group > p { margin: 0 0 0.8rem; color: var(--mfk-slate-soft); font-size: 0.95rem; }
+    .tell-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.8rem; }
+    .tell-card {
+      background: #faf5ff; border: 2px solid #e9d5ff; border-radius: 14px;
+      padding: 0.95rem 1.05rem;
+    }
+    .tell-card .rname { font-weight: 700; color: var(--mfk-skill-math, #7c3aed); font-size: 0.98rem; }
+    .tell-card .rstmt { font-size: 0.9rem; color: var(--mfk-slate); margin: 0.35rem 0; line-height: 1.5; }
+    .tell-card .rtell { font-size: 0.88rem; color: var(--mfk-slate-soft); line-height: 1.55; }
+    .tell-card .rtell strong { color: #b45309; }
+
+    .progress-strip {
+      display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center;
+      background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 14px;
+      padding: 1rem 1.25rem; margin-top: 1rem;
+    }
+    .progress-strip .stat { font-size: 0.95rem; color: var(--mfk-slate); }
+    .progress-strip .stat strong { font-family: Fredoka, system-ui, sans-serif; font-size: 1.35rem; color: #15803d; margin-right: 0.35rem; }
+    .btn {
+      font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem;
+      background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none;
+      border-radius: 12px; padding: 0.65rem 1.3rem; cursor: pointer; text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn-ghost {
+      background: #fff; color: var(--mfk-skill-math, #7c3aed);
+      border: 2px solid var(--mfk-skill-math, #7c3aed);
+    }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="New · Math"
+      title="Geometry Proofs Practice"
+      subtitle="Two-column proofs live or die on the Reasons column. Master all 26 reasons for segment and angle proofs — flashcards, quizzes, games, and the exact mistakes to avoid."
+    ></mfk-page-hero>
+
+    <section class="proofs-card" id="watch" aria-label="Watch first">
+      <h2>Watch first</h2>
+      <p class="lede">Start with the walkthrough of the two most-missed problems, then dig into the longer explainers.</p>
+      <div id="custom-video-slot"></div>
+      <div id="youtube-slot"></div>
+    </section>
+
+    <section class="proofs-card" id="modes" aria-label="Practice modes">
+      <h2>Pick your practice</h2>
+      <p class="lede">Five ways in — mix them up. Short sessions beat one long cram.</p>
+      <div class="mode-grid">
+        <a class="mode-card" href="flashcards.html">
+          <div class="mode-icon">🗂️</div>
+          <h3>Flashcards</h3>
+          <p>Flip through all 26 reasons. Filter by segments, angles, or category.</p>
+        </a>
+        <a class="mode-card" href="quiz.html">
+          <div class="mode-icon">✏️</div>
+          <h3>Justify It quiz</h3>
+          <p>Given a statement, pick the reason — just like the worksheet. Mistakes get decoded.</p>
+        </a>
+        <a class="mode-card" href="match.html">
+          <div class="mode-icon">🧩</div>
+          <h3>Matching game</h3>
+          <p>Pair each reason with its trigger phrase. Earn up to 3 stars per board.</p>
+        </a>
+        <a class="mode-card" href="spot-error.html">
+          <div class="mode-icon">🔍</div>
+          <h3>Spot the Error</h3>
+          <p>Real wrong answers from the practice sheets — find the right reason and learn the rule.</p>
+        </a>
+        <a class="mode-card" href="reason-picker.html">
+          <div class="mode-icon">🧭</div>
+          <h3>Reason Picker</h3>
+          <p>Stuck on a problem? Answer three quick filters and narrow it to the right reason.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="proofs-card" id="tell-apart" aria-label="Tell these apart">
+      <h2>Tell these apart</h2>
+      <p class="lede">The look-alikes that cause most of the red marks — each with the tell that picks the right one.</p>
+      <div id="tellapart-slot"></div>
+    </section>
+
+    <section class="proofs-card" id="progress" aria-label="Your progress">
+      <h2>Your progress</h2>
+      <div class="progress-strip" id="progress-strip"></div>
+    </section>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/proofs.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Proofs.recordVisit();
+
+      var customSlot = document.getElementById("custom-video-slot");
+      var ytSlot = document.getElementById("youtube-slot");
+      var tellSlot = document.getElementById("tellapart-slot");
+      var progressStrip = document.getElementById("progress-strip");
+
+      function renderProgress() {
+        var p = Proofs.getProgress();
+        var weak = Proofs.getWeakReasons(8);
+        var html = "";
+        html += '<div class="stat"><strong>' + p.quizzesTaken + '</strong>quizzes taken</div>';
+        html += '<div class="stat"><strong>' + (p.bestScore === null ? "—" : p.bestScore + "%") + '</strong>best score</div>';
+        html += '<div class="stat"><strong>' + weak.length + '</strong>reasons to review</div>';
+        if (weak.length) {
+          html += '<a class="btn btn-ghost" href="quiz.html?weak=1">Practice weak spots</a>';
+        } else if (p.quizzesTaken > 0) {
+          html += '<span style="font-size:0.92rem;color:var(--mfk-slate-soft)">No weak spots yet — nice work.</span>';
+        } else {
+          html += '<a class="btn" href="quiz.html">Take your first quiz</a>';
+        }
+        progressStrip.innerHTML = html;
+      }
+      renderProgress();
+
+      Proofs.loadData().then(function (data) {
+        // --- custom local video (graceful fallback if the mp4 isn't published yet) ---
+        var custom = null, yts = [];
+        data.videos.forEach(function (v) {
+          if (v.kind === "local") custom = v; else yts.push(v);
+        });
+        function renderCustomVideo(ok) {
+          if (ok && custom) {
+            customSlot.innerHTML =
+              '<div class="video-card">' +
+              '<div class="video-wrap"><video controls preload="none" playsinline>' +
+              '<source src="' + custom.src + '" type="video/mp4" />' +
+              '<track kind="captions" src="' + custom.captions + '" srclang="en" label="English" />' +
+              'Sorry, your browser can\u2019t play this video.' +
+              '</video></div>' +
+              '<h3>' + custom.title + '</h3>' +
+              '<p>' + custom.blurb + '</p>' +
+              '</div>';
+          } else {
+            customSlot.innerHTML =
+              '<div class="video-card"><p style="color:var(--mfk-slate-soft);font-size:0.95rem">' +
+              'A short walkthrough of the two most-missed problems is on the way — ' +
+              'start with the videos below in the meantime.</p></div>';
+          }
+        }
+        if (custom) {
+          fetch(custom.src, { method: "HEAD" })
+            .then(function (r) { renderCustomVideo(r.ok); })
+            .catch(function () { renderCustomVideo(false); });
+        } else {
+          renderCustomVideo(false);
+        }
+
+        // --- YouTube cards ---
+        var ytHtml = "";
+        yts.forEach(function (v) {
+          ytHtml +=
+            '<div class="video-card">' +
+            '<div class="video-wrap"><iframe src="https://www.youtube.com/embed/' + v.youtubeId + '" ' +
+            'title="' + Proofs.esc(v.title) + '" loading="lazy" ' +
+            'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+            'allowfullscreen></iframe></div>' +
+            '<h3>' + v.title + '</h3>' +
+            '<p>' + v.blurb + '</p>' +
+            (v.watchFor ? '<p class="watchfor">Watch for: ' + v.watchFor + '</p>' : '') +
+            '<a class="yt-link" href="https://www.youtube.com/watch?v=' + v.youtubeId + '" target="_blank" rel="noopener">Watch on YouTube →</a>' +
+            '</div>';
+        });
+        ytSlot.innerHTML = ytHtml;
+
+        // --- Tell-apart groups ---
+        var tHtml = "";
+        data.tellApart.forEach(function (g) {
+          tHtml += '<div class="tellapart-group"><h3>' + g.title + '</h3><p>' + g.lede + '</p><div class="tell-cards">';
+          g.cards.forEach(function (c) {
+            var r = data.byId[c.reasonId];
+            if (!r) return;
+            tHtml += '<div class="tell-card">' +
+              '<div class="rname">' + r.name + '</div>' +
+              '<div class="rstmt">' + r.statement + '</div>' +
+              '<div class="rtell"><strong>The tell:</strong> ' + c.tell + '</div>' +
+              '</div>';
+          });
+          tHtml += '</div></div>';
+        });
+        tellSlot.innerHTML = tHtml;
+      }).catch(function () {
+        Proofs.showLoadError(customSlot, "videos");
+        Proofs.showLoadError(tellSlot, "tell-apart cards");
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

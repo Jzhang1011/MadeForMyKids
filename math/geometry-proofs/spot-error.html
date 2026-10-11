@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spot the Error — Geometry Proofs Practice — MadeForMyKids</title>
+  <meta name="description" content="Real wrong answers from the practice sheets — figure out the right reason and learn the rule behind each one." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .ol { text-decoration: overline; }
+
+    .spot-card {
+      background: var(--mfk-white); border: 2px solid var(--mfk-border);
+      border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem;
+    }
+    .spot-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1rem; font-weight: 700; color: var(--mfk-slate-soft); font-size: 0.92rem;
+    }
+    .spot-statement {
+      font-size: 1.2rem; line-height: 1.7; color: var(--mfk-slate);
+      background: #f8fafc; border: 2px solid var(--mfk-border); border-radius: 14px;
+      padding: 1.1rem 1.25rem; margin-bottom: 1rem;
+    }
+    .wrong-answer {
+      background: #fef2f2; border: 2px solid #fecaca; border-radius: 14px;
+      padding: 1rem 1.25rem; margin-bottom: 1rem;
+    }
+    .wrong-answer .wa-label {
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      color: #b91c1c; margin-bottom: 0.3rem;
+    }
+    .wrong-answer .wa-name {
+      font-family: Fredoka, system-ui, sans-serif; font-size: 1.3rem; font-weight: 700;
+      color: #dc2626; text-decoration: line-through;
+    }
+    .wrong-answer .wa-sheet { font-size: 0.85rem; color: var(--mfk-slate-soft); margin-top: 0.3rem; }
+    .spot-prompt { font-weight: 700; color: var(--mfk-slate); margin: 0 0 0.7rem; font-size: 1.05rem; }
+    .opt {
+      display: block; width: 100%; text-align: left;
+      font-family: Inter, system-ui, sans-serif; font-size: 1.02rem; font-weight: 600;
+      background: #fff; border: 2px solid var(--mfk-border); border-radius: 12px;
+      padding: 0.8rem 1rem; margin-bottom: 0.6rem; cursor: pointer; color: var(--mfk-slate);
+      transition: all 0.12s ease;
+    }
+    .opt:hover:not(:disabled) { border-color: var(--mfk-skill-math, #7c3aed); background: #faf5ff; }
+    .opt:disabled { cursor: default; }
+    .opt.correct { border-color: #16a34a; background: #f0fdf4; color: #15803d; }
+    .opt.wrong { border-color: #dc2626; background: #fef2f2; color: #b91c1c; }
+    .opt.dim { opacity: 0.55; }
+    .why-box {
+      background: #fff; border: 2px solid var(--mfk-border); border-radius: 12px;
+      padding: 1rem 1.15rem; margin-top: 0.8rem; font-size: 0.98rem; line-height: 1.65; color: var(--mfk-slate);
+    }
+    .rule-callout {
+      background: #fffbeb; border: 2px dashed #f59e0b; border-radius: 12px;
+      padding: 0.8rem 1.05rem; margin-top: 0.8rem; font-size: 1rem; line-height: 1.6; color: var(--mfk-slate);
+    }
+    .rule-callout strong { color: #92400e; }
+    .spot-nav { display: flex; gap: 0.6rem; margin-top: 1.1rem; flex-wrap: wrap; }
+    .btn {
+      font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem;
+      background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none;
+      border-radius: 12px; padding: 0.6rem 1.2rem; cursor: pointer;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn-soft { background: #f1f5f9; color: var(--mfk-slate); border: 2px solid var(--mfk-border); }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · Detective work"
+      title="Spot the Error"
+      subtitle="Each of these was really marked wrong on the practice sheets. Find the right reason — then learn the rule so it never happens again."
+    ></mfk-page-hero>
+
+    <section class="spot-card" id="spot-box" aria-label="Spot the error"></section>
+    <a class="back-link" href="index.html">← Back to Geometry Proofs Practice</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/proofs.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Proofs.recordVisit();
+
+      var box = document.getElementById("spot-box");
+      var data = null;
+      var idx = 0;
+
+      function buildOptions(item) {
+        var ids = [item.rightId, item.wrongId];
+        var cands = Proofs.shuffle(data.reasons.filter(function (r) {
+          return ids.indexOf(r.id) < 0 && r.unit !== "both" &&
+            (data.byId[item.rightId].unit === "both" || r.unit === data.byId[item.rightId].unit || r.unit === "both");
+        }));
+        cands.forEach(function (r) { if (ids.length < 4) ids.push(r.id); });
+        Proofs.shuffle(data.reasons).forEach(function (r) { if (ids.length < 4 && ids.indexOf(r.id) < 0) ids.push(r.id); });
+        return Proofs.shuffle(ids.map(function (id) { return data.byId[id]; }));
+      }
+
+      function render() {
+        var item = data.spotErrors[idx];
+        var right = data.byId[item.rightId];
+        var options = buildOptions(item);
+        var html = '<div class="spot-top"><span>Case ' + (idx + 1) + ' of ' + data.spotErrors.length + '</span></div>' +
+          '<div class="spot-statement">' + item.statement + '</div>' +
+          '<div class="wrong-answer">' +
+            '<div class="wa-label">✗ Marked wrong</div>' +
+            '<div class="wa-name">' + item.wrongName + '</div>' +
+            (item.sheet ? '<div class="wa-sheet">From: ' + Proofs.esc(item.sheet) + '</div>' : '') +
+          '</div>' +
+          '<p class="spot-prompt">What\u2019s the right reason?</p>' +
+          '<div role="group" aria-label="Choose the right reason">';
+        options.forEach(function (r) {
+          html += '<button class="opt" data-id="' + r.id + '">' + r.name + '</button>';
+        });
+        html += '</div><div id="spot-feedback"></div>' +
+          '<div class="spot-nav">' +
+          '<button class="btn btn-soft" id="spot-prev">← Prev</button>' +
+          '<button class="btn btn-soft" id="spot-next">Next →</button>' +
+          '</div>';
+        box.innerHTML = html;
+
+        var buttons = box.querySelectorAll(".opt");
+        var fb = document.getElementById("spot-feedback");
+        var answered = false;
+        buttons.forEach(function (b) {
+          b.addEventListener("click", function () {
+            if (answered) return;
+            answered = true;
+            var pickedId = b.getAttribute("data-id");
+            var ok = pickedId === item.rightId;
+            buttons.forEach(function (x) {
+              x.disabled = true;
+              var id = x.getAttribute("data-id");
+              if (id === item.rightId) x.classList.add("correct");
+              else if (id === pickedId) x.classList.add("wrong");
+              else x.classList.add("dim");
+            });
+            if (!ok) Proofs.recordMiss(item.rightId);
+            fb.innerHTML = '<div class="why-box"><strong>' +
+              (ok ? "Exactly right." : "The right reason is <strong>" + right.name + "</strong>.") +
+              '</strong> ' + item.why + '</div>' +
+              '<div class="rule-callout"><strong>Rule to remember:</strong> ' + item.rule + '</div>';
+          });
+        });
+
+        document.getElementById("spot-prev").addEventListener("click", function () {
+          idx = (idx - 1 + data.spotErrors.length) % data.spotErrors.length;
+          render();
+        });
+        document.getElementById("spot-next").addEventListener("click", function () {
+          idx = (idx + 1) % data.spotErrors.length;
+          render();
+        });
+      }
+
+      Proofs.loadData().then(function (d) {
+        data = d;
+        render();
+      }).catch(function () {
+        Proofs.showLoadError(box, "spot-the-error cases");
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

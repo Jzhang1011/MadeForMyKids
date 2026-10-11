@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reason Picker — Geometry Proofs Practice — MadeForMyKids</title>
+  <meta name="description" content="Stuck on a proof? Answer three quick filters — category, symbol, unit — and narrow 26 reasons down to the right one." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .ol { text-decoration: overline; }
+
+    .picker-card {
+      background: var(--mfk-white); border: 2px solid var(--mfk-border);
+      border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem;
+    }
+    .howto {
+      background: #faf5ff; border: 2px solid #e9d5ff; border-radius: 14px;
+      padding: 1rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    .howto h2 { margin: 0 0 0.5rem; font-size: 1.2rem; color: var(--mfk-slate); }
+    .howto ol { margin: 0; padding-left: 1.3rem; color: var(--mfk-slate); font-size: 0.97rem; line-height: 1.7; }
+    .howto ol strong { color: var(--mfk-skill-math, #7c3aed); }
+    .filter-row { margin-bottom: 0.9rem; }
+    .filter-row .flabel { font-weight: 700; font-size: 0.9rem; color: var(--mfk-slate-soft); margin-bottom: 0.4rem; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .chip {
+      font-size: 0.85rem; font-weight: 700; padding: 0.4rem 0.85rem; border-radius: 9999px;
+      border: 2px solid var(--mfk-border); background: #fff; color: var(--mfk-slate-soft);
+      cursor: pointer; transition: all 0.12s ease;
+    }
+    .chip[aria-pressed="true"] {
+      background: var(--mfk-skill-math, #7c3aed); border-color: var(--mfk-skill-math, #7c3aed); color: #fff;
+    }
+    .result-count { font-weight: 700; color: var(--mfk-slate-soft); font-size: 0.92rem; margin: 1rem 0 0.6rem; }
+    .reason-list { display: grid; gap: 0.7rem; }
+    .reason-item {
+      border: 2px solid var(--mfk-border); border-radius: 14px; padding: 0.9rem 1.1rem; background: #fff;
+    }
+    .reason-item .rname { font-family: Fredoka, system-ui, sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--mfk-slate); }
+    .reason-item .rmeta {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--mfk-skill-math, #7c3aed); margin: 0.2rem 0 0.35rem;
+    }
+    .reason-item .rstmt { font-size: 0.97rem; color: var(--mfk-slate); line-height: 1.6; }
+    .reason-item .rtrigger { font-size: 0.88rem; color: var(--mfk-slate-soft); font-style: italic; margin-top: 0.3rem; }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · Helper"
+      title="Which reason?"
+      subtitle="Stuck mid-proof? Run the statement through the filters and let the list shrink to the answer."
+    ></mfk-page-hero>
+
+    <section class="picker-card" aria-label="Reason picker">
+      <div class="howto">
+        <h2>How to decide, in order</h2>
+        <ol>
+          <li><strong>Does it cross = / ≅?</strong> If the statement turns an = into a ≅ (or the reverse), it's the Definition of Congruence.</li>
+          <li><strong>Same algebra on both sides?</strong> Adding, subtracting, multiplying, or dividing the same thing on both sides → a property of equality.</li>
+          <li><strong>Names a picture-word?</strong> Vertical, linear pair, midpoint, bisector, perpendicular, "between" → find that definition, theorem, or postulate.</li>
+          <li><strong>Same thing twice, flipped, or chained?</strong> A = A → reflexive. A = B turned into B = A → symmetric. A → B and B → C giving A → C → transitive. Match the symbol (= or ≅).</li>
+        </ol>
+      </div>
+
+      <div class="filter-row">
+        <div class="flabel">1 · Category</div>
+        <div class="chip-row" id="chips-cat" role="group" aria-label="Category filter"></div>
+      </div>
+      <div class="filter-row">
+        <div class="flabel">2 · Symbol — does the statement use = , ≅, or cross between them?</div>
+        <div class="chip-row" id="chips-sym" role="group" aria-label="Symbol filter"></div>
+      </div>
+      <div class="filter-row">
+        <div class="flabel">3 · Unit</div>
+        <div class="chip-row" id="chips-unit" role="group" aria-label="Unit filter"></div>
+      </div>
+
+      <div class="result-count" id="result-count"></div>
+      <div class="reason-list" id="reason-list"></div>
+    </section>
+    <a class="back-link" href="index.html">← Back to Geometry Proofs Practice</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/proofs.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Proofs.recordVisit();
+
+      var sel = { cat: "all", sym: "all", unit: "all" };
+      var allReasons = [];
+
+      var CATS = [
+        { id: "all", label: "Any" },
+        { id: "property", label: "Property" },
+        { id: "definition", label: "Definition" },
+        { id: "postulate", label: "Postulate" },
+        { id: "theorem", label: "Theorem" }
+      ];
+      var SYMS = [
+        { id: "all", label: "Any" },
+        { id: "equality", label: "Uses =" },
+        { id: "congruence", label: "Uses ≅" },
+        { id: "both", label: "Crosses = ↔ ≅" }
+      ];
+      var UNITS = [
+        { id: "all", label: "Any" },
+        { id: "segments", label: "Segments" },
+        { id: "angles", label: "Angles" }
+      ];
+
+      function symLabel(r) {
+        return r.symbol === "equality" ? "= only" : (r.symbol === "congruence" ? "≅ only" : "crosses = / ≅");
+      }
+      function unitLabel(r) {
+        return r.unit === "both" ? "segments & angles" : r.unit;
+      }
+
+      function renderChips(elId, defs, key) {
+        var el = document.getElementById(elId);
+        el.innerHTML = "";
+        defs.forEach(function (d) {
+          var b = document.createElement("button");
+          b.className = "chip";
+          b.textContent = d.label;
+          b.setAttribute("aria-pressed", sel[key] === d.id ? "true" : "false");
+          b.addEventListener("click", function () {
+            sel[key] = d.id;
+            renderChips("chips-cat", CATS, "cat");
+            renderChips("chips-sym", SYMS, "sym");
+            renderChips("chips-unit", UNITS, "unit");
+            renderList();
+          });
+          el.appendChild(b);
+        });
+      }
+
+      function matches(r) {
+        if (sel.cat !== "all" && r.category !== sel.cat) return false;
+        if (sel.sym !== "all" && r.symbol !== sel.sym) return false;
+        if (sel.unit !== "all" && !(r.unit === sel.unit || r.unit === "both")) return false;
+        return true;
+      }
+
+      function renderList() {
+        var list = allReasons.filter(matches);
+        var countEl = document.getElementById("result-count");
+        var listEl = document.getElementById("reason-list");
+        countEl.textContent = list.length + (list.length === 1 ? " reason matches" : " reasons match");
+        if (!list.length) {
+          listEl.innerHTML = '<p style="color:var(--mfk-slate-soft)">No reasons match — loosen a filter. ' +
+            'Remember: only the Definition of Congruence crosses = / ≅.</p>';
+          return;
+        }
+        var html = "";
+        list.forEach(function (r) {
+          html += '<div class="reason-item">' +
+            '<div class="rname">' + r.name + '</div>' +
+            '<div class="rmeta">' + Proofs.esc(r.category) + ' · ' + Proofs.esc(unitLabel(r)) + ' · ' + Proofs.esc(symLabel(r)) + '</div>' +
+            '<div class="rstmt">' + r.statement + '</div>' +
+            '<div class="rtrigger">Trigger: ' + r.trigger + '</div>' +
+            '</div>';
+        });
+        listEl.innerHTML = html;
+      }
+
+      renderChips("chips-cat", CATS, "cat");
+      renderChips("chips-sym", SYMS, "sym");
+      renderChips("chips-unit", UNITS, "unit");
+
+      Proofs.loadData().then(function (data) {
+        allReasons = data.reasons;
+        renderList();
+      }).catch(function () {
+        Proofs.showLoadError(document.querySelector(".picker-card"), "reasons");
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

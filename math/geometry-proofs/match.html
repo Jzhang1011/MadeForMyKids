@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matching Game — Geometry Proofs Practice — MadeForMyKids</title>
+  <meta name="description" content="Match each proof reason with its trigger phrase. Six pairs per board — earn up to 3 stars." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .ol { text-decoration: overline; }
+
+    .match-card {
+      background: var(--mfk-white); border: 2px solid var(--mfk-border);
+      border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem;
+    }
+    .match-top {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+      gap: 0.5rem; margin-bottom: 1rem; font-weight: 700; color: var(--mfk-slate-soft); font-size: 0.92rem;
+    }
+    .board {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem;
+    }
+    @media (max-width: 640px) { .board { grid-template-columns: repeat(3, 1fr); } }
+    .mcard {
+      perspective: 800px; cursor: pointer; min-height: 110px; border: none; background: none; padding: 0;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    .mcard-inner {
+      position: relative; width: 100%; height: 100%; min-height: 110px;
+      transition: transform 0.35s ease; transform-style: preserve-3d;
+    }
+    .mcard.flipped .mcard-inner, .mcard.done .mcard-inner { transform: rotateY(180deg); }
+    .mface {
+      position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      padding: 0.6rem; text-align: center; font-size: 0.85rem; font-weight: 600; line-height: 1.4;
+    }
+    .mface.front { background: var(--mfk-skill-math, #7c3aed); color: #fff; font-size: 1.4rem; }
+    .mface.back { background: #faf5ff; border: 2px solid #e9d5ff; color: var(--mfk-slate); transform: rotateY(180deg); }
+    .mface.back.trigger { background: #fffbeb; border-color: #fde68a; font-style: italic; font-weight: 500; }
+    .mcard.done .mface.back { border-color: #16a34a; background: #f0fdf4; }
+    .mcard.done { cursor: default; }
+    .stars { font-size: 2rem; letter-spacing: 0.3rem; text-align: center; margin: 0.5rem 0; }
+    .stars .off { opacity: 0.25; filter: grayscale(1); }
+    .match-msg { text-align: center; color: var(--mfk-slate-soft); font-size: 1rem; margin-bottom: 1rem; }
+    .match-actions { display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; }
+    .btn {
+      font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem;
+      background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none;
+      border-radius: 12px; padding: 0.65rem 1.4rem; cursor: pointer;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · Game"
+      title="Reason match-up"
+      subtitle="Tap a reason, then tap its trigger phrase. Six pairs per board — match them all for up to 3 stars."
+    ></mfk-page-hero>
+
+    <section class="match-card" aria-label="Matching board">
+      <div class="match-top">
+        <span id="match-progress">Pairs: 0 / 6</span>
+        <span id="match-mistakes">Mistakes: 0</span>
+      </div>
+      <div class="board" id="board"></div>
+      <div id="match-end"></div>
+      <div class="match-actions">
+        <button class="btn" id="btn-new">New board</button>
+      </div>
+    </section>
+    <a class="back-link" href="index.html">← Back to Geometry Proofs Practice</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/proofs.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Proofs.recordVisit();
+
+      var PAIRS = 6;
+      var board = document.getElementById("board");
+      var progressEl = document.getElementById("match-progress");
+      var mistakesEl = document.getElementById("match-mistakes");
+      var endEl = document.getElementById("match-end");
+
+      var data = null;
+      var first = null;   // first flipped card element
+      var lock = false;
+      var matched = 0;
+      var mistakes = 0;
+
+      function starString(n) {
+        var s = "";
+        for (var i = 0; i < 3; i++) {
+          s += '<span class="' + (i < n ? "on" : "off") + '">★</span>';
+        }
+        return s;
+      }
+
+      function newBoard() {
+        first = null; lock = false; matched = 0; mistakes = 0;
+        endEl.innerHTML = "";
+        progressEl.textContent = "Pairs: 0 / " + PAIRS;
+        mistakesEl.textContent = "Mistakes: 0";
+        var picks = Proofs.shuffle(data.reasons).slice(0, PAIRS);
+        var cards = [];
+        picks.forEach(function (r) {
+          cards.push({ id: r.id, kind: "name", text: r.short });
+          cards.push({ id: r.id, kind: "trigger", text: r.trigger });
+        });
+        cards = Proofs.shuffle(cards);
+        board.innerHTML = "";
+        cards.forEach(function (c) {
+          var b = document.createElement("button");
+          b.className = "mcard";
+          b.setAttribute("data-id", c.id);
+          b.setAttribute("aria-label", "Memory card");
+          b.innerHTML = '<span class="mcard-inner">' +
+            '<span class="mface front">?</span>' +
+            '<span class="mface back' + (c.kind === "trigger" ? " trigger" : "") + '">' + Proofs.esc(c.text) + "</span>" +
+            "</span>";
+          b.addEventListener("click", function () { flip(b); });
+          board.appendChild(b);
+        });
+      }
+
+      function flip(b) {
+        if (lock || b.classList.contains("flipped") || b.classList.contains("done")) return;
+        b.classList.add("flipped");
+        if (!first) {
+          first = b;
+          return;
+        }
+        var a = first;
+        first = null;
+        if (a.getAttribute("data-id") === b.getAttribute("data-id")) {
+          a.classList.add("done");
+          b.classList.add("done");
+          matched++;
+          progressEl.textContent = "Pairs: " + matched + " / " + PAIRS;
+          if (matched === PAIRS) finish();
+        } else {
+          lock = true;
+          mistakes++;
+          mistakesEl.textContent = "Mistakes: " + mistakes;
+          setTimeout(function () {
+            a.classList.remove("flipped");
+            b.classList.remove("flipped");
+            lock = false;
+          }, 750);
+        }
+      }
+
+      function finish() {
+        var stars = mistakes === 0 ? 3 : (mistakes <= 2 ? 2 : 1);
+        endEl.innerHTML = '<div class="stars" role="img" aria-label="' + stars + ' out of 3 stars">' +
+          starString(stars) + "</div>" +
+          '<p class="match-msg">' +
+          (stars === 3 ? "Flawless — you know these cold." :
+           stars === 2 ? "Nice — one more clean run for 3 stars." :
+           "Good effort — replay the board and watch the trigger phrases.") + "</p>";
+      }
+
+      document.getElementById("btn-new").addEventListener("click", newBoard);
+
+      Proofs.loadData().then(function (d) {
+        data = d;
+        newBoard();
+      }).catch(function () {
+        Proofs.showLoadError(document.querySelector(".match-card"), "matching game");
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

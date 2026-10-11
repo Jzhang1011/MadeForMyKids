@@ -1,0 +1,269 @@
+{
+  "_note": "Justify-It quiz bank. trap = the tempting wrong reason id used for 'mistakes decoded' pattern grouping. source: worksheet-segment | worksheet-angle | variant.",
+  "items": [
+    {
+      "answer": "def-congruence",
+      "source": "worksheet-segment",
+      "statement": "If <i>PQ = PQ</i>, then <span class=\"ol\">PQ</span> \u2245 <span class=\"ol\">PQ</span>",
+      "trap": "prop-refl-eq",
+      "unit": "segments"
+    },
+    {
+      "answer": "post-seg-add",
+      "source": "worksheet-segment",
+      "statement": "If <i>K</i> is between <i>J</i> and <i>L</i>, then <i>JK + KL = JL</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-refl-cong",
+      "source": "worksheet-segment",
+      "statement": "<span class=\"ol\">EF</span> \u2245 <span class=\"ol\">EF</span>",
+      "trap": "prop-refl-eq",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-add-eq",
+      "source": "worksheet-segment",
+      "statement": "If <i>RS = TU</i>, then <i>RS + XY = TU + XY</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-sym-eq",
+      "source": "worksheet-segment",
+      "statement": "If <i>AB = DE</i>, then <i>DE = AB</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "def-midpoint",
+      "source": "worksheet-segment",
+      "statement": "If <i>Y</i> is the midpoint of <span class=\"ol\">XZ</span>, then <i>XY = YZ</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-trans-cong",
+      "source": "worksheet-segment",
+      "statement": "If <span class=\"ol\">FG</span> \u2245 <span class=\"ol\">HI</span> and <span class=\"ol\">HI</span> \u2245 <span class=\"ol\">JK</span>, then <span class=\"ol\">FG</span> \u2245 <span class=\"ol\">JK</span>",
+      "trap": "prop-trans-eq",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-sub-eq",
+      "source": "worksheet-segment",
+      "statement": "If <i>AB + CD = EF + CD</i>, then <i>AB = EF</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-subst",
+      "source": "worksheet-segment",
+      "statement": "If <i>PQ + RS = TV</i> and <i>RS = WX</i>, then <i>PQ + WX = TV</i>",
+      "trap": "prop-trans-eq",
+      "unit": "segments"
+    },
+    {
+      "answer": "def-midpoint",
+      "source": "worksheet-segment",
+      "statement": "If <i>LP = PN</i>, and <i>L, P, N</i> are collinear, then <i>P</i> is the midpoint of <span class=\"ol\">LN</span>",
+      "unit": "segments"
+    },
+    {
+      "answer": "def-congruence",
+      "source": "worksheet-segment",
+      "statement": "If <span class=\"ol\">UV</span> \u2245 <span class=\"ol\">UV</span>, then <i>UV = UV</i>",
+      "trap": "prop-refl-cong",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-sub-eq",
+      "source": "worksheet-segment",
+      "statement": "If <i>CD + DE = CE</i>, then <i>CD = CE \u2212 DE</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-div-eq",
+      "source": "worksheet-segment",
+      "statement": "If <i>2XY = XZ</i>, then <i>XY = \u00bdXZ</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-subst",
+      "source": "worksheet-segment",
+      "statement": "If <i>RS = ST</i> and <i>ST = 2UV</i>, then <i>RS = 2UV</i>",
+      "trap": "prop-trans-eq",
+      "unit": "segments"
+    },
+    {
+      "answer": "def-right-angle",
+      "source": "worksheet-angle",
+      "statement": "If \u2220<i>C</i> is a right angle, then <i>m</i>\u2220<i>C</i> = 90\u00b0",
+      "unit": "angles"
+    },
+    {
+      "answer": "thm-cong-supplements",
+      "source": "worksheet-angle",
+      "statement": "If \u2220<i>X</i> is supplementary to \u2220<i>Y</i> and \u2220<i>X</i> is supplementary to \u2220<i>Z</i>, then \u2220<i>Y</i> \u2245 \u2220<i>Z</i>",
+      "trap": "def-supplementary",
+      "unit": "angles"
+    },
+    {
+      "answer": "thm-vertical",
+      "source": "worksheet-angle",
+      "statement": "Two lines cross, forming vertical angles \u22201 and \u22202. Then \u22201 \u2245 \u22202",
+      "trap": "def-supplementary",
+      "unit": "angles"
+    },
+    {
+      "answer": "def-complementary",
+      "source": "worksheet-angle",
+      "statement": "If <i>m</i>\u2220<i>P</i> + <i>m</i>\u2220<i>Q</i> = 90\u00b0, then \u2220<i>P</i> and \u2220<i>Q</i> are complementary",
+      "unit": "angles"
+    },
+    {
+      "answer": "thm-complement",
+      "source": "worksheet-angle",
+      "statement": "If \u2220<i>M</i> and \u2220<i>N</i> form a right angle, then \u2220<i>M</i> and \u2220<i>N</i> are complementary",
+      "trap": "def-complementary",
+      "unit": "angles"
+    },
+    {
+      "answer": "def-perpendicular",
+      "source": "worksheet-angle",
+      "statement": "If <i>l</i> \u22a5 <i>m</i>, then \u22201 is a right angle",
+      "trap": "def-angle-bisector",
+      "unit": "angles"
+    },
+    {
+      "answer": "def-supplementary",
+      "source": "worksheet-angle",
+      "statement": "If \u2220<i>W</i> and \u2220<i>X</i> are supplementary, then <i>m</i>\u2220<i>W</i> + <i>m</i>\u2220<i>X</i> = 180\u00b0",
+      "unit": "angles"
+    },
+    {
+      "answer": "thm-cong-complements",
+      "source": "worksheet-angle",
+      "statement": "If \u2220<i>L</i> is complementary to \u2220<i>M</i> and \u2220<i>N</i> is complementary to \u2220<i>M</i>, then \u2220<i>L</i> \u2245 \u2220<i>N</i>",
+      "trap": "def-complementary",
+      "unit": "angles"
+    },
+    {
+      "answer": "thm-linear-pair",
+      "source": "worksheet-angle",
+      "statement": "If \u2220<i>A</i> and \u2220<i>B</i> form a linear pair, then \u2220<i>A</i> and \u2220<i>B</i> are supplementary",
+      "trap": "def-supplementary",
+      "unit": "angles"
+    },
+    {
+      "answer": "def-complementary",
+      "source": "worksheet-angle",
+      "statement": "If \u2220<i>N</i> and \u2220<i>P</i> are complementary, then <i>m</i>\u2220<i>N</i> + <i>m</i>\u2220<i>P</i> = 90\u00b0",
+      "unit": "angles"
+    },
+    {
+      "answer": "post-angle-add",
+      "source": "worksheet-angle",
+      "statement": "Ray <i>KM</i> sits inside \u2220<i>JKL</i>, and <i>m</i>\u2220<i>JKM</i> + <i>m</i>\u2220<i>MKL</i> = <i>m</i>\u2220<i>JKL</i>",
+      "trap": "def-angle-bisector",
+      "unit": "angles"
+    },
+    {
+      "answer": "def-congruence",
+      "source": "worksheet-angle",
+      "statement": "If <i>m</i>\u2220<i>R</i> = <i>m</i>\u2220<i>S</i>, then \u2220<i>R</i> \u2245 \u2220<i>S</i>",
+      "trap": "prop-refl-eq",
+      "unit": "angles"
+    },
+    {
+      "answer": "prop-add-eq",
+      "source": "variant",
+      "statement": "If <i>XY = PQ</i>, then <i>XY + RS = PQ + RS</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-mult-eq",
+      "source": "variant",
+      "statement": "If <i>m</i>\u2220<i>A</i> = <i>m</i>\u2220<i>B</i>, then 3(<i>m</i>\u2220<i>A</i>) = 3(<i>m</i>\u2220<i>B</i>)",
+      "unit": "angles"
+    },
+    {
+      "answer": "prop-trans-eq",
+      "source": "variant",
+      "statement": "If <i>JK = LM</i> and <i>LM = NO</i>, then <i>JK = NO</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-refl-cong",
+      "source": "variant",
+      "statement": "\u2220<i>ABC</i> \u2245 \u2220<i>ABC</i>",
+      "trap": "prop-refl-eq",
+      "unit": "angles"
+    },
+    {
+      "answer": "prop-sym-cong",
+      "source": "variant",
+      "statement": "If \u22201 \u2245 \u22202, then \u22202 \u2245 \u22201",
+      "unit": "angles"
+    },
+    {
+      "answer": "def-midpoint",
+      "source": "variant",
+      "statement": "If <i>D</i> is the midpoint of <span class=\"ol\">CE</span>, then <i>CD = DE</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-sub-eq",
+      "source": "variant",
+      "statement": "If <i>RS + TU = VW + TU</i>, then <i>RS = VW</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-dist",
+      "source": "variant",
+      "statement": "5(<i>AB + CD</i>) = 5<i>AB</i> + 5<i>CD</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "thm-vertical",
+      "source": "variant",
+      "statement": "If \u2220<i>A</i> and \u2220<i>B</i> are vertical angles, then \u2220<i>A</i> \u2245 \u2220<i>B</i>",
+      "unit": "angles"
+    },
+    {
+      "answer": "thm-linear-pair",
+      "source": "variant",
+      "statement": "Two angles form a linear pair, so they are supplementary",
+      "trap": "def-supplementary",
+      "unit": "angles"
+    },
+    {
+      "answer": "def-right-angle",
+      "source": "variant",
+      "statement": "\u2220<i>DEF</i> is a right angle, so <i>m</i>\u2220<i>DEF</i> = 90\u00b0",
+      "unit": "angles"
+    },
+    {
+      "answer": "def-angle-bisector",
+      "source": "variant",
+      "statement": "If <span class=\"ol\">BD</span> bisects \u2220<i>ABC</i>, then \u2220<i>ABD</i> \u2245 \u2220<i>DBC</i>",
+      "trap": "post-angle-add",
+      "unit": "angles"
+    },
+    {
+      "answer": "post-seg-add",
+      "source": "variant",
+      "statement": "Point <i>B</i> is between <i>A</i> and <i>C</i>, so <i>AB + BC = AC</i>",
+      "unit": "segments"
+    },
+    {
+      "answer": "prop-trans-eq",
+      "source": "variant",
+      "statement": "If <i>m</i>\u22201 = <i>m</i>\u22202 and <i>m</i>\u22202 = <i>m</i>\u22203, then <i>m</i>\u22201 = <i>m</i>\u22203",
+      "unit": "angles"
+    },
+    {
+      "statement": "<i>AB = AB</i>",
+      "answer": "prop-refl-eq",
+      "trap": "prop-refl-cong",
+      "unit": "segments",
+      "source": "variant"
+    }
+  ]
+}

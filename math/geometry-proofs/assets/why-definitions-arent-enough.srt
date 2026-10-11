@@ -1,0 +1,31 @@
+1
+00:00:00,000 --> 00:00:16,248
+Here's a problem straight from the practice sheet. Read the "if" part first: angle X is supplementary to angle Y, and angle X is also supplementary to angle Z. Then the conclusion: angle Y is congruent to angle Z. Your job: name the reason.
+
+2
+00:00:16,598 --> 00:00:33,758
+The red mark says "definition of supplementary angles" is wrong. Here's why. The definition is a two-way street: "supplementary" just means the measures add to 180 degrees. That's all it does — it translates the word into math. It can never conclude that two angles are congruent.
+
+3
+00:00:34,108 --> 00:00:50,908
+Now look at the shape of this problem. Two angles, both supplementary to the SAME angle — angle X — and we conclude they're congruent to each other. That exact if-then has a name: the Congruent Supplements Theorem. If two angles are supplementary to the same angle, then they are congruent.
+
+4
+00:00:51,258 --> 00:00:58,290
+Rule of thumb: same angle in the middle, congruent at the end. That's the Congruent Supplements Theorem. Write that down.
+
+5
+00:00:58,640 --> 00:01:07,352
+Problem three. Two lines cross, making vertical angles one and two. We need to justify: angle one is congruent to angle two.
+
+6
+00:01:07,701 --> 00:01:19,894
+The red mark says "definition of vertical angles" is wrong. The definition only tells you what vertical angles ARE — the opposite angles made by two crossing lines. Knowing the name of the picture doesn't prove anything.
+
+7
+00:01:20,243 --> 00:01:32,891
+The Vertical Angles Theorem is the if-then you actually use: IF two angles are vertical, THEN they are congruent. See the difference? The definition names the picture. The theorem gives you the conclusion.
+
+8
+00:01:33,241 --> 00:01:49,250
+So here's the pattern behind all the red marks. When the "if" names a picture — vertical angles, a linear pair, a right angle — and the "then" concludes something new, you need a THEOREM, not a definition. Definitions only translate. Theorems conclude. Keep that, and the red marks disappear.
