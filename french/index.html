@@ -85,6 +85,18 @@
     }
     .listen-all:hover:not(:disabled) { transform: scale(1.04); }
     .listen-all:disabled { opacity: 0.5; cursor: default; }
+    .lvl-pick {
+      font-family: Inter, system-ui, sans-serif; font-size: 0.95rem; font-weight: 700;
+      padding: 0.55rem 1.05rem; border-radius: 9999px; cursor: pointer;
+      border: 2px solid var(--mfk-border); background: #fff; color: var(--mfk-slate);
+      transition: transform 0.08s ease, border-color 0.15s ease;
+    }
+    .lvl-pick:hover { transform: scale(1.05); border-color: var(--mfk-skill-french, #1d4ed8); }
+    .lvl-ghost {
+      font-family: Inter, system-ui, sans-serif; font-size: 0.95rem; font-weight: 700;
+      background: none; border: none; color: var(--mfk-skill-french, #1d4ed8);
+      cursor: pointer; text-decoration: underline; padding: 0.45rem 0.9rem;
+    }
     .voice-note { margin-top: 0.6rem; font-size: 0.85rem; color: var(--mfk-slate-soft); display: none; }
     .voice-note.show { display: block; }
 
@@ -254,6 +266,17 @@
           <p id="game-final-msg"></p>
           <button class="listen-all" id="game-retry-misses" hidden>🔁 Retry your misses</button>
           <button class="listen-all" id="game-again">🔄 Play again</button>
+          <div style="margin-top:1.25rem;border-top:2px dashed var(--mfk-border);padding-top:1rem">
+            <div style="font-weight:700;color:var(--mfk-slate);margin-bottom:0.55rem">Try another level:</div>
+            <div class="lab-controls" style="justify-content:center;margin-bottom:0" id="game-done-levels">
+              <button class="lvl-pick" data-level="match">1 · Match it</button>
+              <button class="lvl-pick" data-level="double">2 · Double</button>
+              <button class="lvl-pick" data-level="type">3 · Écris-le</button>
+              <button class="lvl-pick" data-level="phrases">4 · Phrases</button>
+              <button class="lvl-pick" data-level="piege">Piège</button>
+            </div>
+            <div style="margin-top:0.6rem"><button class="lvl-ghost" id="game-back-setup">‹ Back to setup</button></div>
+          </div>
         </div>
       </div>
     </section>
@@ -1026,6 +1049,16 @@
 
       $("game-start-btn").addEventListener("click", startGame);
       $("game-again").addEventListener("click", startGame);
+      document.querySelectorAll("#game-done-levels [data-level]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          $("game-level-select").value = b.getAttribute("data-level");
+          startGame();
+        });
+      });
+      $("game-back-setup").addEventListener("click", function () {
+        hideAllPlay();
+        $("game-start").hidden = false;
+      });
       $("game-retry-misses").addEventListener("click", function () { startTypeRound(null, hard.weakSpots); });
       $("practice-this-verb").addEventListener("click", practiceThisVerb);
       $("game-level-select").addEventListener("change", updateLevelDesc);
