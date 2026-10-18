@@ -114,10 +114,34 @@
     .game-feedback { min-height: 2.4rem; text-align: center; font-size: 1.05rem; font-weight: 600; margin-top: 0.9rem; line-height: 1.4; }
     .game-feedback.good { color: #16a34a; }
     .game-feedback.meh { color: var(--mfk-slate-soft); }
+    .game-feedback.warn { color: #b45309; }
     #game-stars { font-size: 2.6rem; }
     #game-done h3 { margin: 0.5rem 0 0.3rem; font-size: 1.5rem; }
     #game-done p { color: var(--mfk-slate-soft); margin: 0 0 1rem; }
     .link-btn { background: none; border: none; color: var(--mfk-skill-french, #1d4ed8); font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 0.9rem; padding: 0; font-family: Inter, system-ui, sans-serif; }
+
+/* ---------- hard modes: type-it, phrases, piège ---------- */
+    .mode-desc { color: var(--mfk-slate-soft); font-size: 0.92rem; margin: 0.35rem 0 0; line-height: 1.5; }
+    .hard-top { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-weight: 700; color: var(--mfk-slate-soft); font-size: 0.95rem; }
+    .hard-prompt { text-align: center; margin: 1.2rem 0 0.6rem; }
+    .hard-prompt .big { font-family: Fredoka, system-ui, sans-serif; font-size: 1.9rem; font-weight: 700; color: var(--mfk-slate); }
+    .hard-prompt .sub { color: var(--mfk-slate-soft); font-size: 0.95rem; margin-top: 0.2rem; }
+    .hard-answer-row { display: flex; gap: 0.6rem; justify-content: center; margin-top: 0.8rem; flex-wrap: wrap; }
+    .hard-input {
+      font-family: Fredoka, system-ui, sans-serif; font-size: 1.3rem; font-weight: 600;
+      padding: 0.6rem 0.9rem; border-radius: 12px; border: 2px solid var(--mfk-border);
+      background: #fff; color: var(--mfk-slate); width: 14rem; max-width: 100%; text-align: center;
+    }
+    .hard-input:focus { outline: none; border-color: var(--mfk-skill-french, #1d4ed8); box-shadow: 0 0 0 2px #bfdbfe; }
+    .check-btn {
+      font-family: Fredoka, system-ui, sans-serif; font-size: 1.05rem; font-weight: 600;
+      background: var(--mfk-skill-french, #1d4ed8); color: #fff; border: none; border-radius: 9999px;
+      padding: 0.65rem 1.5rem; cursor: pointer;
+    }
+    .check-btn:hover { transform: scale(1.04); }
+    .piege-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.55rem; margin-top: 1rem; }
+    @media (max-width: 560px) { .piege-grid { grid-template-columns: repeat(2, 1fr); } }
+    .lives { letter-spacing: 0.1rem; }
   </style>
 </head>
 <body class="mfk-page">
@@ -166,16 +190,30 @@
     </section>
 
 <section id="practice" aria-label="Matching game" style="margin-top:2.25rem">
-      <h2>Practice: match it! 🎮</h2>
-      <p style="color:var(--mfk-slate-soft);max-width:38rem">Subjects on the left, verb forms on the right — all shuffled! Tap one of each to make a pair. Present tense, six pairs per game.</p>
+      <h2>Practice 🎮</h2>
+      <p style="color:var(--mfk-slate-soft);max-width:38rem">Five ways to play, all in the present tense. Level 1 is matching; the harder levels make you recall and spell the forms yourself.</p>
       <div class="lab-card">
         <div id="game-start" style="text-align:center">
           <div style="font-size:2.5rem">🎮</div>
           <div class="lab-controls" style="justify-content:center">
+            <label for="game-level-select">Level:</label>
+            <select id="game-level-select" aria-label="Choose a practice level" style="font-family:Inter,system-ui,sans-serif;font-size:1.05rem;font-weight:600;padding:0.55rem 0.8rem;border-radius:12px;border:2px solid var(--mfk-border);background:#fff;color:var(--mfk-slate);max-width:100%">
+              <option value="match">1 · Match it</option>
+              <option value="double">2 · Double — 12 pairs</option>
+              <option value="type">3 · Écris-le — type it</option>
+              <option value="phrases">4 · Phrases — timer + lives</option>
+              <option value="piege">Piège — trap rounds</option>
+            </select>
+          </div>
+          <p class="mode-desc" id="game-level-desc"></p>
+          <div class="lab-controls" style="justify-content:center">
             <label for="practice-verb-select">Practice verb:</label>
             <select id="practice-verb-select" aria-label="Choose a verb to practice"></select>
           </div>
-          <button class="listen-all" id="game-start-btn">▶ Start matching</button>
+          <label style="display:inline-flex;gap:0.45rem;align-items:center;font-weight:700;color:var(--mfk-slate-soft);font-size:0.95rem;cursor:pointer">
+            <input type="checkbox" id="game-tricky" style="width:1.1rem;height:1.1rem;accent-color:#1d4ed8"> ⭐ Tricky verbs only
+          </label>
+          <div><button class="listen-all" id="game-start-btn">▶ Start</button></div>
         </div>
         <div id="game-play" hidden>
           <div class="game-score-line"><span id="game-score">Pairs: 0 / 6</span><span id="game-mistakes">Mistakes: 0</span></div>
@@ -185,10 +223,36 @@
           </div>
           <div class="game-feedback" id="game-feedback"></div>
         </div>
+        <div id="type-play" hidden>
+          <div class="hard-top"><span id="type-progress"></span><span id="type-mistakes"></span></div>
+          <div class="hard-prompt"><div class="big" id="type-prompt"></div><div class="sub" id="type-sub"></div></div>
+          <div class="hard-answer-row">
+            <input class="hard-input" id="type-input" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Type the conjugated form" placeholder="ta réponse…">
+            <button class="check-btn" id="type-check">Check ✓</button>
+          </div>
+          <div class="game-feedback" id="type-feedback"></div>
+        </div>
+        <div id="phrase-play" hidden>
+          <div class="hard-top"><span id="phrase-progress"></span><span>⏱ <span id="phrase-timer">1:30</span></span><span class="lives" id="phrase-lives"></span></div>
+          <div class="hard-prompt"><div class="big" id="phrase-sentence" lang="fr"></div><div class="sub" id="phrase-sub"></div></div>
+          <div class="hard-answer-row">
+            <input class="hard-input" id="phrase-input" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Type the missing form" placeholder="ta réponse…">
+            <button class="check-btn" id="phrase-check">Check ✓</button>
+          </div>
+          <div class="game-feedback" id="phrase-feedback"></div>
+        </div>
+        <div id="piege-play" hidden>
+          <div class="hard-top"><span id="piege-progress"></span><span id="piege-mistakes"></span></div>
+          <div class="hard-prompt"><div class="sub">Which subjects go with…</div><div class="big" id="piege-form" lang="fr"></div><div class="sub" id="piege-sub"></div></div>
+          <div class="piege-grid" id="piege-subjects"></div>
+          <div class="hard-answer-row"><button class="check-btn" id="piege-check">Check ✓</button></div>
+          <div class="game-feedback" id="piege-feedback"></div>
+        </div>
         <div id="game-done" hidden style="text-align:center">
           <div id="game-stars"></div>
           <h3 id="game-final-title"></h3>
           <p id="game-final-msg"></p>
+          <button class="listen-all" id="game-retry-misses" hidden>🔁 Retry your misses</button>
           <button class="listen-all" id="game-again">🔄 Play again</button>
         </div>
       </div>
@@ -463,9 +527,17 @@
       });
       $("listen-all").addEventListener("click", speakAll);
 
-      /* ---------- matching game ---------- */
-      var match = { verb: null, selSubj: null, selForm: null, matched: 0, mistakes: 0 };
+      /* ---------- matching game + hard modes (all present tense) ---------- */
+      var match = { verbs: [], selSubj: null, selForm: null, matched: 0, mistakes: 0, totalPairs: 6 };
+      var hard = { level: 'match', queue: [], idx: 0, mistakes: 0, lives: 3, timeLeft: 90, timerId: null, weakSpots: [], accentRetry: false, advancing: false, current: null };
       var PRAISE = ["Bravo! 🎉", "Exactement! ⭐", "Parfait! 💪", "Génial! 🌟", "Oui! Magnifique! 🔥"];
+      var LEVEL_DESC = {
+        match: "Subjects on the left, forms on the right — tap one of each. Six pairs, one verb.",
+        double: "Two verbs, 12 pairs, all shuffled — and tapping a form no longer speaks it. No more winning by elimination.",
+        type: "No cards. See a subject + verb, type the form from memory. Accents count — but a missing accent gets a second chance.",
+        phrases: "Fill in the blank in real sentences, from every verb. 90 seconds on the clock, 3 lives. A wrong answer costs a heart.",
+        piege: "One form, six subjects — tap EVERY subject it matches. Watch out for -er verbs: je and il share a form!"
+      };
 
       function shuffle(a) {
         for (var i = a.length - 1; i > 0; i--) {
@@ -475,23 +547,81 @@
         return a;
       }
 
+      function normForm(s) { return String(s == null ? "" : s).trim().toLowerCase(); }
+      function stripAccents(s) {
+        try { return normForm(s).normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+        catch (e) { return normForm(s); }
+      }
+
+      function gamePool() {
+        var tricky = $("game-tricky") && $("game-tricky").checked;
+        return state.data.verbs.filter(function (v) { return !tricky || v.group === "irregular"; });
+      }
+
+      function pickVerb() {
+        var pool = gamePool();
+        var selVal = $("practice-verb-select").value;
+        if (selVal === "__surprise__") return pool[Math.floor(Math.random() * pool.length)];
+        var found = pool.filter(function (v) { return v.infinitive === selVal; })[0];
+        return found || pool[0];
+      }
+
+      function updateLevelDesc() {
+        $("game-level-desc").textContent = LEVEL_DESC[$("game-level-select").value] || "";
+      }
+
       function buildPracticeSelect() {
         var sel = $("practice-verb-select");
+        var prev = sel.value;
         sel.innerHTML = "";
         var surprise = document.createElement("option");
         surprise.value = "__surprise__";
         surprise.textContent = "🎲 Surprise me!";
         sel.appendChild(surprise);
-        state.data.verbs.forEach(function (v) {
+        gamePool().forEach(function (v) {
           var opt = document.createElement("option");
           opt.value = v.infinitive;
           opt.textContent = v.infinitive + " — " + v.english;
           sel.appendChild(opt);
         });
+        var still = Array.prototype.some.call(sel.options, function (o) { return o.value === prev; });
+        sel.value = still ? prev : "__surprise__";
       }
 
+      function hideAllPlay() {
+        $("game-start").hidden = true;
+        $("game-play").hidden = true;
+        $("type-play").hidden = true;
+        $("phrase-play").hidden = true;
+        $("piege-play").hidden = true;
+        $("game-done").hidden = true;
+      }
+
+      function addWeakSpot(verb, subject) {
+        var exists = hard.weakSpots.some(function (w) { return w.verb.infinitive === verb.infinitive && w.subject === subject; });
+        if (!exists) hard.weakSpots.push({ verb: verb, subject: subject });
+      }
+
+      function finishRound(opts) {
+        stopPhraseTimer();
+        hideAllPlay();
+        $("game-done").hidden = false;
+        var m = opts.mistakes, stars, title, msg;
+        if (m === 0) { stars = "⭐⭐⭐"; title = "Incroyable!"; msg = "Zero mistakes — parfait!"; }
+        else if (m <= 2) { stars = "⭐⭐"; title = "Très bien!"; msg = "Just " + m + " mistake" + (m === 1 ? "" : "s") + " — super!"; }
+        else { stars = "⭐"; title = "Bien joué!"; msg = "Done! " + m + " mistakes — retry your misses to lock them in."; }
+        if (opts.title) title = opts.title;
+        if (opts.msg) msg = opts.msg;
+        $("game-stars").textContent = stars;
+        $("game-final-title").textContent = title;
+        $("game-final-msg").textContent = msg;
+        $("game-retry-misses").hidden = !(opts.weakSpots && opts.weakSpots.length);
+        $("game-retry-misses").textContent = "🔁 Retry your misses (" + (opts.weakSpots ? opts.weakSpots.length : 0) + ")";
+      }
+
+      /* ----- Level 1 & 2: matching ----- */
       function updateMatchScore() {
-        $("game-score").textContent = "Pairs: " + match.matched + " / 6";
+        $("game-score").textContent = "Pairs: " + match.matched + " / " + match.totalPairs;
         $("game-mistakes").textContent = "Mistakes: " + match.mistakes;
       }
 
@@ -499,32 +629,37 @@
         var subjCol = $("match-subjects"), formCol = $("match-forms");
         subjCol.innerHTML = "";
         formCol.innerHTML = "";
-        var conj = match.verb.conjugations.present;
-        shuffle(state.data.pronouns.slice()).forEach(function (p) {
-          var b = document.createElement("button");
-          b.className = "match-card";
-          b.textContent = SUBJECT_DISPLAY[p] || p;
-          b.setAttribute("data-key", p);
-          b.setAttribute("aria-label", "Subject: " + p);
-          b.addEventListener("click", function () { pickCard(b, "subj", p); });
-          subjCol.appendChild(b);
+        match.verbs.forEach(function (verb) {
+          shuffle(state.data.pronouns.slice()).forEach(function (p) {
+            var b = document.createElement("button");
+            b.className = "match-card";
+            b.textContent = SUBJECT_DISPLAY[p] || p;
+            b.setAttribute("data-key", p);
+            b.setAttribute("aria-label", "Subject: " + p);
+            b.addEventListener("click", function () { pickCard(b, "subj", p); });
+            subjCol.appendChild(b);
+          });
         });
-        shuffle(state.data.pronouns.slice()).forEach(function (p) {
-          var b = document.createElement("button");
-          b.className = "match-card";
-          b.textContent = conj[p];
-          b.setAttribute("lang", "fr");
-          b.setAttribute("data-key", conj[p]);
-          b.setAttribute("aria-label", "Verb form: " + conj[p] + ". Tap to hear it.");
-          b.addEventListener("click", function () { pickCard(b, "form", conj[p]); });
-          formCol.appendChild(b);
+        match.verbs.forEach(function (verb) {
+          var conj = verb.conjugations.present;
+          shuffle(state.data.pronouns.slice()).forEach(function (p) {
+            var b = document.createElement("button");
+            b.className = "match-card";
+            b.textContent = conj[p];
+            b.setAttribute("lang", "fr");
+            b.setAttribute("data-key", conj[p]);
+            b.setAttribute("aria-label", "Verb form: " + conj[p] + ". Tap to hear it.");
+            b.addEventListener("click", function () { pickCard(b, "form", conj[p]); });
+            formCol.appendChild(b);
+          });
         });
         updateMatchScore();
       }
 
       function pickCard(btn, type, key) {
         if (btn.disabled) return;
-        if (type === "form" && voiceReady()) speakPhrase(key);
+        // audio preview on tap is a Level 1 help — hard modes get no preview
+        if (type === "form" && hard.level === "match" && voiceReady()) speakPhrase(key);
         var cur = type === "subj" ? match.selSubj : match.selForm;
         if (cur === btn) {
           btn.classList.remove("selected");
@@ -544,8 +679,9 @@
         match.selSubj = null;
         match.selForm = null;
         var fb = $("game-feedback");
-        // value-based match: je/il forms are identical in -er verbs, and both are right
-        if (match.verb.conjugations.present[subjKey] === formVal) {
+        // value-based match: a pair is right if ANY verb in play pairs this subject with this form
+        var correct = match.verbs.some(function (v) { return v.conjugations.present[subjKey] === formVal; });
+        if (correct) {
           sBtn.classList.remove("selected");
           fBtn.classList.remove("selected");
           sBtn.classList.add("matched");
@@ -557,9 +693,12 @@
           fb.className = "game-feedback good";
           if (voiceReady()) speakPhrase(speechText(subjKey, formVal));
           updateMatchScore();
-          if (match.matched >= 6) setTimeout(endMatch, 900);
+          if (match.matched >= match.totalPairs) {
+            setTimeout(function () { finishRound({ mistakes: match.mistakes, weakSpots: hard.weakSpots }); }, 900);
+          }
         } else {
           match.mistakes++;
+          match.verbs.forEach(function (v) { addWeakSpot(v, subjKey); });
           sBtn.classList.remove("selected");
           fBtn.classList.remove("selected");
           sBtn.classList.add("wrong-pick");
@@ -574,55 +713,329 @@
         }
       }
 
-      function endMatch() {
-        $("game-play").hidden = true;
-        $("game-done").hidden = false;
-        var m = match.mistakes, stars, title, msg;
-        if (m === 0) { stars = "⭐⭐⭐"; title = "Incroyable!"; msg = "All 6 pairs, zero mistakes — parfait!"; }
-        else if (m <= 2) { stars = "⭐⭐"; title = "Très bien!"; msg = "All 6 pairs with just " + m + " mistake" + (m === 1 ? "" : "s") + " — super!"; }
-        else { stars = "⭐"; title = "Bien joué!"; msg = "You matched all 6 pairs! Play again to beat " + m + " mistakes."; }
-        $("game-stars").textContent = stars;
-        $("game-final-title").textContent = title;
-        $("game-final-msg").textContent = msg;
-      }
-
-      function speechSynthesisSafeCancel() {
-        try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch (e) { /* ignore */ }
-      }
-
-      function startMatchGame() {
-        if (!state.data) return;
-        speechSynthesisSafeCancel();
-        var selVal = $("practice-verb-select").value;
-        if (selVal === "__surprise__") {
-          match.verb = state.data.verbs[Math.floor(Math.random() * state.data.verbs.length)];
-        } else {
-          var found = state.data.verbs.filter(function (v) { return v.infinitive === selVal; })[0];
-          match.verb = found || state.data.verbs[0];
+      function startMatchGame(level) {
+        hideAllPlay();
+        $("game-play").hidden = false;
+        var v1 = pickVerb();
+        match.verbs = [v1];
+        if (level === "double") {
+          var pool = gamePool().filter(function (v) { return v.infinitive !== v1.infinitive; });
+          if (pool.length) match.verbs.push(pool[Math.floor(Math.random() * pool.length)]);
         }
+        match.totalPairs = 6 * match.verbs.length;
         match.selSubj = null;
         match.selForm = null;
         match.matched = 0;
         match.mistakes = 0;
         $("game-feedback").textContent = "";
         $("game-feedback").className = "game-feedback";
-        $("game-start").hidden = true;
-        $("game-done").hidden = true;
-        $("game-play").hidden = false;
         renderMatchBoard();
+      }
+
+      /* ----- Level 3: type it ----- */
+      function startTypeRound(verb, queue) {
+        stopPhraseTimer();
+        hideAllPlay();
+        $("type-play").hidden = false;
+        hard.mistakes = 0;
+        hard.weakSpots = [];
+        hard.accentRetry = false;
+        hard.advancing = false;
+        if (queue && queue.length) {
+          hard.queue = shuffle(queue.slice());
+        } else {
+          var subs = shuffle(state.data.pronouns.slice());
+          hard.queue = [];
+          for (var i = 0; i < 10; i++) hard.queue.push({ verb: verb, subject: subs[i % subs.length] });
+        }
+        hard.idx = 0;
+        showTypePrompt();
+      }
+
+      function showTypePrompt() {
+        var q = hard.queue[hard.idx];
+        hard.current = q;
+        hard.accentRetry = false;
+        hard.advancing = false;
+        $("type-progress").textContent = "Question " + (hard.idx + 1) + " / " + hard.queue.length;
+        $("type-mistakes").textContent = "Mistakes: " + hard.mistakes;
+        $("type-prompt").textContent = (SUBJECT_DISPLAY[q.subject] || q.subject) + " — " + q.verb.infinitive;
+        $("type-sub").textContent = q.verb.english + " · présent";
+        $("type-input").value = "";
+        $("type-feedback").textContent = "";
+        $("type-feedback").className = "game-feedback";
+        $("type-input").focus();
+      }
+
+      function checkType() {
+        if (hard.advancing) return;
+        var q = hard.current;
+        if (!q) return;
+        var answer = q.verb.conjugations.present[q.subject];
+        var typed = normForm($("type-input").value);
+        var fb = $("type-feedback");
+        if (!typed) {
+          fb.textContent = "Type something first! ✏️";
+          fb.className = "game-feedback meh";
+          return;
+        }
+        if (typed === normForm(answer)) {
+          fb.textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)];
+          fb.className = "game-feedback good";
+          if (voiceReady()) speakPhrase(speechText(q.subject, answer));
+          nextType(900);
+          return;
+        }
+        if (stripAccents(typed) === stripAccents(answer) && !hard.accentRetry) {
+          hard.accentRetry = true;
+          fb.textContent = "Presque ! The letters are right — the accent matters in French. Try again!";
+          fb.className = "game-feedback warn";
+          $("type-input").value = "";
+          $("type-input").focus();
+          return;
+        }
+        hard.mistakes++;
+        addWeakSpot(q.verb, q.subject);
+        fb.textContent = "Not quite — " + (SUBJECT_DISPLAY[q.subject] || q.subject) + " " + q.verb.infinitive + " = " + answer + ". Say it, then move on! 💛";
+        fb.className = "game-feedback meh";
+        nextType(1800);
+      }
+
+      function nextType(delay) {
+        hard.advancing = true;
+        setTimeout(function () {
+          hard.idx++;
+          if (hard.idx >= hard.queue.length) {
+            finishRound({ mistakes: hard.mistakes, weakSpots: hard.weakSpots });
+          } else {
+            showTypePrompt();
+          }
+        }, delay);
+      }
+
+      /* ----- Level 4: phrases ----- */
+      function stopPhraseTimer() {
+        if (hard.timerId) { clearInterval(hard.timerId); hard.timerId = null; }
+      }
+
+      function startPhraseRound() {
+        stopPhraseTimer();
+        hideAllPlay();
+        $("phrase-play").hidden = false;
+        hard.mistakes = 0;
+        hard.weakSpots = [];
+        hard.accentRetry = false;
+        hard.advancing = false;
+        hard.lives = 3;
+        hard.timeLeft = 90;
+        var all = [];
+        gamePool().forEach(function (v) {
+          (v.sentences || []).forEach(function (s) { all.push({ verb: v, subject: s.subject, text: s.text }); });
+        });
+        shuffle(all);
+        hard.queue = all.slice(0, 8);
+        hard.idx = 0;
+        showPhrasePrompt();
+        hard.timerId = setInterval(function () {
+          hard.timeLeft--;
+          updatePhraseHud();
+          if (hard.timeLeft <= 0) {
+            finishRound({ mistakes: hard.mistakes, weakSpots: hard.weakSpots, title: "Temps écoulé !", msg: "The clock ran out — " + hard.idx + " sentences done. Retry your misses!" });
+          }
+        }, 1000);
+      }
+
+      function updatePhraseHud() {
+        $("phrase-progress").textContent = "Sentence " + Math.min(hard.idx + 1, hard.queue.length) + " / " + hard.queue.length;
+        var t = Math.max(0, hard.timeLeft);
+        var mm = Math.floor(t / 60), ss = t % 60;
+        $("phrase-timer").textContent = mm + ":" + (ss < 10 ? "0" : "") + ss;
+        $("phrase-lives").textContent = "❤️".repeat(hard.lives) + "🖤".repeat(Math.max(0, 3 - hard.lives));
+      }
+
+      function showPhrasePrompt() {
+        var q = hard.queue[hard.idx];
+        hard.current = q;
+        hard.accentRetry = false;
+        hard.advancing = false;
+        updatePhraseHud();
+        $("phrase-sentence").textContent = q.text;
+        $("phrase-sub").textContent = q.verb.infinitive + " (" + q.verb.english + ") · présent";
+        $("phrase-input").value = "";
+        $("phrase-feedback").textContent = "";
+        $("phrase-feedback").className = "game-feedback";
+        $("phrase-input").focus();
+      }
+
+      function checkPhrase() {
+        if (hard.advancing) return;
+        var q = hard.current;
+        if (!q) return;
+        var answer = q.verb.conjugations.present[q.subject];
+        var typed = normForm($("phrase-input").value);
+        var fb = $("phrase-feedback");
+        if (!typed) {
+          fb.textContent = "Type something first! ✏️";
+          fb.className = "game-feedback meh";
+          return;
+        }
+        if (typed === normForm(answer)) {
+          fb.textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)];
+          fb.className = "game-feedback good";
+          if (voiceReady()) speakPhrase(speechText(q.subject, answer));
+          nextPhrase(900);
+          return;
+        }
+        if (stripAccents(typed) === stripAccents(answer) && !hard.accentRetry) {
+          hard.accentRetry = true;
+          fb.textContent = "Presque ! The letters are right — the accent matters in French. Try again!";
+          fb.className = "game-feedback warn";
+          $("phrase-input").value = "";
+          $("phrase-input").focus();
+          return;
+        }
+        hard.mistakes++;
+        hard.lives--;
+        addWeakSpot(q.verb, q.subject);
+        fb.textContent = "Ouch — lost a heart! " + q.text.replace("___", answer);
+        fb.className = "game-feedback meh";
+        updatePhraseHud();
+        if (hard.lives <= 0) {
+          hard.advancing = true;
+          setTimeout(function () {
+            finishRound({ mistakes: hard.mistakes, weakSpots: hard.weakSpots, title: "Plus de vies !", msg: "Out of lives — " + hard.idx + " sentences done. Retry your misses!" });
+          }, 1800);
+        } else {
+          nextPhrase(1800);
+        }
+      }
+
+      function nextPhrase(delay) {
+        hard.advancing = true;
+        setTimeout(function () {
+          hard.idx++;
+          if (hard.idx >= hard.queue.length) {
+            finishRound({ mistakes: hard.mistakes, weakSpots: hard.weakSpots });
+          } else {
+            showPhrasePrompt();
+          }
+        }, delay);
+      }
+
+      /* ----- Piège: trap rounds ----- */
+      function startPiegeRound(verb) {
+        stopPhraseTimer();
+        hideAllPlay();
+        $("piege-play").hidden = false;
+        hard.mistakes = 0;
+        hard.weakSpots = [];
+        hard.advancing = false;
+        hard.queue = [];
+        for (var i = 0; i < 5; i++) {
+          var subj = state.data.pronouns[Math.floor(Math.random() * state.data.pronouns.length)];
+          hard.queue.push({ verb: verb, subject: subj, form: verb.conjugations.present[subj] });
+        }
+        hard.idx = 0;
+        showPiegePrompt();
+      }
+
+      function showPiegePrompt() {
+        var q = hard.queue[hard.idx];
+        hard.current = q;
+        hard.advancing = false;
+        $("piege-progress").textContent = "Round " + (hard.idx + 1) + " / " + hard.queue.length;
+        $("piege-mistakes").textContent = "Mistakes: " + hard.mistakes;
+        $("piege-form").textContent = q.form;
+        $("piege-sub").textContent = q.verb.infinitive + " (" + q.verb.english + ") · présent — tap every subject that takes this form";
+        var grid = $("piege-subjects");
+        grid.innerHTML = "";
+        state.data.pronouns.forEach(function (p) {
+          var b = document.createElement("button");
+          b.className = "match-card";
+          b.textContent = SUBJECT_DISPLAY[p] || p;
+          b.setAttribute("data-key", p);
+          b.addEventListener("click", function () { b.classList.toggle("selected"); });
+          grid.appendChild(b);
+        });
+        $("piege-feedback").textContent = "";
+        $("piege-feedback").className = "game-feedback";
+      }
+
+      function checkPiege() {
+        if (hard.advancing) return;
+        var q = hard.current;
+        if (!q) return;
+        var correctSet = state.data.pronouns.filter(function (p) { return q.verb.conjugations.present[p] === q.form; });
+        var picked = [];
+        Array.prototype.forEach.call(document.querySelectorAll("#piege-subjects .match-card.selected"), function (b) { picked.push(b.getAttribute("data-key")); });
+        var fb = $("piege-feedback");
+        var same = correctSet.length === picked.length && correctSet.every(function (p) { return picked.indexOf(p) !== -1; });
+        if (same) {
+          fb.textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)];
+          fb.className = "game-feedback good";
+          if (voiceReady()) speakPhrase(speechText(correctSet[0], q.form));
+          nextPiege(900);
+        } else {
+          hard.mistakes++;
+          correctSet.forEach(function (p) { if (picked.indexOf(p) === -1) addWeakSpot(q.verb, p); });
+          fb.textContent = "Pas tout à fait ! « " + q.form + " » goes with: " + correctSet.map(function (p) { return SUBJECT_DISPLAY[p] || p; }).join(", ") + ".";
+          fb.className = "game-feedback meh";
+          nextPiege(2400);
+        }
+      }
+
+      function nextPiege(delay) {
+        hard.advancing = true;
+        setTimeout(function () {
+          hard.idx++;
+          if (hard.idx >= hard.queue.length) {
+            finishRound({ mistakes: hard.mistakes, weakSpots: hard.weakSpots });
+          } else {
+            showPiegePrompt();
+          }
+        }, delay);
+      }
+
+      /* ----- start / wiring ----- */
+      function speechSynthesisSafeCancel() {
+        try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+      }
+
+      function startGame() {
+        if (!state.data) return;
+        speechSynthesisSafeCancel();
+        var level = $("game-level-select").value;
+        hard.level = level;
+        hard.weakSpots = [];
+        hard.advancing = false;
+        if (level === "match" || level === "double") startMatchGame(level);
+        else if (level === "type") startTypeRound(pickVerb());
+        else if (level === "phrases") startPhraseRound();
+        else if (level === "piege") startPiegeRound(pickVerb());
       }
 
       function practiceThisVerb() {
         if (!state.data || !state.verb) return;
+        // the lab verb wins: if tricky-only is on and it is a regular verb, turn tricky off
+        if ($("game-tricky").checked && state.verb.group !== "irregular") $("game-tricky").checked = false;
         buildPracticeSelect();
         $("practice-verb-select").value = state.verb.infinitive;
         document.getElementById("practice").scrollIntoView({ behavior: "smooth" });
-        startMatchGame();
+        startGame();
       }
 
-      $("game-start-btn").addEventListener("click", startMatchGame);
-      $("game-again").addEventListener("click", startMatchGame);
+      $("game-start-btn").addEventListener("click", startGame);
+      $("game-again").addEventListener("click", startGame);
+      $("game-retry-misses").addEventListener("click", function () { startTypeRound(null, hard.weakSpots); });
       $("practice-this-verb").addEventListener("click", practiceThisVerb);
+      $("game-level-select").addEventListener("change", updateLevelDesc);
+      $("game-tricky").addEventListener("change", buildPracticeSelect);
+      $("type-check").addEventListener("click", checkType);
+      $("type-input").addEventListener("keydown", function (e) { if (e.key === "Enter") checkType(); });
+      $("phrase-check").addEventListener("click", checkPhrase);
+      $("phrase-input").addEventListener("keydown", function (e) { if (e.key === "Enter") checkPhrase(); });
+      $("piege-check").addEventListener("click", checkPiege);
+
 
       /* ---------- boot ---------- */
       fetch(DATA_URL)
@@ -633,6 +1046,7 @@
           initFromHash();
           buildVerbSelect();
           buildPracticeSelect();
+          updateLevelDesc();
           buildTenseTabs();
           renderVerb();
         })
