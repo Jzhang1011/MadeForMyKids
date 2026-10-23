@@ -349,10 +349,9 @@
           return false;
         }
         refreshVoices();
-        if (!frenchVoice) {
-          showVoiceNote("No French voice found on this device — the forms are all here to read and practice!");
-          return false;
-        }
+        // No French voice listed is NOT a blocker: phones often report an
+        // empty or partial voice list. Speak with lang="fr-FR" and no forced
+        // voice and let the device's speech engine pick its own French.
         return true;
       }
       function showVoiceNote(msg) {
@@ -360,14 +359,26 @@
         n.textContent = msg;
         n.classList.add("show");
       }
+      var speechErrorShown = false;
       function speakPhrase(text, onend) {
+        if (!("speechSynthesis" in window)) return;
+        refreshVoices();
         speechSynthesis.cancel();
+        // iOS can leave speechSynthesis paused; resume inside the tap.
+        try { speechSynthesis.resume(); } catch (e) { /* ignore */ }
         var u = new SpeechSynthesisUtterance(text);
         u.lang = "fr-FR";
         if (frenchVoice) u.voice = frenchVoice;
         u.rate = 0.92;
         if (onend) u.onend = onend;
-        u.onerror = function () { clearSpeaking(); };
+        u.onerror = function () {
+          clearSpeaking();
+          if (onend) onend();
+          if (!speechErrorShown) {
+            speechErrorShown = true;
+            showVoiceNote("The sound didn't play — check the phone isn't on silent and the volume is up, then tap again!");
+          }
+        };
         speechSynthesis.speak(u);
       }
       function speechText(subjectKey, form) {
@@ -398,21 +409,28 @@
         var conj = state.verb.conjugations[state.tense];
         var keys = state.data.pronouns.filter(function (p) { return conj[p]; });
         var rows = document.querySelectorAll("#conj-body tr");
-        var i = 0;
         var btn = $("listen-all");
         btn.disabled = true;
         clearSpeaking();
-        function next() {
-          if (i >= keys.length) { btn.disabled = false; clearSpeaking(); return; }
-          var k = keys[i];
-          if (rows[i]) rows[i].classList.add("speaking");
-          speakPhrase(speechText(k, conj[k]), function () {
-            if (rows[i]) rows[i].classList.remove("speaking");
-            i++;
-            next();
-          });
-        }
-        next();
+        // One single utterance for all six forms: iOS Safari only honours
+        // speech started inside the tap itself, so chaining one utterance
+        // per form silently dropped forms 2-6 on phones. Row highlights are
+        // timed by text length instead of utterance callbacks.
+        var parts = keys.map(function (k) { return speechText(k, conj[k]); });
+        var timers = [];
+        var elapsed = 0;
+        parts.forEach(function (part, idx) {
+          timers.push(setTimeout(function () {
+            clearSpeaking();
+            if (rows[idx]) rows[idx].classList.add("speaking");
+          }, elapsed));
+          elapsed += 420 + part.length * 95;
+        });
+        speakPhrase(parts.join(". "), function () {
+          timers.forEach(function (t) { clearTimeout(t); });
+          btn.disabled = false;
+          clearSpeaking();
+        });
       }
 
       /* ---------- rendering ---------- */
