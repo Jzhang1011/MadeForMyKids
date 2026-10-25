@@ -59,6 +59,8 @@
   --mfk-skill-money-bg: #fef3c7;
   --mfk-skill-french: #1d4ed8;
   --mfk-skill-french-bg: #dbeafe;
+  --mfk-skill-spanish: #b91c1c;
+  --mfk-skill-spanish-bg: #fee2e2;
   --mfk-skill-widi: #0891b2;
   --mfk-skill-widi-bg: #cffafe;
   --mfk-skill-default: #475569;
@@ -261,12 +263,21 @@ mfk-feedback button:focus-visible {
     /* 2×2 for four activities — minmax keeps equal columns */
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  /* Odd card count: center the last card under the 2-column grid at the same width */
+  .mfk-grid-cards > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 0.625rem);
+  }
 }
 
 @media (min-width: 1100px) {
   .mfk-grid-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
+  }
+  .mfk-grid-cards > :last-child:nth-child(odd) {
+    width: calc(50% - 0.75rem);
   }
 }
 

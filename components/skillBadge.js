@@ -33,6 +33,9 @@
     french: "french",
     francais: "french",
     "français": "french",
+    spanish: "spanish",
+    espanol: "spanish",
+    "español": "spanish",
     widi: "widi",
     "write it do it": "widi",
     "science olympiad": "widi",
@@ -87,6 +90,13 @@
       icon: "🇫🇷",
       bg: "var(--mfk-skill-french-bg, #dbeafe)",
       fg: "var(--mfk-skill-french, #1d4ed8)",
+    },
+    spanish: {
+      id: "spanish",
+      label: "Spanish",
+      icon: "🇪🇸",
+      bg: "var(--mfk-skill-spanish-bg, #fee2e2)",
+      fg: "var(--mfk-skill-spanish, #b91c1c)",
     },
     widi: {
       id: "widi",
