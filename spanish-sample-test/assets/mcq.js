@@ -14,12 +14,58 @@
     var note = document.querySelector('[data-voice-note]');
     if (note) note.textContent = voice ? 'Spanish voice: ' + voice.name : 'No Spanish voice found on this device — the browser will try es-ES anyway. Use “Show transcript” if the audio sounds wrong.';
   }
-  function speak(text) {
-    if (!('speechSynthesis' in window)) return false;
-    speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(text); u.lang = voice ? voice.lang.replace('_', '-') : 'es-ES'; u.rate = C.level === '1' ? 0.85 : 0.92;
-    if (voice) u.voice = voice;
-    speechSynthesis.speak(u); return true;
+  /* Speak synchronously inside the click handler (iOS Safari requirement). Keeps global refs so
+     utterances are not garbage-collected, resumes a paused engine, chunks long text by sentence and
+     pings pause/resume to dodge Chrome's ~15s stall, and surfaces errors with the transcript. */
+  var queue = [], keepAlive = null, speakingKey = null;
+  window.__fstUtterances = queue;
+  function stopKeepAlive() { if (keepAlive) { clearInterval(keepAlive); keepAlive = null; } }
+  function chunks(text) {
+    var parts = String(text).match(/[^.!?…]+[.!?…]*\s*/g) || [String(text)], out = [], cur = '';
+    parts.forEach(function (p) { if ((cur + p).length > 180 && cur) { out.push(cur); cur = p; } else cur += p; });
+    if (cur.trim()) out.push(cur);
+    return out;
+  }
+  function speechFailed(key, msg) {
+    stopKeepAlive();
+    var box = key && app.querySelector('[data-txt="' + key + '"]');
+    if (box) box.classList.remove('fst-hidden');
+    var note = document.querySelector('[data-voice-note]');
+    if (note) note.textContent = msg || 'Audio could not play on this device. The transcript is shown — have a parent read it aloud.';
+  }
+  function speak(text, key) {
+    if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') return false;
+    var ss = window.speechSynthesis;
+    try {
+      if (ss.speaking || ss.pending) ss.cancel();
+      if (ss.paused) ss.resume();
+      if (!voice) pickVoice();
+      stopKeepAlive(); queue.length = 0; speakingKey = key;
+      var started = false, list = chunks(text);
+      list.forEach(function (part, i) {
+        var u = new SpeechSynthesisUtterance(part);
+        u.lang = (voice ? voice.lang.replace('_', '-') : 'es-ES'); u.rate = C.level === '1' ? 0.85 : 0.92; u.pitch = 1; u.volume = 1;
+        if (voice) u.voice = voice;
+        u.onstart = function () { started = true; };
+        u.onend = function () { if (i === list.length - 1) stopKeepAlive(); };
+        u.onerror = function (ev) {
+          var err = ev && ev.error;
+          if (err === 'interrupted' || err === 'canceled') return;
+          speechFailed(key, 'Audio error (' + (err || 'unknown') + '). The transcript is shown — have a parent read it aloud.');
+        };
+        queue.push(u);
+        ss.speak(u);
+      });
+      if (ss.paused) ss.resume();
+      keepAlive = setInterval(function () {
+        if (!ss.speaking) { stopKeepAlive(); return; }
+        if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) { ss.pause(); ss.resume(); }
+      }, 10000);
+      setTimeout(function () {
+        if (!started && speakingKey === key && !ss.speaking) speechFailed(key, 'No audio started — check the volume / silent switch, or install a voice for this language. The transcript is shown.');
+      }, 4000);
+      return true;
+    } catch (e) { speechFailed(key); return false; }
   }
 
   /* ---------- Rendering ---------- */
@@ -53,7 +99,7 @@
       if (t.hasAttribute('data-play')) {
         var k = t.getAttribute('data-play'); plays[k] = plays[k] || 0;
         if (plays[k] >= MAX_PLAYS) return;
-        if (!speak(items[k].say)) { app.querySelector('[data-txt="' + k + '"]').classList.remove('fst-hidden'); return; }
+        if (!speak(items[k].say, k)) { app.querySelector('[data-txt="' + k + '"]').classList.remove('fst-hidden'); return; }
         plays[k]++;
         var left = MAX_PLAYS - plays[k];
         app.querySelector('[data-plays="' + k + '"]').textContent = left ? left + ' play left' : 'No plays left';
