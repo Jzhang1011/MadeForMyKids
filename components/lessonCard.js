@@ -14,6 +14,7 @@
     movie: { label: "Movie", icon: "🎬", bg: "#e0f2fe", fg: "#0284c7" },
     money: { label: "Money", icon: "💰", bg: "#fef3c7", fg: "#b45309" },
     french: { label: "French", icon: "🇫🇷", bg: "#dbeafe", fg: "#1d4ed8" },
+    spanish: { label: "Spanish", icon: "🇪🇸", bg: "#fee2e2", fg: "#b91c1c" },
   };
   const SKILL_ALIASES = {
     typing: "typing",
@@ -35,6 +36,8 @@
     investing: "money",
     french: "french",
     francais: "french",
+    spanish: "spanish",
+    espanol: "spanish",
   };
 
   function skillMeta(raw) {
