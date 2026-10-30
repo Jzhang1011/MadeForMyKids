@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Venn &amp; Truth Tables — Geometry Proofs Practice — MadeForMyKids</title>
+  <meta name="description" content="Shade Venn regions by number and fill in truth tables, with answers computed from the logic — not memorized." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .card { background: var(--mfk-white); border: 2px solid var(--mfk-border); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem; }
+    .card > h2 { margin: 0 0 0.35rem; font-size: 1.5rem; color: var(--mfk-slate); }
+    .card p { color: var(--mfk-slate); line-height: 1.6; font-size: 0.95rem; }
+    .card p.lede { color: var(--mfk-slate-soft); }
+    select, button.btn { font-family: Fredoka, system-ui, sans-serif; }
+    select { font-size: 1rem; padding: 0.5rem 0.7rem; border: 2px solid var(--mfk-border); border-radius: 10px; background: #fff; max-width: 100%; }
+    .btn { font-weight: 600; font-size: 1rem; background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none; border-radius: 12px; padding: 0.6rem 1.2rem; cursor: pointer; margin-top: 0.8rem; }
+    .btn-ghost { background: #fff; color: var(--mfk-skill-math, #7c3aed); border: 2px solid var(--mfk-skill-math, #7c3aed); margin-left: 0.5rem; }
+    .feedback { font-weight: 700; margin-top: 0.8rem; }
+    .feedback.ok { color: #15803d; } .feedback.bad { color: #b91c1c; }
+    .region-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.55rem; margin-top: 1rem; }
+    .region-btn { border: 2px solid var(--mfk-border); background: #fff; border-radius: 12px; padding: 0.6rem 0.7rem; cursor: pointer; text-align: left; font-size: 0.9rem; color: var(--mfk-slate); }
+    .region-btn[aria-pressed="true"] { background: var(--mfk-skill-math, #7c3aed); border-color: var(--mfk-skill-math, #7c3aed); color: #fff; }
+    .region-btn strong { display: block; font-size: 1.05rem; }
+    table.tt { border-collapse: collapse; margin-top: 1rem; width: 100%; }
+    table.tt th, table.tt td { border: 1px solid var(--mfk-border); padding: 0.45rem 0.6rem; text-align: center; font-size: 0.95rem; }
+    table.tt th { background: #faf5ff; }
+    table.tt td.wrong { background: #fef2f2; }
+    table.tt td.right { background: #f0fdf4; }
+    table.tt select { border: 1px solid var(--mfk-border); padding: 0.25rem; font-size: 0.95rem; }
+    .hint { background: #faf5ff; border: 2px solid #e9d5ff; border-radius: 12px; padding: 0.8rem 1rem; margin-top: 0.9rem; font-size: 0.9rem; color: var(--mfk-slate); }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .venn-svg text.num { font-weight: 700; font-size: 15px; fill: var(--mfk-slate); }
+    .venn-svg text.num.sel { fill: #fff; }
+    .venn-svg circle.badge { fill: transparent; }
+    .venn-svg circle.badge.sel { fill: var(--mfk-skill-math, #7c3aed); }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · Logic tools"
+      title="Venn &amp; Truth Tables"
+      subtitle="Shade by region number, the way the test numbers them — and fill in the final column yourself. The intermediate columns are worked for you."
+    ></mfk-page-hero>
+
+    <section class="card" aria-label="Venn diagram tool">
+      <h2>Shade the Venn diagram</h2>
+      <p class="lede">Pick a statement, tap the regions it covers, then check. Region 8 is outside all three circles — it counts for ~p and ~r problems.</p>
+      <label for="venn-select"><strong>Statement:</strong></label>
+      <select id="venn-select"></select>
+      <div id="venn-hint" class="hint"></div>
+      <svg class="venn-svg" viewBox="0 0 280 230" width="100%" style="max-width:420px;display:block;margin:1rem auto 0" aria-label="Three overlapping circles p, q, r with numbered regions">
+        <circle cx="105" cy="90" r="70" fill="none" stroke="#7c3aed" stroke-width="2" />
+        <circle cx="175" cy="90" r="70" fill="none" stroke="#7c3aed" stroke-width="2" />
+        <circle cx="140" cy="155" r="70" fill="none" stroke="#7c3aed" stroke-width="2" />
+        <text x="105" y="35" font-size="18" font-weight="700" fill="#334155">p</text>
+        <text x="175" y="35" font-size="18" font-weight="700" fill="#334155">q</text>
+        <text x="140" y="235" font-size="18" font-weight="700" fill="#334155" text-anchor="middle">r</text>
+        <g id="venn-numbers"></g>
+      </svg>
+      <div class="region-grid" id="region-grid"></div>
+      <button class="btn" id="venn-check">Check shading</button>
+      <button class="btn btn-ghost" id="venn-clear">Clear</button>
+      <div class="feedback" id="venn-feedback"></div>
+    </section>
+
+    <section class="card" aria-label="Truth table tool">
+      <h2>Fill in the truth table</h2>
+      <p class="lede">The middle columns are filled in for you. You fill in only the final column — then check. Remember: F → anything is T.</p>
+      <label for="tt-select"><strong>Statement:</strong></label>
+      <select id="tt-select"></select>
+      <div id="tt-note" class="hint"></div>
+      <div id="tt-table"></div>
+      <button class="btn" id="tt-check">Check table</button>
+      <div class="feedback" id="tt-feedback"></div>
+    </section>
+    <a class="back-link" href="logic.html">← Back to Logic &amp; Proof Reasons</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/proofs.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Proofs.recordVisit();
+      var ALL = [1, 2, 3, 4, 5, 6, 7, 8];
+      var NUM_POS = { 1: [72, 85], 2: [140, 68], 3: [208, 85], 4: [112, 132], 5: [140, 108], 6: [168, 132], 7: [140, 190], 8: [258, 215] };
+
+      function evalSet(node, sets) {
+        if (node.var) return sets[node.var].slice();
+        if (node.not) {
+          var inner = evalSet(node.not, sets);
+          return ALL.filter(function (n) { return inner.indexOf(n) === -1; });
+        }
+        if (node.and) {
+          return node.and.reduce(function (acc, part) {
+            var s = evalSet(part, sets);
+            return acc.filter(function (n) { return s.indexOf(n) !== -1; });
+          }, ALL.slice());
+        }
+        if (node.or) {
+          var out = [];
+          node.or.forEach(function (part) {
+            evalSet(part, sets).forEach(function (n) { if (out.indexOf(n) === -1) out.push(n); });
+          });
+          return out.sort(function (a, b) { return a - b; });
+        }
+        return [];
+      }
+      function evalBool(node, env) {
+        if (node.var) return !!env[node.var];
+        if (node.not) return !evalBool(node.not, env);
+        if (node.and) return node.and.every(function (p) { return evalBool(p, env); });
+        if (node.or) return node.or.some(function (p) { return evalBool(p, env); });
+        if (node.implies) return !evalBool(node.implies[0], env) || evalBool(node.implies[1], env);
+        if (node.iff) return evalBool(node.iff[0], env) === evalBool(node.iff[1], env);
+        return false;
+      }
+      function tf(b) { return b ? "T" : "F"; }
+
+      Proofs.loadData().then(function (data) {
+        var logic = data.logic;
+        if (!logic) { Proofs.showLoadError(document.querySelector(".card"), "logic tools"); return; }
+
+        /* ---- Venn ---- */
+        var vSel = document.getElementById("venn-select");
+        logic.vennProblems.forEach(function (p, i) {
+          var o = document.createElement("option"); o.value = i; o.textContent = p.label; vSel.appendChild(o);
+        });
+        var selected = [];
+        var vProblem = logic.vennProblems[0];
+        function renderVenn() {
+          document.getElementById("venn-hint").textContent = "Hint: " + vProblem.hint;
+          var g = document.getElementById("venn-numbers"); g.innerHTML = "";
+          ALL.forEach(function (n) {
+            var pos = NUM_POS[n], on = selected.indexOf(n) !== -1;
+            var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            c.setAttribute("cx", pos[0]); c.setAttribute("cy", pos[1] - 5); c.setAttribute("r", "13");
+            c.setAttribute("class", "badge" + (on ? " sel" : ""));
+            c.style.cursor = "pointer";
+            c.addEventListener("click", function () { toggleRegion(n); });
+            var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            t.setAttribute("x", pos[0]); t.setAttribute("y", pos[1]); t.setAttribute("text-anchor", "middle");
+            t.setAttribute("class", "num" + (on ? " sel" : ""));
+            t.style.cursor = "pointer"; t.textContent = n;
+            t.addEventListener("click", function () { toggleRegion(n); });
+            g.appendChild(c); g.appendChild(t);
+          });
+          var grid = document.getElementById("region-grid"); grid.innerHTML = "";
+          ALL.forEach(function (n) {
+            var b = document.createElement("button");
+            b.className = "region-btn"; b.setAttribute("aria-pressed", selected.indexOf(n) !== -1 ? "true" : "false");
+            b.innerHTML = "<strong>" + n + "</strong>" + logic.regionNames[String(n)];
+            b.addEventListener("click", function () { toggleRegion(n); });
+            grid.appendChild(b);
+          });
+        }
+        function toggleRegion(n) {
+          var i = selected.indexOf(n);
+          if (i === -1) selected.push(n); else selected.splice(i, 1);
+          selected.sort(function (a, b) { return a - b; });
+          document.getElementById("venn-feedback").textContent = "";
+          renderVenn();
+        }
+        vSel.addEventListener("change", function () {
+          vProblem = logic.vennProblems[parseInt(vSel.value, 10)]; selected = [];
+          document.getElementById("venn-feedback").textContent = "";
+          renderVenn();
+        });
+        document.getElementById("venn-clear").addEventListener("click", function () {
+          selected = []; document.getElementById("venn-feedback").textContent = ""; renderVenn();
+        });
+        document.getElementById("venn-check").addEventListener("click", function () {
+          var expected = evalSet(vProblem.expr, vProblem.regions).sort(function (a, b) { return a - b; });
+          var fb = document.getElementById("venn-feedback");
+          if (JSON.stringify(selected) === JSON.stringify(expected)) {
+            fb.className = "feedback ok"; fb.textContent = "Correct — " + vProblem.label + " is exactly region" + (expected.length === 1 ? " " : "s ") + expected.join(", ") + ".";
+          } else {
+            fb.className = "feedback bad";
+            fb.textContent = "Not yet. The correct region" + (expected.length === 1 ? " is " : "s are ") + expected.join(", ") +
+              " (" + expected.map(function (n) { return logic.regionNames[String(n)]; }).join("; ") + "). You picked " + (selected.length ? selected.join(", ") : "nothing") + ".";
+          }
+        });
+        renderVenn();
+
+        /* ---- Truth tables ---- */
+        var tSel = document.getElementById("tt-select");
+        logic.truthTables.forEach(function (t, i) {
+          var o = document.createElement("option"); o.value = i; o.textContent = t.label; tSel.appendChild(o);
+        });
+        var tTable = logic.truthTables[0];
+        function combos(vars) {
+          var rows = [], n = vars.length;
+          for (var i = 0; i < Math.pow(2, n); i++) {
+            var env = {};
+            vars.forEach(function (v, j) { env[v] = ((i >> (n - 1 - j)) & 1) === 0; });
+            rows.push(env);
+          }
+          return rows;
+        }
+        function renderTT() {
+          document.getElementById("tt-note").textContent = tTable.note;
+          var rows = combos(tTable.vars);
+          var html = '<table class="tt"><thead><tr>';
+          tTable.vars.forEach(function (v) { html += "<th>" + v + "</th>"; });
+          tTable.columns.forEach(function (c) { html += "<th>" + c.label + "</th>"; });
+          html += "</tr></thead><tbody>";
+          rows.forEach(function (env, ri) {
+            html += "<tr>";
+            tTable.vars.forEach(function (v) { html += "<td>" + tf(env[v]) + "</td>"; });
+            tTable.columns.forEach(function (c, ci) {
+              if (c.answer) {
+                html += '<td><select data-row="' + ri + '"><option value="">?</option><option value="T">T</option><option value="F">F</option></select></td>';
+              } else {
+                html += "<td>" + tf(evalBool(c.expr, env)) + "</td>";
+              }
+            });
+            html += "</tr>";
+          });
+          html += "</tbody></table>";
+          document.getElementById("tt-table").innerHTML = html;
+          document.getElementById("tt-feedback").textContent = "";
+        }
+        tSel.addEventListener("change", function () { tTable = logic.truthTables[parseInt(tSel.value, 10)]; renderTT(); });
+        document.getElementById("tt-check").addEventListener("click", function () {
+          var rows = combos(tTable.vars);
+          var finalCol = tTable.columns.filter(function (c) { return c.answer; })[0];
+          var correct = 0, total = rows.length;
+          var selects = document.querySelectorAll("#tt-table select");
+          selects.forEach(function (s) {
+            var ri = parseInt(s.getAttribute("data-row"), 10);
+            var want = tf(evalBool(finalCol.expr, rows[ri]));
+            var cell = s.parentElement;
+            cell.className = "";
+            if (s.value === want) { correct++; cell.className = "right"; }
+            else { cell.className = "wrong"; }
+          });
+          var fb = document.getElementById("tt-feedback");
+          fb.className = "feedback " + (correct === total ? "ok" : "bad");
+          fb.textContent = correct === total ? "Perfect table — " + total + "/" + total + " rows right."
+            : correct + "/" + total + " rows right. Wrong rows are pink — recheck the F → anything rule and the parentheses.";
+        });
+        renderTT();
+      }).catch(function () {
+        Proofs.showLoadError(document.querySelector(".card"), "logic tools");
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

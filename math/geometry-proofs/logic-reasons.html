@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reason Drills — Logic &amp; Proof Reasons — MadeForMyKids</title>
+  <meta name="description" content="12 justify-it drills built around the traps in the Oct 30 test: transitive vs substitution vs segment addition, midpoint vs addition, bisector vs transitive congruence." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .card { background: var(--mfk-white); border: 2px solid var(--mfk-border); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem; }
+    .card > h2 { margin: 0 0 0.35rem; font-size: 1.5rem; color: var(--mfk-slate); }
+    .card p { color: var(--mfk-slate); line-height: 1.6; font-size: 0.95rem; }
+    .card p.lede { color: var(--mfk-slate-soft); }
+    .drill { border: 2px solid var(--mfk-border); border-radius: 14px; padding: 1rem 1.15rem; margin-top: 0.9rem; background: #fff; }
+    .drill .q { font-size: 1.02rem; color: var(--mfk-slate); line-height: 1.6; }
+    .drill .qnum { font-family: Fredoka, system-ui, sans-serif; color: var(--mfk-skill-math, #7c3aed); margin-right: 0.4rem; }
+    .opts { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.7rem; }
+    .opt { border: 2px solid var(--mfk-border); background: #fff; border-radius: 9999px; padding: 0.45rem 0.9rem; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--mfk-slate); }
+    .opt:disabled { cursor: default; opacity: 0.75; }
+    .opt.correct { background: #dcfce7; border-color: #15803d; color: #15803d; }
+    .opt.wrong { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+    .explain { margin-top: 0.7rem; font-size: 0.92rem; color: var(--mfk-slate); display: none; }
+    .explain.show { display: block; }
+    .score { font-weight: 700; color: var(--mfk-slate); margin-top: 0.5rem; }
+    .btn { font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem; background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none; border-radius: 12px; padding: 0.6rem 1.2rem; cursor: pointer; margin-top: 1rem; }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · Logic drills"
+      title="Reason Drills"
+      subtitle="Pick the reason for each statement. The wrong answers are the traps from the test — pick one and the explanation tells you why it fits or not."
+    ></mfk-page-hero>
+
+    <section class="card" aria-label="Reason drills">
+      <h2>12 drills, no timer</h2>
+      <p class="lede">Work in order or jump around. Every drill shows its explanation after you answer, right or wrong.</p>
+      <div class="score" id="score"></div>
+      <div id="drills-slot"></div>
+      <button class="btn" id="reshuffle">Shuffle the order</button>
+    </section>
+    <a class="back-link" href="logic.html">← Back to Logic &amp; Proof Reasons</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/proofs.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Proofs.recordVisit();
+      var answered = 0, correctCount = 0;
+      function render(data) {
+        var logic = data.logic;
+        var slot = document.getElementById("drills-slot");
+        var drills = Proofs.shuffle(logic.drills);
+        answered = 0; correctCount = 0;
+        document.getElementById("score").textContent = "Answered: 0/" + drills.length;
+        var html = "";
+        drills.forEach(function (d, i) {
+          var answer = data.byId[d.answer];
+          var trap = d.trap ? data.byId[d.trap] : null;
+          // Choices: the answer, the trap (if any), and two other reasons from the same category family.
+          var pool = data.reasons.filter(function (r) { return r.id !== d.answer && (!trap || r.id !== trap.id); });
+          var others = Proofs.shuffle(pool).slice(0, trap ? 2 : 3);
+          var choices = Proofs.shuffle([answer].concat(trap ? [trap] : []).concat(others));
+          html += '<div class="drill" data-answer="' + d.answer + '" data-drill="' + d.id + '">';
+          html += '<div class="q"><span class="qnum">' + (i + 1) + '.</span>' + d.statement + '</div>';
+          html += '<div class="opts">';
+          choices.forEach(function (c) {
+            html += '<button class="opt" data-id="' + c.id + '">' + c.name + '</button>';
+          });
+          html += '</div>';
+          html += '<div class="explain"><strong>Answer: ' + answer.name + '.</strong> ' + d.why + '</div>';
+          html += '</div>';
+        });
+        slot.innerHTML = html;
+        slot.querySelectorAll(".drill").forEach(function (drill) {
+          var answerId = drill.getAttribute("data-answer");
+          drill.querySelectorAll(".opt").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              if (drill.getAttribute("data-done")) return;
+              drill.setAttribute("data-done", "1");
+              var picked = btn.getAttribute("data-id");
+              if (picked === answerId) { btn.className += " correct"; correctCount++; }
+              else {
+                btn.className += " wrong";
+                drill.querySelector('.opt[data-id="' + answerId + '"]').className += " correct";
+                Proofs.recordMiss(answerId);
+              }
+              drill.querySelectorAll(".opt").forEach(function (b) { b.disabled = true; });
+              drill.querySelector(".explain").className += " show";
+              answered++;
+              document.getElementById("score").textContent = "Answered: " + answered + "/" + drills.length + " · Correct: " + correctCount;
+              if (answered === drills.length) Proofs.recordQuizResult(correctCount, drills.length);
+            });
+          });
+        });
+      }
+      Proofs.loadData().then(function (data) {
+        if (!data.logic) { Proofs.showLoadError(document.getElementById("drills-slot"), "reason drills"); return; }
+        render(data);
+        document.getElementById("reshuffle").addEventListener("click", function () { render(data); window.scrollTo(0, 0); });
+      }).catch(function () {
+        Proofs.showLoadError(document.getElementById("drills-slot"), "reason drills");
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

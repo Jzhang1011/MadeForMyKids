@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proof Builder — Logic &amp; Proof Reasons — MadeForMyKids</title>
+  <meta name="description" content="Fill in the missing reasons for three scaffolded proofs: algebra, midpoint, and angle bisector — same moves as the test, new letters." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .card { background: var(--mfk-white); border: 2px solid var(--mfk-border); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem; }
+    .card > h2 { margin: 0 0 0.35rem; font-size: 1.5rem; color: var(--mfk-slate); }
+    .card p { color: var(--mfk-slate); line-height: 1.6; font-size: 0.95rem; }
+    .card p.lede { color: var(--mfk-slate-soft); }
+    .proof { border: 2px solid var(--mfk-border); border-radius: 14px; padding: 1rem 1.15rem; margin-top: 1rem; background: #fff; }
+    .proof h3 { margin: 0 0 0.25rem; font-size: 1.15rem; color: var(--mfk-slate); }
+    .proof .given { color: var(--mfk-slate-soft); font-size: 0.9rem; margin: 0.2rem 0 0.8rem; }
+    table.steps { border-collapse: collapse; width: 100%; }
+    table.steps th, table.steps td { border: 1px solid var(--mfk-border); padding: 0.5rem 0.7rem; text-align: left; font-size: 0.95rem; vertical-align: middle; }
+    table.steps th { background: #faf5ff; }
+    table.steps td.reason-cell.wrong { background: #fef2f2; }
+    table.steps td.reason-cell.right { background: #f0fdf4; }
+    table.steps select { font-size: 0.92rem; padding: 0.35rem; border: 2px solid var(--mfk-border); border-radius: 8px; background: #fff; max-width: 100%; }
+    .btn { font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem; background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none; border-radius: 12px; padding: 0.55rem 1.1rem; cursor: pointer; margin-top: 0.8rem; }
+    .feedback { font-weight: 700; margin-top: 0.7rem; }
+    .feedback.ok { color: #15803d; } .feedback.bad { color: #b91c1c; }
+    .tip { background: #faf5ff; border: 2px solid #e9d5ff; border-radius: 12px; padding: 0.8rem 1rem; margin-top: 0.9rem; font-size: 0.9rem; color: var(--mfk-slate); display: none; }
+    .tip.show { display: block; }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · Proof builder"
+      title="Proof Builder"
+      subtitle="The statements are given. You supply the reasons. Given steps are already filled in — the blanks are where the test lost points."
+    ></mfk-page-hero>
+
+    <section class="card" aria-label="Scaffolded proofs">
+      <h2>Three proofs, same moves as the test</h2>
+      <p class="lede">Pick a reason for each blank row, then check. “Combine like terms” is a simplification step, not a named reason from the bank — it appears as its own choice.</p>
+      <div id="proofs-slot"></div>
+    </section>
+    <a class="back-link" href="logic.html">← Back to Logic &amp; Proof Reasons</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/proofs.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Proofs.recordVisit();
+      var SPECIAL = { "given": "Given", "combine": "Combine like terms" };
+      function reasonName(data, id) {
+        if (SPECIAL[id]) return SPECIAL[id];
+        var r = data.byId[id];
+        return r ? r.name : id;
+      }
+      Proofs.loadData().then(function (data) {
+        var logic = data.logic;
+        if (!logic) { Proofs.showLoadError(document.getElementById("proofs-slot"), "proof builder"); return; }
+        var slot = document.getElementById("proofs-slot");
+        var html = "";
+        logic.proofs.forEach(function (p, pi) {
+          html += '<div class="proof" data-proof="' + pi + '"><h3>' + p.title + '</h3>' +
+            '<p class="given">Given: ' + p.given + ' &nbsp;·&nbsp; Prove: ' + p.prove + '</p>' +
+            '<table class="steps"><thead><tr><th style="width:55%">Statements</th><th>Reasons</th></tr></thead><tbody>';
+          p.steps.forEach(function (s, si) {
+            var blank = s.reasonId !== "given";
+            html += "<tr><td>" + (si + 1) + ". " + s.statement + "</td>";
+            if (blank) {
+              html += '<td class="reason-cell"><select data-step="' + si + '"><option value="">— pick a reason —</option>';
+              // Choices: every reason in the bank, plus the two special rows, sorted by name for scanning.
+              var opts = data.reasons.map(function (r) { return { id: r.id, name: r.name }; });
+              opts.push({ id: "combine", name: "Combine like terms" });
+              opts.sort(function (a, b) { return a.name.localeCompare(b.name); });
+              opts.forEach(function (o) { html += '<option value="' + o.id + '">' + o.name + '</option>'; });
+              html += "</select></td>";
+            } else {
+              html += "<td>Given</td>";
+            }
+            html += "</tr>";
+          });
+          html += '</tbody></table>' +
+            '<button class="btn check-btn">Check this proof</button>' +
+            '<div class="feedback"></div>' +
+            '<div class="tip">' + p.tip + '</div></div>';
+        });
+        slot.innerHTML = html;
+        slot.querySelectorAll(".proof").forEach(function (proofEl, pi) {
+          var p = logic.proofs[pi];
+          proofEl.querySelector(".check-btn").addEventListener("click", function () {
+            var correct = 0, total = 0;
+            proofEl.querySelectorAll("select").forEach(function (sel) {
+              var si = parseInt(sel.getAttribute("data-step"), 10);
+              var want = p.steps[si].reasonId;
+              var cell = sel.parentElement; cell.className = "reason-cell";
+              total++;
+              if (sel.value === want) { correct++; cell.className += " right"; }
+              else { cell.className += " wrong"; if (sel.value) Proofs.recordMiss(want); }
+            });
+            var fb = proofEl.querySelector(".feedback");
+            fb.className = "feedback " + (correct === total ? "ok" : "bad");
+            fb.textContent = correct === total
+              ? "Perfect — all " + total + " reasons right."
+              : correct + "/" + total + " reasons right. Pink rows need another look — the tip below is the rule for this proof.";
+            proofEl.querySelector(".tip").className += " show";
+          });
+        });
+      }).catch(function () {
+        Proofs.showLoadError(document.getElementById("proofs-slot"), "proof builder");
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

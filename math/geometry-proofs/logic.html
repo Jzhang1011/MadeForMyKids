@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Logic &amp; Proof Reasons — Geometry Proofs Practice — MadeForMyKids</title>
+  <meta name="description" content="The logic unit behind two-column proofs: biconditionals, counterexamples, implication, Venn diagrams, truth tables, and the corrected proofs from the Oct 30 test." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .card { background: var(--mfk-white); border: 2px solid var(--mfk-border); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem; }
+    .card > h2 { margin: 0 0 0.35rem; font-size: 1.5rem; color: var(--mfk-slate); }
+    .card > p.lede { margin: 0 0 1rem; color: var(--mfk-slate-soft); }
+    .lesson { background: #faf5ff; border: 2px solid #e9d5ff; border-radius: 14px; padding: 1rem 1.15rem; margin-top: 0.9rem; }
+    .lesson h3 { margin: 0 0 0.35rem; font-size: 1.12rem; color: var(--mfk-slate); }
+    .lesson p { margin: 0.3rem 0; font-size: 0.95rem; color: var(--mfk-slate); line-height: 1.6; }
+    .lesson .trap { color: #b45309; font-size: 0.9rem; }
+    .worked { border: 2px solid var(--mfk-border); border-radius: 14px; padding: 1rem 1.15rem; margin-top: 0.9rem; background: #fff; }
+    .worked h3 { margin: 0 0 0.25rem; font-size: 1.12rem; color: var(--mfk-slate); }
+    .worked p { margin: 0.3rem 0; font-size: 0.93rem; color: var(--mfk-slate); line-height: 1.65; }
+    .worked .given { color: var(--mfk-slate-soft); font-size: 0.9rem; }
+    .worked .note { color: #b45309; font-size: 0.9rem; }
+    .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.9rem; margin-top: 1rem; }
+    .tool-card { display: block; background: #fff; border: 2px solid var(--mfk-border); border-radius: 16px; padding: 1.1rem 1.2rem; text-decoration: none; }
+    .tool-card:hover { border-color: var(--mfk-skill-math, #7c3aed); }
+    .tool-card h3 { margin: 0.4rem 0 0.25rem; font-size: 1.12rem; color: var(--mfk-slate); }
+    .tool-card p { margin: 0; font-size: 0.9rem; color: var(--mfk-slate-soft); line-height: 1.5; }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · New unit"
+      title="Logic &amp; Proof Reasons"
+      subtitle="Proofs start before the two-column table: is the statement true both ways, does one example break it, and which reason actually fits the step?"
+    ></mfk-page-hero>
+
+    <section class="card" aria-label="Practice tools">
+      <h2>Practice this unit</h2>
+      <p class="lede">Lessons below, then hands-on tools. Start with the Venn and truth-table tools if those pages felt shaky.</p>
+      <div class="tool-grid">
+        <a class="tool-card" href="logic-tools.html">
+          <div style="font-size:1.7rem">◯◯</div>
+          <h3>Venn &amp; Truth Tables</h3>
+          <p>Shade regions by number and fill in truth tables — including the false-antecedent trap from Q3.</p>
+        </a>
+        <a class="tool-card" href="logic-reasons.html">
+          <div style="font-size:1.7rem">🧭</div>
+          <h3>Reason Drills</h3>
+          <p>12 new justify-it questions built around the exact traps in Q5, Q8, Q14, and Q15.</p>
+        </a>
+        <a class="tool-card" href="logic-proofs.html">
+          <div style="font-size:1.7rem">📐</div>
+          <h3>Proof Builder</h3>
+          <p>Fill in the missing reasons for a new algebra, midpoint, and bisector proof — same moves, new letters.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Logic lessons">
+      <h2>Five lessons from the test</h2>
+      <p class="lede">Each one is a trap that actually cost points on the Oct 30 test.</p>
+      <div id="lessons-slot"></div>
+    </section>
+
+    <section class="card" aria-label="Corrected test proofs">
+      <h2>Your test proofs, corrected</h2>
+      <p class="lede">Same problems, clean steps. Compare these line by line with what you turned in.</p>
+      <div id="worked-slot"></div>
+    </section>
+    <a class="back-link" href="index.html">← Back to Geometry Proofs Practice</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/proofs.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Proofs.recordVisit();
+      Proofs.loadData().then(function (data) {
+        var logic = data.logic;
+        if (!logic) { Proofs.showLoadError(document.getElementById("lessons-slot"), "logic lessons"); return; }
+        var lh = "";
+        logic.lessons.forEach(function (l) {
+          lh += '<div class="lesson"><h3>' + l.title + '</h3><p>' + l.body + '</p>' +
+            '<p class="trap"><strong>Trap:</strong> ' + l.trap + '</p></div>';
+        });
+        document.getElementById("lessons-slot").innerHTML = lh;
+        var wh = "";
+        logic.worked.forEach(function (w) {
+          wh += '<div class="worked"><h3>' + w.title + '</h3>' +
+            '<p class="given">Given: ' + w.given + '</p><p>' + w.steps + '</p>' +
+            '<p class="note">' + w.note + '</p></div>';
+        });
+        document.getElementById("worked-slot").innerHTML = wh;
+      }).catch(function () {
+        Proofs.showLoadError(document.getElementById("lessons-slot"), "logic lessons");
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

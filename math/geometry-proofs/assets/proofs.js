@@ -32,7 +32,13 @@
       fetch("data/quiz.json").then(function (r) {
         if (!r.ok) throw new Error("quiz.json " + r.status);
         return r.json();
-      })
+      }),
+      // Logic unit data is optional for the older pages: a missing file
+      // must not break flashcards, quiz, match, or the reason picker.
+      fetch("data/logic.json").then(function (r) {
+        if (!r.ok) return null;
+        return r.json();
+      }).catch(function () { return null; })
     ]).then(function (pair) {
       var proofs = pair[0];
       var quizDoc = pair[1];
@@ -45,7 +51,8 @@
         spotErrors: proofs.spotErrors,
         tellApart: proofs.tellApart,
         videos: proofs.videos,
-        quiz: quizDoc.items || quizDoc
+        quiz: quizDoc.items || quizDoc,
+        logic: pair[2]
       };
       return cache;
     });
