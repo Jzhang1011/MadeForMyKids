@@ -33,17 +33,21 @@
       -webkit-appearance: none; appearance: none;
     }
     .mcard-inner {
-      display: block; position: relative; width: 100%; height: 100%; min-height: 110px;
-      transition: transform 0.35s ease; transform-style: preserve-3d;
+      display: block; position: relative; width: 100%; min-height: 110px;
     }
-    .mcard.flipped .mcard-inner, .mcard.done .mcard-inner { transform: rotateY(180deg); }
+    /* Reveal by swapping faces, not by a 3D flip: the 3D rotate never
+       rendered in the browser check (counters updated, face text stayed
+       hidden), so flipped cards now simply hide the ? face and show the
+       text face. No transform, preserve-3d, or backface-visibility involved. */
     .mface {
-      position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      position: absolute; inset: 0;
       border-radius: 12px; display: flex; align-items: center; justify-content: center;
       padding: 0.6rem; text-align: center; font-size: 0.85rem; font-weight: 600; line-height: 1.4;
     }
     .mface.front { background: var(--mfk-skill-math, #7c3aed); color: #fff; font-size: 1.4rem; }
-    .mface.back { background: #faf5ff; border: 2px solid #e9d5ff; color: var(--mfk-slate); transform: rotateY(180deg); }
+    .mface.back { display: none; background: #faf5ff; border: 2px solid #e9d5ff; color: var(--mfk-slate); }
+    .mcard.flipped .mface.front, .mcard.done .mface.front { display: none; }
+    .mcard.flipped .mface.back, .mcard.done .mface.back { display: flex; }
     .mface.back.trigger { background: #fffbeb; border-color: #fde68a; font-style: italic; font-weight: 500; }
     .mcard.done .mface.back { border-color: #16a34a; background: #f0fdf4; }
     .mcard.done { cursor: default; }
