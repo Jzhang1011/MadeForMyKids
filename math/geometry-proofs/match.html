@@ -27,11 +27,13 @@
     }
     @media (max-width: 640px) { .board { grid-template-columns: repeat(3, 1fr); } }
     .mcard {
+      display: block; width: 100%;
       perspective: 800px; cursor: pointer; min-height: 110px; border: none; background: none; padding: 0;
       font-family: Inter, system-ui, sans-serif;
+      -webkit-appearance: none; appearance: none;
     }
     .mcard-inner {
-      position: relative; width: 100%; height: 100%; min-height: 110px;
+      display: block; position: relative; width: 100%; height: 100%; min-height: 110px;
       transition: transform 0.35s ease; transform-style: preserve-3d;
     }
     .mcard.flipped .mcard-inner, .mcard.done .mcard-inner { transform: rotateY(180deg); }
