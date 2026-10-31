@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transformation Playground — Geometry Transformations — MadeForMyKids</title>
+  <meta name="description" content="Move a shape on the coordinate grid: translate, reflect, rotate, or dilate it, and see the original and image coordinates side by side." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .card { background: var(--mfk-white); border: 2px solid var(--mfk-border); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem; }
+    .card > h2 { margin: 0 0 0.35rem; font-size: 1.5rem; color: var(--mfk-slate); }
+    .card p { color: var(--mfk-slate); line-height: 1.6; font-size: 0.95rem; }
+    .card p.lede { color: var(--mfk-slate-soft); }
+    .controls { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: end; margin-top: 0.9rem; }
+    .field label { display: block; font-weight: 700; font-size: 0.88rem; color: var(--mfk-slate-soft); margin-bottom: 0.3rem; }
+    .field select, .field input { font-size: 1rem; padding: 0.5rem 0.6rem; border: 2px solid var(--mfk-border); border-radius: 10px; background: #fff; }
+    .btn { font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem; background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none; border-radius: 12px; padding: 0.6rem 1.2rem; cursor: pointer; }
+    .rule { font-weight: 700; color: var(--mfk-skill-math, #7c3aed); margin-top: 0.9rem; }
+    svg.grid { width: 100%; max-width: 520px; display: block; margin: 1rem auto 0; background: #fff; border: 2px solid var(--mfk-border); border-radius: 14px; }
+    table.coords { border-collapse: collapse; margin: 1rem auto 0; }
+    table.coords th, table.coords td { border: 1px solid var(--mfk-border); padding: 0.45rem 0.8rem; text-align: center; font-size: 0.95rem; }
+    table.coords th { background: #faf5ff; }
+    .orig { color: var(--mfk-skill-math, #7c3aed); font-weight: 700; }
+    .img { color: #15803d; font-weight: 700; }
+    .warn { background: #fffbeb; border: 2px solid #fde68a; border-radius: 12px; padding: 0.8rem 1rem; margin-top: 0.9rem; font-size: 0.9rem; color: var(--mfk-slate); display: none; }
+    .warn.show { display: block; }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · Playground"
+      title="Transformation Playground"
+      subtitle="Pick a shape, pick a transformation, and watch the image land — with every coordinate worked out for you."
+    ></mfk-page-hero>
+
+    <section class="card" aria-label="Playground controls">
+      <h2>Move a shape</h2>
+      <p class="lede">The purple shape is the original. The green shape is the image. All transforms are about the origin, except reflections, which name their line.</p>
+      <div class="controls">
+        <div class="field"><label for="shape">Shape</label>
+          <select id="shape">
+            <option value="triangle">Triangle</option>
+            <option value="square">Square</option>
+            <option value="pentagon">Pentagon</option>
+          </select>
+        </div>
+        <div class="field"><label for="type">Transformation</label>
+          <select id="type">
+            <option value="translation">Translation (slide)</option>
+            <option value="reflection">Reflection (flip)</option>
+            <option value="rotation">Rotation (turn)</option>
+            <option value="dilation">Dilation (resize)</option>
+          </select>
+        </div>
+        <div class="field" id="field-trans"><label for="dx">Move right (+) / left (−)</label><input id="dx" type="number" value="3" min="-8" max="8" step="1" />
+          <label for="dy" style="margin-top:0.4rem">Move up (+) / down (−)</label><input id="dy" type="number" value="-2" min="-8" max="8" step="1" />
+        </div>
+        <div class="field" id="field-refl" style="display:none"><label for="line">Reflect over</label>
+          <select id="line"><option value="x-axis">x-axis</option><option value="y-axis">y-axis</option><option value="y=x">line y = x</option><option value="y=-x">line y = −x</option></select>
+        </div>
+        <div class="field" id="field-rot" style="display:none"><label for="kind">Turn</label>
+          <select id="kind"><option value="90cw">90° clockwise</option><option value="90ccw">90° counterclockwise</option><option value="180">180°</option><option value="270cw">270° clockwise</option></select>
+        </div>
+        <div class="field" id="field-dil" style="display:none"><label for="k">Scale factor k</label>
+          <select id="k"><option value="0.5">0.5 (shrink)</option><option value="1.5">1.5</option><option value="2" selected>2 (enlarge)</option><option value="3">3 (enlarge)</option></select>
+        </div>
+        <button class="btn" id="apply">Apply transformation</button>
+      </div>
+      <p class="rule" id="rule"></p>
+      <div id="warn" class="warn"></div>
+      <svg class="grid" id="grid" viewBox="0 0 500 500" role="img" aria-label="Coordinate grid from -8 to 8"></svg>
+      <div id="coords"></div>
+    </section>
+    <a class="back-link" href="index.html">← Back to Geometry Transformations</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/transform.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var SHAPES = {
+        triangle: { names: ["A", "B", "C"], pts: [{ x: 1, y: 1 }, { x: 4, y: 1 }, { x: 1, y: 3 }] },
+        square: { names: ["A", "B", "C", "D"], pts: [{ x: 1, y: 1 }, { x: 4, y: 1 }, { x: 4, y: 4 }, { x: 1, y: 4 }] },
+        pentagon: { names: ["A", "B", "C", "D", "E"], pts: [{ x: 0, y: 2 }, { x: 2, y: 3 }, { x: 4, y: 2 }, { x: 3, y: 0 }, { x: 1, y: 0 }] }
+      };
+      var RANGE = 8, SCALE = 28, C = 250;
+      function sx(x) { return C + x * SCALE; }
+      function sy(y) { return C - y * SCALE; }
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      function params() {
+        var type = document.getElementById("type").value;
+        if (type === "translation") return { a: parseInt(document.getElementById("dx").value, 10) || 0, b: parseInt(document.getElementById("dy").value, 10) || 0 };
+        if (type === "reflection") return { line: document.getElementById("line").value };
+        if (type === "rotation") return { kind: document.getElementById("kind").value };
+        if (type === "dilation") return { k: parseFloat(document.getElementById("k").value) };
+        return {};
+      }
+      function showFields() {
+        var type = document.getElementById("type").value;
+        document.getElementById("field-trans").style.display = type === "translation" ? "" : "none";
+        document.getElementById("field-refl").style.display = type === "reflection" ? "" : "none";
+        document.getElementById("field-rot").style.display = type === "rotation" ? "" : "none";
+        document.getElementById("field-dil").style.display = type === "dilation" ? "" : "none";
+      }
+      function render() {
+        var shape = SHAPES[document.getElementById("shape").value];
+        var type = document.getElementById("type").value;
+        var p = params();
+        var image = shape.pts.map(function (pt) { return Transforms.apply(type, p, pt); });
+        document.getElementById("rule").textContent = "Rule: " + Transforms.ruleText(type, p);
+        var warn = document.getElementById("warn");
+        var out = image.some(function (pt) { return Math.abs(pt.x) > RANGE || Math.abs(pt.y) > RANGE; });
+        warn.className = "warn" + (out ? " show" : "");
+        if (out) warn.textContent = "Some image points fall outside this −8 to 8 grid, so they are drawn at the edge. Pick a smaller move or scale factor to see the whole image.";
+        var svg = "";
+        for (var g = -RANGE; g <= RANGE; g++) {
+          var w = g === 0 ? 2 : 1, col = g === 0 ? "#334155" : "#e2e8f0";
+          svg += '<line x1="' + sx(g) + '" y1="' + sy(-RANGE) + '" x2="' + sx(g) + '" y2="' + sy(RANGE) + '" stroke="' + col + '" stroke-width="' + w + '"/>';
+          svg += '<line x1="' + sx(-RANGE) + '" y1="' + sy(g) + '" x2="' + sx(RANGE) + '" y2="' + sy(g) + '" stroke="' + col + '" stroke-width="' + w + '"/>';
+        }
+        function poly(pts, fill, stroke) {
+          var d = pts.map(function (pt, i) { return (i === 0 ? "M" : "L") + sx(Math.max(-RANGE, Math.min(RANGE, pt.x))) + " " + sy(Math.max(-RANGE, Math.min(RANGE, pt.y))); }).join(" ") + " Z";
+          return '<path d="' + d + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2.5" stroke-linejoin="round"/>';
+        }
+        svg += poly(shape.pts, "rgba(124,58,237,0.15)", "#7c3aed");
+        svg += poly(image, "rgba(21,128,61,0.15)", "#15803d");
+        shape.pts.forEach(function (pt, i) {
+          svg += '<text x="' + (sx(pt.x) + 6) + '" y="' + (sy(pt.y) - 6) + '" font-size="15" font-weight="700" fill="#7c3aed">' + shape.names[i] + esc(Transforms.show(pt)) + '</text>';
+        });
+        image.forEach(function (pt, i) {
+          svg += '<text x="' + (sx(Math.max(-RANGE, Math.min(RANGE, pt.x))) + 6) + '" y="' + (sy(Math.max(-RANGE, Math.min(RANGE, pt.y))) + 18) + '" font-size="15" font-weight="700" fill="#15803d">' + shape.names[i] + "′" + esc(Transforms.show(pt)) + '</text>';
+        });
+        document.getElementById("grid").innerHTML = svg;
+        var html = '<table class="coords"><thead><tr><th>Point</th><th class="orig">Original</th><th class="img">Image</th></tr></thead><tbody>';
+        shape.pts.forEach(function (pt, i) {
+          html += "<tr><td>" + shape.names[i] + "</td><td>" + esc(Transforms.show(pt)) + "</td><td>" + esc(Transforms.show(image[i])) + "</td></tr>";
+        });
+        html += "</tbody></table>";
+        document.getElementById("coords").innerHTML = html;
+      }
+      document.getElementById("type").addEventListener("change", function () { showFields(); render(); });
+      document.getElementById("shape").addEventListener("change", render);
+      ["dx", "dy", "line", "kind", "k"].forEach(function (id) {
+        document.getElementById(id).addEventListener("change", render);
+        document.getElementById(id).addEventListener("input", render);
+      });
+      document.getElementById("apply").addEventListener("click", render);
+      showFields();
+      render();
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

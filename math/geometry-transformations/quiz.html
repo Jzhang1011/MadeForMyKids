@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transformation Quiz — Geometry Transformations — MadeForMyKids</title>
+  <meta name="description" content="16 transformation drills: find the image point, name the transformation, and spot the dilation trap." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .card { background: var(--mfk-white); border: 2px solid var(--mfk-border); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem; }
+    .card > h2 { margin: 0 0 0.35rem; font-size: 1.5rem; color: var(--mfk-slate); }
+    .card p { color: var(--mfk-slate); line-height: 1.6; font-size: 0.95rem; }
+    .card p.lede { color: var(--mfk-slate-soft); }
+    .q { border: 2px solid var(--mfk-border); border-radius: 14px; padding: 1rem 1.15rem; margin-top: 0.9rem; background: #fff; }
+    .q .qq { font-size: 1.02rem; color: var(--mfk-slate); line-height: 1.6; }
+    .q .qnum { font-family: Fredoka, system-ui, sans-serif; color: var(--mfk-skill-math, #7c3aed); margin-right: 0.4rem; }
+    .opts { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.7rem; }
+    .opt { border: 2px solid var(--mfk-border); background: #fff; border-radius: 9999px; padding: 0.45rem 0.9rem; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--mfk-slate); }
+    .opt:disabled { cursor: default; opacity: 0.75; }
+    .opt.correct { background: #dcfce7; border-color: #15803d; color: #15803d; }
+    .opt.wrong { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+    .explain { margin-top: 0.7rem; font-size: 0.92rem; color: var(--mfk-slate); display: none; }
+    .explain.show { display: block; }
+    .score { font-weight: 700; color: var(--mfk-slate); margin-top: 0.5rem; }
+    .btn { font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem; background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none; border-radius: 12px; padding: 0.6rem 1.2rem; cursor: pointer; margin-top: 1rem; }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · Quiz"
+      title="Transformation Quiz"
+      subtitle="Find the image, name the move, and don't fall for the dilation trap. Every question explains itself after you answer."
+    ></mfk-page-hero>
+
+    <section class="card" aria-label="Transformation quiz">
+      <h2>16 drills, no timer</h2>
+      <p class="lede">Work in order or jump around. Every question shows its explanation after you answer, right or wrong.</p>
+      <div class="score" id="score"></div>
+      <div id="quiz-slot"></div>
+      <button class="btn" id="reshuffle">Shuffle the order</button>
+    </section>
+    <a class="back-link" href="index.html">← Back to Geometry Transformations</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/transform.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var answered = 0, correctCount = 0;
+      function shuffle(a) {
+        a = a.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = a[i]; a[i] = a[j]; a[j] = t;
+        }
+        return a;
+      }
+      function render(data) {
+        var items = shuffle(data.quiz);
+        answered = 0; correctCount = 0;
+        document.getElementById("score").textContent = "Answered: 0/" + items.length;
+        var slot = document.getElementById("quiz-slot");
+        var html = "";
+        items.forEach(function (q, i) {
+          html += '<div class="q" data-answer="' + q.answer + '">';
+          html += '<div class="qq"><span class="qnum">' + (i + 1) + '.</span>' + q.question + '</div><div class="opts">';
+          q.choices.forEach(function (c, ci) {
+            html += '<button class="opt" data-id="' + ci + '">' + c + '</button>';
+          });
+          html += '</div><div class="explain"><strong>Answer: ' + q.choices[q.answer] + '.</strong> ' + q.why + '</div></div>';
+        });
+        slot.innerHTML = html;
+        slot.querySelectorAll(".q").forEach(function (el) {
+          var answer = el.getAttribute("data-answer");
+          el.querySelectorAll(".opt").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              if (el.getAttribute("data-done")) return;
+              el.setAttribute("data-done", "1");
+              if (btn.getAttribute("data-id") === answer) { btn.className += " correct"; correctCount++; }
+              else {
+                btn.className += " wrong";
+                el.querySelector('.opt[data-id="' + answer + '"]').className += " correct";
+              }
+              el.querySelectorAll(".opt").forEach(function (b) { b.disabled = true; });
+              el.querySelector(".explain").className += " show";
+              answered++;
+              document.getElementById("score").textContent = "Answered: " + answered + "/" + items.length + " · Correct: " + correctCount;
+            });
+          });
+        });
+      }
+      Transforms.loadData().then(function (data) {
+        render(data);
+        document.getElementById("reshuffle").addEventListener("click", function () { render(data); window.scrollTo(0, 0); });
+      }).catch(function () {
+        document.getElementById("quiz-slot").innerHTML = '<p style="color:var(--mfk-slate-soft)">Could not load the quiz — check your connection and refresh.</p>';
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>

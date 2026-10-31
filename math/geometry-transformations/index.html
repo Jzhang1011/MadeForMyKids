@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Geometry Transformations — MadeForMyKids</title>
+  <meta name="description" content="All four geometry transformations: translation, reflection, rotation, and dilation — rules, examples, an interactive playground, and quiz drills." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .card { background: var(--mfk-white); border: 2px solid var(--mfk-border); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1.25rem; }
+    .card > h2 { margin: 0 0 0.35rem; font-size: 1.5rem; color: var(--mfk-slate); }
+    .card > p.lede { margin: 0 0 1rem; color: var(--mfk-slate-soft); }
+    .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.9rem; margin-top: 1rem; }
+    .tool-card { display: block; background: #fff; border: 2px solid var(--mfk-border); border-radius: 16px; padding: 1.1rem 1.2rem; text-decoration: none; }
+    .tool-card:hover { border-color: var(--mfk-skill-math, #7c3aed); }
+    .tool-card h3 { margin: 0.4rem 0 0.25rem; font-size: 1.12rem; color: var(--mfk-slate); }
+    .tool-card p { margin: 0; font-size: 0.9rem; color: var(--mfk-slate-soft); line-height: 1.5; }
+    .lesson { background: #faf5ff; border: 2px solid #e9d5ff; border-radius: 14px; padding: 1rem 1.15rem; margin-top: 0.9rem; }
+    .lesson h3 { margin: 0 0 0.35rem; font-size: 1.15rem; color: var(--mfk-slate); }
+    .lesson p { margin: 0.3rem 0; font-size: 0.95rem; color: var(--mfk-slate); line-height: 1.6; }
+    .lesson .rule { font-weight: 700; color: var(--mfk-skill-math, #7c3aed); }
+    .lesson .trap { color: #b45309; font-size: 0.9rem; }
+    table.sum { border-collapse: collapse; width: 100%; margin-top: 0.9rem; }
+    table.sum th, table.sum td { border: 1px solid var(--mfk-border); padding: 0.5rem 0.7rem; text-align: left; font-size: 0.92rem; }
+    table.sum th { background: #faf5ff; }
+    .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="mfk-container mfk-section">
+    <mfk-page-hero
+      badge="Math · New"
+      title="Geometry Transformations"
+      subtitle="Four moves that move a figure on the coordinate plane: slide it, flip it, turn it, or resize it. Learn the rule for each, then try it yourself."
+    ></mfk-page-hero>
+
+    <section class="card" aria-label="Practice tools">
+      <h2>Try it yourself</h2>
+      <p class="lede">Read the four lessons, then play with a shape on the grid and test yourself.</p>
+      <div class="tool-grid">
+        <a class="tool-card" href="playground.html">
+          <div style="font-size:1.7rem">📐</div>
+          <h3>Playground</h3>
+          <p>Pick a shape and a transformation, and watch the original and the image on the coordinate grid, with every coordinate shown.</p>
+        </a>
+        <a class="tool-card" href="quiz.html">
+          <div style="font-size:1.7rem">✏️</div>
+          <h3>Quiz drills</h3>
+          <p>16 questions: find the image point, name the transformation, and spot the dilation trap.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Four transformations">
+      <h2>The four transformations</h2>
+      <p class="lede">Three of them keep the figure congruent. One does not — and that is the one to watch.</p>
+      <div id="lessons-slot"></div>
+      <table class="sum" aria-label="Summary table">
+        <thead><tr><th>Transformation</th><th>Size</th><th>Orientation</th><th>Congruent?</th></tr></thead>
+        <tbody>
+          <tr><td>Translation (slide)</td><td>Same</td><td>Same</td><td>Yes</td></tr>
+          <tr><td>Reflection (flip)</td><td>Same</td><td>Reversed (mirror)</td><td>Yes</td></tr>
+          <tr><td>Rotation (turn)</td><td>Same</td><td>Turned, not mirrored</td><td>Yes</td></tr>
+          <tr><td>Dilation (resize)</td><td>Changed by k</td><td>Same</td><td>Only if k = 1</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <a class="back-link" href="/learn/">← Back to Learn</a>
+    <span style="color:var(--mfk-slate-soft)"> · </span>
+    <a class="back-link" href="/math/geometry-proofs/">Geometry Proofs Practice →</a>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="pageHero"></script>
+  <script src="assets/transform.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      Transforms.loadData().then(function (data) {
+        var html = "";
+        data.lessons.forEach(function (l) {
+          html += '<div class="lesson"><h3>' + l.icon + ' ' + l.title + '</h3>' +
+            '<p>' + l.what + '</p>' +
+            '<p class="rule">Rule: ' + l.rule + '</p>' +
+            '<p>Example: ' + l.example.before + ' → ' + l.example.after + '. ' + l.example.note + '</p>' +
+            '<p>Size: ' + l.size + ' · Orientation: ' + l.orientation + ' · Congruent: ' + l.congruent + '.</p>' +
+            '<p class="trap"><strong>Watch out:</strong> ' + l.watchOut + '</p></div>';
+        });
+        document.getElementById("lessons-slot").innerHTML = html;
+      }).catch(function () {
+        document.getElementById("lessons-slot").innerHTML = '<p style="color:var(--mfk-slate-soft)">Could not load the lessons — check your connection and refresh.</p>';
+      });
+    })();
+  </script>
+  <script src="/components/analytics.js"></script>
+</body>
+</html>
