@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Family Board — MadeForMyKids</title>
+  <meta name="description" content="A Skylight-style family board for the iPad on the wall: today's tasks for each kid, tap to check off, stars, this week's calendar, and shared lists. Parent mode is PIN-locked." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Family Board" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/components/theme.css" />
+  <style>
+    .mfk-page { background: var(--mfk-cream); }
+    h1, h2, h3, .display { font-family: Fredoka, system-ui, sans-serif; }
+    .board-wrap { max-width: 1180px; margin: 0 auto; padding: 0 1rem 3rem; }
+    .board-top { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-end; justify-content: space-between; margin: .5rem 0 1rem; }
+    .board-top h1 { margin: 0; font-size: clamp(1.9rem, 4vw, 2.6rem); color: var(--mfk-slate); }
+    .board-top .sub { margin: .25rem 0 0; color: var(--mfk-slate-soft); font-size: 1.05rem; }
+    .pill { display: inline-flex; align-items: center; gap: .4rem; background: #fff; border: 2px solid var(--mfk-border); border-radius: 999px; padding: .45rem .9rem; font-weight: 600; font-size: .92rem; color: var(--mfk-slate-mid); }
+    .pill .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--mfk-success); }
+    .btn { font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem; background: var(--mfk-coral); color: #fff; border: none; border-radius: 12px; padding: .7rem 1.3rem; cursor: pointer; min-height: 48px; }
+    .btn:hover { filter: brightness(1.06); }
+    .btn-ghost { background: #fff; color: var(--mfk-slate); border: 2px solid var(--mfk-border); }
+    .btn-small { padding: .45rem .8rem; font-size: .92rem; min-height: 40px; }
+    .tabs { display: flex; gap: .5rem; margin: 0 0 1.1rem; flex-wrap: wrap; }
+    .tab { font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1.05rem; background: #fff; color: var(--mfk-slate-mid); border: 2px solid var(--mfk-border); border-radius: 999px; padding: .65rem 1.4rem; cursor: pointer; min-height: 52px; }
+    .tab[aria-selected="true"] { background: var(--mfk-slate); color: #fff; border-color: var(--mfk-slate); }
+    .view { display: none; }
+    .view.active { display: block; }
+    .kids-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 760px) { .kids-grid { grid-template-columns: 1fr; } }
+    .kid-card { background: #fff; border: 3px solid var(--kid-color, #7c3aed); border-radius: 22px; padding: 1.1rem 1.2rem 1.2rem; }
+    .kid-head { display: flex; align-items: center; gap: .8rem; }
+    .kid-avatar { width: 58px; height: 58px; border-radius: 50%; background: var(--kid-color, #7c3aed); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.7rem; font-family: Fredoka, system-ui, sans-serif; font-weight: 700; flex: none; }
+    .kid-head h2 { margin: 0; font-size: 1.45rem; color: var(--mfk-slate); }
+    .kid-head p { margin: .1rem 0 0; color: var(--mfk-slate-soft); font-size: .95rem; }
+    .kid-head .stars { margin-left: auto; text-align: right; font-family: Fredoka, system-ui, sans-serif; }
+    .kid-head .stars b { font-size: 1.5rem; color: #b45309; }
+    .progress { height: 12px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin: .9rem 0 .4rem; }
+    .progress > i { display: block; height: 100%; background: var(--kid-color, #7c3aed); border-radius: 999px; transition: width .25s ease; }
+    .when-group { margin-top: 1rem; }
+    .when-group > h3 { margin: 0 0 .55rem; font-size: .95rem; letter-spacing: .04em; text-transform: uppercase; color: var(--mfk-slate-faint); }
+    .task { display: flex; align-items: center; gap: .9rem; width: 100%; text-align: left; background: #fff; border: 2px solid var(--mfk-border); border-radius: 16px; padding: .8rem .95rem; margin-bottom: .6rem; cursor: pointer; font-family: Inter, system-ui, sans-serif; font-size: 1.08rem; font-weight: 600; color: var(--mfk-slate); min-height: 64px; }
+    .task:active { transform: scale(.985); }
+    .task .box { width: 34px; height: 34px; flex: none; border: 3px solid var(--kid-color, #7c3aed); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: #fff; background: #fff; }
+    .task.done { background: var(--mfk-success-soft); border-color: #86efac; color: #14532d; }
+    .task.done .box { background: var(--mfk-success); border-color: var(--mfk-success); }
+    .task.done .task-title { text-decoration: line-through; }
+    .task .task-meta { margin-left: auto; font-size: .9rem; color: var(--mfk-slate-faint); font-weight: 600; white-space: nowrap; }
+    .task .mini { border: none; background: none; cursor: pointer; font-size: 1.05rem; padding: .3rem; line-height: 1; }
+    .all-done { text-align: center; background: var(--mfk-success-soft); border: 2px solid #86efac; color: #14532d; border-radius: 16px; padding: 1rem; font-family: Fredoka, system-ui, sans-serif; font-size: 1.15rem; margin-top: 1rem; }
+    .reward-strip { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; background: #fffbeb; border: 2px solid #fde68a; border-radius: 18px; padding: 1rem 1.2rem; margin-top: 1rem; }
+    .reward-strip strong { font-family: Fredoka, system-ui, sans-serif; font-size: 1.1rem; color: var(--mfk-slate); }
+    .reward-strip span { color: var(--mfk-slate-soft); }
+    .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: .6rem; }
+    @media (max-width: 900px) { .week-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px) { .week-grid { grid-template-columns: 1fr; } }
+    .day-col { background: #fff; border: 2px solid var(--mfk-border); border-radius: 16px; padding: .85rem; min-height: 150px; }
+    .day-col.today { border-color: var(--mfk-coral); box-shadow: 0 0 0 2px var(--mfk-coral-soft); }
+    .day-col h3 { margin: 0 0 .15rem; font-size: 1.05rem; color: var(--mfk-slate); }
+    .day-col .dow { font-size: .85rem; color: var(--mfk-slate-faint); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    .event { border-radius: 10px; padding: .5rem .6rem; margin-top: .5rem; font-size: .95rem; font-weight: 600; line-height: 1.35; }
+    .event small { display: block; font-weight: 500; opacity: .85; }
+    .list-card { background: #fff; border: 2px solid var(--mfk-border); border-radius: 22px; padding: 1.2rem; }
+    .list-card h2 { margin: 0 0 .6rem; font-size: 1.4rem; color: var(--mfk-slate); }
+    .add-row { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: .8rem; }
+    .add-row input, .add-row select { flex: 1 1 180px; font: inherit; font-size: 1.05rem; padding: .75rem .9rem; border: 2px solid var(--mfk-border); border-radius: 12px; min-height: 52px; }
+    .note { background: #f8fafc; border: 2px dashed var(--mfk-border); border-radius: 16px; padding: 1rem 1.2rem; color: var(--mfk-slate-soft); line-height: 1.6; margin-top: 1.2rem; }
+    .note strong { color: var(--mfk-slate); }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, .55); display: none; align-items: flex-start; justify-content: center; padding: 4vh 1rem; z-index: 50; overflow-y: auto; }
+    .modal-backdrop.open { display: flex; }
+    .modal { background: #fff; border-radius: 22px; width: min(680px, 100%); padding: 1.4rem 1.5rem 1.6rem; }
+    .modal h2 { margin: 0 0 .4rem; font-size: 1.5rem; color: var(--mfk-slate); }
+    .modal p { color: var(--mfk-slate-soft); line-height: 1.55; margin: .3rem 0 .9rem; }
+    .modal label { display: block; font-weight: 700; color: var(--mfk-slate); margin: .9rem 0 .3rem; }
+    .modal input, .modal select { width: 100%; font: inherit; font-size: 1.05rem; padding: .75rem .9rem; border: 2px solid var(--mfk-border); border-radius: 12px; min-height: 52px; box-sizing: border-box; }
+    .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin-top: .9rem; }
+    .pin-pad button { font-family: Fredoka, system-ui, sans-serif; font-size: 1.4rem; font-weight: 700; padding: 1rem 0; border-radius: 14px; border: 2px solid var(--mfk-border); background: #f8fafc; cursor: pointer; min-height: 64px; }
+    .row-btns { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1.1rem; }
+    .parent-section { border-top: 2px solid var(--mfk-border); margin-top: 1.2rem; padding-top: 1rem; }
+    .parent-section h3 { margin: 0 0 .4rem; font-size: 1.15rem; color: var(--mfk-slate); }
+    .danger { color: var(--mfk-error); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body class="mfk-page">
+  <mfk-header active="learn"></mfk-header>
+  <main class="board-wrap">
+    <div class="board-top">
+      <div>
+        <h1>🏠 Family Board</h1>
+        <p class="sub" id="dateLine">Today</p>
+      </div>
+      <div style="display:flex; gap:.5rem; flex-wrap:wrap; align-items:center;">
+        <span class="pill" id="syncPill" title="v1 saves on this iPad only. Export / Import in Parent mode moves the data to another device."><span class="dot"></span><span id="syncText">Saved on this iPad</span></span>
+        <button class="btn btn-ghost" id="parentBtn" type="button">🔒 Parent mode</button>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Family Board views">
+      <button class="tab" role="tab" aria-selected="true" data-view="today" type="button">☀️ Today</button>
+      <button class="tab" role="tab" aria-selected="false" data-view="week" type="button">📅 This week</button>
+      <button class="tab" role="tab" aria-selected="false" data-view="lists" type="button">✅ Lists</button>
+    </div>
+
+    <section class="view active" id="view-today" aria-label="Today's tasks">
+      <div class="kids-grid" id="kidsGrid"></div>
+      <div class="reward-strip" id="rewardStrip"></div>
+    </section>
+
+    <section class="view" id="view-week" aria-label="This week's calendar">
+      <div class="week-grid" id="weekGrid"></div>
+      <div class="note"><strong>Adding events:</strong> open Parent mode (🔒, PIN <code>1234</code> until you change it) → Add event. Events are stored on this iPad in v1 — calendar sync with Google / Apple is the next step, not in this version.</div>
+    </section>
+
+    <section class="view" id="view-lists" aria-label="Shared lists">
+      <div class="list-card">
+        <h2>🛒 Family list</h2>
+        <p style="margin:.2rem 0 .9rem; color:var(--mfk-slate-soft);">Groceries, to-dos, anything the family needs. Tap to check off — anyone can add.</p>
+        <div class="add-row">
+          <input id="listInput" type="text" placeholder="Add milk, library books, …" autocomplete="off" />
+          <button class="btn" id="listAddBtn" type="button">Add</button>
+        </div>
+        <div id="listItems"></div>
+      </div>
+    </section>
+
+    <div class="note">
+      <strong>How this works (v1):</strong> tasks reset every morning, stars add up through the week, and everything is saved on this iPad — so it works as the kitchen-wall display even with no internet after the first load.
+      To put it on the iPad home screen: open this page in Safari → Share → <strong>Add to Home Screen</strong>.
+      <strong>Sync:</strong> v1 does not sync to a parent's phone yet. Parent mode has Export / Import to move the whole board to another device, and the data is stored in one versioned object so a cloud sync can be added without rebuilding the board.
+    </div>
+  </main>
+  <mfk-footer></mfk-footer>
+
+  <!-- Parent modal -->
+  <div class="modal-backdrop" id="parentModal" role="dialog" aria-modal="true" aria-labelledby="parentTitle">
+    <div class="modal">
+      <h2 id="parentTitle">🔒 Parent mode</h2>
+      <div id="pinStep">
+        <p>Enter your PIN to add or edit tasks, events and names. Default PIN is <strong>1234</strong> — change it below once you're in.</p>
+        <label for="pinInput">PIN</label>
+        <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="••••" />
+        <div class="pin-pad" id="pinPad"></div>
+        <p id="pinError" class="danger hidden" style="font-weight:700;">Wrong PIN — try again.</p>
+        <div class="row-btns">
+          <button class="btn" id="pinGoBtn" type="button">Unlock</button>
+          <button class="btn btn-ghost" id="pinCancelBtn" type="button">Cancel</button>
+        </div>
+      </div>
+
+      <div id="parentStep" class="hidden">
+        <p>You're in Parent mode. Kids can still tap tasks done — only you can change what's on the board.</p>
+
+        <div class="parent-section">
+          <h3>➕ Add a task</h3>
+          <label for="taskKid">For</label>
+          <select id="taskKid"></select>
+          <label for="taskTitle">Task</label>
+          <input id="taskTitle" type="text" placeholder="e.g. Practice piano 15 min" autocomplete="off" />
+          <label for="taskWhen">When</label>
+          <select id="taskWhen">
+            <option value="morning">🌅 Morning</option>
+            <option value="afterschool">🎒 After school</option>
+            <option value="evening">🌙 Evening</option>
+          </select>
+          <label for="taskDays">Repeats</label>
+          <select id="taskDays">
+            <option value="all">Every day</option>
+            <option value="weekdays">Weekdays (Mon–Fri)</option>
+            <option value="weekends">Weekends (Sat–Sun)</option>
+          </select>
+          <div class="row-btns"><button class="btn" id="taskAddBtn" type="button">Add task</button></div>
+        </div>
+
+        <div class="parent-section">
+          <h3>📅 Add an event</h3>
+          <label for="eventDate">Date</label>
+          <input id="eventDate" type="date" />
+          <label for="eventTitle">Event</label>
+          <input id="eventTitle" type="text" placeholder="e.g. Science Olympiad practice" autocomplete="off" />
+          <label for="eventTime">Time (optional)</label>
+          <input id="eventTime" type="text" placeholder="e.g. 4:00 PM" autocomplete="off" />
+          <label for="eventKid">For</label>
+          <select id="eventKid"></select>
+          <div class="row-btns"><button class="btn" id="eventAddBtn" type="button">Add event</button></div>
+        </div>
+
+        <div class="parent-section">
+          <h3>👧🧒 Names &amp; reward</h3>
+          <label for="kid1Name">Kid 1 name</label>
+          <input id="kid1Name" type="text" autocomplete="off" />
+          <label for="kid2Name">Kid 2 name</label>
+          <input id="kid2Name" type="text" autocomplete="off" />
+          <label for="rewardLabel">Weekly reward (when the star goal is reached)</label>
+          <input id="rewardLabel" type="text" autocomplete="off" />
+          <label for="rewardGoal">Star goal per week</label>
+          <input id="rewardGoal" type="number" min="1" max="200" />
+          <div class="row-btns"><button class="btn" id="saveNamesBtn" type="button">Save names &amp; reward</button></div>
+        </div>
+
+        <div class="parent-section">
+          <h3>🔑 Change PIN &amp; data</h3>
+          <label for="newPin">New PIN (4–8 digits)</label>
+          <input id="newPin" type="password" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="Leave blank to keep current PIN" />
+          <div class="row-btns">
+            <button class="btn" id="savePinBtn" type="button">Change PIN</button>
+            <button class="btn btn-ghost" id="exportBtn" type="button">Export board (JSON)</button>
+            <button class="btn btn-ghost" id="importBtn" type="button">Import board…</button>
+            <input type="file" id="importFile" accept="application/json,.json" class="hidden" />
+          </div>
+          <div class="row-btns">
+            <button class="btn btn-ghost" id="resetTodayBtn" type="button">Reset today's checks</button>
+            <button class="btn btn-ghost danger" id="resetAllBtn" type="button">Reset everything to samples</button>
+            <button class="btn btn-ghost" id="lockBtn" type="button">Lock Parent mode</button>
+          </div>
+          <p style="font-size:.92rem;">Export downloads one file with the whole board — tasks, events, lists and stars. Import it on another iPad or phone to move the board over. That is the v1 way to share it between devices.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/components/load.js" data-mfk-active="learn" data-mfk-extras="toast"></script>
+  <script>
+  (function () {
+    'use strict';
+    var KEY = 'mfk-family-board-v1';
+    var WHEN_LABEL = { morning: '🌅 Morning', afterschool: '🎒 After school', evening: '🌙 Evening' };
+    var WHEN_ORDER = ['morning', 'afterschool', 'evening'];
+
+    function todayStr(d) {
+      d = d || new Date();
+      var m = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      return d.getFullYear() + '-' + m + '-' + day;
+    }
+    function addDays(dateStr, n) {
+      var parts = dateStr.split('-').map(Number);
+      var d = new Date(parts[0], parts[1] - 1, parts[2] + n);
+      return todayStr(d);
+    }
+    function uid() { return 'id-' + Date.now().toString(36) + '-' + Math.floor(Math.random() * 1e6).toString(36); }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+    function saturdayOfThisWeek() {
+      var now = new Date(); var dow = now.getDay(); // 0 Sun .. 6 Sat
+      var delta = (6 - dow + 7) % 7;
+      return addDays(todayStr(), delta);
+    }
+
+    function seed() {
+      var sat = saturdayOfThisWeek();
+      return {
+        v: 1, pin: '1234',
+        reward: { goal: 25, label: 'Pick a family movie night' },
+        kids: [
+          { id: 'kid-7', name: '7th Grader', emoji: '🧑‍🎓', color: '#7c3aed' },
+          { id: 'kid-3', name: '3rd Grader', emoji: '🧒', color: '#0891b2' }
+        ],
+        tasks: [
+          { id: uid() + '-a', kidId: 'kid-7', title: 'Make bed', when: 'morning', days: 'all' },
+          { id: uid() + '-b', kidId: 'kid-7', title: 'Homework', when: 'afterschool', days: 'weekdays' },
+          { id: uid() + '-c', kidId: 'kid-7', title: 'Practice 15 min (typing / French / geometry)', when: 'afterschool', days: 'weekdays' },
+          { id: uid() + '-d', kidId: 'kid-7', title: 'Reading 20 min', when: 'evening', days: 'all' },
+          { id: uid() + '-e', kidId: 'kid-7', title: 'Tidy desk', when: 'evening', days: 'all' },
+          { id: uid() + '-f', kidId: 'kid-3', title: 'Make bed', when: 'morning', days: 'all' },
+          { id: uid() + '-g', kidId: 'kid-3', title: 'Brush teeth', when: 'morning', days: 'all' },
+          { id: uid() + '-h', kidId: 'kid-3', title: 'Homework / reading', when: 'afterschool', days: 'weekdays' },
+          { id: uid() + '-i', kidId: 'kid-3', title: 'Practice reading 15 min', when: 'afterschool', days: 'all' },
+          { id: uid() + '-j', kidId: 'kid-3', title: 'Tidy toys', when: 'evening', days: 'all' }
+        ],
+        events: [
+          { id: uid() + '-e1', date: sat, time: '7:00 PM', title: 'Family movie night (sample)', kidId: null },
+          { id: uid() + '-e2', date: addDays(todayStr(), 1), time: '', title: 'Library books due (sample)', kidId: null }
+        ],
+        lists: [
+          { id: uid() + '-l1', title: 'Milk', done: false },
+          { id: uid() + '-l2', title: 'Eggs', done: false },
+          { id: uid() + '-l3', title: 'Bread', done: false }
+        ],
+        done: {} // { 'YYYY-MM-DD': { taskId: true } }
+      };
+    }
+
+    var state;
+    try {
+      var raw = localStorage.getItem(KEY);
+      state = raw ? JSON.parse(raw) : seed();
+      if (!state || state.v !== 1 || !Array.isArray(state.tasks)) state = seed();
+    } catch (e) { state = seed(); }
+
+    function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage full / private mode */ } }
+    var parentUnlocked = false;
+
+    function tasksForKidOn(kidId, dateStr) {
+      var d = new Date(dateStr + 'T12:00:00');
+      var dow = d.getDay();
+      return state.tasks.filter(function (t) {
+        if (t.kidId !== kidId) return false;
+        if (t.days === 'weekdays') return dow >= 1 && dow <= 5;
+        if (t.days === 'weekends') return dow === 0 || dow === 6;
+        return true;
+      });
+    }
+    function isDone(taskId, dateStr) { return !!(state.done[dateStr] && state.done[dateStr][taskId]); }
+    function weekStart(dateStr) {
+      var d = new Date(dateStr + 'T12:00:00');
+      var dow = d.getDay(); var delta = dow === 0 ? -6 : 1 - dow; // Monday
+      return addDays(dateStr, delta);
+    }
+    function starsThisWeek(kidId) {
+      var start = weekStart(todayStr()); var total = 0;
+      for (var i = 0; i < 7; i++) {
+        var ds = addDays(start, i);
+        var doneMap = state.done[ds] || {};
+        Object.keys(doneMap).forEach(function (taskId) {
+          var t = state.tasks.find(function (x) { return x.id === taskId; });
+          if (t && t.kidId === kidId) total += 1;
+        });
+      }
+      return total;
+    }
+
+    function renderDate() {
+      var now = new Date();
+      var line = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      document.getElementById('dateLine').textContent = line + ' — tap a task when it’s done. ⭐';
+    }
+
+    function renderToday() {
+      var grid = document.getElementById('kidsGrid');
+      var today = todayStr();
+      grid.innerHTML = '';
+      state.kids.forEach(function (kid) {
+        var tasks = tasksForKidOn(kid.id, today);
+        var doneCount = tasks.filter(function (t) { return isDone(t.id, today); }).length;
+        var pct = tasks.length ? Math.round(doneCount / tasks.length * 100) : 0;
+        var card = document.createElement('article');
+        card.className = 'kid-card';
+        card.style.setProperty('--kid-color', kid.color);
+        var head = '<div class="kid-head"><div class="kid-avatar">' + esc(kid.emoji) + '</div>' +
+          '<div><h2>' + esc(kid.name) + '</h2><p>' + doneCount + ' of ' + tasks.length + ' done today</p></div>' +
+          '<div class="stars"><b>⭐ ' + starsThisWeek(kid.id) + '</b><br><span style="font-size:.85rem;color:var(--mfk-slate-faint);">this week</span></div></div>' +
+          '<div class="progress" aria-label="' + esc(kid.name) + ' progress"><i style="width:' + pct + '%"></i></div>';
+        card.innerHTML = head;
+        if (!tasks.length) {
+          card.innerHTML += '<p style="color:var(--mfk-slate-soft);">No tasks today — add some in Parent mode.</p>';
+        }
+        WHEN_ORDER.forEach(function (when) {
+          var group = tasks.filter(function (t) { return t.when === when; });
+          if (!group.length) return;
+          var h = document.createElement('div');
+          h.className = 'when-group';
+          h.innerHTML = '<h3>' + WHEN_LABEL[when] + '</h3>';
+          group.forEach(function (t) {
+            var done = isDone(t.id, today);
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'task' + (done ? ' done' : '');
+            btn.setAttribute('aria-pressed', done ? 'true' : 'false');
+            btn.innerHTML = '<span class="box">' + (done ? '✓' : '') + '</span><span class="task-title">' + esc(t.title) + '</span><span class="task-meta">⭐ 1</span>' +
+              (parentUnlocked ? '<span class="mini" data-del="' + t.id + '" title="Delete task" aria-label="Delete task">🗑️</span>' : '');
+            btn.addEventListener('click', function (ev) {
+              var del = ev.target.closest('[data-del]');
+              if (del) {
+                ev.stopPropagation();
+                if (!confirm('Delete "' + t.title + '"?')) return;
+                state.tasks = state.tasks.filter(function (x) { return x.id !== t.id; });
+                save(); renderAll(); return;
+              }
+              state.done[today] = state.done[today] || {};
+              if (state.done[today][t.id]) delete state.done[today][t.id];
+              else state.done[today][t.id] = true;
+              save(); renderAll();
+            });
+            h.appendChild(btn);
+          });
+          card.appendChild(h);
+        });
+        if (tasks.length && doneCount === tasks.length) {
+          var cheer = document.createElement('div');
+          cheer.className = 'all-done';
+          cheer.textContent = '🎉 All done, ' + kid.name + '! Great day.';
+          card.appendChild(cheer);
+        }
+        grid.appendChild(card);
+      });
+      var totalStars = state.kids.reduce(function (s, k) { return s + starsThisWeek(k.id); }, 0);
+      document.getElementById('rewardStrip').innerHTML =
+        '<strong>⭐ ' + totalStars + ' stars this week</strong><span>Goal: ' + state.reward.goal + ' stars → ' + esc(state.reward.label) + '</span>' +
+        (totalStars >= state.reward.goal ? '<span style="font-weight:700;color:#15803d;">🎉 Goal reached!</span>' : '');
+    }
+
+    function renderWeek() {
+      var grid = document.getElementById('weekGrid');
+      var start = weekStart(todayStr());
+      var today = todayStr();
+      grid.innerHTML = '';
+      for (var i = 0; i < 7; i++) {
+        var ds = addDays(start, i);
+        var d = new Date(ds + 'T12:00:00');
+        var col = document.createElement('div');
+        col.className = 'day-col' + (ds === today ? ' today' : '');
+        var html = '<div class="dow">' + d.toLocaleDateString(undefined, { weekday: 'short' }) + '</div><h3>' + d.getDate() + (ds === today ? ' • Today' : '') + '</h3>';
+        var evs = state.events.filter(function (e) { return e.date === ds; });
+        evs.forEach(function (e) {
+          var kid = e.kidId ? state.kids.find(function (k) { return k.id === e.kidId; }) : null;
+          html += '<div class="event" style="background:' + (kid ? kid.color + '22' : '#fff7ed') + ';border:1px solid ' + (kid ? kid.color + '55' : '#fed7aa') + ';">' +
+            esc(e.title) + (e.time ? '<small>' + esc(e.time) + '</small>' : '') + (kid ? '<small>' + esc(kid.name) + '</small>' : '') +
+            (parentUnlocked ? ' <button type="button" class="mini" data-del-event="' + e.id + '" aria-label="Delete event">🗑️</button>' : '') + '</div>';
+        });
+        var taskCount = state.kids.reduce(function (s, k) { return s + tasksForKidOn(k.id, ds).length; }, 0);
+        html += '<p style="margin:.6rem 0 0;font-size:.88rem;color:var(--mfk-slate-faint);">' + taskCount + ' tasks</p>';
+        col.innerHTML = html;
+        col.querySelectorAll('[data-del-event]').forEach(function (b) {
+          b.addEventListener('click', function () {
+            if (!confirm('Delete this event?')) return;
+            state.events = state.events.filter(function (e) { return e.id !== b.getAttribute('data-del-event'); });
+            save(); renderAll();
+          });
+        });
+        grid.appendChild(col);
+      }
+    }
+
+    function renderLists() {
+      var wrap = document.getElementById('listItems');
+      wrap.innerHTML = '';
+      if (!state.lists.length) wrap.innerHTML = '<p style="color:var(--mfk-slate-soft);">List is empty — add the first item above.</p>';
+      state.lists.forEach(function (item) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'task' + (item.done ? ' done' : '');
+        btn.style.setProperty('--kid-color', '#ff7d26');
+        btn.innerHTML = '<span class="box">' + (item.done ? '✓' : '') + '</span><span class="task-title">' + esc(item.title) + '</span>' +
+          (parentUnlocked ? '<span class="mini" data-del-list="' + item.id + '" title="Delete" aria-label="Delete item">🗑️</span>' : '');
+        btn.addEventListener('click', function (ev) {
+          var del = ev.target.closest('[data-del-list]');
+          if (del) { ev.stopPropagation(); state.lists = state.lists.filter(function (x) { return x.id !== item.id; }); save(); renderAll(); return; }
+          item.done = !item.done; save(); renderAll();
+        });
+        wrap.appendChild(btn);
+      });
+    }
+
+    function renderAll() { renderDate(); renderToday(); renderWeek(); renderLists(); syncParentBtn(); }
+
+    // Tabs
+    document.querySelectorAll('.tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('.tab').forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+        tab.setAttribute('aria-selected', 'true');
+        document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
+        document.getElementById('view-' + tab.getAttribute('data-view')).classList.add('active');
+      });
+    });
+
+    // Lists add
+    function addListItem() {
+      var input = document.getElementById('listInput');
+      var title = input.value.trim();
+      if (!title) return;
+      state.lists.push({ id: uid(), title: title, done: false });
+      input.value = ''; save(); renderAll(); input.focus();
+    }
+    document.getElementById('listAddBtn').addEventListener('click', addListItem);
+    document.getElementById('listInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') addListItem(); });
+
+    // Parent mode
+    var modal = document.getElementById('parentModal');
+    function syncParentBtn() {
+      document.getElementById('parentBtn').textContent = parentUnlocked ? '🔓 Parent mode: on' : '🔒 Parent mode';
+    }
+    function openParent() {
+      document.getElementById('pinStep').classList.toggle('hidden', parentUnlocked);
+      document.getElementById('parentStep').classList.toggle('hidden', !parentUnlocked);
+      document.getElementById('pinError').classList.add('hidden');
+      document.getElementById('pinInput').value = '';
+      if (parentUnlocked) fillParentForm();
+      modal.classList.add('open');
+      if (!parentUnlocked) document.getElementById('pinInput').focus();
+    }
+    function closeParent() { modal.classList.remove('open'); }
+    function fillParentForm() {
+      var taskKid = document.getElementById('taskKid');
+      var eventKid = document.getElementById('eventKid');
+      var opts = '<option value="">Family (everyone)</option>' + state.kids.map(function (k) { return '<option value="' + k.id + '">' + esc(k.name) + '</option>'; }).join('');
+      taskKid.innerHTML = state.kids.map(function (k) { return '<option value="' + k.id + '">' + esc(k.name) + '</option>'; }).join('');
+      eventKid.innerHTML = opts;
+      document.getElementById('kid1Name').value = state.kids[0] ? state.kids[0].name : '';
+      document.getElementById('kid2Name').value = state.kids[1] ? state.kids[1].name : '';
+      document.getElementById('rewardLabel').value = state.reward.label;
+      document.getElementById('rewardGoal').value = state.reward.goal;
+      document.getElementById('eventDate').value = todayStr();
+    }
+    document.getElementById('parentBtn').addEventListener('click', openParent);
+    document.getElementById('pinCancelBtn').addEventListener('click', closeParent);
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeParent(); });
+    function tryPin() {
+      if (document.getElementById('pinInput').value === state.pin) {
+        parentUnlocked = true; save(); renderAll();
+        document.getElementById('pinStep').classList.add('hidden');
+        document.getElementById('parentStep').classList.remove('hidden');
+        fillParentForm();
+      } else {
+        document.getElementById('pinError').classList.remove('hidden');
+        document.getElementById('pinInput').value = '';
+        document.getElementById('pinInput').focus();
+      }
+    }
+    document.getElementById('pinGoBtn').addEventListener('click', tryPin);
+    document.getElementById('pinInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') tryPin(); });
+    var pad = document.getElementById('pinPad');
+    ['1','2','3','4','5','6','7','8','9','C','0','⌫'].forEach(function (k) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = k;
+      b.addEventListener('click', function () {
+        var input = document.getElementById('pinInput');
+        if (k === 'C') input.value = '';
+        else if (k === '⌫') input.value = input.value.slice(0, -1);
+        else if (input.value.length < 8) input.value += k;
+        input.focus();
+      });
+      pad.appendChild(b);
+    });
+
+    document.getElementById('taskAddBtn').addEventListener('click', function () {
+      var title = document.getElementById('taskTitle').value.trim();
+      if (!title) { alert('Give the task a name first.'); return; }
+      state.tasks.push({ id: uid(), kidId: document.getElementById('taskKid').value, title: title, when: document.getElementById('taskWhen').value, days: document.getElementById('taskDays').value });
+      document.getElementById('taskTitle').value = '';
+      save(); renderAll(); alert('Task added for today onwards.');
+    });
+    document.getElementById('eventAddBtn').addEventListener('click', function () {
+      var title = document.getElementById('eventTitle').value.trim();
+      var date = document.getElementById('eventDate').value;
+      if (!title || !date) { alert('An event needs a title and a date.'); return; }
+      state.events.push({ id: uid(), date: date, time: document.getElementById('eventTime').value.trim(), title: title, kidId: document.getElementById('eventKid').value || null });
+      document.getElementById('eventTitle').value = ''; document.getElementById('eventTime').value = '';
+      save(); renderAll(); alert('Event added.');
+    });
+    document.getElementById('saveNamesBtn').addEventListener('click', function () {
+      var n1 = document.getElementById('kid1Name').value.trim();
+      var n2 = document.getElementById('kid2Name').value.trim();
+      if (state.kids[0] && n1) state.kids[0].name = n1;
+      if (state.kids[1] && n2) state.kids[1].name = n2;
+      var label = document.getElementById('rewardLabel').value.trim();
+      var goal = parseInt(document.getElementById('rewardGoal').value, 10);
+      if (label) state.reward.label = label;
+      if (goal >= 1) state.reward.goal = goal;
+      save(); renderAll(); alert('Saved.');
+    });
+    document.getElementById('savePinBtn').addEventListener('click', function () {
+      var np = document.getElementById('newPin').value.trim();
+      if (!np) return;
+      if (!/^\d{4,8}$/.test(np)) { alert('PIN must be 4–8 digits.'); return; }
+      state.pin = np; document.getElementById('newPin').value = '';
+      save(); alert('PIN changed.');
+    });
+    document.getElementById('exportBtn').addEventListener('click', function () {
+      var blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'family-board-' + todayStr() + '.json';
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    });
+    document.getElementById('importBtn').addEventListener('click', function () { document.getElementById('importFile').click(); });
+    document.getElementById('importFile').addEventListener('change', function (e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var data = JSON.parse(reader.result);
+          if (!data || data.v !== 1 || !Array.isArray(data.tasks)) throw new Error('bad file');
+          state = data; save(); renderAll(); fillParentForm();
+          alert('Board imported.');
+        } catch (err) { alert('That file is not a Family Board export.'); }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+    document.getElementById('resetTodayBtn').addEventListener('click', function () {
+      if (!confirm("Clear today's checks? Stars already earned this week stay counted by the checks — this clears today only.")) return;
+      delete state.done[todayStr()]; save(); renderAll();
+    });
+    document.getElementById('resetAllBtn').addEventListener('click', function () {
+      if (!confirm('Reset the whole board back to the sample tasks, events and lists? This cannot be undone.')) return;
+      state = seed(); parentUnlocked = true; save(); renderAll(); fillParentForm();
+    });
+    document.getElementById('lockBtn').addEventListener('click', function () { parentUnlocked = false; save(); renderAll(); closeParent(); });
+
+    renderAll();
+  })();
+  </script>
+</body>
+</html>
