@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Transformation Quiz — Geometry Transformations — MadeForMyKids</title>
-  <meta name="description" content="16 transformation drills: find the image point, name the transformation, and spot the dilation trap." />
+  <title>Transformation Quiz &amp; Test — Geometry Transformations — MadeForMyKids</title>
+  <meta name="description" content="24 transformation drills. Practice with instant explanations, or take a 10-question test with no hints and a full mistake review at the end." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -16,18 +16,41 @@
     .card > h2 { margin: 0 0 0.35rem; font-size: 1.5rem; color: var(--mfk-slate); }
     .card p { color: var(--mfk-slate); line-height: 1.6; font-size: 0.95rem; }
     .card p.lede { color: var(--mfk-slate-soft); }
+    .mode-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.9rem; margin-top: 1rem; }
+    .mode-card { display: block; width: 100%; text-align: left; background: #fff; border: 2px solid var(--mfk-border); border-radius: 16px; padding: 1.1rem 1.2rem; cursor: pointer; font-family: Inter, system-ui, sans-serif; }
+    .mode-card:hover { border-color: var(--mfk-skill-math, #7c3aed); }
+    .mode-card h3 { margin: 0.4rem 0 0.25rem; font-size: 1.12rem; color: var(--mfk-slate); font-family: Fredoka, system-ui, sans-serif; }
+    .mode-card p { margin: 0; font-size: 0.9rem; color: var(--mfk-slate-soft); line-height: 1.5; }
+    .weak-note { background: #fffbeb; border: 2px solid #f59e0b; border-radius: 14px; padding: 0.9rem 1.1rem; margin-top: 1rem; font-size: 0.95rem; line-height: 1.6; color: var(--mfk-slate); }
+    .weak-note strong { color: #92400e; }
     .q { border: 2px solid var(--mfk-border); border-radius: 14px; padding: 1rem 1.15rem; margin-top: 0.9rem; background: #fff; }
+    .q.missed { border-color: #b91c1c; }
     .q .qq { font-size: 1.02rem; color: var(--mfk-slate); line-height: 1.6; }
     .q .qnum { font-family: Fredoka, system-ui, sans-serif; color: var(--mfk-skill-math, #7c3aed); margin-right: 0.4rem; }
+    .q .tag { font-size: 0.8rem; font-weight: 700; color: var(--mfk-slate-soft); }
     .opts { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.7rem; }
     .opt { border: 2px solid var(--mfk-border); background: #fff; border-radius: 9999px; padding: 0.45rem 0.9rem; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--mfk-slate); }
     .opt:disabled { cursor: default; opacity: 0.75; }
+    .opt.picked { border-color: var(--mfk-skill-math, #7c3aed); background: #faf5ff; }
     .opt.correct { background: #dcfce7; border-color: #15803d; color: #15803d; }
     .opt.wrong { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
     .explain { margin-top: 0.7rem; font-size: 0.92rem; color: var(--mfk-slate); display: none; }
     .explain.show { display: block; }
     .score { font-weight: 700; color: var(--mfk-slate); margin-top: 0.5rem; }
+    .result-score { font-family: Fredoka, system-ui, sans-serif; font-size: 2.6rem; font-weight: 700; color: var(--mfk-slate); text-align: center; margin: 0.5rem 0; }
+    .decoded { background: #fffbeb; border: 2px solid #f59e0b; border-radius: 14px; padding: 1rem 1.2rem; margin-top: 1rem; }
+    .decoded h3 { margin: 0 0 0.5rem; color: #92400e; font-size: 1.15rem; }
+    .decoded .pattern { margin-bottom: 0.8rem; font-size: 0.95rem; line-height: 1.6; color: var(--mfk-slate); }
+    .decoded .pattern strong { color: #92400e; }
+    .decoded .pattern .ex { color: var(--mfk-slate-soft); font-size: 0.88rem; }
+    .review-list { margin-top: 1rem; }
+    .review-list h3 { margin: 0 0 0.2rem; font-size: 1.15rem; color: var(--mfk-slate); }
+    .your-answer { font-size: 0.92rem; margin-top: 0.4rem; }
+    .your-answer .bad { color: #b91c1c; font-weight: 700; }
+    .your-answer .good { color: #15803d; font-weight: 700; }
     .btn { font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 1rem; background: var(--mfk-skill-math, #7c3aed); color: #fff; border: none; border-radius: 12px; padding: 0.6rem 1.2rem; cursor: pointer; margin-top: 1rem; }
+    .btn-ghost { background: #fff; color: var(--mfk-skill-math, #7c3aed); border: 2px solid var(--mfk-skill-math, #7c3aed); text-decoration: none; display: inline-block; }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1rem; }
     .back-link { display: inline-block; margin-top: 1.25rem; color: var(--mfk-skill-math, #7c3aed); font-weight: 700; text-decoration: none; }
     .back-link:hover { text-decoration: underline; }
   </style>
@@ -36,18 +59,12 @@
   <mfk-header active="learn"></mfk-header>
   <main class="mfk-container mfk-section">
     <mfk-page-hero
-      badge="Math · Quiz"
-      title="Transformation Quiz"
-      subtitle="Find the image, name the move, and don't fall for the dilation trap. Every question explains itself after you answer."
+      badge="Math · Quiz &amp; Test"
+      title="Transformation Quiz &amp; Test"
+      subtitle="Practice with instant explanations — or take the test: 10 questions, no hints until the end, then every mistake decoded."
     ></mfk-page-hero>
 
-    <section class="card" aria-label="Transformation quiz">
-      <h2>16 drills, no timer</h2>
-      <p class="lede">Work in order or jump around. Every question shows its explanation after you answer, right or wrong.</p>
-      <div class="score" id="score"></div>
-      <div id="quiz-slot"></div>
-      <button class="btn" id="reshuffle">Shuffle the order</button>
-    </section>
+    <section class="card" id="quiz-box" aria-label="Transformation quiz and test"></section>
     <a class="back-link" href="index.html">← Back to Geometry Transformations</a>
   </main>
   <mfk-footer></mfk-footer>
@@ -57,7 +74,10 @@
   <script>
     (function () {
       "use strict";
-      var answered = 0, correctCount = 0;
+      var box = document.getElementById("quiz-box");
+      var data = null;
+      var WEAK_KEY = "mfk-transform-weak";
+
       function shuffle(a) {
         a = a.slice();
         for (var i = a.length - 1; i > 0; i--) {
@@ -66,45 +86,194 @@
         }
         return a;
       }
-      function render(data) {
-        var items = shuffle(data.quiz);
-        answered = 0; correctCount = 0;
-        document.getElementById("score").textContent = "Answered: 0/" + items.length;
-        var slot = document.getElementById("quiz-slot");
-        var html = "";
-        items.forEach(function (q, i) {
-          html += '<div class="q" data-answer="' + q.answer + '">';
-          html += '<div class="qq"><span class="qnum">' + (i + 1) + '.</span>' + q.question + '</div><div class="opts">';
-          q.choices.forEach(function (c, ci) {
-            html += '<button class="opt" data-id="' + ci + '">' + c + '</button>';
-          });
-          html += '</div><div class="explain"><strong>Answer: ' + q.choices[q.answer] + '.</strong> ' + q.why + '</div></div>';
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      function getWeak() {
+        try { return JSON.parse(localStorage.getItem(WEAK_KEY) || "{}"); } catch (e) { return {}; }
+      }
+      function recordMiss(q) {
+        try {
+          var w = getWeak();
+          w[q.trap] = (w[q.trap] || 0) + 1;
+          localStorage.setItem(WEAK_KEY, JSON.stringify(w));
+        } catch (e) { /* private mode: weak-spot memory just stays off */ }
+      }
+      function topWeakTrap() {
+        var w = getWeak(), best = null, bestN = 0;
+        Object.keys(w).forEach(function (k) { if (w[k] > bestN) { best = k; bestN = w[k]; } });
+        return best ? { trap: best, count: bestN } : null;
+      }
+      // Balanced 10-question test: 2 translation, 2 reflection, 2 rotation,
+      // 2 dilation, 1 identify, 1 concept — shuffled within each type.
+      function pickTest(items) {
+        var byType = {};
+        items.forEach(function (q) { (byType[q.type] = byType[q.type] || []).push(q); });
+        var want = { translation: 2, reflection: 2, rotation: 2, dilation: 2, identify: 1, concept: 1 };
+        var picked = [];
+        Object.keys(want).forEach(function (t) {
+          shuffle(byType[t] || []).slice(0, want[t]).forEach(function (q) { picked.push(q); });
         });
-        slot.innerHTML = html;
-        slot.querySelectorAll(".q").forEach(function (el) {
-          var answer = el.getAttribute("data-answer");
-          el.querySelectorAll(".opt").forEach(function (btn) {
-            btn.addEventListener("click", function () {
-              if (el.getAttribute("data-done")) return;
-              el.setAttribute("data-done", "1");
-              if (btn.getAttribute("data-id") === answer) { btn.className += " correct"; correctCount++; }
-              else {
-                btn.className += " wrong";
-                el.querySelector('.opt[data-id="' + answer + '"]').className += " correct";
-              }
-              el.querySelectorAll(".opt").forEach(function (b) { b.disabled = true; });
-              el.querySelector(".explain").className += " show";
-              answered++;
-              document.getElementById("score").textContent = "Answered: " + answered + "/" + items.length + " · Correct: " + correctCount;
-            });
-          });
+        return shuffle(picked);
+      }
+
+      function renderStart() {
+        var weak = topWeakTrap();
+        var weakHtml = "";
+        if (weak && data.patterns[weak.trap]) {
+          var p = data.patterns[weak.trap];
+          weakHtml = '<div class="weak-note"><strong>Your weak spot so far: ' + esc(p.title) + '.</strong> ' +
+            esc(p.text) + ' <button class="btn" id="weak-btn" style="margin-top:0.5rem">Practice just this</button></div>';
+        }
+        box.innerHTML =
+          '<h2>How do you want to practice?</h2>' +
+          '<p class="lede">Practice shows the explanation right after each question. The test hides all feedback until you finish — then it decodes every mistake, so you can see the pattern instead of one wrong answer at a time.</p>' +
+          '<div class="mode-grid">' +
+            '<button class="mode-card" id="mode-practice"><div style="font-size:1.7rem">✏️</div><h3>Practice</h3><p>All 24 questions, one at a time, with the explanation right after you answer. No score pressure.</p></button>' +
+            '<button class="mode-card" id="mode-test"><div style="font-size:1.7rem">📝</div><h3>Test — 10 questions</h3><p>Like the real thing: no hints, no peeking. Answer all 10, then get your score, your mistakes decoded, and a retry round for the ones you missed.</p></button>' +
+          '</div>' + weakHtml;
+        document.getElementById("mode-practice").addEventListener("click", function () {
+          startRound(shuffle(data.quiz), "practice", "Practice");
+        });
+        document.getElementById("mode-test").addEventListener("click", function () {
+          startRound(pickTest(data.quiz), "test", "Test");
+        });
+        var wb = document.getElementById("weak-btn");
+        if (wb) wb.addEventListener("click", function () {
+          var pool = data.quiz.filter(function (q) { return q.trap === weak.trap; });
+          startRound(shuffle(pool), "practice", "Weak spot: " + data.patterns[weak.trap].title);
         });
       }
-      Transforms.loadData().then(function (data) {
-        render(data);
-        document.getElementById("reshuffle").addEventListener("click", function () { render(data); window.scrollTo(0, 0); });
+
+      var round = [], qi = 0, mode = "practice", roundName = "";
+      var answers = []; // {q, picked} per question, in round order
+
+      function startRound(items, m, name) {
+        round = items; mode = m; roundName = name; qi = 0; answers = [];
+        renderQuestion();
+      }
+
+      function renderQuestion() {
+        var q = round[qi];
+        var html = '<div class="score">' + esc(roundName) + ' · Question ' + (qi + 1) + ' of ' + round.length + '</div>' +
+          '<div class="q"><div class="qq"><span class="qnum">' + (qi + 1) + '.</span>' + esc(q.question) + '</div>' +
+          '<div class="opts">';
+        q.choices.forEach(function (c, ci) {
+          html += '<button class="opt" data-id="' + ci + '">' + esc(c) + '</button>';
+        });
+        html += '</div><div class="explain" id="explain"><strong>Answer: ' + esc(q.choices[q.answer]) + '.</strong> ' + esc(q.why) + '</div></div>' +
+          '<div class="actions"><button class="btn" id="q-next" style="display:none">Next →</button>' +
+          (mode === "test" ? '<button class="btn btn-ghost" id="q-finish">Finish test now</button>' : "") +
+          '</div>';
+        box.innerHTML = html;
+        var answered = false;
+        box.querySelectorAll(".opt").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            if (answered) return;
+            answered = true;
+            var picked = parseInt(btn.getAttribute("data-id"), 10);
+            answers.push({ q: q, picked: picked });
+            var next = document.getElementById("q-next");
+            if (mode === "practice") {
+              box.querySelectorAll(".opt").forEach(function (b) {
+                b.disabled = true;
+                if (parseInt(b.getAttribute("data-id"), 10) === q.answer) b.classList.add("correct");
+                else if (b === btn) b.classList.add("wrong");
+              });
+              document.getElementById("explain").classList.add("show");
+              next.style.display = "";
+              next.textContent = (qi + 1 < round.length) ? "Next →" : "See my results →";
+            } else {
+              btn.classList.add("picked");
+              box.querySelectorAll(".opt").forEach(function (b) { b.disabled = true; });
+              // No feedback in test mode — move on after a beat.
+              setTimeout(advance, 350);
+            }
+          });
+        });
+        next0();
+        function next0() {
+          var next = document.getElementById("q-next");
+          if (next) next.addEventListener("click", advance);
+          var fin = document.getElementById("q-finish");
+          if (fin) fin.addEventListener("click", function () {
+            // Unanswered questions count as missed.
+            while (answers.length < round.length) {
+              answers.push({ q: round[answers.length], picked: -1 });
+            }
+            renderResults();
+          });
+        }
+      }
+      function advance() {
+        qi++;
+        if (qi < round.length) renderQuestion();
+        else renderResults();
+      }
+
+      function renderResults() {
+        var correct = 0;
+        answers.forEach(function (a) { if (a.picked === a.q.answer) correct++; });
+        var misses = answers.filter(function (a) { return a.picked !== a.q.answer; });
+        misses.forEach(function (a) { recordMiss(a.q); });
+        var pct = Math.round(100 * correct / round.length);
+        var msg = correct === round.length ? "Perfect — every transformation landed." :
+          pct >= 80 ? "Strong. The decoded patterns below are the last few to fix." :
+          pct >= 60 ? "Getting there — the decoded patterns below are exactly what to study next." :
+          "Tough round — work through the decoded patterns below, then retry just the misses.";
+        var html = '<h2 style="margin-top:0">' + esc(roundName) + ' complete</h2>' +
+          '<div class="result-score">' + correct + ' / ' + round.length + '</div>' +
+          '<p style="text-align:center;color:var(--mfk-slate-soft)">' + msg + '</p>';
+
+        if (misses.length) {
+          var seen = {};
+          html += '<div class="decoded"><h3>Your mistakes, decoded</h3>';
+          misses.forEach(function (a) {
+            var pat = data.patterns[a.q.trap];
+            if (!pat || seen[a.q.trap]) return;
+            seen[a.q.trap] = true;
+            var n = misses.filter(function (m) { return m.q.trap === a.q.trap; }).length;
+            html += '<div class="pattern"><strong>' + esc(pat.title) + ' — ' + n + ' miss' + (n > 1 ? "es" : "") + '.</strong> ' +
+              esc(pat.text) + '</div>';
+          });
+          html += '</div>';
+        }
+
+        html += '<div class="review-list"><h3>Question-by-question review</h3>';
+        answers.forEach(function (a, i) {
+          var ok = a.picked === a.q.answer;
+          var yours = a.picked < 0 ? "No answer" : a.q.choices[a.picked];
+          html += '<div class="q' + (ok ? "" : " missed") + '">' +
+            '<div class="qq"><span class="qnum">' + (i + 1) + '.</span>' + esc(a.q.question) + ' <span class="tag">· ' + esc(a.q.type) + '</span></div>' +
+            '<div class="your-answer">Your answer: <span class="' + (ok ? "good" : "bad") + '">' + esc(yours) + '</span>' +
+            (ok ? "" : ' · Correct answer: <span class="good">' + esc(a.q.choices[a.q.answer]) + '</span>') + '</div>' +
+            '<div class="explain show"><strong>Why:</strong> ' + esc(a.q.why) + '</div></div>';
+        });
+        html += '</div>';
+
+        html += '<div class="actions">' +
+          (misses.length ? '<button class="btn" id="r-retry">Retry my ' + misses.length + ' mistake' + (misses.length > 1 ? "s" : "") + '</button>' : "") +
+          '<button class="btn btn-ghost" id="r-new">Take a new test</button>' +
+          '<button class="btn btn-ghost" id="r-practice">Practice mode</button>' +
+          '<a class="btn btn-ghost" href="index.html">Review the lessons</a>' +
+          '</div>';
+        box.innerHTML = html;
+        var rt = document.getElementById("r-retry");
+        if (rt) rt.addEventListener("click", function () {
+          startRound(shuffle(misses.map(function (a) { return a.q; })), "practice", "Retry my mistakes");
+        });
+        document.getElementById("r-new").addEventListener("click", function () {
+          startRound(pickTest(data.quiz), "test", "Test");
+        });
+        document.getElementById("r-practice").addEventListener("click", function () {
+          startRound(shuffle(data.quiz), "practice", "Practice");
+        });
+        window.scrollTo(0, 0);
+      }
+
+      Transforms.loadData().then(function (d) {
+        data = d;
+        renderStart();
       }).catch(function () {
-        document.getElementById("quiz-slot").innerHTML = '<p style="color:var(--mfk-slate-soft)">Could not load the quiz — check your connection and refresh.</p>';
+        box.innerHTML = '<p style="color:var(--mfk-slate-soft)">Could not load the quiz — check your connection and refresh.</p>';
       });
     })();
   </script>

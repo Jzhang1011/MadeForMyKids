@@ -1,1 +1,409 @@
-{"_note":"Content bank for Geometry Transformations. Rules are stated for the coordinate plane, about the origin unless a reflection line is named. Quiz answers were checked against the transform rules in assets/transform.js.","lessons":[{"congruent":"Yes — congruent","example":{"after":"(4, −1), (7, −1), (4, 1)","before":"A(1, 1), B(4, 1), C(1, 3)","note":"Every point moved right 3 and down 2. The triangle did not turn, flip, or change size."},"icon":"➡️","id":"translation","orientation":"Same — it still faces the same way","rule":"(x, y) → (x + a, y + b). Add a to every x, add b to every y.","size":"Same","title":"1 · Translation — slide","watchOut":"A negative b means DOWN, not up. Translating by (3, −2) moves right 3, down 2 — the sign on y is the vertical direction.","what":"Slide every point of a figure the same distance in the same direction. No turning, no flipping, no resizing."},{"congruent":"Yes — congruent","example":{"after":"A′(1, −1), B′(4, −1), C′(1, −3) over the x-axis","before":"A(1, 1), B(4, 1), C(1, 3)","note":"Only the y sign changed. The image is a mirror copy across the x-axis."},"icon":"🪞","id":"reflection","orientation":"Reversed — a mirror image faces the other way","rule":"Over the x-axis: (x, y) → (x, −y). Over the y-axis: (x, y) → (−x, y). Over y = x: (x, y) → (y, x). Over y = −x: (x, y) → (−y, −x).","size":"Same","title":"2 · Reflection — flip","watchOut":"Do not mix up the axes: flipping over the x-axis changes the sign of y; flipping over the y-axis changes the sign of x. Flipping over y = x swaps x and y — it does not just change a sign.","what":"Flip a figure over a line, like a mirror. Every point lands the same distance on the other side of the line."},{"congruent":"Yes — congruent","example":{"after":"A′(−1, 1), B′(−1, 4), C′(−3, 1) after 90° counterclockwise","before":"A(1, 1), B(4, 1), C(1, 3)","note":"90° counterclockwise sends (x, y) to (−y, x): (1, 1) → (−1, 1), (4, 1) → (−1, 4), (1, 3) → (−3, 1)."},"icon":"🔄","id":"rotation","orientation":"Turned — but not mirrored (the order of the vertices around the figure stays the same)","rule":"About the origin: 90° clockwise: (x, y) → (y, −x). 90° counterclockwise: (x, y) → (−y, x). 180° (either way): (x, y) → (−x, −y). 270° clockwise is the same as 90° counterclockwise.","size":"Same","title":"3 · Rotation — turn","watchOut":"Clockwise and counterclockwise are not interchangeable: 90° clockwise is (y, −x), 90° counterclockwise is (−y, x). If you swap them, every point lands in the wrong quadrant.","what":"Turn a figure around a point (here, the origin) by an angle. The figure spins; it does not flip over."},{"congruent":"Only if k = 1 — otherwise similar, not congruent","example":{"after":"A′(2, 2), B′(8, 2), C′(2, 6) with k = 2","before":"A(1, 1), B(4, 1), C(1, 3)","note":"Every coordinate doubled, so every side doubled, but every angle stayed the same."},"icon":"🔍","id":"dilation","orientation":"Same — it still faces the same way","rule":"About the origin: (x, y) → (kx, ky). Multiply every coordinate by the scale factor k.","size":"Changed — k > 1 enlarges, 0 < k < 1 reduces, k = 1 leaves it unchanged","title":"4 · Dilation — resize","watchOut":"Dilation is the only one of the four that changes size. A figure and its dilation are similar (same shape, same angles), but they are congruent only when k = 1. Do not call a k = 2 image congruent.","what":"Resize a figure from a center point (here, the origin) by a scale factor. The shape stays the same; the size does not."}],"quiz":[{"answer":0,"choices":["(1, 7)","(3, −1)","(1, −1)","(3, 7)"],"question":"Translate point (2, 3) by (−1, 4). What is the image?","type":"translation","why":"(x + a, y + b) = (2 + (−1), 3 + 4) = (1, 7)."},{"answer":0,"choices":["(4, 5)","(−4, −5)","(−4, 5)","(4, −5)"],"question":"Reflect point (4, −5) over the x-axis. What is the image?","type":"reflection","why":"Over the x-axis, (x, y) → (x, −y): (4, −(−5)) = (4, 5)."},{"answer":1,"choices":["(−3, −2)","(3, 2)","(3, −2)","(−3, 2)"],"question":"Reflect point (−3, 2) over the y-axis. What is the image?","type":"reflection","why":"Over the y-axis, (x, y) → (−x, y): (−(−3), 2) = (3, 2)."},{"answer":3,"choices":["(2, 5)","(−5, −2)","(5, −2)","(5, 2)"],"question":"Reflect point (2, 5) over the line y = x. What is the image?","type":"reflection","why":"Over y = x, (x, y) → (y, x): (2, 5) → (5, 2). It swaps the coordinates; it does not just change a sign."},{"answer":0,"choices":["(4, −3)","(−4, 3)","(−3, −4)","(3, 4)"],"question":"Rotate point (3, 4) by 90° clockwise about the origin. What is the image?","type":"rotation","why":"90° clockwise: (x, y) → (y, −x) = (4, −3)."},{"answer":2,"choices":["(4, −3)","(3, −4)","(−4, 3)","(−3, 4)"],"question":"Rotate point (3, 4) by 90° counterclockwise about the origin. What is the image?","type":"rotation","why":"90° counterclockwise: (x, y) → (−y, x) = (−4, 3)."},{"answer":1,"choices":["(−2, −5)","(2, −5)","(2, 5)","(−2, 5)"],"question":"Rotate point (−2, 5) by 180° about the origin. What is the image?","type":"rotation","why":"180°: (x, y) → (−x, −y) = (2, −5)."},{"answer":0,"choices":["(4, −6)","(−4, 6)","(1, −1.5)","(4, 6)"],"question":"Dilate point (2, −3) by a scale factor of 2 about the origin. What is the image?","type":"dilation","why":"(kx, ky) = (2·2, 2·(−3)) = (4, −6)."},{"answer":1,"choices":["(12, 8)","(3, 2)","(6, 2)","(3, 8)"],"question":"Dilate point (6, 4) by a scale factor of 0.5 about the origin. What is the image?","type":"dilation","why":"(0.5·6, 0.5·4) = (3, 2). A factor below 1 shrinks the figure."},{"answer":1,"choices":["(6, −4)","(9, −6)","(−9, 6)","(3, −2)"],"question":"Dilate point (3, −2) by a scale factor of 3 about the origin. What is the image?","type":"dilation","why":"(3·3, 3·(−2)) = (9, −6)."},{"answer":0,"choices":["Reflection over the x-axis","Reflection over the y-axis","Translation","Rotation 180°"],"question":"Point (2, 3) maps to (2, −3). Which transformation is this?","type":"identify","why":"Only y changed sign, x stayed the same — that is a flip over the x-axis."},{"answer":1,"choices":["Reflection over the x-axis","Reflection over the y-axis","Reflection over y = x","Translation by (2, 0)"],"question":"Point (−1, 4) maps to (1, 4). Which transformation is this?","type":"identify","why":"Only x changed sign — a flip over the y-axis."},{"answer":2,"choices":["Rotation 90° clockwise","Reflection over the y-axis","Reflection over y = x","Translation"],"question":"Point (2, 1) maps to (1, 2). Which transformation is this?","type":"identify","why":"The coordinates swapped — that is a flip over y = x, not a sign change."},{"answer":3,"choices":["90° clockwise","180°","Reflection over the x-axis","90° counterclockwise"],"question":"Point (3, 2) maps to (−2, 3). Which rotation is this?","type":"identify","why":"90° counterclockwise: (x, y) → (−y, x) = (−2, 3). The clockwise version would give (2, −3)."},{"answer":0,"choices":["Dilation with k = 2","Translation by (1, 2)","Reflection over y = x","Rotation 90°"],"question":"Point (1, 2) maps to (2, 4). Which transformation is this?","type":"identify","why":"Every coordinate doubled — (kx, ky) with k = 2."},{"answer":2,"choices":["It is congruent to the original","Its angles change","It is similar to the original, but not congruent (unless k = 1)","Its side lengths stay the same"],"question":"A figure is dilated by k = 2. Which statement is true?","type":"concept","why":"Dilation keeps the shape and the angles but scales every side by k, so the image is similar, not congruent."}]}
+{
+  "_note": "Content bank for Geometry Transformations. Rules are stated for the coordinate plane, about the origin unless a reflection line is named. Quiz answers were checked against the transform rules in assets/transform.js. Each quiz item carries a trap id; patterns explains each trap for the end-of-test mistake review.",
+  "lessons": [
+    {
+      "congruent": "Yes — congruent",
+      "example": {
+        "after": "(4, −1), (7, −1), (4, 1)",
+        "before": "A(1, 1), B(4, 1), C(1, 3)",
+        "note": "Every point moved right 3 and down 2. The triangle did not turn, flip, or change size."
+      },
+      "icon": "➡️",
+      "id": "translation",
+      "orientation": "Same — it still faces the same way",
+      "rule": "(x, y) → (x + a, y + b). Add a to every x, add b to every y.",
+      "size": "Same",
+      "title": "1 · Translation — slide",
+      "watchOut": "A negative b means DOWN, not up. Translating by (3, −2) moves right 3, down 2 — the sign on y is the vertical direction.",
+      "what": "Slide every point of a figure the same distance in the same direction. No turning, no flipping, no resizing."
+    },
+    {
+      "congruent": "Yes — congruent",
+      "example": {
+        "after": "A′(1, −1), B′(4, −1), C′(1, −3) over the x-axis",
+        "before": "A(1, 1), B(4, 1), C(1, 3)",
+        "note": "Only the y sign changed. The image is a mirror copy across the x-axis."
+      },
+      "icon": "🪞",
+      "id": "reflection",
+      "orientation": "Reversed — a mirror image faces the other way",
+      "rule": "Over the x-axis: (x, y) → (x, −y). Over the y-axis: (x, y) → (−x, y). Over y = x: (x, y) → (y, x). Over y = −x: (x, y) → (−y, −x).",
+      "size": "Same",
+      "title": "2 · Reflection — flip",
+      "watchOut": "Do not mix up the axes: flipping over the x-axis changes the sign of y; flipping over the y-axis changes the sign of x. Flipping over y = x swaps x and y — it does not just change a sign.",
+      "what": "Flip a figure over a line, like a mirror. Every point lands the same distance on the other side of the line."
+    },
+    {
+      "congruent": "Yes — congruent",
+      "example": {
+        "after": "A′(−1, 1), B′(−1, 4), C′(−3, 1) after 90° counterclockwise",
+        "before": "A(1, 1), B(4, 1), C(1, 3)",
+        "note": "90° counterclockwise sends (x, y) to (−y, x): (1, 1) → (−1, 1), (4, 1) → (−1, 4), (1, 3) → (−3, 1)."
+      },
+      "icon": "🔄",
+      "id": "rotation",
+      "orientation": "Turned — but not mirrored (the order of the vertices around the figure stays the same)",
+      "rule": "About the origin: 90° clockwise: (x, y) → (y, −x). 90° counterclockwise: (x, y) → (−y, x). 180° (either way): (x, y) → (−x, −y). 270° clockwise is the same as 90° counterclockwise.",
+      "size": "Same",
+      "title": "3 · Rotation — turn",
+      "watchOut": "Clockwise and counterclockwise are not interchangeable: 90° clockwise is (y, −x), 90° counterclockwise is (−y, x). If you swap them, every point lands in the wrong quadrant.",
+      "what": "Turn a figure around a point (here, the origin) by an angle. The figure spins; it does not flip over."
+    },
+    {
+      "congruent": "Only if k = 1 — otherwise similar, not congruent",
+      "example": {
+        "after": "A′(2, 2), B′(8, 2), C′(2, 6) with k = 2",
+        "before": "A(1, 1), B(4, 1), C(1, 3)",
+        "note": "Every coordinate doubled, so every side doubled, but every angle stayed the same."
+      },
+      "icon": "🔍",
+      "id": "dilation",
+      "orientation": "Same — it still faces the same way",
+      "rule": "About the origin: (x, y) → (kx, ky). Multiply every coordinate by the scale factor k.",
+      "size": "Changed — k > 1 enlarges, 0 < k < 1 reduces, k = 1 leaves it unchanged",
+      "title": "4 · Dilation — resize",
+      "watchOut": "Dilation is the only one of the four that changes size. A figure and its dilation are similar (same shape, same angles), but they are congruent only when k = 1. Do not call a k = 2 image congruent.",
+      "what": "Resize a figure from a center point (here, the origin) by a scale factor. The shape stays the same; the size does not."
+    }
+  ],
+  "quiz": [
+    {
+      "answer": 0,
+      "choices": [
+        "(1, 7)",
+        "(3, −1)",
+        "(1, −1)",
+        "(3, 7)"
+      ],
+      "question": "Translate point (2, 3) by (−1, 4). What is the image?",
+      "type": "translation",
+      "why": "(x + a, y + b) = (2 + (−1), 3 + 4) = (1, 7).",
+      "trap": "translation-sign"
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "(4, 5)",
+        "(−4, −5)",
+        "(−4, 5)",
+        "(4, −5)"
+      ],
+      "question": "Reflect point (4, −5) over the x-axis. What is the image?",
+      "type": "reflection",
+      "why": "Over the x-axis, (x, y) → (x, −y): (4, −(−5)) = (4, 5).",
+      "trap": "reflection-axis"
+    },
+    {
+      "answer": 1,
+      "choices": [
+        "(−3, −2)",
+        "(3, 2)",
+        "(3, −2)",
+        "(−3, 2)"
+      ],
+      "question": "Reflect point (−3, 2) over the y-axis. What is the image?",
+      "type": "reflection",
+      "why": "Over the y-axis, (x, y) → (−x, y): (−(−3), 2) = (3, 2).",
+      "trap": "reflection-axis"
+    },
+    {
+      "answer": 3,
+      "choices": [
+        "(2, 5)",
+        "(−5, −2)",
+        "(5, −2)",
+        "(5, 2)"
+      ],
+      "question": "Reflect point (2, 5) over the line y = x. What is the image?",
+      "type": "reflection",
+      "why": "Over y = x, (x, y) → (y, x): (2, 5) → (5, 2). It swaps the coordinates; it does not just change a sign.",
+      "trap": "reflection-axis"
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "(4, −3)",
+        "(−4, 3)",
+        "(−3, −4)",
+        "(3, 4)"
+      ],
+      "question": "Rotate point (3, 4) by 90° clockwise about the origin. What is the image?",
+      "type": "rotation",
+      "why": "90° clockwise: (x, y) → (y, −x) = (4, −3).",
+      "trap": "rotation-direction"
+    },
+    {
+      "answer": 2,
+      "choices": [
+        "(4, −3)",
+        "(3, −4)",
+        "(−4, 3)",
+        "(−3, 4)"
+      ],
+      "question": "Rotate point (3, 4) by 90° counterclockwise about the origin. What is the image?",
+      "type": "rotation",
+      "why": "90° counterclockwise: (x, y) → (−y, x) = (−4, 3).",
+      "trap": "rotation-direction"
+    },
+    {
+      "answer": 1,
+      "choices": [
+        "(−2, −5)",
+        "(2, −5)",
+        "(2, 5)",
+        "(−2, 5)"
+      ],
+      "question": "Rotate point (−2, 5) by 180° about the origin. What is the image?",
+      "type": "rotation",
+      "why": "180°: (x, y) → (−x, −y) = (2, −5).",
+      "trap": "rotation-direction"
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "(4, −6)",
+        "(−4, 6)",
+        "(1, −1.5)",
+        "(4, 6)"
+      ],
+      "question": "Dilate point (2, −3) by a scale factor of 2 about the origin. What is the image?",
+      "type": "dilation",
+      "why": "(kx, ky) = (2·2, 2·(−3)) = (4, −6).",
+      "trap": "dilation-scale"
+    },
+    {
+      "answer": 1,
+      "choices": [
+        "(12, 8)",
+        "(3, 2)",
+        "(6, 2)",
+        "(3, 8)"
+      ],
+      "question": "Dilate point (6, 4) by a scale factor of 0.5 about the origin. What is the image?",
+      "type": "dilation",
+      "why": "(0.5·6, 0.5·4) = (3, 2). A factor below 1 shrinks the figure.",
+      "trap": "dilation-scale"
+    },
+    {
+      "answer": 1,
+      "choices": [
+        "(6, −4)",
+        "(9, −6)",
+        "(−9, 6)",
+        "(3, −2)"
+      ],
+      "question": "Dilate point (3, −2) by a scale factor of 3 about the origin. What is the image?",
+      "type": "dilation",
+      "why": "(3·3, 3·(−2)) = (9, −6).",
+      "trap": "dilation-scale"
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "Reflection over the x-axis",
+        "Reflection over the y-axis",
+        "Translation",
+        "Rotation 180°"
+      ],
+      "question": "Point (2, 3) maps to (2, −3). Which transformation is this?",
+      "type": "identify",
+      "why": "Only y changed sign, x stayed the same — that is a flip over the x-axis.",
+      "trap": "identify-move"
+    },
+    {
+      "answer": 1,
+      "choices": [
+        "Reflection over the x-axis",
+        "Reflection over the y-axis",
+        "Reflection over y = x",
+        "Translation by (2, 0)"
+      ],
+      "question": "Point (−1, 4) maps to (1, 4). Which transformation is this?",
+      "type": "identify",
+      "why": "Only x changed sign — a flip over the y-axis.",
+      "trap": "identify-move"
+    },
+    {
+      "answer": 2,
+      "choices": [
+        "Rotation 90° clockwise",
+        "Reflection over the y-axis",
+        "Reflection over y = x",
+        "Translation"
+      ],
+      "question": "Point (2, 1) maps to (1, 2). Which transformation is this?",
+      "type": "identify",
+      "why": "The coordinates swapped — that is a flip over y = x, not a sign change.",
+      "trap": "identify-move"
+    },
+    {
+      "answer": 3,
+      "choices": [
+        "90° clockwise",
+        "180°",
+        "Reflection over the x-axis",
+        "90° counterclockwise"
+      ],
+      "question": "Point (3, 2) maps to (−2, 3). Which rotation is this?",
+      "type": "identify",
+      "why": "90° counterclockwise: (x, y) → (−y, x) = (−2, 3). The clockwise version would give (2, −3).",
+      "trap": "rotation-direction"
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "Dilation with k = 2",
+        "Translation by (1, 2)",
+        "Reflection over y = x",
+        "Rotation 90°"
+      ],
+      "question": "Point (1, 2) maps to (2, 4). Which transformation is this?",
+      "type": "identify",
+      "why": "Every coordinate doubled — (kx, ky) with k = 2.",
+      "trap": "identify-move"
+    },
+    {
+      "answer": 2,
+      "choices": [
+        "It is congruent to the original",
+        "Its angles change",
+        "It is similar to the original, but not congruent (unless k = 1)",
+        "Its side lengths stay the same"
+      ],
+      "question": "A figure is dilated by k = 2. Which statement is true?",
+      "type": "concept",
+      "why": "Dilation keeps the shape and the angles but scales every side by k, so the image is similar, not congruent.",
+      "trap": "similar-congruent"
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "(3, −5)",
+        "(3, 1)",
+        "(−5, 1)",
+        "(−5, −5)"
+      ],
+      "question": "Translate point (−1, −2) by (4, −3). What is the image?",
+      "type": "translation",
+      "trap": "translation-sign",
+      "why": "(x + a, y + b) = (−1 + 4, −2 + (−3)) = (3, −5). The −3 means down 3, not up."
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "(−3, 5)",
+        "(3, −5)",
+        "(5, −3)",
+        "(−5, −3)"
+      ],
+      "question": "Reflect point (−5, 3) over the line y = −x. What is the image?",
+      "type": "reflection",
+      "trap": "reflection-axis",
+      "why": "Over y = −x, (x, y) → (−y, −x): (−5, 3) → (−3, 5). Swap the coordinates AND change both signs."
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "(−1, −2)",
+        "(1, 2)",
+        "(−1, 2)",
+        "(1, −2)"
+      ],
+      "question": "Rotate point (2, −1) by 90° clockwise about the origin. What is the image?",
+      "type": "rotation",
+      "trap": "rotation-direction",
+      "why": "90° clockwise: (x, y) → (y, −x) = (−1, −2)."
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "(4, −1)",
+        "(−4, 1)",
+        "(4, 1)",
+        "(−4, −1)"
+      ],
+      "question": "Rotate point (−1, −4) by 270° clockwise about the origin. What is the image?",
+      "type": "rotation",
+      "trap": "rotation-direction",
+      "why": "270° clockwise is the same as 90° counterclockwise: (x, y) → (−y, x) = (4, −1)."
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "(−1, 1.5)",
+        "(−16, 24)",
+        "(−1, 6)",
+        "(−4, 1.5)"
+      ],
+      "question": "Dilate point (−4, 6) by a scale factor of 0.25 about the origin. What is the image?",
+      "type": "dilation",
+      "trap": "dilation-scale",
+      "why": "(kx, ky) = (0.25·(−4), 0.25·6) = (−1, 1.5). A factor below 1 shrinks the figure."
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "(5, −5)",
+        "(−5, 5)",
+        "(10, −10)",
+        "(0, 0)"
+      ],
+      "question": "Dilate point (5, −5) by a scale factor of 1 about the origin. What is the image?",
+      "type": "dilation",
+      "trap": "dilation-scale",
+      "why": "(1·5, 1·(−5)) = (5, −5). A scale factor of 1 leaves every point exactly where it was."
+    },
+    {
+      "answer": 0,
+      "choices": [
+        "Rotation 180°",
+        "Reflection over the x-axis",
+        "Reflection over the y-axis",
+        "Translation by (6, 4)"
+      ],
+      "question": "Point (−3, −2) maps to (3, 2). Which transformation is this?",
+      "type": "identify",
+      "trap": "identify-move",
+      "why": "Both signs flipped and nothing else changed — that is a 180° rotation, (−x, −y)."
+    },
+    {
+      "answer": 3,
+      "choices": [
+        "Translation",
+        "Reflection",
+        "Rotation",
+        "Dilation"
+      ],
+      "question": "Which of these is NOT a rigid motion?",
+      "type": "concept",
+      "trap": "similar-congruent",
+      "why": "Translation, reflection, and rotation all keep the size the same, so they are rigid motions. Dilation changes the size (unless k = 1), so it is not."
+    }
+  ],
+  "patterns": {
+    "translation-sign": {
+      "title": "Signs are the move",
+      "text": "A negative a means LEFT and a negative b means DOWN. Add a to every x and b to every y — do not flip a sign in your head first, and do not swap the two numbers."
+    },
+    "reflection-axis": {
+      "title": "Name the line, then change the right coordinate",
+      "text": "Over the x-axis only y changes sign; over the y-axis only x changes sign; over y = x the two coordinates swap; over y = −x they swap AND both change sign. Say the line out loud before you touch a sign."
+    },
+    "rotation-direction": {
+      "title": "Clockwise and counterclockwise are opposites",
+      "text": "90° clockwise is (x, y) → (y, −x); 90° counterclockwise is (x, y) → (−y, x). 180° flips both signs either way, and 270° clockwise is the same as 90° counterclockwise."
+    },
+    "dilation-scale": {
+      "title": "Dilation multiplies — it never adds",
+      "text": "Multiply every coordinate by k. k > 1 enlarges, 0 < k < 1 shrinks, and k = 1 leaves the point exactly where it was. If you added k instead, every answer lands in the wrong place."
+    },
+    "identify-move": {
+      "title": "Read what actually changed",
+      "text": "Only one sign changed → a flip over an axis. Both signs changed → a 180° rotation. Coordinates swapped → a flip over y = x. Every coordinate scaled by the same number → a dilation."
+    },
+    "similar-congruent": {
+      "title": "Only dilation changes size",
+      "text": "Translation, reflection, and rotation are rigid motions — the image is always congruent. A dilated figure is similar (same shape, same angles) but congruent only when k = 1."
+    }
+  }
+}
