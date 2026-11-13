@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beyond Visual Schedules: How Visual Guidance Helps People of All Ages Build Independence — Family Board</title>
+<meta name="description" content="Visual schedules are usually talked about as a tool for children. The underlying idea is much bigger: one support structure — make it visible, break it into steps, guide it at the right moment — that helps children, neurodivergent children, and older adults alike.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f172a;
+    --ink-soft: #475569;
+    --ink-faint: #94a3b8;
+    --accent: #ea580c;
+    --accent-soft: #fff4ed;
+    --accent-ink: #c2410c;
+    --bg: #ffffff;
+    --bg-soft: #f8f8f7;
+    --card: #ffffff;
+    --line: #e7e5e4;
+    --line-soft: #f0efed;
+    --green: #15803d;
+    --green-soft: #f0fdf4;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .brand {
+    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  a { color: var(--accent-ink); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+
+  /* Header — same as the landing page */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  header.site .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .brand { font-size: 22px; font-weight: 700; text-decoration: none; color: var(--ink); }
+  .brand span { color: var(--accent); }
+  nav.main { display: flex; align-items: center; gap: 28px; }
+  nav.main a.nav-link { color: var(--ink-soft); text-decoration: none; font-weight: 600; font-size: 15px; }
+  nav.main a.nav-link:hover { color: var(--ink); }
+  .btn {
+    display: inline-block;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 11px 22px;
+    border-radius: 999px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+  }
+  .btn:hover { background: #1e293b; }
+  .btn-accent { background: var(--accent); }
+  .btn-accent:hover { background: var(--accent-ink); }
+
+  /* Article */
+  .article { max-width: 760px; margin: 0 auto; padding: 64px 28px 96px; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 0 0 16px;
+  }
+  .article h1 { font-size: 46px; line-height: 1.12; margin: 0 0 18px; }
+  .dek { font-size: 20px; line-height: 1.55; color: var(--ink-soft); margin: 0 0 12px; }
+  .byline { color: var(--ink-faint); font-size: 14px; margin: 0 0 40px; }
+  .article h2 { font-size: 30px; line-height: 1.2; margin: 56px 0 14px; }
+  .article h3 { font-size: 22px; line-height: 1.3; margin: 40px 0 10px; }
+  .article p { margin: 0 0 18px; }
+  .article ol, .article ul { margin: 0 0 18px; padding-left: 24px; }
+  .article li { margin: 0 0 10px; }
+  .article li strong { font-weight: 700; }
+  figure { margin: 32px 0; }
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.10);
+  }
+  figure img.tall { max-width: 420px; margin: 0 auto; }
+  figcaption { color: var(--ink-soft); font-size: 14px; line-height: 1.5; margin-top: 12px; text-align: center; }
+  .steps-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .steps-pair figure { margin: 0; }
+  .note {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 32px 0;
+  }
+  .note p { margin: 0; }
+  .note strong { font-weight: 700; }
+
+  /* Three applications */
+  .apps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .app-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px;
+    background: var(--card);
+  }
+  .app-card h3 { font-size: 19px; margin: 0 0 6px; }
+  .app-card p { margin: 0; color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
+
+  /* Numbered support structure */
+  .structure { margin: 28px 0; padding: 0; list-style: none; }
+  .structure li {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 4px 14px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .structure li:last-child { border-bottom: 1px solid var(--line-soft); }
+  .structure .num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+  .structure strong { font-size: 18px; }
+  .structure p { margin: 4px 0 0; color: var(--ink-soft); grid-column: 2; }
+
+  /* Mechanism table */
+  .mech { width: 100%; border-collapse: collapse; margin: 28px 0; font-size: 15px; line-height: 1.5; }
+  .mech th, .mech td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .mech th { font-family: 'Fraunces', Georgia, serif; font-size: 16px; }
+  .mech td:first-child { font-weight: 700; }
+  .table-scroll { overflow-x: auto; }
+
+  .sources { border-top: 1px solid var(--line); margin-top: 56px; padding-top: 24px; color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
+  .sources p { margin: 0 0 8px; }
+
+  /* Closing CTA */
+  .cta-dark {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 24px;
+    padding: 56px 40px;
+    text-align: center;
+    margin-top: 64px;
+  }
+  .cta-dark h2 { color: #fff; font-size: 32px; margin: 0 0 12px; }
+  .cta-dark p { color: #cbd5e1; margin: 0 0 28px; }
+
+  /* Footer — same as the landing page */
+  footer.site { border-top: 1px solid var(--line-soft); padding: 40px 0; color: var(--ink-faint); font-size: 14px; }
+  footer.site .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  footer.site a { color: var(--ink-soft); text-decoration: none; font-weight: 600; }
+  footer.site a:hover { color: var(--ink); }
+
+  @media (max-width: 760px) {
+    .article { padding: 40px 20px 64px; }
+    .article h1 { font-size: 34px; }
+    .article h2 { font-size: 26px; }
+    .steps-pair { grid-template-columns: 1fr; }
+    .apps { grid-template-columns: 1fr; }
+    nav.main a.nav-link { display: none; }
+    .cta-dark { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">MadeForMyKids <span>Family Board</span></a>
+    <nav class="main">
+      <a class="nav-link" href="/#features">Features</a>
+      <a class="nav-link" href="/#who">Who it is for</a>
+      <a class="nav-link" href="/#pricing">Pricing</a>
+      <a class="nav-link" href="/guides/">Guides</a>
+      <a class="btn" href="https://family.madeformykids.com/app">Get started free</a>
+    </nav>
+  </div>
+</header>
+
+<main class="article">
+  <p class="eyebrow">Visual guidance</p>
+  <h1>Beyond Visual Schedules: How Visual Guidance Helps People of All Ages Build Independence</h1>
+  <p class="dek">We often think of visual schedules as tools designed for children. The underlying idea is much bigger: one support structure that helps anyone who benefits from a little more structure — at every age.</p>
+  <p class="byline">13 November 2026 · Family Board</p>
+
+  <p>We often think of visual schedules as tools designed for children, particularly children with autism or other neurodevelopmental differences. A picture showing when to brush teeth, get dressed, or leave for school can make daily routines easier to understand and follow.</p>
+  <p>But the underlying idea is much bigger.</p>
+  <p>People of all ages sometimes struggle to remember what comes next, organise a sequence of actions, initiate a task, or follow verbal instructions. The reasons differ: children are still developing executive functioning skills, neurodivergent individuals may process information differently, and older adults may experience changes in memory and cognition.</p>
+  <p>Yet the solution can share a surprisingly similar structure: make information visible, break activities into manageable steps, provide instructions through multiple channels, and allow people to progress at their own pace.</p>
+
+  <h2>One underlying system. Three different applications.</h2>
+  <p>The same support structure serves different human needs. What changes is the application, not the mechanism.</p>
+  <div class="apps">
+    <div class="app-card">
+      <h3>Children</h3>
+      <p>Learning routines and building independence.</p>
+    </div>
+    <div class="app-card">
+      <h3>Neurodivergent children</h3>
+      <p>Predictability, transitions and reduced ambiguity.</p>
+    </div>
+    <div class="app-card">
+      <h3>Older adults</h3>
+      <p>Memory support and continued independence.</p>
+    </div>
+  </div>
+
+  <h2>The common support structure</h2>
+  <p>Five things, in the same order, whatever the age:</p>
+  <ol class="structure">
+    <li><span class="num">1</span><strong>Show what is happening</strong><p>A visual representation of the activity or schedule.</p></li>
+    <li><span class="num">2</span><strong>Explain what to do</strong><p>A simple instruction, photograph, or spoken prompt.</p></li>
+    <li><span class="num">3</span><strong>Break it into manageable steps</strong><p>One action at a time rather than an overwhelming sequence.</p></li>
+    <li><span class="num">4</span><strong>Guide progress</strong><p>Completion indicators, reminders, and optional repetition.</p></li>
+    <li><span class="num">5</span><strong>Gradually reduce assistance when appropriate</strong><p>Support independence without making the person dependent on constant prompting.</p></li>
+  </ol>
+
+  <h2>The same design, different cognitive challenges</h2>
+  <p>The really interesting insight is that the same design can address different cognitive challenges. Each mechanism does a different job depending on who is using it.</p>
+  <div class="table-scroll">
+  <table class="mech">
+    <thead>
+      <tr><th>Support mechanism</th><th>Child</th><th>Neurodivergent child</th><th>Older adult</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Visual schedule</td><td>Understand the day</td><td>Predictability</td><td>External memory</td></tr>
+      <tr><td>Spoken instruction</td><td>Learn what to do</td><td>Reinforce communication</td><td>Support recall</td></tr>
+      <tr><td>One-step guidance</td><td>Learn task sequencing</td><td>Reduce cognitive overload</td><td>Support task completion</td></tr>
+      <tr><td>Timers and reminders</td><td>Understand duration</td><td>Prepare for transitions</td><td>Remember when to act</td></tr>
+      <tr><td>Progress tracking</td><td>Build confidence</td><td>Make progress tangible</td><td>Reinforce accomplishment</td></tr>
+      <tr><td>Personalised photos</td><td>Recognise objects</td><td>Reduce ambiguity</td><td>Connect instructions to familiar surroundings</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note">
+    <p><strong>One qualification.</strong> The product should allow users or caregivers to choose the right combination. Some people benefit from photographs, others from text, and others from spoken instructions. More prompts aren&rsquo;t automatically better.</p>
+  </div>
+
+  <h2>One need, different stages of life</h2>
+
+  <h3>For children: learning how to do things independently</h3>
+  <p>Children are constantly learning routines and developing the ability to organise their activities. A visual schedule makes an otherwise abstract concept — what happens next — concrete and understandable.</p>
+  <p>Instead of repeatedly reminding a child to brush their teeth, get dressed, and pack their backpack, parents can provide a visible sequence that the child gradually learns to follow independently.</p>
+
+  <h3>For neurodivergent children: making the world more predictable</h3>
+  <p>For children with autism, ADHD, or other neurodevelopmental differences, the challenge may be more than remembering a routine.</p>
+  <p>Unexpected transitions, ambiguous instructions, and too much information at once can create additional cognitive demands.</p>
+  <p>Visual schedules, personalised photographs, spoken instructions, and one-step-at-a-time guidance can help make expectations clearer and transitions more manageable.</p>
+  <p>The objective isn&rsquo;t to make every child follow the same routine. It is to provide the structure that helps each child participate more comfortably and independently.</p>
+
+  <h3>For older adults: supporting memory and preserving independence</h3>
+  <p>The same principles can also support older adults.</p>
+  <p>As people age, some experience changes in memory, attention, or the ability to organise complex activities. For people living with cognitive impairment or dementia, familiar everyday activities can become increasingly difficult to complete without assistance.</p>
+  <p>A sequence of personalised photographs, clear instructions, and spoken reminders can serve as an external guide.</p>
+  <p>Rather than relying entirely on memory or another person&rsquo;s repeated verbal instructions, someone can follow a familiar routine one step at a time.</p>
+  <p>The goal is not simply to remind someone what to do. It is to preserve as much independence, dignity, and control over everyday life as possible.</p>
+
+  <h2>The common design principles behind visual guidance</h2>
+  <p>Although these populations have different needs, several principles can make everyday activities easier to understand and complete.</p>
+  <ol>
+    <li><strong>Make information visible.</strong> A schedule or visual representation provides an external reference rather than requiring someone to remember everything.</li>
+    <li><strong>Combine visual and spoken instructions.</strong> People process information differently. Photographs, text, and audio can reinforce one another.</li>
+    <li><strong>Break complex activities into smaller steps.</strong> A task that feels overwhelming as a whole becomes more manageable when presented one action at a time.</li>
+    <li><strong>Provide guidance at the right moment.</strong> A reminder before an activity, an instruction during it, or a timer can help someone stay engaged.</li>
+    <li><strong>Personalise the experience.</strong> Familiar photographs, preferred language, appropriate voice prompts, and individually adapted routines make guidance more meaningful.</li>
+    <li><strong>Support independence rather than replace it.</strong> The system should offer assistance when needed while allowing people to make choices and complete tasks at their own pace.</li>
+  </ol>
+
+  <h2>From knowing what to do to actually doing it</h2>
+  <p>Traditional calendars and visual schedules primarily communicate what is happening and when.</p>
+  <p>But knowing that you need to brush your teeth is different from knowing how to complete the activity, especially when a task involves several steps.</p>
+  <p>This is where guided routines become particularly valuable.</p>
+  <p>Imagine a morning routine:</p>
+  <ul>
+    <li>The schedule shows that it is time to brush teeth.</li>
+    <li>The user opens the activity.</li>
+    <li>A photograph shows the toothbrush and toothpaste.</li>
+    <li>A spoken instruction explains the next action.</li>
+    <li>The user completes the step and moves forward.</li>
+    <li>A timer or reminder provides additional support when needed.</li>
+  </ul>
+  <p>Instead of presenting an entire list of instructions, the system provides guidance as the activity unfolds.</p>
+  <p>This is the difference between a schedule that tells someone what to do and a guidance system that helps them do it.</p>
+
+  <h2>Technology that supports people, not just schedules</h2>
+  <p>At Family Board, we are exploring this idea through shared family schedules and guided routines.</p>
+  <p>The Step Player transforms everyday activities into personalised, step-by-step experiences, using photographs and spoken instructions. Guided Day makes the broader schedule easier to follow by focusing attention on the present activity.</p>
+
+  <div class="steps-pair">
+    <figure>
+      <img class="tall" src="/visual-schedules/steps-toothpaste.png" alt="Step 1 of the brushing-teeth routine: a photo of putting toothpaste on the brush, with the step text 'Put toothpaste on the brush' and a large Done button.">
+      <figcaption>Step 1 of 6: &ldquo;Put toothpaste on the brush.&rdquo; The photo shows the child&rsquo;s own toothbrush and toothpaste.</figcaption>
+    </figure>
+    <figure>
+      <img class="tall" src="/visual-schedules/steps-brush-top.png" alt="Step 2 of the brushing-teeth routine: a photo of brushing the top teeth, with a 26-second timer and a large Done button.">
+      <figcaption>Step 2 of 6: &ldquo;Brush the top teeth.&rdquo; A timer keeps the step honest — 26 seconds left here.</figcaption>
+    </figure>
+  </div>
+
+  <p>These features are particularly useful for families helping children develop independence, but the underlying design principles have broader applications.</p>
+  <p>A good support system should adapt to the person, not expect every person to adapt to the system.</p>
+  <p>For one person, that might mean a colourful morning schedule. For another, it might mean a quiet spoken reminder and a photograph of a familiar object. For someone else, it might mean a simple sequence of instructions for completing a daily activity.</p>
+  <p>The ultimate goal is the same: making everyday life more understandable, manageable, and independent — one step at a time.</p>
+
+  <div class="note">
+    <p><strong>Keep reading.</strong> This is the pillar article for our guides. For the child-focused application — visual schedules for neurodivergent children, with the evidence and a worked morning — see <a href="/visual-schedules/">One step at a time: how visual schedules help neurodivergent kids stay on track</a>.</p>
+  </div>
+
+  <div class="cta-dark">
+    <h2>Try it</h2>
+    <p>Family Board is free to start: one family, one tablet, unlimited tasks, and the calendar sharing above. Put it on the kitchen iPad and build tomorrow&rsquo;s schedule together tonight.</p>
+    <a class="btn btn-accent" href="https://family.madeformykids.com/app">Get started free</a>
+  </div>
+
+  <div class="sources">
+    <p><strong>Sources</strong></p>
+    <p>Hume, K. et al. (2021). Evidence-based practices for children, youth, and young adults with autism: Third generation review. National Clearinghouse on Autism Evidence and Practice.</p>
+    <p>Knight, V., Sartini, E., &amp; Spriggs, A. D. (2014). Evaluating visual activity schedules as evidence-based practice for individuals with autism spectrum disorders. <em>Journal of Autism and Developmental Disorders</em>.</p>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>© 2026 MadeForMyKids</span>
+    <span><a href="/">Family Board</a> · <a href="https://family.madeformykids.com/app">Get started free</a></span>
+  </div>
+</footer>
+</body>
+</html>
