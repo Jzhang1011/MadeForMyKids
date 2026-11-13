@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One step at a time: how visual schedules help neurodivergent kids stay on track — Family Board</title>
+<meta name="description" content="A visual schedule turns the day into something a child can see, follow, and finish — one step at a time. Here is how to build one, and what it looks like when the routine itself plays out on screen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f172a;
+    --ink-soft: #475569;
+    --ink-faint: #94a3b8;
+    --accent: #ea580c;
+    --accent-soft: #fff4ed;
+    --accent-ink: #c2410c;
+    --bg: #ffffff;
+    --bg-soft: #f8f8f7;
+    --card: #ffffff;
+    --line: #e7e5e4;
+    --line-soft: #f0efed;
+    --green: #15803d;
+    --green-soft: #f0fdf4;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .brand {
+    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  a { color: var(--accent-ink); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+
+  /* Header — same as the landing page */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  header.site .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .brand { font-size: 22px; font-weight: 700; text-decoration: none; color: var(--ink); }
+  .brand span { color: var(--accent); }
+  nav.main { display: flex; align-items: center; gap: 28px; }
+  nav.main a.nav-link { color: var(--ink-soft); text-decoration: none; font-weight: 600; font-size: 15px; }
+  nav.main a.nav-link:hover { color: var(--ink); }
+  .btn {
+    display: inline-block;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 11px 22px;
+    border-radius: 999px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+  }
+  .btn:hover { background: #1e293b; }
+  .btn-accent { background: var(--accent); }
+  .btn-accent:hover { background: var(--accent-ink); }
+
+  /* Article */
+  .article { max-width: 760px; margin: 0 auto; padding: 64px 28px 96px; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 0 0 16px;
+  }
+  .article h1 { font-size: 46px; line-height: 1.12; margin: 0 0 18px; }
+  .dek { font-size: 20px; line-height: 1.55; color: var(--ink-soft); margin: 0 0 12px; }
+  .byline { color: var(--ink-faint); font-size: 14px; margin: 0 0 40px; }
+  .article h2 { font-size: 30px; line-height: 1.2; margin: 56px 0 14px; }
+  .article h3 { font-size: 22px; line-height: 1.3; margin: 40px 0 10px; }
+  .article p { margin: 0 0 18px; }
+  .article ol, .article ul { margin: 0 0 18px; padding-left: 24px; }
+  .article li { margin: 0 0 10px; }
+  .article li strong { font-weight: 700; }
+  figure { margin: 32px 0; }
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.10);
+  }
+  figure img.tall { max-width: 420px; margin: 0 auto; }
+  figcaption { color: var(--ink-soft); font-size: 14px; line-height: 1.5; margin-top: 12px; text-align: center; }
+  .steps-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .steps-pair figure { margin: 0; }
+  .note {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 32px 0;
+  }
+  .note p { margin: 0; }
+  .note strong { font-weight: 700; }
+  .sources { border-top: 1px solid var(--line); margin-top: 56px; padding-top: 24px; color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
+  .sources p { margin: 0 0 8px; }
+
+  /* Closing CTA */
+  .cta-dark {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 24px;
+    padding: 56px 40px;
+    text-align: center;
+    margin-top: 64px;
+  }
+  .cta-dark h2 { color: #fff; font-size: 32px; margin: 0 0 12px; }
+  .cta-dark p { color: #cbd5e1; margin: 0 0 28px; }
+
+  /* Footer — same as the landing page */
+  footer.site { border-top: 1px solid var(--line-soft); padding: 40px 0; color: var(--ink-faint); font-size: 14px; }
+  footer.site .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  footer.site a { color: var(--ink-soft); text-decoration: none; font-weight: 600; }
+  footer.site a:hover { color: var(--ink); }
+
+  @media (max-width: 760px) {
+    .article { padding: 40px 20px 64px; }
+    .article h1 { font-size: 34px; }
+    .article h2 { font-size: 26px; }
+    .steps-pair { grid-template-columns: 1fr; }
+    nav.main a.nav-link { display: none; }
+    .cta-dark { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">MadeForMyKids <span>Family Board</span></a>
+    <nav class="main">
+      <a class="nav-link" href="/#features">Features</a>
+      <a class="nav-link" href="/#who">Who it is for</a>
+      <a class="nav-link" href="/#pricing">Pricing</a>
+      <a class="btn" href="https://family.madeformykids.com/app">Get started free</a>
+    </nav>
+  </div>
+</header>
+
+<main class="article">
+  <p class="eyebrow">Visual schedules</p>
+  <h1>One step at a time: how visual schedules help neurodivergent kids stay on track</h1>
+  <p class="dek">A visual schedule turns the day into something a child can see, follow, and finish — one step at a time. Here is how to build one, and what it looks like when the routine itself plays out on screen.</p>
+  <p class="byline">13 November 2026 · Family Board</p>
+
+  <h2>What is a visual schedule?</h2>
+  <p>A visual schedule shows the day as a sequence a child can see: pictures, words, or both, laid out in order. Wake up, brush teeth, breakfast, shoes on, out the door. The child does not have to hold the plan in their head or wait for an adult to announce it. They can look, and know what is next.</p>
+  <p>For neurodivergent children — autistic children, children with ADHD, children who find transitions hard — that visibility matters more than it does for anyone else. Spoken instructions vanish the moment they are said. A picture stays put.</p>
+
+  <h2>Why they work</h2>
+  <p>The reason visual schedules keep showing up in classrooms and clinics is not fashion. Visual supports are one of the 28 practices identified as evidence-based for autistic children and young people in the National Clearinghouse on Autism Evidence and Practice review (Hume and colleagues, 2021), backed by 65 studies. A separate review by Knight, Sartini and Spriggs (2014) reached the same conclusion for visual activity schedules specifically: they work, from preschool through adulthood, especially when an adult teaches the child how to use the schedule and then gradually steps back.</p>
+  <p>What the research keeps finding is consistent: children follow the schedule themselves more often, need fewer adult prompts, and handle the switch from one activity to the next with less distress. The mechanism is not mysterious. A day that can be seen in advance is a day with fewer surprises, and transitions stop feeling like ambushes.</p>
+
+  <h2>What makes a good one</h2>
+  <p>A schedule on the wall only helps if the child can actually use it. Four things matter most:</p>
+  <ol>
+    <li><strong>Pictures plus words.</strong> Pair a simple image with a short label, so the schedule works whether or not the child reads fluently yet.</li>
+    <li><strong>Same place, every day.</strong> Put it where the day happens — the kitchen, the hallway — and keep it there, so checking it becomes a habit rather than a hunt.</li>
+    <li><strong>Anchors first.</strong> Start with the big fixed points of the day (school, dinner, bedtime), then layer the smaller routines in between.</li>
+    <li><strong>Teach it, then fade.</strong> Walk through the schedule together at first: point to each step, do it together, and help a little less each time. The goal is for the schedule, not your voice, to carry the routine. Change one thing at a time, and give warning before a change lands.</li>
+  </ol>
+
+  <h2>What it looks like on Family Board</h2>
+  <p>Family Board is a shared family calendar that lives on a tablet in the kitchen. Its difference is the Step Player: routines do not sit on the calendar as a line to check off — they play, one step at a time, with a photo and a spoken prompt for each step.</p>
+
+  <h3>Inside a routine, step by step</h3>
+  <p>Some tasks are routines in themselves — brushing teeth, getting dressed, leaving the house. On Family Board those run as step-by-step routines: one step at a time, each with a photo and a spoken prompt, and a Done button to move on. The routine is linked straight from the calendar task, so the child taps the task and the steps begin. If they get stuck, the grown-up is alerted.</p>
+
+  <div class="steps-pair">
+    <figure>
+      <img class="tall" src="steps-toothpaste.png" alt="Step 1 of the brushing-teeth routine: a photo of putting toothpaste on the brush, with the step text 'Put toothpaste on the brush' and a large Done button.">
+      <figcaption>Step 1 of 6: “Put toothpaste on the brush.” The photo shows the child&rsquo;s own toothbrush and toothpaste.</figcaption>
+    </figure>
+    <figure>
+      <img class="tall" src="steps-brush-top.png" alt="Step 2 of the brushing-teeth routine: a photo of brushing the top teeth, with a 26-second timer and a large Done button.">
+      <figcaption>Step 2 of 6: “Brush the top teeth.” A timer keeps the step honest — 26 seconds left here.</figcaption>
+    </figure>
+  </div>
+
+  <p>This is the part other family calendars do not have. Skylight&rsquo;s calendar routines are flat checklists, and its step-by-step device, Buddy, is a separate $139.99 purchase per child that is not linked to the calendar task. Here the steps are part of the calendar itself, and any routine can carry the child&rsquo;s own photos — the toothbrush they actually use, the shoes they actually wear — so the prompt shows their world, not a stock picture.</p>
+
+  <h3>The day at a glance</h3>
+  <p>Behind the routine sits the day itself. The board shows the whole day in order, colour-coded per child. A child can see what is done, what is now, and what is next without asking. Tapping a finished task crosses it out and earns a star, so progress is visible as it happens.</p>
+  <figure>
+    <img src="parents-calendar.png" alt="The parents app calendar for November 2026, with Friday 13 November highlighted and the day's five tasks listed in order.">
+    <figcaption>The day, laid out in order. Each child has their own colour, and finished tasks cross out with a star.</figcaption>
+  </figure>
+
+  <h3>One thing at a time</h3>
+  <p>For children who find a full day overwhelming, Guided day strips the board down to the present moment: a big clock, the next task, and nothing else competing for attention. The child follows one step, finishes it, and the next one appears.</p>
+  <figure>
+    <img src="guided-day.png" alt="Guided day mode: a big clock reading 11:20 AM, Friday 13 November 2026, Ana, and the timed tasks in order starting with Brush teeth at 7:00 AM with a Start steps button.">
+    <figcaption>Guided day shows one thing at a time: a big clock, the next task, and nothing else competing for attention. The brush-teeth task carries its orange “Start steps →” button.</figcaption>
+  </figure>
+
+  <h3>The grown-ups build it together</h3>
+  <p>Both parents can edit the same calendar from their own phones — sharing is free, and either adult can add, change, or rearrange tasks. The board on the wall updates for everyone at once, so the schedule the child sees is always the current one.</p>
+
+  <h3>Finishing feels good</h3>
+  <p>Stars add up through the week, and children can trade them for rewards the family chooses together — a movie night, a special outing. The reward is not the point; the point is that finishing is visible, and the child can see their own progress.</p>
+
+  <h2>A sample morning</h2>
+  <p>Here is a morning built the way the research suggests — anchors first, one thing at a time:</p>
+  <p>Wake up → brush teeth → get dressed → breakfast → shoes and backpack → out the door.</p>
+  <p>On Family Board, “brush teeth” is a calendar task with a step-by-step routine attached: pick up the toothbrush, put toothpaste on the brush, brush the top teeth, and so on — each step with its own photo. The child taps the task, follows the steps, and the task crosses out with a star. The rest of the morning is already on the board, in order, waiting.</p>
+  <div class="note">
+    <p><strong>Want the same routine?</strong> The brushing-teeth routine above is shared in the Step Player community library, so any family can copy it and add their own photos. Routines shared to the library carry the step text only — photos and voice stay private to the family that made them.</p>
+  </div>
+
+  <h2>A note on what this is</h2>
+  <p>A visual schedule is a support for daily life, not a treatment. It does not diagnose, treat, or replace the care of a doctor, psychologist, therapist, or teacher. What it does is make the day predictable and doable — and for many families, that is what changes the morning.</p>
+
+  <div class="cta-dark">
+    <h2>Try it</h2>
+    <p>Family Board is free to start: one family, one tablet, unlimited tasks, and the calendar sharing above. Put it on the kitchen iPad and build tomorrow&rsquo;s schedule together tonight.</p>
+    <a class="btn btn-accent" href="https://family.madeformykids.com/app">Get started free</a>
+  </div>
+
+  <div class="sources">
+    <p><strong>Sources</strong></p>
+    <p>Hume, K. et al. (2021). Evidence-based practices for children, youth, and young adults with autism: Third generation review. National Clearinghouse on Autism Evidence and Practice.</p>
+    <p>Knight, V., Sartini, E., &amp; Spriggs, A. D. (2014). Evaluating visual activity schedules as evidence-based practice for individuals with autism spectrum disorders. <em>Journal of Autism and Developmental Disorders</em>.</p>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>© 2026 MadeForMyKids</span>
+    <span><a href="/">Family Board</a> · <a href="https://family.madeformykids.com/app">Get started free</a></span>
+  </div>
+</footer>
+</body>
+</html>

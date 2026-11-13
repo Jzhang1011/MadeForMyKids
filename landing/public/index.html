@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MadeForMyKids Family Board — the family calendar kids actually use</title>
+<meta name="description" content="One shared family calendar on the iPad and iPhone. Parents design tasks online, kids tap them done and earn stars, and step-by-step routines guide the day — visually and out loud. Free to start.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f172a;
+    --ink-soft: #475569;
+    --ink-faint: #94a3b8;
+    --accent: #ea580c;
+    --accent-soft: #fff4ed;
+    --accent-ink: #c2410c;
+    --bg: #ffffff;
+    --bg-soft: #f8f8f7;
+    --card: #ffffff;
+    --line: #e7e5e4;
+    --line-soft: #f0efed;
+    --green: #15803d;
+    --green-soft: #f0fdf4;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .brand {
+    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  a { color: var(--accent-ink); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+  .section { padding: 96px 0; }
+  .section h2 { text-align: center; font-size: 40px; line-height: 1.15; margin: 0 0 14px; }
+  .section .sub { text-align: center; color: var(--ink-soft); max-width: 660px; margin: 0 auto 56px; font-size: 18px; }
+  .eyebrow {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 0 0 16px;
+  }
+
+  /* Header */
+  header.site {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .brand { font-size: 22px; font-weight: 700; text-decoration: none; color: var(--ink); }
+  .brand span { color: var(--accent); }
+  nav.main { display: flex; gap: 32px; align-items: center; }
+  nav.main a.nav-link { color: var(--ink-soft); text-decoration: none; font-weight: 600; font-size: 15px; }
+  nav.main a.nav-link:hover { color: var(--ink); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    font-family: 'Manrope', sans-serif;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .btn-primary { background: var(--ink); color: #fff; }
+  .btn-primary:hover { background: #1e293b; }
+  .btn-accent { background: var(--accent); color: #fff; }
+  .btn-accent:hover { background: var(--accent-ink); }
+  .btn-secondary { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+  .btn-secondary:hover { border-color: var(--ink-faint); }
+  .btn-small { min-height: 42px; padding: 8px 20px; font-size: 15px; }
+
+  /* Hero */
+  .hero { text-align: center; padding: 88px 0 24px; }
+  .hero h1 { font-size: 60px; line-height: 1.05; margin: 0 0 20px; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p.lede { font-size: 20px; color: var(--ink-soft); max-width: 640px; margin: 0 auto 36px; }
+  .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .cta-note { margin-top: 18px; color: var(--ink-faint); font-size: 14px; font-weight: 600; }
+
+  /* Board mock */
+  .board-mock {
+    max-width: 880px;
+    margin: 64px auto 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: 0 24px 64px rgba(15, 23, 42, 0.10);
+    overflow: hidden;
+    text-align: left;
+  }
+  .board-mock .mock-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--line-soft);
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .board-mock .mock-bar .stars { color: var(--accent); font-weight: 800; }
+  .board-mock .mock-cols { display: grid; grid-template-columns: 1fr 1fr; }
+  .board-mock .mock-col { padding: 20px 24px 24px; }
+  .board-mock .mock-col + .mock-col { border-left: 1px solid var(--line-soft); }
+  .board-mock .mock-who { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; margin-bottom: 14px; }
+  .mock-task {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    line-height: 1.45;
+    font-weight: 600;
+  }
+  .mock-task .t-time { color: var(--ink-faint); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+  .mock-task .t-stars { float: right; color: var(--accent); font-weight: 800; }
+  .mock-task.done { background: var(--green-soft); border-color: #bbf7d0; text-decoration: line-through; color: var(--ink-soft); }
+  .mock-task.done .t-stars { text-decoration: none; color: var(--green); }
+  .mock-task.routine { border-color: var(--accent); background: var(--accent-soft); }
+  .mock-task .t-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    border-radius: 999px;
+    padding: 2px 8px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* Trust strip */
+  .trust {
+    display: flex;
+    gap: 12px 28px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 36px 0 0;
+    color: var(--ink-soft);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .trust span { display: inline-flex; align-items: center; gap: 8px; }
+  .trust .tick { color: var(--green); font-weight: 800; }
+
+  /* Feature grid */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+  }
+  .feature .f-emoji { font-size: 32px; line-height: 1; }
+  .feature h3 { font-size: 21px; margin: 18px 0 8px; }
+  .feature p { color: var(--ink-soft); margin: 0; font-size: 16px; }
+
+  /* Audiences */
+  .audiences {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .audience {
+    background: var(--bg-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+  }
+  .audience h3 { font-size: 21px; margin: 0 0 8px; }
+  .audience p { color: var(--ink-soft); margin: 0; font-size: 16px; }
+  .audience .a-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 4px 12px;
+    margin-bottom: 16px;
+  }
+
+  /* Steps */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .step {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+  }
+  .step .n {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step h3 { font-size: 21px; margin: 18px 0 8px; }
+  .step p { color: var(--ink-soft); margin: 0; font-size: 16px; }
+
+  /* Pricing */
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .plan {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 36px 32px;
+  }
+  .plan.plus { border: 1.5px solid var(--ink); position: relative; }
+  .plan .p-flag {
+    position: absolute; top: -13px; left: 32px;
+    background: var(--ink); color: #fff;
+    font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+    border-radius: 999px; padding: 4px 12px;
+  }
+  .plan h3 { font-size: 24px; margin: 0 0 4px; }
+  .plan .p-price { font-family: 'Fraunces', serif; font-size: 44px; font-weight: 600; margin: 10px 0 4px; }
+  .plan .p-price small { font-size: 16px; color: var(--ink-soft); font-family: 'Manrope', sans-serif; font-weight: 600; }
+  .plan .p-note { color: var(--ink-soft); font-size: 15px; margin: 0 0 24px; }
+  .plan ul { margin: 0 0 28px; padding-left: 20px; color: var(--ink-soft); font-size: 16px; }
+  .plan ul li { margin-bottom: 9px; }
+  .plan ul li::marker { color: var(--accent); }
+
+  /* FAQ */
+  .faq { max-width: 760px; margin: 0 auto; }
+  .faq details {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+  }
+  .faq summary { font-weight: 700; font-size: 17px; cursor: pointer; color: var(--ink); }
+  .faq p { color: var(--ink-soft); margin: 12px 0 0; font-size: 16px; }
+
+  /* Closing CTA */
+  .closing {
+    text-align: center;
+    background: var(--ink);
+    border-radius: 24px;
+    padding: 64px 32px;
+  }
+  .closing h2 { font-size: 36px; margin: 0 0 14px; color: #fff; }
+  .closing p { color: #cbd5e1; max-width: 560px; margin: 0 auto 32px; font-size: 18px; }
+  .closing .btn-accent { background: var(--accent); }
+
+  footer.site {
+    border-top: 1px solid var(--line-soft);
+    padding: 40px 0 56px;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+  footer.site .foot-grid {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  footer.site a { font-weight: 600; color: var(--ink); text-decoration: none; }
+  footer.site a:hover { color: var(--accent-ink); }
+  footer.site .foot-note { margin-top: 28px; text-align: center; color: var(--ink-faint); }
+
+  @media (max-width: 760px) {
+    .hero { padding: 56px 0 16px; }
+    .hero h1 { font-size: 40px; }
+    .section { padding: 64px 0; }
+    .section h2 { font-size: 30px; }
+    .features, .audiences, .steps, .plans { grid-template-columns: 1fr; }
+    .board-mock .mock-cols { grid-template-columns: 1fr; }
+    .board-mock .mock-col + .mock-col { border-left: none; border-top: 1px solid var(--line-soft); }
+    nav.main a.nav-link { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site">
+    <a class="brand" href="/">MadeForMyKids <span>Family Board</span></a>
+    <nav class="main" aria-label="Main">
+      <a class="nav-link" href="#features">Features</a>
+      <a class="nav-link" href="#who">Who it is for</a>
+      <a class="nav-link" href="#pricing">Pricing</a>
+      <a class="nav-link" href="/visual-schedules/">Guides</a>
+      <a class="btn btn-primary btn-small" href="https://family.madeformykids.com/app">Get started free</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow" style="text-align:center;">Family Board</p>
+      <h1>The family calendar <em>kids actually use.</em></h1>
+      <p class="lede">One shared calendar on the iPad and iPhone. Parents design the day
+        online, kids tap tasks done and earn stars — and step-by-step routines
+        guide them through it, visually and out loud.</p>
+      <div class="cta-row">
+        <a class="btn btn-accent" href="https://family.madeformykids.com/app">Create your free family board →</a>
+        <a class="btn btn-secondary" href="#how">See how it works</a>
+      </div>
+      <p class="cta-note">Free to start · No special hardware — any iPad, iPhone, or tablet · Your family's data stays private</p>
+
+      <div class="board-mock" aria-label="A preview of the family board">
+        <div class="mock-bar"><span>Today — Thursday</span><span class="stars">18 stars earned today</span></div>
+        <div class="mock-cols">
+          <div class="mock-col">
+            <div class="mock-who">Ana</div>
+            <div class="mock-task done"><span class="t-stars">2 ★</span><span class="t-time">07:30</span><br>Brush teeth</div>
+            <div class="mock-task"><span class="t-stars">3 ★</span><span class="t-time">08:00</span><br>Pack school bag</div>
+            <div class="mock-task routine"><span class="t-stars">5 ★</span><span class="t-time">16:00</span><br>Homework routine<span class="t-badge">▶ Steps</span></div>
+          </div>
+          <div class="mock-col">
+            <div class="mock-who">Leo</div>
+            <div class="mock-task done"><span class="t-stars">2 ★</span><span class="t-time">07:30</span><br>Make the bed</div>
+            <div class="mock-task"><span class="t-stars">1 ★</span><span class="t-time">15:30</span><br>Reading — 20 minutes</div>
+            <div class="mock-task"><span class="t-stars">3 ★</span><span class="t-time">18:00</span><br>Piano practice</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trust">
+        <span><span class="tick">✓</span> Free to start</span>
+        <span><span class="tick">✓</span> Works with Google Calendar</span>
+        <span><span class="tick">✓</span> iPad, iPhone, tablet and web</span>
+        <span><span class="tick">✓</span> No distractions for kids</span>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <p class="eyebrow">What's inside</p>
+      <h2>Everything a family needs to run the day</h2>
+      <p class="sub">One place the kids can actually read, in one place the parents can actually manage.</p>
+      <div class="features">
+        <div class="feature">
+          <div class="f-emoji" aria-hidden="true">📅</div>
+          <h3>One shared calendar</h3>
+          <p>Everyone's tasks, appointments and school events in a single timeline — one column per person, colour-coded at a glance. Syncs with Google Calendar, so nothing gets double-booked.</p>
+        </div>
+        <div class="feature">
+          <div class="f-emoji" aria-hidden="true">⭐</div>
+          <h3>Stars and rewards</h3>
+          <p>Kids tap tasks done and earn stars. Parents set the rewards — a movie night, a treat, a trip — and kids claim them on the board when they've earned enough.</p>
+        </div>
+        <div class="feature">
+          <div class="f-emoji" aria-hidden="true">👣</div>
+          <h3>Step-by-step routines</h3>
+          <p>Link a task to a Step Player routine and the iPad or iPhone walks the child through it one step at a time, with photos and spoken prompts. Mornings and bedtimes run themselves.</p>
+        </div>
+        <div class="feature">
+          <div class="f-emoji" aria-hidden="true">🔄</div>
+          <h3>Google Calendar sync</h3>
+          <p>Connect a Google Calendar and its events appear on the board automatically — read-only, so the board never edits your calendar. Syncs every 30 minutes.</p>
+        </div>
+        <div class="feature">
+          <div class="f-emoji" aria-hidden="true">📱</div>
+          <h3>One calendar, every screen</h3>
+          <p>The same day on the kitchen iPad, mum's iPhone, and dad's tablet — everyone looks at the same calendar, everywhere. Pair each screen once with a 6-character code. Free covers one screen; Plus covers as many as your family needs.</p>
+        </div>
+        <div class="feature">
+          <div class="f-emoji" aria-hidden="true">🔒</div>
+          <h3>Private by design</h3>
+          <p>Your family's schedule, routines and photos stay yours. No ads on the kids' screen, and nothing from your family is ever shared with anyone else.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="who">
+      <p class="eyebrow">Who it is for</p>
+      <h2>Built for every kind of family</h2>
+      <p class="sub">The same board, with as much or as little support as each person needs.</p>
+      <div class="audiences">
+        <div class="audience">
+          <span class="a-tag">Families</span>
+          <h3>The token system, centralised</h3>
+          <p>One calendar, one star system, one place for the whole week. Parents design the tasks; kids see the day and tap them done. Less nagging, fewer missed pickups.</p>
+        </div>
+        <div class="audience">
+          <span class="a-tag">Extra support</span>
+          <h3>Guided days, step by step</h3>
+          <p>For children who need more than a list, routines break the day into single steps with a photo and a voice for each one — so a child can follow the morning or the bedtime routine on their own.</p>
+          <p><a href="/visual-schedules/">How visual schedules help neurodivergent kids →</a></p>
+        </div>
+        <div class="audience">
+          <span class="a-tag">Seniors &amp; carers</span>
+          <h3>The same gentle guidance</h3>
+          <p>The step-by-step prompting works just as well for an older parent: a clear, calm, one-step-at-a-time day on a screen that never asks them to learn a new app.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <p class="eyebrow">Getting started</p>
+      <h2>Three steps, about five minutes</h2>
+      <p class="sub">No hardware to buy, no app to install on the tablet.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="n">1</div>
+          <h3>Create your free account</h3>
+          <p>Sign up in the parents app — on your computer or phone. No card needed.</p>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <h3>Add your family and tasks</h3>
+          <p>Add each person, then add the tasks — one-off or repeating, with a time and stars to earn. Link a routine when a task needs step-by-step help.</p>
+        </div>
+        <div class="step">
+          <div class="n">3</div>
+          <h3>Put it on the iPad or iPhone</h3>
+          <p>Open the pairing page, scan the code with the device's camera, and the board appears. It stays in sync on its own from there.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <p class="eyebrow">Plans</p>
+      <h2>The help is free. Pay when you want more of it.</h2>
+      <p class="sub">No card upfront, and the connection to Step Player is free for everyone.</p>
+      <div class="plans">
+        <div class="plan">
+          <h3>Free</h3>
+          <p class="p-price">$0</p>
+          <p class="p-note">Everything a family needs to run the day.</p>
+          <ul>
+            <li>1 family, up to 5 members, unlimited tasks</li>
+            <li>1 screen — one iPad or iPhone</li>
+            <li>Shared calendar, stars and rewards</li>
+            <li>Step Player routine links</li>
+            <li>Google Calendar sync</li>
+          </ul>
+          <a class="btn btn-secondary" href="https://family.madeformykids.com/app" style="width:100%;">Start free</a>
+        </div>
+        <div class="plan plus">
+          <span class="p-flag">Most popular</span>
+          <h3>Plus</h3>
+          <p class="p-price">$39 <small>/ year</small></p>
+          <p class="p-note">Or $4.99 a month. 30-day free trial, no card upfront.</p>
+          <ul>
+            <li>Everything in Free</li>
+            <li>Unlimited members and screens — the same calendar on every device</li>
+            <li>Your child's photo next to their assignments</li>
+            <li>Meals and Notes modules</li>
+            <li>Task history and stars reports</li>
+            <li>Priority support</li>
+          </ul>
+          <a class="btn btn-accent" href="https://family.madeformykids.com/app" style="width:100%;">Try Plus free for 30 days</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="eyebrow">Questions</p>
+      <h2>The ones families ask first</h2>
+      <p class="sub">Straight answers, no fine print.</p>
+      <div class="faq">
+        <details>
+          <summary>Do I need to buy a special display?</summary>
+          <p>No. The board runs on any iPad, iPhone, or Android tablet you already own. Pair it once and it becomes the family hub.</p>
+        </details>
+        <details>
+          <summary>Does it work with Google Calendar?</summary>
+          <p>Yes. Connect a Google Calendar and its events appear on the board automatically. The board never edits your calendar — it only reads it.</p>
+        </details>
+        <details>
+          <summary>Is the Step Player connection extra?</summary>
+          <p>No. Linking a task to a step-by-step routine is part of the product, free for everyone. You only pay for Plus when you want more members, more tablets, photos, Meals and Notes, or reports.</p>
+        </details>
+        <details>
+          <summary>Can my kids change or delete things?</summary>
+          <p>No. The tablet screen is run-only: kids can complete tasks and claim rewards, but there is no admin, no settings and no editing on it. Parents change everything from their own app.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="closing">
+        <h2>Less juggling. Fewer surprises.</h2>
+        <p>Set up your family board in five minutes, and let the day run itself.</p>
+        <a class="btn btn-accent" href="https://family.madeformykids.com/app">Create your free family board →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="foot-grid">
+      <div>
+        <strong>MadeForMyKids Family Board</strong><br>
+        The family calendar kids actually use.
+      </div>
+      <div>
+        <a href="https://family.madeformykids.com/app">Parents app</a><br>
+        <a href="https://family.madeformykids.com/play">Board player</a><br>
+        <a href="https://combined.madeformykids.com">Guided day player</a>
+      </div>
+      <div>
+        <a href="https://steps.madeformykids.com">Step Player</a><br>
+        <a href="/visual-schedules/">Visual schedules</a>
+      </div>
+    </div>
+    <p class="foot-note">MadeForMyKids — built by a parent, for families.</p>
+  </footer>
+
+</div>
+</body>
+</html>
