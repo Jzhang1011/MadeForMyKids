@@ -1,8 +1,8 @@
 import { openMeteoUrl, splitOpenMeteo, dailyRows, hourlyRows, weatherEmoji, carsUrl, slimEvents, EVENT_CLASSES,
-  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=16365b4c2d';
-import { STR, PACK_DEFAULT } from './i18n.js?v=16365b4c2d';
-import { selectCameras, routeSegments, inCO } from './route.js?v=16365b4c2d';
-import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=16365b4c2d';
+  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=efc0804f18';
+import { STR, PACK_DEFAULT } from './i18n.js?v=efc0804f18';
+import { selectCameras, routeSegments, inCO } from './route.js?v=efc0804f18';
+import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=efc0804f18';
 
 const LS = {
   get: (k, d) => { try { const v = localStorage.getItem('ski.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
