@@ -1,0 +1,35 @@
+name: Ski dashboard morning refresh
+
+on:
+  schedule:
+    # 12:30 UTC = 5:30 AM MST (6:30 AM during daylight time). GitHub may start it a few minutes late.
+    - cron: '30 12 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ski-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Fetch weather, roads, alerts, cameras
+        run: node ski/scripts/fetch-data.mjs
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ski/data/latest.json
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "ski: morning data refresh $(date -u +%Y-%m-%dT%H:%MZ)"
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
