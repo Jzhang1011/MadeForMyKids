@@ -21,7 +21,7 @@ export const STR = {
     t: 'Temp', feels: 'Feels', snow: 'Snow', wind: 'Wind', gust: 'Gust', fzl: 'Freezing lvl', snowline: 'Snow line ≈', ratio: 'Snow ratio', swe: 'Water',
     model_snow: 'Model snow', est_snow: 'Powder-adj.', hi_lo: 'High / low',
     ratio_note: 'Open-Meteo snowfall assumes a fixed ~7:1 snow-to-liquid ratio. "Snow ratio" and "Powder-adj." are estimated with the Kuchera method from upper-air temperatures (colder = fluffier). Snow line ≈ freezing level − 300 m.',
-    roads_h: 'Roads from DEN', route: 'Route', alt: 'alternate', cameras: 'Roadside cameras', open_cotrip: 'Open COtrip map', no_events: 'No chain law, closures or incidents reported on this segment.',
+    roads_h: 'Roads', route: 'Route', alt: 'alternate', cameras: 'Roadside cameras', open_cotrip: 'Open COtrip map', no_events: 'No chain law, closures or incidents reported on this segment.',
     seg_events: '{0} reported', stream: 'Live stream', img_fail: 'Image unavailable', events_note: 'Live from CDOT COtrip (api-511x-co.carsprogram.org). Cameras refresh every few minutes.',
     wear_h: 'What to wear', adults: 'Adults', kids: 'Kids', band_mild: 'Mild', band_cold: 'Cold', band_verycold: 'Very cold', band_extreme: 'Extreme cold', band_unknown: 'Unknown',
     feels_top: 'feels like {0} on top',
@@ -61,7 +61,7 @@ export const STR = {
     t: '气温', feels: '体感', snow: '降雪', wind: '风速', gust: '阵风', fzl: '冰冻线', snowline: '雪线 ≈', ratio: '雪水比', swe: '降水当量',
     model_snow: '模型降雪', est_snow: '粉雪修正', hi_lo: '最高 / 最低',
     ratio_note: 'Open-Meteo 的降雪量按固定约 7:1 雪水比计算。“雪水比”和“粉雪修正”用 Kuchera 方法根据高空温度估算（越冷雪越蓬松）。雪线 ≈ 冰冻线 − 300 米。',
-    roads_h: '机场出发路况', route: '路线', alt: '备选', cameras: '沿途摄像头', open_cotrip: '打开 COtrip 地图', no_events: '该路段无链条管制、封路或事故。',
+    roads_h: '路况', route: '路线', alt: '备选', cameras: '沿途摄像头', open_cotrip: '打开 COtrip 地图', no_events: '该路段无链条管制、封路或事故。',
     seg_events: '{0} 条', stream: '直播', img_fail: '图片不可用', events_note: '数据实时来自 CDOT COtrip。摄像头每几分钟刷新一次。',
     wear_h: '穿衣安排', adults: '大人', kids: '孩子', band_mild: '温和', band_cold: '冷', band_verycold: '很冷', band_extreme: '极寒', band_unknown: '未知',
     feels_top: '山顶体感 {0}',
@@ -152,3 +152,21 @@ const SHORT = {
     n_kid_breaks: '定时取暖', n_frostbite: '查冻伤', n_wind: '防风', n_snow_lens: '低光镜片', n_sun_lens: '深色镜片', n_sunscreen: 'SPF 50', n_warm_vent: '下午开通风' }
 };
 for (const l of ['en', 'zh']) for (const [k, v] of Object.entries(SHORT[l])) STR[l]['s_' + k] = v;
+
+const V3 = {
+  en: { start_label: 'Starting from', start_ph: 'Address, city or airport', use_loc: 'Use my location', no_results: 'No matches', geo_fail: 'Search unavailable right now',
+    loc_unsupported: 'Location is not available in this browser', loc_finding: 'Finding your location…', my_location: 'My location', loc_denied: 'Location permission denied', loc_fail: 'Could not get your location',
+    st_drive_from: 'Drive (est.)', drive: 'Drive', route_loading: 'Finding the route…', route_fail: 'Routing service unavailable — showing the standard routes and cameras from DEN.',
+    outside_co: 'Your start is outside Colorado. Road status and cameras begin at the Colorado state line ({0} into the drive).',
+    leaves_co: 'Part of this route runs outside Colorado, where CDOT has no road data or cameras.',
+    opp_dir: 'opposite direction', cams_route: 'Cameras along your route', cams_none: 'No CDOT cameras within 1.5 km of this route.', map_label: 'Route map with camera locations',
+    route_src: 'route', outside_tag: 'outside Colorado · no CDOT data', route_est: 'routing estimate, no traffic', why_h: 'Why' },
+  zh: { start_label: '出发地', start_ph: '地址、城市或机场', use_loc: '使用我的位置', no_results: '没有结果', geo_fail: '搜索暂不可用',
+    loc_unsupported: '此浏览器不支持定位', loc_finding: '正在定位…', my_location: '我的位置', loc_denied: '定位权限被拒绝', loc_fail: '无法获取位置',
+    st_drive_from: '车程（估）', drive: '车程', route_loading: '正在规划路线…', route_fail: '路线服务暂不可用——显示从丹佛机场出发的默认路线和摄像头。',
+    outside_co: '出发地在科罗拉多州外。路况和摄像头从进入科罗拉多州界开始（行程约 {0} 处）。',
+    leaves_co: '这条路线有一段在科罗拉多州外，CDOT 没有那里的路况和摄像头。',
+    opp_dir: '对向车道', cams_route: '沿途摄像头', cams_none: '路线 1.5 公里内没有 CDOT 摄像头。', map_label: '路线地图和摄像头位置',
+    route_src: '路线', outside_tag: '科罗拉多州外 · 无 CDOT 数据', route_est: '路线估算，未含拥堵', why_h: '判断依据' }
+};
+Object.assign(STR.en, V3.en); Object.assign(STR.zh, V3.zh);

@@ -1,626 +1,688 @@
 {
-  "version": 1,
-  "trip": {
-    "origin": {
-      "id": "DEN",
-      "name": {
-        "en": "Denver International Airport (DEN)",
-        "zh": "丹佛国际机场 (DEN)"
-      },
-      "lat": 39.8561,
-      "lon": -104.6737
-    },
-    "timezone": "America/Denver",
-    "state": "CO"
+ "version": 1,
+ "trip": {
+  "origin": {
+   "id": "DEN",
+   "name": {
+    "en": "Denver International Airport (DEN)",
+    "zh": "丹佛国际机场 (DEN)"
+   },
+   "lat": 39.8561,
+   "lon": -104.6737
   },
-  "sources": {
-    "weather": "https://api.open-meteo.com/v1/forecast",
-    "cars": "https://api-511x-co.carsprogram.org",
-    "nws": "https://api.weather.gov/alerts/active",
-    "cotrip": "https://www.cotrip.org/",
-    "snapshots": [
-      "data/latest.json"
-    ],
-    "intel": "data/intel.json"
-  },
-  "rules": {
-    "snowCautionCm": 15,
-    "gustCautionKmh": 80,
-    "feelsLikeCautionC": -29,
-    "nwsNoGo": [
-      "Blizzard Warning",
-      "Ice Storm Warning"
-    ],
-    "nwsCaution": [
-      "Winter Storm Warning",
-      "Winter Storm Watch",
-      "Winter Weather Advisory",
-      "High Wind Warning",
-      "Wind Chill Warning",
-      "Wind Chill Advisory",
-      "Extreme Cold Warning",
-      "Cold Weather Advisory",
-      "Avalanche Warning",
-      "Snow Squall Warning"
-    ]
-  },
-  "segments": {
-    "den-metro": {
-      "name": {
-        "en": "DEN → Golden (Peña Blvd / E-470 / I-70)",
-        "zh": "机场 → Golden（Peña Blvd / E-470 / I-70）"
-      },
-      "routes": [
-        "I-70",
-        "E-470",
-        "Peña Blvd",
-        "Pena Blvd",
-        "I-270",
-        "I-76"
-      ],
-      "bbox": [
-        -105.25,
-        39.7,
-        -104.6,
-        39.92
-      ]
+  "timezone": "America/Denver",
+  "state": "CO",
+  "presets": [
+   {
+    "id": "DEN",
+    "name": {
+     "en": "Denver Airport (DEN)",
+     "zh": "丹佛机场 (DEN)"
     },
-    "i70-foothills": {
-      "name": {
-        "en": "I-70 Golden → Floyd Hill → Idaho Springs → Georgetown",
-        "zh": "I-70 Golden → Floyd Hill → Idaho Springs → Georgetown"
-      },
-      "routes": [
-        "I-70"
-      ],
-      "bbox": [
-        -105.73,
-        39.62,
-        -105.17,
-        39.8
-      ]
+    "lat": 39.8561,
+    "lon": -104.6737
+   },
+   {
+    "id": "denver",
+    "name": {
+     "en": "Downtown Denver",
+     "zh": "丹佛市中心"
     },
-    "i70-tunnel": {
-      "name": {
-        "en": "I-70 Georgetown → Eisenhower-Johnson Tunnel → Silverthorne",
-        "zh": "I-70 Georgetown → 艾森豪威尔隧道 → Silverthorne"
-      },
-      "routes": [
-        "I-70"
-      ],
-      "bbox": [
-        -106.08,
-        39.6,
-        -105.73,
-        39.72
-      ]
+    "lat": 39.7392,
+    "lon": -104.9903
+   },
+   {
+    "id": "boulder",
+    "name": {
+     "en": "Boulder",
+     "zh": "Boulder"
     },
-    "i70-summit": {
-      "name": {
-        "en": "I-70 Silverthorne → Frisco → Copper (exit 195)",
-        "zh": "I-70 Silverthorne → Frisco → Copper（195 出口）"
-      },
-      "routes": [
-        "I-70",
-        "CO 91"
-      ],
-      "bbox": [
-        -106.19,
-        39.47,
-        -106.06,
-        39.65
-      ]
+    "lat": 40.015,
+    "lon": -105.2705
+   },
+   {
+    "id": "cos",
+    "name": {
+     "en": "Colorado Springs",
+     "zh": "科罗拉多斯普林斯"
     },
-    "us6-loveland": {
-      "name": {
-        "en": "US 6 Loveland Pass / Keystone → A-Basin",
-        "zh": "US 6 Loveland 山口 / Keystone → A-Basin"
-      },
-      "routes": [
-        "US 6"
-      ],
-      "bbox": [
-        -106.08,
-        39.58,
-        -105.83,
-        39.7
-      ]
+    "lat": 38.8339,
+    "lon": -104.8214
+   },
+   {
+    "id": "foco",
+    "name": {
+     "en": "Fort Collins",
+     "zh": "柯林斯堡"
     },
-    "co9-kremmling": {
-      "name": {
-        "en": "CO 9 Silverthorne → Green Mtn Reservoir → Kremmling",
-        "zh": "CO 9 Silverthorne → Green Mtn 水库 → Kremmling"
-      },
-      "routes": [
-        "CO 9"
-      ],
-      "bbox": [
-        -106.45,
-        39.62,
-        -106.0,
-        40.1
-      ]
-    },
-    "us40-rabbitears": {
-      "name": {
-        "en": "US 40 Kremmling → Muddy & Rabbit Ears Passes → Steamboat",
-        "zh": "US 40 Kremmling → Muddy / Rabbit Ears 山口 → Steamboat"
-      },
-      "routes": [
-        "US 40"
-      ],
-      "bbox": [
-        -106.9,
-        40.0,
-        -106.35,
-        40.52
-      ]
-    },
-    "us40-berthoud": {
-      "name": {
-        "en": "US 40 Empire → Berthoud Pass → Granby (alternate)",
-        "zh": "US 40 Empire → Berthoud 山口 → Granby（备选）"
-      },
-      "routes": [
-        "US 40"
-      ],
-      "bbox": [
-        -106.4,
-        39.7,
-        -105.62,
-        40.12
-      ]
-    }
-  },
-  "resorts": [
-    {
-      "id": "abasin",
-      "name": {
-        "en": "Arapahoe Basin",
-        "zh": "Arapahoe Basin（A-Basin）"
-      },
-      "short": "A-Basin",
-      "passes": [
-        "ikon"
-      ],
-      "region": "CO",
-      "lat": 39.6425,
-      "lon": -105.8719,
-      "baseElevM": 3286,
-      "summitElevM": 3978,
-      "driveMin": 95,
-      "routeNote": {
-        "en": "DEN → I-70 W → exit 216 → US 6 over Loveland Pass. If Loveland Pass is closed: through the tunnel → exit 205 Silverthorne → US 6 E via Keystone.",
-        "zh": "机场 → I-70 西 → 216 出口 → US 6 翻 Loveland 山口。若山口封闭：走隧道 → 205 出口 Silverthorne → 经 Keystone 走 US 6 东。"
-      },
-      "route": [
-        {
-          "seg": "den-metro",
-          "closure": "caution"
-        },
-        {
-          "seg": "i70-foothills",
-          "closure": "nogo"
-        },
-        {
-          "seg": "us6-loveland",
-          "closure": "caution"
-        },
-        {
-          "seg": "i70-tunnel",
-          "closure": "caution"
-        }
-      ],
-      "links": {
-        "site": "https://www.arapahoebasin.com/",
-        "webcams": "https://www.arapahoebasin.com/mountain-cams/",
-        "report": "https://www.arapahoebasin.com/snow-report/"
-      },
-      "webcams": [
-        {
-          "name": {
-            "en": "Mountain Goat Plaza / Base",
-            "zh": "山脚 Mountain Goat 广场"
-          },
-          "image": "https://dirigo-resorts-f4e2bde5azc2cne6.z02.azurefd.net/arapahoe/images/medium/webcams/abasincam1001m.jpg"
-        },
-        {
-          "name": {
-            "en": "Montezuma Bowl",
-            "zh": "Montezuma Bowl"
-          },
-          "image": "https://dirigo-resorts-f4e2bde5azc2cne6.z02.azurefd.net/arapahoe/images/medium/webcams/abasincam5.jpg"
-        },
-        {
-          "name": {
-            "en": "Snow Stake (live)",
-            "zh": "量雪杆（直播）"
-          },
-          "image": "https://watch.hdrelay.io/api/public/poster/cam_arapahoe_basin_snow_stake_camera_1790623452872",
-          "live": "https://watch.hdrelay.io/player.html?cam=cam_arapahoe_basin_snow_stake_camera_1790623452872&profile=p_mvzp4drp1xbs&sig=e53f81ff16dac0f585807658&exp=1951331065664&dom="
-        },
-        {
-          "name": {
-            "en": "A-Basin Summit (live)",
-            "zh": "山顶（直播）"
-          },
-          "image": "https://watch.hdrelay.io/api/public/poster/cam_arapahoe_basin_patrol_headquarters_1790624063379",
-          "live": "https://watch.hdrelay.io/player.html?cam=cam_arapahoe_basin_patrol_headquarters_1790624063379&profile=p_mvzu7ex2b604&sig=c98dffe5d130e649d8ea9050&exp=1951338968377"
-        },
-        {
-          "name": {
-            "en": "Black Mountain Lodge (live)",
-            "zh": "Black Mountain Lodge 半山（直播）"
-          },
-          "image": "https://watch.hdrelay.io/api/public/poster/cam_arapahoe_basin_black_mountain_lodge_1790623952319",
-          "live": "https://watch.hdrelay.io/player.html?cam=cam_arapahoe_basin_black_mountain_lodge_1790623952319&profile=p_mvzu7e97fmc5&sig=7454b7643e1e09cd8bfcdfba&exp=1951338968374"
-        },
-        {
-          "name": {
-            "en": "Pali + Molly Lifts (live)",
-            "zh": "Pali + Molly 缆车（直播）"
-          },
-          "image": "https://watch.hdrelay.io/api/public/poster/cam_arapahoe_basin_pali_cam_1790623627806",
-          "live": "https://watch.hdrelay.io/player.html?cam=cam_arapahoe_basin_pali_cam_1790623627806&profile=p_mvzu7c2b7ppi&sig=dea21292c741ef11bd60196f&exp=1951338968368"
-        }
-      ],
-      "intel": {
-        "provider": "abasin",
-        "page": "https://www.arapahoebasin.com/snow-report/",
-        "hoursPage": "https://www.arapahoebasin.com/operating-hours-/"
-      },
-      "photo": {
-        "src": "img/abasin.jpg",
-        "credit": "Runningonbrains",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-        "page": "https://commons.wikimedia.org/wiki/File:Arapahoe_Basin_Montezuma_Bowl.jpg"
-      }
-    },
-    {
-      "id": "copper",
-      "name": {
-        "en": "Copper Mountain",
-        "zh": "Copper Mountain（铜山）"
-      },
-      "short": "Copper",
-      "passes": [
-        "ikon"
-      ],
-      "region": "CO",
-      "lat": 39.5022,
-      "lon": -106.1497,
-      "baseElevM": 2960,
-      "summitElevM": 3753,
-      "driveMin": 105,
-      "routeNote": {
-        "en": "DEN → I-70 W through the Eisenhower-Johnson Tunnel → exit 195 (CO 91) Copper Mountain.",
-        "zh": "机场 → I-70 西，过艾森豪威尔-约翰逊隧道 → 195 出口（CO 91）到 Copper。"
-      },
-      "route": [
-        {
-          "seg": "den-metro",
-          "closure": "caution"
-        },
-        {
-          "seg": "i70-foothills",
-          "closure": "nogo"
-        },
-        {
-          "seg": "i70-tunnel",
-          "closure": "nogo"
-        },
-        {
-          "seg": "i70-summit",
-          "closure": "nogo"
-        }
-      ],
-      "links": {
-        "site": "https://www.coppercolorado.com/",
-        "webcams": "https://www.coppercolorado.com/the-mountain/webcams/",
-        "report": "https://www.coppercolorado.com/the-mountain/conditions-weather/snow-report"
-      },
-      "webcams": [
-        {
-          "name": {
-            "en": "Snow Stake",
-            "zh": "量雪杆"
-          },
-          "image": "https://img.hdrelay.com/frames/fb469125-f1f3-459f-aeb4-98cb674e395f/default/last.jpg",
-          "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#snow-stake-cam"
-        },
-        {
-          "name": {
-            "en": "Center Village (HD live)",
-            "zh": "Center Village（高清直播）"
-          },
-          "image": "https://watch.hdrelay.io/api/public/poster/cam_copper_mountain___center_village_1791904709663",
-          "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#center-village-hd-cam"
-        },
-        {
-          "name": {
-            "en": "Union Peak",
-            "zh": "Union Peak"
-          },
-          "image": "https://watch.hdrelay.io/api/public/poster/cam_copper_mountain___union_1790871057199",
-          "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#union-peak-cam"
-        },
-        {
-          "name": {
-            "en": "Super Bee (HD live)",
-            "zh": "Super Bee 缆车（高清直播）"
-          },
-          "image": "https://watch.hdrelay.io/api/public/poster/cam_copper_mountain___super_bee_1791911334637",
-          "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#super-bee-hd-cam"
-        },
-        {
-          "name": {
-            "en": "Excelerator",
-            "zh": "Excelerator 缆车"
-          },
-          "image": "https://watch.hdrelay.io/api/public/poster/cam_copper_mountain___excelerator_1791911614707",
-          "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#excelerator-cam"
-        },
-        {
-          "name": {
-            "en": "Woodward Terrain Park",
-            "zh": "Woodward 地形公园"
-          },
-          "image": "https://watch.hdrelay.io/api/public/poster/cam_copper_mountain___terrain_park_1791911112236",
-          "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#woodward-terrain-park-cam"
-        },
-        {
-          "name": {
-            "en": "Aerie",
-            "zh": "Aerie"
-          },
-          "image": "https://img.hdrelay.com/frames/671bcfb507697ecebbaffc13/default/last.jpg/:/rs=w:640",
-          "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#aerie-cam"
-        }
-      ],
-      "intel": {
-        "provider": "powdr",
-        "api": "https://api.coppercolorado.com/api/v1",
-        "origin": "https://www.coppercolorado.com",
-        "page": "https://www.coppercolorado.com/the-mountain/conditions-weather/snow-report"
-      },
-      "photo": {
-        "src": "img/copper.jpg",
-        "credit": "Jarrod Doll from United States of America",
-        "license": "CC BY 2.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-        "page": "https://commons.wikimedia.org/wiki/File:Copper_Mountain,_Spaulding_Bowl_and_trails.jpg"
-      }
-    },
-    {
-      "id": "steamboat",
-      "name": {
-        "en": "Steamboat",
-        "zh": "Steamboat（蒸汽船）"
-      },
-      "short": "Steamboat",
-      "passes": [
-        "ikon"
-      ],
-      "region": "CO",
-      "lat": 40.4572,
-      "lon": -106.8045,
-      "baseElevM": 2103,
-      "summitElevM": 3221,
-      "driveMin": 190,
-      "routeNote": {
-        "en": "DEN → I-70 W through the tunnel → exit 205 Silverthorne → CO 9 N to Kremmling → US 40 W over Muddy & Rabbit Ears Passes. Alternate: I-70 exit 232 → US 40 over Berthoud Pass via Winter Park/Granby.",
-        "zh": "机场 → I-70 西过隧道 → 205 出口 Silverthorne → CO 9 北到 Kremmling → US 40 西翻 Muddy 和 Rabbit Ears 山口。备选：I-70 232 出口 → US 40 翻 Berthoud 山口经 Winter Park / Granby。"
-      },
-      "route": [
-        {
-          "seg": "den-metro",
-          "closure": "caution"
-        },
-        {
-          "seg": "i70-foothills",
-          "closure": "nogo"
-        },
-        {
-          "seg": "i70-tunnel",
-          "closure": "caution"
-        },
-        {
-          "seg": "co9-kremmling",
-          "closure": "caution"
-        },
-        {
-          "seg": "us40-rabbitears",
-          "closure": "nogo"
-        },
-        {
-          "seg": "us40-berthoud",
-          "closure": "info",
-          "alt": true
-        }
-      ],
-      "links": {
-        "site": "https://www.steamboat.com/",
-        "webcams": "https://www.steamboat.com/the-mountain/mountain-cams",
-        "report": "https://www.steamboat.com/the-mountain/mountain-report",
-        "youtube": "https://www.youtube.com/@SteamboatResort/streams"
-      },
-      "webcams": [
-        {
-          "name": {
-            "en": "Champagne Powder® Snow Cam (Sunshine Peak)",
-            "zh": "香槟粉雪摄像头（Sunshine Peak）"
-          },
-          "youtube": "Vz_BJ5NJOM0"
-        },
-        {
-          "name": {
-            "en": "Mid-Mountain Snow Stake",
-            "zh": "半山量雪杆"
-          },
-          "youtube": "lKc9xwndUK4"
-        },
-        {
-          "name": {
-            "en": "Four Points",
-            "zh": "Four Points"
-          },
-          "youtube": "Zf21nwFUyUs"
-        },
-        {
-          "name": {
-            "en": "Thunderhead Lodge",
-            "zh": "Thunderhead Lodge"
-          },
-          "youtube": "nuCNVEHvrHQ"
-        },
-        {
-          "name": {
-            "en": "Steamboat Gondola",
-            "zh": "Steamboat 缆车"
-          },
-          "youtube": "oKKj_upaoCI"
-        },
-        {
-          "name": {
-            "en": "Christie Peak Express & Wild Blue Gondola",
-            "zh": "Christie Peak & Wild Blue 缆车"
-          },
-          "youtube": "nfTQNv3jdSQ"
-        },
-        {
-          "name": {
-            "en": "Steamboat Square",
-            "zh": "Steamboat 广场"
-          },
-          "youtube": "2UJDLWcSADk"
-        }
-      ],
-      "intel": {
-        "provider": "mtnpowder",
-        "resortId": 6,
-        "page": "https://www.steamboat.com/the-mountain/mountain-report"
-      },
-      "photo": {
-        "src": "img/steamboat.jpg",
-        "credit": "Murray Foubister",
-        "license": "CC BY-SA 2.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-        "page": "https://commons.wikimedia.org/wiki/File:Steamboat_Springs_Ski_Resort_(8644072249).jpg"
-      }
-    }
+    "lat": 40.5853,
+    "lon": -105.0844
+   }
+  ]
+ },
+ "sources": {
+  "weather": "https://api.open-meteo.com/v1/forecast",
+  "cars": "https://api-511x-co.carsprogram.org",
+  "nws": "https://api.weather.gov/alerts/active",
+  "cotrip": "https://www.cotrip.org/",
+  "snapshots": [
+   "data/latest.json"
   ],
-  "cameras": [
-    {
-      "id": 19895,
-      "seg": "den-metro",
-      "name": "I-70 MP 261.7 at W Colfax Ave (Golden)",
-      "image": "https://cocam.carsprogram.org/Snapshots/070W26165CAM1MED.flv.png"
-    },
-    {
-      "id": 19566,
-      "seg": "i70-foothills",
-      "name": "I-70 MP 256.0 at Lookout Mountain",
-      "image": "https://cocam.carsprogram.org/Snapshots/070W25600CAM1RP1.flv.png",
-      "stream": "https://publicstreamer1.cotrip.org/rtplive/070W25600CAM1RP1/playlist.m3u8"
-    },
-    {
-      "id": 19472,
-      "seg": "i70-foothills",
-      "name": "I-70 MP 250.8 at El Rancho (Evergreen)",
-      "image": "https://cocam.carsprogram.org/Snapshots/070E25075CAM1RP1.flv.png",
-      "stream": "https://publicstreamer1.cotrip.org/rtplive/070E25075CAM1RP1/playlist.m3u8"
-    },
-    {
-      "id": 20368,
-      "seg": "i70-foothills",
-      "name": "I-70 MP 242.0 at Veterans Memorial Tunnels",
-      "image": "https://cocam.carsprogram.org/Snapshots/070E24200CAM1RP1.flv.png",
-      "stream": "https://publicstreamer4.cotrip.org/rtplive/070E24200CAM1RP1/playlist.m3u8"
-    },
-    {
-      "id": 19456,
-      "seg": "i70-foothills",
-      "name": "I-70 MP 239.7 Idaho Springs (13th Ave)",
-      "image": "https://cocam.carsprogram.org/Snapshots/070E23965CAM1RHS.flv.png",
-      "stream": "https://publicstreamer1.cotrip.org/rtplive/070E23965CAM1RHS/playlist.m3u8"
-    },
-    {
-      "id": 20247,
-      "seg": "i70-foothills",
-      "name": "I-70 MP 228.0 Georgetown",
-      "image": "https://cocam.carsprogram.org/Snapshots/070W22800CAM1RHS.flv.png",
-      "stream": "https://publicstreamer4.cotrip.org/rtplive/070W22800CAM1RHS/playlist.m3u8"
-    },
-    {
-      "id": 20277,
-      "seg": "i70-tunnel",
-      "name": "I-70 MP 223.2 Bakerville",
-      "image": "https://cocam.carsprogram.org/Snapshots/070W22320CAM1GP2.flv.png",
-      "stream": "https://publicstreamer4.cotrip.org/rtplive/070W22320CAM1GP2/playlist.m3u8"
-    },
-    {
-      "id": 20283,
-      "seg": "i70-tunnel",
-      "name": "I-70 MP 215.6 Eisenhower Tunnel (east portal)",
-      "image": "https://cocam.carsprogram.org/Snapshots/070E21560CAM1GP2.flv.png",
-      "stream": "https://publicstreamer4.cotrip.org/rtplive/070E21560CAM1GP2/playlist.m3u8"
-    },
-    {
-      "id": 19546,
-      "seg": "i70-tunnel",
-      "name": "I-70 MP 213.5 Eisenhower Tunnel (west portal)",
-      "image": "https://cocam.carsprogram.org/Snapshots/070E21345CAM1RHS-V.flv.png",
-      "stream": "https://publicstreamer1.cotrip.org/rtplive/070E21345CAM1RHS-V/playlist.m3u8"
-    },
-    {
-      "id": 19719,
-      "seg": "us6-loveland",
-      "name": "US 6 MP 226.3 Loveland Pass (W of Loveland Ski Area)",
-      "image": "https://cocam.carsprogram.org/Snapshots/006W22625CAM2RHS.flv.png",
-      "stream": "https://publicstreamer1.cotrip.org/rtplive/006W22625CAM2RHS/playlist.m3u8"
-    },
-    {
-      "id": 20273,
-      "seg": "us6-loveland",
-      "name": "US 6 MP 208.7 at I-70 (Silverthorne)",
-      "image": "https://cocam.carsprogram.org/Snapshots/006W20870CAM1RHS.flv.png",
-      "stream": "https://publicstreamer4.cotrip.org/rtplive/006W20870CAM1RHS/playlist.m3u8"
-    },
-    {
-      "id": 19994,
-      "seg": "i70-summit",
-      "name": "I-70 MP 202.4 at CO 9 (Frisco)",
-      "image": "https://cocam.carsprogram.org/Snapshots/070E20235CAM1RP1.flv.png",
-      "stream": "https://publicstreamer2.cotrip.org/rtplive/070E20235CAM1RP1/playlist.m3u8"
-    },
-    {
-      "id": 20199,
-      "seg": "i70-summit",
-      "name": "I-70 MP 195.3 at CO 91 (Copper Mountain)",
-      "image": "https://cocam.carsprogram.org/Snapshots/070E19525CAM2RHS.flv.png",
-      "stream": "https://publicstreamer4.cotrip.org/rtplive/070E19525CAM2RHS/playlist.m3u8"
-    },
-    {
-      "id": 964,
-      "seg": "us40-berthoud",
-      "name": "US 40 MP 248.9 Berthoud Falls",
-      "image": "https://cocam.carsprogram.org/Cellular/040W24885CAM1RHS-E.jpg"
-    },
-    {
-      "id": 9266,
-      "seg": "co9-kremmling",
-      "name": "CO 9 MP 127.4 Green Mountain Reservoir",
-      "image": "https://cocam.carsprogram.org/Cellular/009S12740CAM1RHS-N.jpg"
-    },
-    {
-      "id": 967,
-      "seg": "us40-rabbitears",
-      "name": "US 40 MP 134.5 at Mt Werner Rd (Steamboat)",
-      "image": "https://cocam.carsprogram.org/Cellular/040W13445CAM1RHS-E.jpg"
-    }
+  "intel": "data/intel.json",
+  "osrm": "https://router.project-osrm.org",
+  "photon": "https://photon.komoot.io",
+  "cameras": "data/cameras.json"
+ },
+ "rules": {
+  "snowCautionCm": 15,
+  "gustCautionKmh": 80,
+  "feelsLikeCautionC": -29,
+  "nwsNoGo": [
+   "Blizzard Warning",
+   "Ice Storm Warning"
   ],
-  "shop": {
-    "enabled": false
+  "nwsCaution": [
+   "Winter Storm Warning",
+   "Winter Storm Watch",
+   "Winter Weather Advisory",
+   "High Wind Warning",
+   "Wind Chill Warning",
+   "Wind Chill Advisory",
+   "Extreme Cold Warning",
+   "Cold Weather Advisory",
+   "Avalanche Warning",
+   "Snow Squall Warning"
+  ]
+ },
+ "segments": {
+  "den-metro": {
+   "name": {
+    "en": "DEN → Golden (Peña Blvd / E-470 / I-70)",
+    "zh": "机场 → Golden（Peña Blvd / E-470 / I-70）"
+   },
+   "routes": [
+    "I-70",
+    "E-470",
+    "Peña Blvd",
+    "Pena Blvd",
+    "I-270",
+    "I-76"
+   ],
+   "bbox": [
+    -105.25,
+    39.7,
+    -104.6,
+    39.92
+   ]
+  },
+  "i70-foothills": {
+   "name": {
+    "en": "I-70 Golden → Floyd Hill → Idaho Springs → Georgetown",
+    "zh": "I-70 Golden → Floyd Hill → Idaho Springs → Georgetown"
+   },
+   "routes": [
+    "I-70"
+   ],
+   "bbox": [
+    -105.73,
+    39.62,
+    -105.17,
+    39.8
+   ]
+  },
+  "i70-tunnel": {
+   "name": {
+    "en": "I-70 Georgetown → Eisenhower-Johnson Tunnel → Silverthorne",
+    "zh": "I-70 Georgetown → 艾森豪威尔隧道 → Silverthorne"
+   },
+   "routes": [
+    "I-70"
+   ],
+   "bbox": [
+    -106.08,
+    39.6,
+    -105.73,
+    39.72
+   ]
+  },
+  "i70-summit": {
+   "name": {
+    "en": "I-70 Silverthorne → Frisco → Copper (exit 195)",
+    "zh": "I-70 Silverthorne → Frisco → Copper（195 出口）"
+   },
+   "routes": [
+    "I-70",
+    "CO 91"
+   ],
+   "bbox": [
+    -106.19,
+    39.47,
+    -106.06,
+    39.65
+   ]
+  },
+  "us6-loveland": {
+   "name": {
+    "en": "US 6 Loveland Pass / Keystone → A-Basin",
+    "zh": "US 6 Loveland 山口 / Keystone → A-Basin"
+   },
+   "routes": [
+    "US 6"
+   ],
+   "bbox": [
+    -106.08,
+    39.58,
+    -105.83,
+    39.7
+   ]
+  },
+  "co9-kremmling": {
+   "name": {
+    "en": "CO 9 Silverthorne → Green Mtn Reservoir → Kremmling",
+    "zh": "CO 9 Silverthorne → Green Mtn 水库 → Kremmling"
+   },
+   "routes": [
+    "CO 9"
+   ],
+   "bbox": [
+    -106.45,
+    39.62,
+    -106.0,
+    40.1
+   ]
+  },
+  "us40-rabbitears": {
+   "name": {
+    "en": "US 40 Kremmling → Muddy & Rabbit Ears Passes → Steamboat",
+    "zh": "US 40 Kremmling → Muddy / Rabbit Ears 山口 → Steamboat"
+   },
+   "routes": [
+    "US 40"
+   ],
+   "bbox": [
+    -106.9,
+    40.0,
+    -106.35,
+    40.52
+   ]
+  },
+  "us40-berthoud": {
+   "name": {
+    "en": "US 40 Empire → Berthoud Pass → Granby (alternate)",
+    "zh": "US 40 Empire → Berthoud 山口 → Granby（备选）"
+   },
+   "routes": [
+    "US 40"
+   ],
+   "bbox": [
+    -106.4,
+    39.7,
+    -105.62,
+    40.12
+   ]
   }
+ },
+ "resorts": [
+  {
+   "id": "abasin",
+   "name": {
+    "en": "Arapahoe Basin",
+    "zh": "Arapahoe Basin（A-Basin）"
+   },
+   "short": "A-Basin",
+   "passes": [
+    "ikon"
+   ],
+   "region": "CO",
+   "lat": 39.6425,
+   "lon": -105.8719,
+   "baseElevM": 3286,
+   "summitElevM": 3978,
+   "driveMin": 95,
+   "routeNote": {
+    "en": "DEN → I-70 W → exit 216 → US 6 over Loveland Pass. If Loveland Pass is closed: through the tunnel → exit 205 Silverthorne → US 6 E via Keystone.",
+    "zh": "机场 → I-70 西 → 216 出口 → US 6 翻 Loveland 山口。若山口封闭：走隧道 → 205 出口 Silverthorne → 经 Keystone 走 US 6 东。"
+   },
+   "route": [
+    {
+     "seg": "den-metro",
+     "closure": "caution"
+    },
+    {
+     "seg": "i70-foothills",
+     "closure": "nogo"
+    },
+    {
+     "seg": "us6-loveland",
+     "closure": "caution"
+    },
+    {
+     "seg": "i70-tunnel",
+     "closure": "caution"
+    }
+   ],
+   "links": {
+    "site": "https://www.arapahoebasin.com/",
+    "webcams": "https://www.arapahoebasin.com/mountain-cams/",
+    "report": "https://www.arapahoebasin.com/snow-report/"
+   },
+   "webcams": [
+    {
+     "name": {
+      "en": "Mountain Goat Plaza / Base",
+      "zh": "山脚 Mountain Goat 广场"
+     },
+     "image": "https://dirigo-resorts-f4e2bde5azc2cne6.z02.azurefd.net/arapahoe/images/medium/webcams/abasincam1001m.jpg"
+    },
+    {
+     "name": {
+      "en": "Montezuma Bowl",
+      "zh": "Montezuma Bowl"
+     },
+     "image": "https://dirigo-resorts-f4e2bde5azc2cne6.z02.azurefd.net/arapahoe/images/medium/webcams/abasincam5.jpg"
+    },
+    {
+     "name": {
+      "en": "Snow Stake (live)",
+      "zh": "量雪杆（直播）"
+     },
+     "image": "https://watch.hdrelay.io/api/public/poster/cam_arapahoe_basin_snow_stake_camera_1790623452872",
+     "live": "https://watch.hdrelay.io/player.html?cam=cam_arapahoe_basin_snow_stake_camera_1790623452872&profile=p_mvzp4drp1xbs&sig=e53f81ff16dac0f585807658&exp=1951331065664&dom="
+    },
+    {
+     "name": {
+      "en": "A-Basin Summit (live)",
+      "zh": "山顶（直播）"
+     },
+     "image": "https://watch.hdrelay.io/api/public/poster/cam_arapahoe_basin_patrol_headquarters_1790624063379",
+     "live": "https://watch.hdrelay.io/player.html?cam=cam_arapahoe_basin_patrol_headquarters_1790624063379&profile=p_mvzu7ex2b604&sig=c98dffe5d130e649d8ea9050&exp=1951338968377"
+    },
+    {
+     "name": {
+      "en": "Black Mountain Lodge (live)",
+      "zh": "Black Mountain Lodge 半山（直播）"
+     },
+     "image": "https://watch.hdrelay.io/api/public/poster/cam_arapahoe_basin_black_mountain_lodge_1790623952319",
+     "live": "https://watch.hdrelay.io/player.html?cam=cam_arapahoe_basin_black_mountain_lodge_1790623952319&profile=p_mvzu7e97fmc5&sig=7454b7643e1e09cd8bfcdfba&exp=1951338968374"
+    },
+    {
+     "name": {
+      "en": "Pali + Molly Lifts (live)",
+      "zh": "Pali + Molly 缆车（直播）"
+     },
+     "image": "https://watch.hdrelay.io/api/public/poster/cam_arapahoe_basin_pali_cam_1790623627806",
+     "live": "https://watch.hdrelay.io/player.html?cam=cam_arapahoe_basin_pali_cam_1790623627806&profile=p_mvzu7c2b7ppi&sig=dea21292c741ef11bd60196f&exp=1951338968368"
+    }
+   ],
+   "intel": {
+    "provider": "abasin",
+    "page": "https://www.arapahoebasin.com/snow-report/",
+    "hoursPage": "https://www.arapahoebasin.com/operating-hours-/"
+   },
+   "photo": {
+    "src": "img/abasin.jpg",
+    "credit": "Runningonbrains",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Arapahoe_Basin_Montezuma_Bowl.jpg"
+   },
+   "parking": {
+    "lat": 39.6423,
+    "lon": -105.8717
+   }
+  },
+  {
+   "id": "copper",
+   "name": {
+    "en": "Copper Mountain",
+    "zh": "Copper Mountain（铜山）"
+   },
+   "short": "Copper",
+   "passes": [
+    "ikon"
+   ],
+   "region": "CO",
+   "lat": 39.5022,
+   "lon": -106.1497,
+   "baseElevM": 2960,
+   "summitElevM": 3753,
+   "driveMin": 105,
+   "routeNote": {
+    "en": "DEN → I-70 W through the Eisenhower-Johnson Tunnel → exit 195 (CO 91) Copper Mountain.",
+    "zh": "机场 → I-70 西，过艾森豪威尔-约翰逊隧道 → 195 出口（CO 91）到 Copper。"
+   },
+   "route": [
+    {
+     "seg": "den-metro",
+     "closure": "caution"
+    },
+    {
+     "seg": "i70-foothills",
+     "closure": "nogo"
+    },
+    {
+     "seg": "i70-tunnel",
+     "closure": "nogo"
+    },
+    {
+     "seg": "i70-summit",
+     "closure": "nogo"
+    }
+   ],
+   "links": {
+    "site": "https://www.coppercolorado.com/",
+    "webcams": "https://www.coppercolorado.com/the-mountain/webcams/",
+    "report": "https://www.coppercolorado.com/the-mountain/conditions-weather/snow-report"
+   },
+   "webcams": [
+    {
+     "name": {
+      "en": "Snow Stake",
+      "zh": "量雪杆"
+     },
+     "image": "https://img.hdrelay.com/frames/fb469125-f1f3-459f-aeb4-98cb674e395f/default/last.jpg",
+     "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#snow-stake-cam"
+    },
+    {
+     "name": {
+      "en": "Center Village (HD live)",
+      "zh": "Center Village（高清直播）"
+     },
+     "image": "https://watch.hdrelay.io/api/public/poster/cam_copper_mountain___center_village_1791904709663",
+     "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#center-village-hd-cam"
+    },
+    {
+     "name": {
+      "en": "Union Peak",
+      "zh": "Union Peak"
+     },
+     "image": "https://watch.hdrelay.io/api/public/poster/cam_copper_mountain___union_1790871057199",
+     "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#union-peak-cam"
+    },
+    {
+     "name": {
+      "en": "Super Bee (HD live)",
+      "zh": "Super Bee 缆车（高清直播）"
+     },
+     "image": "https://watch.hdrelay.io/api/public/poster/cam_copper_mountain___super_bee_1791911334637",
+     "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#super-bee-hd-cam"
+    },
+    {
+     "name": {
+      "en": "Excelerator",
+      "zh": "Excelerator 缆车"
+     },
+     "image": "https://watch.hdrelay.io/api/public/poster/cam_copper_mountain___excelerator_1791911614707",
+     "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#excelerator-cam"
+    },
+    {
+     "name": {
+      "en": "Woodward Terrain Park",
+      "zh": "Woodward 地形公园"
+     },
+     "image": "https://watch.hdrelay.io/api/public/poster/cam_copper_mountain___terrain_park_1791911112236",
+     "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#woodward-terrain-park-cam"
+    },
+    {
+     "name": {
+      "en": "Aerie",
+      "zh": "Aerie"
+     },
+     "image": "https://img.hdrelay.com/frames/671bcfb507697ecebbaffc13/default/last.jpg/:/rs=w:640",
+     "live": "https://www.coppercolorado.com/the-mountain/webcams/webcam-modal/#aerie-cam"
+    }
+   ],
+   "intel": {
+    "provider": "powdr",
+    "api": "https://api.coppercolorado.com/api/v1",
+    "origin": "https://www.coppercolorado.com",
+    "page": "https://www.coppercolorado.com/the-mountain/conditions-weather/snow-report"
+   },
+   "photo": {
+    "src": "img/copper.jpg",
+    "credit": "Jarrod Doll from United States of America",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Copper_Mountain,_Spaulding_Bowl_and_trails.jpg"
+   },
+   "parking": {
+    "lat": 39.5013,
+    "lon": -106.1516
+   }
+  },
+  {
+   "id": "steamboat",
+   "name": {
+    "en": "Steamboat",
+    "zh": "Steamboat（蒸汽船）"
+   },
+   "short": "Steamboat",
+   "passes": [
+    "ikon"
+   ],
+   "region": "CO",
+   "lat": 40.4572,
+   "lon": -106.8045,
+   "baseElevM": 2103,
+   "summitElevM": 3221,
+   "driveMin": 190,
+   "routeNote": {
+    "en": "DEN → I-70 W through the tunnel → exit 205 Silverthorne → CO 9 N to Kremmling → US 40 W over Muddy & Rabbit Ears Passes. Alternate: I-70 exit 232 → US 40 over Berthoud Pass via Winter Park/Granby.",
+    "zh": "机场 → I-70 西过隧道 → 205 出口 Silverthorne → CO 9 北到 Kremmling → US 40 西翻 Muddy 和 Rabbit Ears 山口。备选：I-70 232 出口 → US 40 翻 Berthoud 山口经 Winter Park / Granby。"
+   },
+   "route": [
+    {
+     "seg": "den-metro",
+     "closure": "caution"
+    },
+    {
+     "seg": "i70-foothills",
+     "closure": "nogo"
+    },
+    {
+     "seg": "i70-tunnel",
+     "closure": "caution"
+    },
+    {
+     "seg": "co9-kremmling",
+     "closure": "caution"
+    },
+    {
+     "seg": "us40-rabbitears",
+     "closure": "nogo"
+    },
+    {
+     "seg": "us40-berthoud",
+     "closure": "info",
+     "alt": true
+    }
+   ],
+   "links": {
+    "site": "https://www.steamboat.com/",
+    "webcams": "https://www.steamboat.com/the-mountain/mountain-cams",
+    "report": "https://www.steamboat.com/the-mountain/mountain-report",
+    "youtube": "https://www.youtube.com/@SteamboatResort/streams"
+   },
+   "webcams": [
+    {
+     "name": {
+      "en": "Champagne Powder® Snow Cam (Sunshine Peak)",
+      "zh": "香槟粉雪摄像头（Sunshine Peak）"
+     },
+     "youtube": "Vz_BJ5NJOM0"
+    },
+    {
+     "name": {
+      "en": "Mid-Mountain Snow Stake",
+      "zh": "半山量雪杆"
+     },
+     "youtube": "lKc9xwndUK4"
+    },
+    {
+     "name": {
+      "en": "Four Points",
+      "zh": "Four Points"
+     },
+     "youtube": "Zf21nwFUyUs"
+    },
+    {
+     "name": {
+      "en": "Thunderhead Lodge",
+      "zh": "Thunderhead Lodge"
+     },
+     "youtube": "nuCNVEHvrHQ"
+    },
+    {
+     "name": {
+      "en": "Steamboat Gondola",
+      "zh": "Steamboat 缆车"
+     },
+     "youtube": "oKKj_upaoCI"
+    },
+    {
+     "name": {
+      "en": "Christie Peak Express & Wild Blue Gondola",
+      "zh": "Christie Peak & Wild Blue 缆车"
+     },
+     "youtube": "nfTQNv3jdSQ"
+    },
+    {
+     "name": {
+      "en": "Steamboat Square",
+      "zh": "Steamboat 广场"
+     },
+     "youtube": "2UJDLWcSADk"
+    }
+   ],
+   "intel": {
+    "provider": "mtnpowder",
+    "resortId": 6,
+    "page": "https://www.steamboat.com/the-mountain/mountain-report"
+   },
+   "photo": {
+    "src": "img/steamboat.jpg",
+    "credit": "Murray Foubister",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Steamboat_Springs_Ski_Resort_(8644072249).jpg"
+   },
+   "parking": {
+    "lat": 40.4572,
+    "lon": -106.8045
+   }
+  }
+ ],
+ "cameras": [
+  {
+   "id": 19895,
+   "seg": "den-metro",
+   "name": "I-70 MP 261.7 at W Colfax Ave (Golden)",
+   "image": "https://cocam.carsprogram.org/Snapshots/070W26165CAM1MED.flv.png"
+  },
+  {
+   "id": 19566,
+   "seg": "i70-foothills",
+   "name": "I-70 MP 256.0 at Lookout Mountain",
+   "image": "https://cocam.carsprogram.org/Snapshots/070W25600CAM1RP1.flv.png",
+   "stream": "https://publicstreamer1.cotrip.org/rtplive/070W25600CAM1RP1/playlist.m3u8"
+  },
+  {
+   "id": 19472,
+   "seg": "i70-foothills",
+   "name": "I-70 MP 250.8 at El Rancho (Evergreen)",
+   "image": "https://cocam.carsprogram.org/Snapshots/070E25075CAM1RP1.flv.png",
+   "stream": "https://publicstreamer1.cotrip.org/rtplive/070E25075CAM1RP1/playlist.m3u8"
+  },
+  {
+   "id": 20368,
+   "seg": "i70-foothills",
+   "name": "I-70 MP 242.0 at Veterans Memorial Tunnels",
+   "image": "https://cocam.carsprogram.org/Snapshots/070E24200CAM1RP1.flv.png",
+   "stream": "https://publicstreamer4.cotrip.org/rtplive/070E24200CAM1RP1/playlist.m3u8"
+  },
+  {
+   "id": 19456,
+   "seg": "i70-foothills",
+   "name": "I-70 MP 239.7 Idaho Springs (13th Ave)",
+   "image": "https://cocam.carsprogram.org/Snapshots/070E23965CAM1RHS.flv.png",
+   "stream": "https://publicstreamer1.cotrip.org/rtplive/070E23965CAM1RHS/playlist.m3u8"
+  },
+  {
+   "id": 20247,
+   "seg": "i70-foothills",
+   "name": "I-70 MP 228.0 Georgetown",
+   "image": "https://cocam.carsprogram.org/Snapshots/070W22800CAM1RHS.flv.png",
+   "stream": "https://publicstreamer4.cotrip.org/rtplive/070W22800CAM1RHS/playlist.m3u8"
+  },
+  {
+   "id": 20277,
+   "seg": "i70-tunnel",
+   "name": "I-70 MP 223.2 Bakerville",
+   "image": "https://cocam.carsprogram.org/Snapshots/070W22320CAM1GP2.flv.png",
+   "stream": "https://publicstreamer4.cotrip.org/rtplive/070W22320CAM1GP2/playlist.m3u8"
+  },
+  {
+   "id": 20283,
+   "seg": "i70-tunnel",
+   "name": "I-70 MP 215.6 Eisenhower Tunnel (east portal)",
+   "image": "https://cocam.carsprogram.org/Snapshots/070E21560CAM1GP2.flv.png",
+   "stream": "https://publicstreamer4.cotrip.org/rtplive/070E21560CAM1GP2/playlist.m3u8"
+  },
+  {
+   "id": 19546,
+   "seg": "i70-tunnel",
+   "name": "I-70 MP 213.5 Eisenhower Tunnel (west portal)",
+   "image": "https://cocam.carsprogram.org/Snapshots/070E21345CAM1RHS-V.flv.png",
+   "stream": "https://publicstreamer1.cotrip.org/rtplive/070E21345CAM1RHS-V/playlist.m3u8"
+  },
+  {
+   "id": 19719,
+   "seg": "us6-loveland",
+   "name": "US 6 MP 226.3 Loveland Pass (W of Loveland Ski Area)",
+   "image": "https://cocam.carsprogram.org/Snapshots/006W22625CAM2RHS.flv.png",
+   "stream": "https://publicstreamer1.cotrip.org/rtplive/006W22625CAM2RHS/playlist.m3u8"
+  },
+  {
+   "id": 20273,
+   "seg": "us6-loveland",
+   "name": "US 6 MP 208.7 at I-70 (Silverthorne)",
+   "image": "https://cocam.carsprogram.org/Snapshots/006W20870CAM1RHS.flv.png",
+   "stream": "https://publicstreamer4.cotrip.org/rtplive/006W20870CAM1RHS/playlist.m3u8"
+  },
+  {
+   "id": 19994,
+   "seg": "i70-summit",
+   "name": "I-70 MP 202.4 at CO 9 (Frisco)",
+   "image": "https://cocam.carsprogram.org/Snapshots/070E20235CAM1RP1.flv.png",
+   "stream": "https://publicstreamer2.cotrip.org/rtplive/070E20235CAM1RP1/playlist.m3u8"
+  },
+  {
+   "id": 20199,
+   "seg": "i70-summit",
+   "name": "I-70 MP 195.3 at CO 91 (Copper Mountain)",
+   "image": "https://cocam.carsprogram.org/Snapshots/070E19525CAM2RHS.flv.png",
+   "stream": "https://publicstreamer4.cotrip.org/rtplive/070E19525CAM2RHS/playlist.m3u8"
+  },
+  {
+   "id": 964,
+   "seg": "us40-berthoud",
+   "name": "US 40 MP 248.9 Berthoud Falls",
+   "image": "https://cocam.carsprogram.org/Cellular/040W24885CAM1RHS-E.jpg"
+  },
+  {
+   "id": 9266,
+   "seg": "co9-kremmling",
+   "name": "CO 9 MP 127.4 Green Mountain Reservoir",
+   "image": "https://cocam.carsprogram.org/Cellular/009S12740CAM1RHS-N.jpg"
+  },
+  {
+   "id": 967,
+   "seg": "us40-rabbitears",
+   "name": "US 40 MP 134.5 at Mt Werner Rd (Steamboat)",
+   "image": "https://cocam.carsprogram.org/Cellular/040W13445CAM1RHS-E.jpg"
+  }
+ ],
+ "shop": {
+  "enabled": false
+ }
 }

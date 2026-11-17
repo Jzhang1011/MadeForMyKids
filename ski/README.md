@@ -57,3 +57,21 @@ Provider per resort is set in `data/resorts.json` → `resorts[].intel`:
 `node ski/scripts/fetch-data.mjs --intel-only` writes `data/intel.json` only. The GitHub Action runs it hourly
 13–23 UTC; the full weather/roads snapshot still runs at 12:30 UTC. Missing fields render as "n/a" — never guessed.
 Resort photos in `ski/img/` are from Wikimedia Commons (credits in `resorts.json` and the page footer).
+
+## v3: starting location, dynamic route, route cameras, design system
+
+- **Start**: `js/start.js` — Photon (photon.komoot.io, fair-use, debounced 350 ms, ≥3 chars, memoised) autocomplete,
+  presets from `trip.presets`, browser geolocation (rounded to ~100 m, reverse-geocoded via Photon). Stored in
+  `localStorage['ski.start']`. Nominatim is *not* used (its policy forbids autocomplete).
+- **Routing**: OSRM demo server (router.project-osrm.org; ≤1 req/s, non-commercial, no SLA). Requests are throttled to
+  1 per 1.1 s and cached 3 days in `localStorage['ski.routes']` (8 entries). If it fails, the page falls back to the
+  static DEN routes in `resorts.json` and says so. Drive time is OSRM's free-flow estimate (no traffic).
+- **Cameras**: `data/cameras.json` (all public CDOT cameras, slimmed, written by the daily Action). `js/route.js`
+  picks cameras ≤1.5 km from the route, prefers state highways on the route, spreads up to 15 evenly by distance.
+- **Road events**: events carry sampled geometry (`geo`); they are matched to the route by proximity
+  (Point ≤400 m on the same road; lines need ≥2 points near the route), assigned to route legs, and flagged
+  `oppDir` when they only affect the opposite direction (downgraded to INFO).
+- **Out-of-state starts**: legs outside Colorado show "no CDOT data"; the page notes where the route enters Colorado.
+- **Map**: Leaflet 1.9.4 (self-hosted in `vendor/leaflet`, BSD-2) + OSM tiles, lazy-loaded when the roads section is near.
+- **Design**: navy #14283F (nav, hero, verdict panel), glacier #DCEAF3, snow #F7F9FB, orange #F28C38, green #25845A,
+  Inter (self-hosted variable font, OFL) — white cards for planning/weather sections.

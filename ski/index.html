@@ -6,28 +6,35 @@
   <title>SkiDay · Should we go skiing today? Denver → A-Basin, Copper, Steamboat</title>
   <meta name="description" content="One-glance go / no-go for a Colorado ski day: lifts and runs open, lift hours, resort snow report, CDOT chain law and I-70 cameras, snow forecast charts, and what adults and kids should wear." />
   <link rel="canonical" href="https://www.madeformykids.com/ski/" />
-  <meta name="theme-color" content="#0b1d33" />
+  <meta name="theme-color" content="#14283F" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛷️</text></svg>" />
   <link rel="preload" href="data/resorts.json" as="fetch" crossorigin />
+  <link rel="preload" href="fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="css/ski.css" />
 </head>
 <body>
   <header class="top">
     <div class="wrap top-row">
       <a class="brand" href="./"><span class="logo" aria-hidden="true">⛷️</span><b data-i18n="title">SkiDay</b></a>
+      <nav class="tabs" id="nav" aria-label="Sections"></nav>
       <div class="toggles">
         <button id="btn-lang" class="pill" type="button" aria-label="Language">中文</button>
         <button id="btn-units" class="pill" type="button" aria-label="Units">°F</button>
         <button id="btn-refresh" class="pill icon" type="button" aria-label="Refresh" title="Refresh">↻</button>
       </div>
     </div>
-    <div class="wrap"><h1 class="q" data-i18n="q_title">Should we go skiing today?</h1></div>
-    <nav class="wrap tabs" id="nav" aria-label="Sections"></nav>
   </header>
 
-  <main class="wrap">
-    <section id="verdict" class="hero" aria-live="polite"><div class="skeleton"></div></section>
+  <section class="hero-wrap" id="hero">
+    <div class="wrap hero-in">
+      <h1 class="q" data-i18n="q_title">Should we go skiing today?</h1>
+      <div id="start" class="start"></div>
+      <div id="verdict" aria-live="polite"><div class="skeleton"></div></div>
+      <p class="hero-credit" id="hero-credit"></p>
+    </div>
+  </section>
 
+  <main class="wrap">
     <section id="mountains" class="block">
       <h2 data-i18n="choose">Choose your mountain</h2>
       <div id="resort-cards" class="rcards"></div>
@@ -48,6 +55,7 @@
     </footer>
   </main>
 
+  <nav class="bnav" id="bnav" aria-label="Sections"></nav>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

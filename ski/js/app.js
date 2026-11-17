@@ -1,6 +1,8 @@
 import { openMeteoUrl, splitOpenMeteo, dailyRows, hourlyRows, weatherEmoji, carsUrl, slimEvents, EVENT_CLASSES,
   nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js';
 import { STR, PACK_DEFAULT } from './i18n.js';
+import { selectCameras, routeSegments, inCO } from './route.js';
+import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js';
 
 const LS = {
   get: (k, d) => { try { const v = localStorage.getItem('ski.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -13,7 +15,7 @@ const state = {
   point: LS.get('point', 'summit'),
   cfg: null,
   wx: { data: null, mode: null, at: null }, roads: { data: null, mode: null, at: null }, alerts: { data: null, mode: null, at: null },
-  intel: { data: {}, at: null }, cams: null, refreshing: false, lastLive: 0
+  intel: { data: {}, at: null }, cams: null, start: null, routes: {}, camsAll: null, startUI: null, map: null, refreshing: false, lastLive: 0
 };
 
 const $ = s => document.querySelector(s);
@@ -96,16 +98,35 @@ async function loadLive() {
 async function refresh() {
   if (state.refreshing) return;
   state.refreshing = true; $('#btn-refresh').classList.add('spin');
-  try { await loadLive(); } finally { state.refreshing = false; $('#btn-refresh').classList.remove('spin'); renderAll(); }
+  try { await loadLive(); if (Object.values(state.routes).some(x => x.status === 'fail')) { for (const k in state.routes) if (state.routes[k].status === 'fail') delete state.routes[k]; routeAll(); } } finally { state.refreshing = false; $('#btn-refresh').classList.remove('spin'); renderAll(); }
 }
 
 /* ---------- Derived ---------- */
 
 function daysFor(r) { const w = state.wx.data?.[r.id]; try { return w ? dailyRows(w, r) : null; } catch { return null; } }
 function intelFor(r) { return state.intel.data[r.id] || null; }
+const ctxMemo = new Map();
+/** Dynamic route context for a resort: synthetic segments/legs, matched events and picked cameras. */
+function ctxFor(r) {
+  const rs = state.routes[r.id];
+  if (!rs || rs.status !== 'ok') return null;
+  const key = `${rs.key}|${state.roads.at}|${state.camsAll ? state.camsAll.length : 0}`;
+  if (ctxMemo.get(r.id)?.key === key) return ctxMemo.get(r.id);
+  const route = rs.route;
+  const dyn = routeSegments(route, state.roads.data || []);
+  const cams = state.camsAll ? selectCameras(route, state.camsAll, { max: 15, maxDist: 1500 }) : null;
+  // Does the route leave Colorado after entering it (e.g. Fort Collins → Steamboat via Wyoming)?
+  const e = Math.max(0, route.coEntry);
+  const leaves = route.coEntry >= 0 && route.pts.slice(e).some(p => !inCO(p));
+  const c = { key, route, ...dyn, cams, leaves };
+  ctxMemo.set(r.id, c);
+  return c;
+}
 function verdict(r) {
-  return verdictFor(state.cfg, r, {
-    roads: state.roads.data ? { ok: true, events: state.roads.data } : { ok: false },
+  const c = ctxFor(r);
+  const cfg = c ? { ...state.cfg, segments: { ...state.cfg.segments, ...c.segments } } : state.cfg;
+  return verdictFor(cfg, c ? { ...r, route: c.legs } : r, {
+    roads: state.roads.data ? { ok: true, events: c ? c.events : state.roads.data } : { ok: false },
     alerts: state.alerts.data && state.alerts.data[r.id] ? { ok: true, list: state.alerts.data[r.id] } : { ok: false },
     days: daysFor(r), intel: intelFor(r)
   });
@@ -118,14 +139,14 @@ function nowRow(r, point = 'base') {
 
 /* ---------- SVG charts ---------- */
 
-function barChart(vals, labels, { h = 90, color = '#3b82f6', unit = '', fmtV = v => v.toFixed(1), barW = 26, gap = 6, labelEvery = 1, hi = null } = {}) {
+function barChart(vals, labels, { h = 90, color = '#5b8db8', unit = '', fmtV = v => v.toFixed(1), barW = 26, gap = 6, labelEvery = 1, hi = null } = {}) {
   const max = Math.max(0.0001, ...vals.map(v => v ?? 0));
   const W = vals.length * (barW + gap);
   const top = 16, bot = 18, ch = h - top - bot;
   const bars = vals.map((v, i) => {
     const x = i * (barW + gap); const bh = v ? Math.max(2, v / max * ch) : 0; const y = top + ch - bh;
     const show = v && v >= max * 0.15;
-    return `<rect x="${x}" y="${y}" width="${barW}" height="${bh}" rx="3" fill="${hi && hi(i) ? '#1d4ed8' : color}"/>`
+    return `<rect x="${x}" y="${y}" width="${barW}" height="${bh}" rx="3" fill="${hi && hi(i) ? '#14283F' : color}"/>`
       + (show ? `<text x="${x + barW / 2}" y="${y - 4}" text-anchor="middle" class="cv">${esc(fmtV(v))}</text>` : '')
       + (i % labelEvery === 0 ? `<text x="${x + barW / 2}" y="${h - 4}" text-anchor="middle" class="cl">${esc(labels[i])}</text>` : '');
   }).join('');
@@ -142,11 +163,11 @@ function hourlyChart(rows) {
   let s = '';
   rows.forEach((r, i) => {
     const x = i * (bw + gap); const bh = sv[i] ? Math.max(2, sv[i] / smax * ch * 0.85) : 0;
-    if (bh) s += `<rect x="${x}" y="${top + ch - bh}" width="${bw}" height="${bh}" rx="2" fill="#60a5fa"/>`;
+    if (bh) s += `<rect x="${x}" y="${top + ch - bh}" width="${bw}" height="${bh}" rx="2" fill="#5b8db8"/>`;
     if (r.time.slice(11, 13) % 6 === 0) s += `<text x="${x + bw / 2}" y="${h - 5}" text-anchor="middle" class="cl">${esc(r.time.slice(11, 13) === '00' ? dayLabel(r.time.slice(0, 10)) : hourLabel(r.time))}</text><line x1="${x + bw / 2}" x2="${x + bw / 2}" y1="${top}" y2="${top + ch}" class="grid"/>`;
   });
   const pts = tv.map((v, i) => v == null ? null : `${i * (bw + gap) + bw / 2},${ty(v).toFixed(1)}`).filter(Boolean).join(' ');
-  s += `<polyline points="${pts}" fill="none" stroke="#f97316" stroke-width="2"/>`;
+  s += `<polyline points="${pts}" fill="none" stroke="#F28C38" stroke-width="2"/>`;
   const iMax = tv.indexOf(tmax), iMin = tv.indexOf(tmin);
   for (const i of [iMax, iMin]) s += `<text x="${i * (bw + gap) + bw / 2}" y="${ty(tv[i]) - 5}" text-anchor="middle" class="ct">${Math.round(tv[i])}°</text>`;
   const iS = sv.indexOf(Math.max(...sv));
@@ -172,6 +193,8 @@ function renderChrome() {
   const items = [['verdict', 'nav_verdict'], ['intel', 'nav_intel'], ['outlook', 'nav_outlook'], ['weather', 'nav_weather'], ['roads', 'nav_roads'], ['wear', 'nav_wear'], ['resorts', 'nav_resorts'], ['pack', 'nav_pack']];
   if (state.cfg?.shop?.enabled) items.push(['shop', 'nav_shop']);
   $('#nav').innerHTML = items.map(([id, k]) => `<a href="#${id}">${esc(t(k))}</a>`).join('');
+  const BN = [['hero', '🎯', 'nav_verdict'], ['mountains', '🏔️', 'nav_intel'], ['weather', '❄️', 'nav_weather'], ['roads', '🚗', 'nav_roads'], ['wear', '🧥', 'nav_wear']];
+  $('#bnav').innerHTML = BN.map(([id, ic, k]) => `<a href="#${id}"><i aria-hidden="true">${ic}</i><span>${esc(t(k))}</span></a>`).join('');
 }
 
 function reasonText(x) {
@@ -183,7 +206,7 @@ function reasonText(x) {
     case 'r_nws': return t(x.key, x.alert.event);
     case 'r_resort_closed': return t(x.key, x.note ? ` · ${x.note}` : '');
     case 'r_limited': case 'r_lifts_ok': return t(x.key, `${x.val.open}/${x.val.total}`);
-    default: return t(x.key, ev);
+    default: return t(x.key, ev) + (x.ev?.oppDir ? ` (${t('opp_dir')})` : '');
   }
 }
 
@@ -195,26 +218,32 @@ function renderVerdict() {
   const snow24 = intel?.ok && intel.snow?.h24 != null ? { v: fmt.snow(intel.snow.h24, u), k: 'st_newsnow' }
     : { v: days ? fmt.snow(days[0].summit.snow, u) : '—', k: 'st_newsnow_fc' };
   const lifts = intel?.ok && intel.lifts ? `${intel.lifts.open}<small>/${intel.lifts.total}</small>` : '—';
-  const drive = `${Math.floor(r.driveMin / 60)}h${String(r.driveMin % 60).padStart(2, '0')}`;
+  const dm = driveMin(r);
+  const drive = dm == null ? '—' : `${Math.floor(dm / 60)}h${String(dm % 60).padStart(2, '0')}`;
   const today = new Intl.DateTimeFormat(locale(), { timeZone: tz(), weekday: 'long', month: 'short', day: 'numeric' }).format(new Date());
   const row = x => `<li class="rrow">
       <span class="pill-s p-${PILL[x.level]}">${esc(t(PILL[x.level]))}</span>
-      ${x.ev?.detail || x.seg ? `<details><summary>${esc(reasonText(x))}</summary><p>${x.seg ? `<b>${esc(L(state.cfg.segments[x.seg].name))}</b><br>` : ''}${esc(x.ev?.detail || '')}</p></details>` : `<span>${esc(reasonText(x))}</span>`}
+      ${x.ev?.detail || x.seg ? `<details><summary>${esc(reasonText(x))}</summary><p>${x.seg ? `<b>${esc(segName(r, x.seg))}</b><br>` : ''}${esc(x.ev?.detail || '')}</p></details>` : `<span>${esc(reasonText(x))}</span>`}
     </li>`;
   const bad = reasons.filter(x => x.level !== 'go'), good = reasons.filter(x => x.level === 'go');
+  const hero = $('#hero'); if (r.photo?.src) hero.style.setProperty('--hero-img', `url('${new URL(r.photo.src, location.href).href}')`);
+  $('#hero-credit').innerHTML = r.photo ? `📷 ${esc(r.photo.credit)} · <a href="${esc(r.photo.page)}" target="_blank" rel="noopener">${esc(r.photo.license)}</a>` : '';
   $('#verdict').innerHTML = `
-    <div class="banner b-${v.level}">
-      <div class="bword">${esc(t(v.level))}</div>
+    <div class="vpanel">
+    <div class="banner">
+      <span class="vbadge b-${v.level}">${esc(t(v.level))}</span>
       <div class="bmeta"><b>${esc(L(r.name))}</b><span>${esc(today)}</span></div>
     </div>
     <div class="tiles">
       <div class="tile"><span class="ti">❄️</span><b>${snow24.v}</b><span>${esc(t(snow24.k))}</span></div>
       <div class="tile"><span class="ti">🌡️</span><b>${now ? fmt.temp(now.t, u) : '—'}</b><span>${esc(t('st_basetemp'))}</span></div>
       <div class="tile"><span class="ti">🚡</span><b>${lifts}</b><span>${esc(t('st_lifts'))}</span></div>
-      <div class="tile"><span class="ti">🚗</span><b>${drive}</b><span>${esc(t('st_drive'))}</span></div>
+      <div class="tile"><span class="ti">🚗</span><b>${drive}</b><span>${esc(driveLabel(r))}</span></div>
     </div>
+    </div>
+    <div class="why"><h3 class="ov">${esc(t('why_h'))}</h3>
     <ul class="rlist">${bad.map(row).join('')}${good.length ? `<li class="rrow"><span class="pill-s p-pass">${good.length}× ${esc(t('pass'))}</span><details><summary>${good.map(x => esc(t('k_' + x.kind) !== 'k_' + x.kind ? t('k_' + x.kind) : reasonText(x))).join(' · ')}</summary><ul class="evs">${good.map(x => `<li>✓ ${esc(reasonText(x))}</li>`).join('')}</ul></details></li>` : ''}</ul>
-    ${reasons.some(x => x.kind === 'chain') ? `<details class="more"><summary>ⓘ ${esc(t('more_info'))}</summary><p class="small muted">${esc(t('traction_help'))}</p></details>` : ''}`;
+    ${reasons.some(x => x.kind === 'chain') ? `<details class="more"><summary>ⓘ ${esc(t('more_info'))}</summary><p class="small muted">${esc(t('traction_help'))}</p></details>` : ''}</div>`;
 }
 
 function renderResortCards() {
@@ -222,13 +251,21 @@ function renderResortCards() {
   $('#resort-cards').innerHTML = state.cfg.resorts.map(r => {
     const v = verdict(r); const i = intelFor(r); const d = daysFor(r);
     const wk = d ? d.slice(0, 7).reduce((a, x) => a + (x.summit.snow || 0), 0) : null;
-    return `<button type="button" class="rcard ${r.id === resort().id ? 'on' : ''}" data-resort="${r.id}" style="background-image:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.72)),url('${esc(r.photo?.src || '')}')">
-      <span class="badge-v b-${v.level}">${esc(t(v.level))}</span>
-      <span class="rname">${esc(r.short)}</span>
-      <span class="rchips">
-        <span>🚡 ${i?.ok && i.lifts ? `${i.lifts.open}/${i.lifts.total}` : '—'}</span>
-        <span>❄️ ${i?.ok && i.snow?.h24 != null ? fmt.snow(i.snow.h24, u) : '—'} <small>24h</small></span>
-        <span>📈 ${wk != null ? fmt.snow(wk, u) : '—'} <small>${esc(t('fcst_7'))}</small></span>
+    const dm = driveMin(r);
+    const today = d?.[0];
+    return `<button type="button" class="rcard ${r.id === resort().id ? 'on' : ''}" data-resort="${r.id}" aria-pressed="${r.id === resort().id}">
+      <span class="rphoto" style="background-image:url('${esc(r.photo?.src || '')}')">
+        <span class="badge-v b-${v.level}">${esc(t(v.level))}</span>
+        <span class="rname">${esc(r.short)}</span>
+      </span>
+      <span class="rbody">
+        <span class="elev"><span><small>${esc(t('summit'))}</small><b>${today ? fmt.temp(today.summit.tMax, u) : '—'}</b></span><span><small>${esc(t('base'))}</small><b>${today ? fmt.temp(today.base.tMax, u) : '—'}</b></span></span>
+        <span class="rstats">
+          <span><i>🚡</i><b>${i?.ok && i.lifts ? `${i.lifts.open}/${i.lifts.total}` : '—'}</b><small>${esc(t('lifts'))}</small></span>
+          <span><i>❄️</i><b>${i?.ok && i.snow?.h24 != null ? fmt.snow(i.snow.h24, u) : '—'}</b><small>24h</small></span>
+          <span><i>📈</i><b>${wk != null ? fmt.snow(wk, u) : '—'}</b><small>${esc(t('fcst_7'))}</small></span>
+          <span><i>🚗</i><b>${dm == null ? '—' : `${Math.floor(dm / 60)}h${String(dm % 60).padStart(2, '0')}`}</b><small>${esc(t('drive'))}</small></span>
+        </span>
       </span>
     </button>`;
   }).join('');
@@ -309,33 +346,162 @@ function renderWeather() {
 
 function camImg(src) { return src + (src.includes('?') ? '&' : '?') + 't=' + Math.floor(Date.now() / 120000); }
 
+function segName(r, id) {
+  const c = ctxFor(r);
+  const seg = (c && c.segments[id]) || state.cfg.segments[id];
+  return seg ? (seg.key ? `${seg.key} · ${km(seg.km * 1000)}` : L(seg.name)) : id;
+}
+function driveMin(r) {
+  const rs = state.routes[r.id];
+  if (rs?.status === 'ok') return Math.round(rs.route.durS / 60);
+  if (isDefaultStart(state.cfg, state.start)) return r.driveMin;
+  return null;
+}
+function driveLabel(r) {
+  const rs = state.routes[r.id];
+  if (rs?.status === 'ok') return t('st_drive_from');
+  if (rs?.status === 'loading') return t('route_loading');
+  return isDefaultStart(state.cfg, state.start) ? t('st_drive') : t('st_drive_from');
+}
+const km = (m, u = U()) => u === 'imperial' ? `${Math.round(m / 1609.34)} mi` : `${Math.round(m / 1000)} km`;
+const camShort = n => n.replace(/^((?:I|US|CO|SH)[- ]\d+) MP [\d.]+ ?(?:[NSEW]B)? ?[:]? ?/, '$1 ');
+
+function routeNoteHtml(r) {
+  const rs = state.routes[r.id]; const c = ctxFor(r);
+  if (!rs || rs.status === 'loading') return `<p class="rnote">${esc(t('route_loading'))}</p>`;
+  if (rs.status === 'fail') return `<p class="rnote warn">⚠️ ${esc(t('route_fail'))}</p>`;
+  const bits = [];
+  if (!c.route.startsInCO) bits.push(`<p class="rnote warn">🗺️ ${esc(t('outside_co', km(c.route.coEntryAlongM || 0)))}</p>`);
+  if (c.leaves) bits.push(`<p class="rnote warn">🗺️ ${esc(t('leaves_co'))}</p>`);
+  return bits.join('');
+}
+
 function renderRoads() {
   const r = resort(); const cfg = state.cfg; const evs = state.roads.data; const el = $('#roads');
+  const c = ctxFor(r);
+  const segs = c ? c.segments : cfg.segments;
+  const routeLegs = c ? c.legs : r.route;
+  const evList = c ? c.events : evs;
   const allR = verdict(r).reasons;
-  const legs = r.route.map(leg => {
-    const seg = cfg.segments[leg.seg];
-    const list = evs ? evs.filter(e => e.segs.includes(leg.seg)) : [];
+  const icon = e => e.cls === 'chainLaws' ? '⛓️' : e.cls === 'roadClosures' ? '⛔' : e.cls === 'roadReports' ? '⚠️' : '❄️';
+  const legs = routeLegs.map(leg => {
+    const seg = segs[leg.seg];
+    const list = evList ? evList.filter(e => e.segs.includes(leg.seg)) : [];
     const segR = allR.filter(x => x.seg === leg.seg);
-    const lvl = !evs ? 'unknown' : !segR.length ? 'go' : segR.some(x => x.level === 'nogo') ? 'nogo' : segR.some(x => x.level === 'caution') ? 'caution' : 'info';
-    const icon = e => e.cls === 'chainLaws' ? '⛓️' : e.cls === 'roadClosures' ? '⛔' : e.cls === 'roadReports' ? '⚠️' : '❄️';
-    const name = `${esc(L(seg.name))}${leg.alt ? ` <small class="muted">(${esc(t('alt'))})</small>` : ''}`;
+    const lvl = !evs || seg.outside ? 'unknown' : !segR.length ? 'go' : segR.some(x => x.level === 'nogo') ? 'nogo' : segR.some(x => x.level === 'caution') ? 'caution' : 'info';
+    const nm = c ? `${esc(seg.key)} <small class="muted">· ${km(seg.km * 1000)}</small>` : esc(L(seg.name));
+    const name = `${nm}${seg.outside ? ` <small class="tag">${esc(t('outside_tag'))}</small>` : ''}${leg.alt ? ` <small class="muted">(${esc(t('alt'))})</small>` : ''}`;
     return `<li class="rrow"><span class="pill-s p-${PILL[lvl]}">${esc(t(PILL[lvl]))}</span>${list.length
-      ? `<details><summary>${name} <small class="muted">· ${list.length}</small></summary><ul class="evs">${list.map(e => `<li>${icon(e)} ${esc(e.tooltip || e.title)}<br><small class="muted">${esc(e.detail)}</small></li>`).join('')}</ul></details>`
+      ? `<details><summary>${name} <small class="muted">· ${list.length}</small></summary><ul class="evs">${list.map(e => `<li>${icon(e)} ${esc(e.tooltip || e.title)}${e.oppDir ? ` <small class="tag">${esc(t('opp_dir'))}</small>` : ''}<br><small class="muted">${esc(e.detail)}</small></li>`).join('')}</ul></details>`
       : `<span>${name}</span>`}</li>`;
   }).join('');
-  const meta = new Map((state.cams || []).map(c => [c.id, c]));
-  const onRoute = new Set(r.route.map(x => x.seg));
-  const cams = cfg.cameras.filter(c => onRoute.has(c.seg)).concat(cfg.cameras.filter(c => !onRoute.has(c.seg))).map(c => {
-    const img = meta.get(c.id)?.image || c.image;
-    return `<a class="thumb ${onRoute.has(c.seg) ? '' : 'off'}" href="https://www.cotrip.org/camera/${c.id}" target="_blank" rel="noopener" title="${esc(c.name)}">
-      <img loading="lazy" alt="${esc(c.name)}" src="${esc(camImg(img))}" onerror="this.style.visibility='hidden'"><span>${esc(c.name.replace(/^(I-70|US \d+|CO \d+) MP [\d.]+ /, '$1 '))}</span></a>`;
-  }).join('');
-  el.innerHTML = `<h2>${esc(t('roads_h'))} → ${esc(r.short)}</h2>
-    <details class="more"><summary>🧭 ${esc(t('route'))}</summary><p class="small">${esc(L(r.routeNote))}</p></details>
+
+  let camsHtml, camCount;
+  if (c && c.cams) {
+    camCount = c.cams.length;
+    camsHtml = c.cams.length ? c.cams.map((m, i) => `<a class="thumb" href="https://www.cotrip.org/camera/${m.id}" target="_blank" rel="noopener" title="${esc(m.name)}">
+      <img loading="lazy" alt="${esc(m.name)}" src="${esc(camImg(m.img))}" onerror="this.style.visibility='hidden'"><i class="num">${i + 1}</i><em class="km">${km(m.along)}</em><span>${esc(camShort(m.name))}</span></a>`).join('')
+      : `<p class="muted">${esc(t('cams_none'))}</p>`;
+  } else {
+    const meta = new Map((state.cams || []).map(x => [x.id, x]));
+    const onRoute = new Set(r.route.map(x => x.seg));
+    const list = cfg.cameras.filter(x => onRoute.has(x.seg));
+    camCount = list.length;
+    camsHtml = list.map(x => `<a class="thumb" href="https://www.cotrip.org/camera/${x.id}" target="_blank" rel="noopener" title="${esc(x.name)}">
+      <img loading="lazy" alt="${esc(x.name)}" src="${esc(camImg(meta.get(x.id)?.image || x.image))}" onerror="this.style.visibility='hidden'"><span>${esc(camShort(x.name))}</span></a>`).join('');
+  }
+  const from = c ? L(state.start.name) : L(state.cfg.trip.origin.name);
+  el.innerHTML = `<div class="sec-h"><h2>${esc(t('roads_h'))}</h2><span class="sub-h">${esc(from)} → ${esc(r.short)}${c ? ` · ${km(c.route.distM)}` : ''}</span></div>
+    ${routeNoteHtml(r)}
+    ${c ? '' : `<details class="more"><summary>🧭 ${esc(t('route'))}</summary><p class="small">${esc(L(r.routeNote))}</p></details>`}
     <ul class="rlist">${legs}</ul>
-    <h3>📷 ${esc(t('cameras'))} <small class="muted">(${cfg.cameras.length})</small></h3>
-    <div class="thumbs">${cams}</div>
-    <p class="note">CDOT COtrip · ${esc(state.roads.mode ? fmtTime(state.roads.at) : t('unavailable'))} · <a href="https://www.cotrip.org/" target="_blank" rel="noopener">${esc(t('open_cotrip'))} ↗</a></p>`;
+    ${c ? `<div id="route-map" class="rmap" role="img" aria-label="${esc(t('map_label'))}"></div>` : ''}
+    <h3>📷 ${esc(c ? t('cams_route') : t('cameras'))} <small class="muted">(${camCount})</small></h3>
+    <div class="thumbs">${camsHtml}</div>
+    <p class="note">CDOT COtrip · ${esc(state.roads.mode ? fmtTime(state.roads.at) : t('unavailable'))}${c ? ` · ${esc(t('route_src'))} <a href="https://project-osrm.org/" target="_blank" rel="noopener">OSRM</a> (© OpenStreetMap)` : ''} · <a href="https://www.cotrip.org/" target="_blank" rel="noopener">${esc(t('open_cotrip'))} ↗</a></p>`;
+  if (c) mountMap(c);
+}
+
+/* ---------- Route map (Leaflet + OSM tiles), lazy-loaded when the roads section is near ---------- */
+let leafletP = null;
+function loadLeaflet() {
+  if (window.L) return Promise.resolve(window.L);
+  if (leafletP) return leafletP;
+  leafletP = new Promise((res, rej) => {
+    const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'vendor/leaflet/leaflet.css'; document.head.appendChild(css);
+    const js = document.createElement('script'); js.src = 'vendor/leaflet/leaflet.js'; js.onload = () => res(window.L); js.onerror = rej; document.head.appendChild(js);
+  });
+  return leafletP;
+}
+let mapObserver = null;
+function mountMap(c) {
+  const el = document.getElementById('route-map'); if (!el) return;
+  const draw = () => loadLeaflet().then(Lf => {
+    if (!document.body.contains(el)) return;
+    if (state.map) { try { state.map.remove(); } catch {} }
+    const m = Lf.map(el, { scrollWheelZoom: false, zoomControl: true, attributionControl: true });
+    state.map = m;
+    Lf.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 15, attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(m);
+    const line = Lf.polyline(c.route.pts.map(p => [p[1], p[0]]), { color: '#14283F', weight: 4, opacity: .85 }).addTo(m);
+    const a = c.route.pts[0], b = c.route.pts[c.route.pts.length - 1];
+    Lf.circleMarker([a[1], a[0]], { radius: 7, color: '#fff', weight: 2, fillColor: '#25845A', fillOpacity: 1 }).addTo(m).bindTooltip(L(state.start.name));
+    Lf.circleMarker([b[1], b[0]], { radius: 8, color: '#fff', weight: 2, fillColor: '#F28C38', fillOpacity: 1 }).addTo(m).bindTooltip(resort().short);
+    (c.cams || []).forEach((x, i) => Lf.marker([x.lat, x.lon], { icon: Lf.divIcon({ className: 'cam-pin', html: `<b>${i + 1}</b>`, iconSize: [20, 20] }) })
+      .addTo(m).bindPopup(`<b>${esc(x.name)}</b><br><img src="${esc(camImg(x.img))}" width="200" alt="">`));
+    m.fitBounds(line.getBounds(), { padding: [16, 16] });
+  }).catch(() => { el.innerHTML = `<p class="muted small">${esc(t('unavailable'))}</p>`; });
+  mapObserver?.disconnect();
+  if (!('IntersectionObserver' in window)) { draw(); return; }
+  mapObserver = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) { mapObserver.disconnect(); draw(); } }, { rootMargin: '300px' });
+  mapObserver.observe(el);
+}
+
+/* ---------- Start location + routing ---------- */
+let routeGen = 0;
+async function routeAll() {
+  const gen = ++routeGen; const start = state.start;
+  const order = [resort(), ...state.cfg.resorts.filter(r => r.id !== resort().id)];
+  for (const r of order) {
+    const key = `${start.lat.toFixed(3)},${start.lon.toFixed(3)}>${r.id}`;
+    if (state.routes[r.id]?.key === key && state.routes[r.id].status === 'ok') continue;
+    state.routes[r.id] = { status: 'loading', key };
+    if (r.id === resort().id) { renderVerdict(); renderRoads(); updateStartMsg(); }
+    try {
+      const route = await getRoute(state.cfg, start, r);
+      if (gen !== routeGen) return;
+      state.routes[r.id] = { status: 'ok', key, route };
+    } catch (e) {
+      if (gen !== routeGen) return;
+      state.routes[r.id] = { status: 'fail', key, error: String(e.message || e) };
+    }
+    renderAll();
+  }
+}
+function updateStartMsg() {
+  if (!state.startUI) return;
+  const r = resort(); const rs = state.routes[r.id];
+  let h = '';
+  if (rs?.status === 'ok') { const dm = Math.round(rs.route.durS / 60); h = `→ <b>${esc(r.short)}</b> · ${km(rs.route.distM)} · ~${Math.floor(dm / 60)}h${String(dm % 60).padStart(2, '0')} <span class="muted">${esc(t('route_est'))}</span>`; }
+  else if (rs?.status === 'loading') h = `<span class="muted">${esc(t('route_loading'))}</span>`;
+  else if (rs?.status === 'fail') h = `<span class="warn">⚠️ ${esc(t('route_fail'))}</span>`;
+  state.startUI.setMsg(h);
+}
+function setStart(s) {
+  state.start = s; saveStart(s); state.routes = {}; ctxMemo.clear();
+  state.startUI?.relabel(); renderAll(); routeAll();
+}
+async function loadCams() {
+  try {
+    const j = await getJson(`${state.cfg.sources.cameras}?v=${Math.floor(Date.now() / 3600e3)}`);
+    state.camsAll = j.cameras;
+  } catch {
+    try { // fallback: the live statewide list (CORS-enabled)
+      const j = await getJson(`${state.cfg.sources.cars}/cameras/map-features`, 30000);
+      state.camsAll = (j.features || []).filter(f => f.properties?.public).map(f => { const p = f.properties, v = p.views.find(x => !x.broken) || p.views[0];
+        return { id: p.id, lon: f.geometry.coordinates[0], lat: f.geometry.coordinates[1], name: p.name, route: p.route, local: !!p.location?.localRoad, img: v && (v.type === 'STILL_IMAGE' ? v.url : v.videoPreviewUrl), broken: p.views.every(x => x.broken) }; });
+    } catch { state.camsAll = null; }
+  }
+  ctxMemo.clear();
 }
 
 const WICON = { w_base_light: '👕', w_base_mid: '👕', w_base_heavy: '👕', w_mid_fleece_opt: '🧶', w_mid_fleece: '🧶', w_mid_puffy: '🧥', w_shell: '🧥', w_jacket_insulated: '🧥',
@@ -422,7 +588,7 @@ function renderSources() {
 }
 
 function renderAll() {
-  renderChrome(); renderVerdict(); renderResortCards(); renderIntel(); renderOutlook(); renderWeather(); renderRoads(); renderWear(); renderResorts(); renderPack(); renderSources();
+  renderChrome(); state.startUI?.relabel(); updateStartMsg(); renderVerdict(); renderResortCards(); renderIntel(); renderOutlook(); renderWeather(); renderRoads(); renderWear(); renderResorts(); renderPack(); renderSources();
 }
 
 function bind() {
@@ -431,7 +597,7 @@ function bind() {
   $('#btn-refresh').onclick = () => refresh();
   document.addEventListener('click', e => {
     const rc = e.target.closest('[data-resort]');
-    if (rc && !e.target.closest('details')) { state.resort = rc.dataset.resort; LS.set('resort', state.resort); renderAll(); if (rc.classList.contains('orow') || rc.classList.contains('rcard')) $('#verdict').scrollIntoView({ behavior: 'smooth' }); return; }
+    if (rc && !e.target.closest('details')) { state.resort = rc.dataset.resort; LS.set('resort', state.resort); renderAll(); routeAll(); if (rc.classList.contains('orow') || rc.classList.contains('rcard')) $('#verdict').scrollIntoView({ behavior: 'smooth' }); return; }
     const b = e.target.closest('.seg-ctl button');
     if (b) { if (b.parentElement.dataset.ctl === 'point') { state.point = b.dataset.v; LS.set('point', state.point); } renderWeather(); return; }
     const yt = e.target.closest('.yt[data-yt]');
@@ -447,7 +613,10 @@ function bind() {
   try { state.cfg = await getJson('data/resorts.json'); }
   catch { $('#verdict').innerHTML = `<p>${esc(t('unavailable'))}: resorts.json</p>`; return; }
   if (!state.cfg.resorts.some(r => r.id === state.resort)) state.resort = state.cfg.resorts[0].id;
+  state.start = loadStart(state.cfg);
+  state.startUI = mountStartUI($('#start'), { cfg: state.cfg, t, L, getStart: () => state.start, onChange: setStart });
   bind(); renderChrome();
-  await loadSnapshot(); renderAll();
+  await Promise.all([loadSnapshot(), loadCams()]); renderAll();
+  routeAll();
   await refresh();
 })();

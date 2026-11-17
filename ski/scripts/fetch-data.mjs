@@ -74,6 +74,19 @@ try {
       image: still?.url || c.image, stream: stream?.url || null, lastUpdated: p.lastUpdated || null };
   });
   out.sources.cameras = { ok: true, fetchedAt: now() };
+  // Full statewide list (slim) for picking cameras along any start -> resort route in the browser.
+  const all = [];
+  for (const f of json.features || []) {
+    const p = f.properties || {}, c = f.geometry?.coordinates;
+    if (!p.public || !c) continue;
+    const v = p.views.find(x => !x.broken) || p.views[0];
+    if (!v) continue;
+    const img = v.type === 'STILL_IMAGE' ? v.url : v.videoPreviewUrl;
+    if (!img) continue;
+    all.push({ id: p.id, lon: +c[0].toFixed(5), lat: +c[1].toFixed(5), name: p.name, route: p.route || null,
+      local: !!p.location?.localRoad, img, stream: v.type === 'WMP' ? v.url : null, broken: p.views.every(x => x.broken) });
+  }
+  await writeFile(join(dataDir, 'cameras.json'), JSON.stringify({ generatedAt: now(), source: `${cfg.sources.cars}/cameras/map-features`, cameras: all }));
 } catch (e) { out.sources.cameras = { ok: false, fetchedAt: now(), error: String(e.message || e) }; }
 
 await writeFile(join(dataDir, 'latest.json'), JSON.stringify(out));

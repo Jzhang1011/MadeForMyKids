@@ -165,10 +165,16 @@ export function slimEvents(cfg, cls, json) {
       const hit = bb[0] <= s.bbox[2] && bb[2] >= s.bbox[0] && bb[1] <= s.bbox[3] && bb[3] >= s.bbox[1];
       if (routeOk && hit) segs.push(id);
     }
-    if (!segs.length) continue;
+    // Keep every event (dynamic routes match by geometry); `geo` = up to 40 sampled [lon,lat] points.
+    const pts = [];
+    const walk = c => { if (typeof c[0] === 'number') pts.push([+c[0].toFixed(4), +c[1].toFixed(4)]); else c.forEach(walk); };
+    if (f.geometry?.coordinates) walk(f.geometry.coordinates);
+    const step = Math.max(1, Math.ceil(pts.length / 40));
+    const geo = pts.filter((_, i) => i % step === 0 || i === pts.length - 1);
+    if (!segs.length && !geo.length) continue;
     const er = p.eventReport?.eventDescription || {};
     out.push({
-      id: p.id, cls, segs, route,
+      id: p.id, cls, segs, route, geo,
       title: p.title || er.descriptionHeader || p.tooltip,
       tooltip: p.tooltip || '',
       detail: stripHtml(p.description || er.descriptionFull).slice(0, 600),
@@ -236,19 +242,19 @@ export function verdictFor(cfg, resort, { roads, alerts, days, intel = null, now
       const cond = evs.filter(e => e.cls === 'winterDriving' && WINTER_BAD.test(`${e.title} ${e.tooltip}`));
       for (const e of closures) {
         const full = /closed|closure/i.test(e.title) && !/lane closed|lanes closed|shoulder|ramp/i.test(e.title);
-        const lvl = leg.alt || future(e) ? 'info' : (full ? leg.closure : 'caution');
+        const lvl = leg.alt || e.oppDir || future(e) ? 'info' : (full ? leg.closure : 'caution');
         reasons.push({ level: lvl, kind: 'closure', seg: leg.seg, ev: e, key: future(e) ? 'r_scheduled' : (full ? 'r_closure' : 'r_partial_closure') });
       }
       for (const e of chains) {
-        const lvl = leg.alt ? 'info' : chainLevel(e);
+        const lvl = leg.alt || e.oppDir ? 'info' : chainLevel(e);
         reasons.push({ level: lvl, kind: 'chain', seg: leg.seg, ev: e, key: lvl === 'nogo' ? 'r_chain_law' : (lvl === 'info' ? 'r_chain_commercial' : 'r_traction_law') });
       }
       for (const e of incidents) {
         const routine = future(e) || e.eventType === 'routine' || /maintenance|road work|construction/i.test(e.title);
-        reasons.push({ level: leg.alt || routine ? 'info' : 'caution', kind: 'incident', seg: leg.seg, ev: e, key: 'r_incident' });
+        reasons.push({ level: leg.alt || e.oppDir || routine ? 'info' : 'caution', kind: 'incident', seg: leg.seg, ev: e, key: 'r_incident' });
       }
       for (const e of cond) {
-        reasons.push({ level: leg.alt ? 'info' : 'caution', kind: 'conditions', seg: leg.seg, ev: e, key: 'r_conditions' });
+        reasons.push({ level: leg.alt || e.oppDir ? 'info' : 'caution', kind: 'conditions', seg: leg.seg, ev: e, key: 'r_conditions' });
       }
     }
     const main = reasons.filter(r => r.seg && r.level !== 'info');
