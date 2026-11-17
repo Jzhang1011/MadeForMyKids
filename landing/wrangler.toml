@@ -3,7 +3,8 @@ compatibility_date = "2026-11-06"
 
 # Static public landing page for the Family Board calendar product.
 # Served at madeformykids.com (apex) and www.madeformykids.com via
-# Workers custom domains. The learning site lives at
+# Workers custom domains, and at madeformyfamily.com (apex) via a
+# Worker route. The learning site lives at
 # private.madeformykids.com (GitHub Pages).
 
 [assets]
