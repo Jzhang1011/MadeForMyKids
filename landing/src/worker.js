@@ -12,6 +12,9 @@ const FAMILY_HOST = 'madeformyfamily.com';
 const FAMILY_ORIGIN = 'https://madeformyfamily.com';
 const KIDS_ORIGIN = 'https://www.madeformykids.com';
 const PORTAL_ORIGIN = 'https://private.madeformykids.com';
+// The old Pages Family Board (/family/, a single page) moved to the Family Board app.
+// The new app has no matching sub-routes, so every /family/* goes to its root.
+const FAMILY_APP = 'https://family.madeformyfamily.com/';
 
 // Family Board content (lives in ./public). "/" is Family Board only on the family host.
 const FAMILY_PREFIXES = ['/guides', '/visual-guidance', '/visual-schedules'];
@@ -58,6 +61,10 @@ export default {
     const path = url.pathname;
 
     if (host === 'www.' + FAMILY_HOST) return redirect(FAMILY_ORIGIN, url);
+
+    if (hasPrefix(path, ['/family'])) {
+      return new Response(null, { status: 301, headers: { Location: FAMILY_APP, 'Cache-Control': 'public, max-age=3600' } });
+    }
 
     if (host === FAMILY_HOST) {
       if (path === '/' || path === '/index.html' || hasPrefix(path, FAMILY_PREFIXES)) {

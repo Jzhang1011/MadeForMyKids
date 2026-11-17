@@ -6,7 +6,7 @@
 |---|---|
 | `madeformyfamily.com` | Family Board marketing pages from `public/`: `/`, `/guides/`, `/visual-guidance/`, `/visual-schedules/`. Any other path → 301 to the same path on `www.madeformykids.com`. |
 | `www.madeformyfamily.com` | 301 → apex (separate Worker in `www-redirect/`, custom domain). |
-| `madeformykids.com`, `www.madeformykids.com` | Kids learning portal + `/ski/`, proxied from GitHub Pages (`private.madeformykids.com`, the repo root). Family Board paths → 301 to `madeformyfamily.com`. `/landing/*` → 404. |
+| `madeformykids.com`, `www.madeformykids.com` | Kids learning portal + `/ski/`, proxied from GitHub Pages (`private.madeformykids.com`, the repo root). Family Board paths → 301 to `madeformyfamily.com`. `/family/*` (old Pages board, any host) → 301 to `https://family.madeformyfamily.com/`. `/landing/*` → 404. |
 
 The Family Board app itself is a separate deployment at `family.madeformyfamily.com`.
 
