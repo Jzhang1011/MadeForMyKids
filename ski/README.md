@@ -75,3 +75,8 @@ Resort photos in `ski/img/` are from Wikimedia Commons (credits in `resorts.json
 - **Map**: Leaflet 1.9.4 (self-hosted in `vendor/leaflet`, BSD-2) + OSM tiles, lazy-loaded when the roads section is near.
 - **Design**: navy #14283F (nav, hero, verdict panel), glacier #DCEAF3, snow #F7F9FB, orange #F28C38, green #25845A,
   Inter (self-hosted variable font, OFL) — white cards for planning/weather sections.
+
+## Cache-busting / iOS
+After editing anything in `ski/js` or `ski/css`, run `node ski/scripts/stamp.mjs` before committing. It stamps a
+content hash (`?v=…`) on `css/ski.css`, `js/app.js` and every module import, so Safari can't mix cached old and new
+files. Each section renders independently (`safe()`), so one failing feed or feature can't blank the page.

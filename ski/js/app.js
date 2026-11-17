@@ -1,8 +1,8 @@
 import { openMeteoUrl, splitOpenMeteo, dailyRows, hourlyRows, weatherEmoji, carsUrl, slimEvents, EVENT_CLASSES,
-  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js';
-import { STR, PACK_DEFAULT } from './i18n.js';
-import { selectCameras, routeSegments, inCO } from './route.js';
-import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js';
+  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=16365b4c2d';
+import { STR, PACK_DEFAULT } from './i18n.js?v=16365b4c2d';
+import { selectCameras, routeSegments, inCO } from './route.js?v=16365b4c2d';
+import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=16365b4c2d';
 
 const LS = {
   get: (k, d) => { try { const v = localStorage.getItem('ski.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -19,6 +19,8 @@ const state = {
 };
 
 const $ = s => document.querySelector(s);
+// Null-safe element lookup for optional page parts (an older cached index.html may lack them).
+const $$ = s => document.querySelector(s) || document.createElement('div');
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const t = (k, ...a) => { let s = STR[state.lang][k] ?? STR.en[k] ?? k; a.forEach((v, i) => { s = s.replace(`{${i}}`, v); }); return s; };
 const L = o => (o && typeof o === 'object') ? (o[state.lang] || o.en) : o;
@@ -194,7 +196,7 @@ function renderChrome() {
   if (state.cfg?.shop?.enabled) items.push(['shop', 'nav_shop']);
   $('#nav').innerHTML = items.map(([id, k]) => `<a href="#${id}">${esc(t(k))}</a>`).join('');
   const BN = [['hero', '🎯', 'nav_verdict'], ['mountains', '🏔️', 'nav_intel'], ['weather', '❄️', 'nav_weather'], ['roads', '🚗', 'nav_roads'], ['wear', '🧥', 'nav_wear']];
-  $('#bnav').innerHTML = BN.map(([id, ic, k]) => `<a href="#${id}"><i aria-hidden="true">${ic}</i><span>${esc(t(k))}</span></a>`).join('');
+  $$('#bnav').innerHTML = BN.map(([id, ic, k]) => `<a href="#${id}"><i aria-hidden="true">${ic}</i><span>${esc(t(k))}</span></a>`).join('');
 }
 
 function reasonText(x) {
@@ -226,8 +228,8 @@ function renderVerdict() {
       ${x.ev?.detail || x.seg ? `<details><summary>${esc(reasonText(x))}</summary><p>${x.seg ? `<b>${esc(segName(r, x.seg))}</b><br>` : ''}${esc(x.ev?.detail || '')}</p></details>` : `<span>${esc(reasonText(x))}</span>`}
     </li>`;
   const bad = reasons.filter(x => x.level !== 'go'), good = reasons.filter(x => x.level === 'go');
-  const hero = $('#hero'); if (r.photo?.src) hero.style.setProperty('--hero-img', `url('${new URL(r.photo.src, location.href).href}')`);
-  $('#hero-credit').innerHTML = r.photo ? `📷 ${esc(r.photo.credit)} · <a href="${esc(r.photo.page)}" target="_blank" rel="noopener">${esc(r.photo.license)}</a>` : '';
+  const hero = $$('#hero'); if (r.photo?.src) hero.style.setProperty('--hero-img', `url('${new URL(r.photo.src, location.href).href}')`);
+  $$('#hero-credit').innerHTML = r.photo ? `📷 ${esc(r.photo.credit)} · <a href="${esc(r.photo.page)}" target="_blank" rel="noopener">${esc(r.photo.license)}</a>` : '';
   $('#verdict').innerHTML = `
     <div class="vpanel">
     <div class="banner">
@@ -465,7 +467,7 @@ async function routeAll() {
     const key = `${start.lat.toFixed(3)},${start.lon.toFixed(3)}>${r.id}`;
     if (state.routes[r.id]?.key === key && state.routes[r.id].status === 'ok') continue;
     state.routes[r.id] = { status: 'loading', key };
-    if (r.id === resort().id) { renderVerdict(); renderRoads(); updateStartMsg(); }
+    if (r.id === resort().id) { safe('verdict', renderVerdict); safe('roads', renderRoads); safe('start', updateStartMsg); }
     try {
       const route = await getRoute(state.cfg, start, r);
       if (gen !== routeGen) return;
@@ -587,8 +589,21 @@ function renderSources() {
   $('#credits').innerHTML = state.cfg.resorts.filter(r => r.photo).map(r => `${esc(r.short)} ${esc(t('photo_by', r.photo.credit))}, <a href="${esc(r.photo.page)}" target="_blank" rel="noopener">Wikimedia Commons</a>, <a href="${esc(r.photo.licenseUrl)}" target="_blank" rel="noopener">${esc(r.photo.license)}</a>`).join(' · ');
 }
 
+/** Run one section renderer; a failure shows a short note in that section instead of breaking the page. */
+function safe(id, fn) {
+  try { fn(); }
+  catch (e) {
+    console.warn(`[ski] ${id} failed:`, e);
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = `<p class="muted small">${esc(t('unavailable'))} (${esc(id)})</p>`;
+  }
+}
 function renderAll() {
-  renderChrome(); state.startUI?.relabel(); updateStartMsg(); renderVerdict(); renderResortCards(); renderIntel(); renderOutlook(); renderWeather(); renderRoads(); renderWear(); renderResorts(); renderPack(); renderSources();
+  safe('nav', renderChrome);
+  safe('start', () => { state.startUI?.relabel(); updateStartMsg(); });
+  safe('verdict', renderVerdict); safe('mountains', renderResortCards); safe('intel', renderIntel); safe('outlook', renderOutlook);
+  safe('weather', renderWeather); safe('roads', renderRoads); safe('wear', renderWear); safe('resorts', renderResorts);
+  safe('pack', renderPack); safe('sources', renderSources);
 }
 
 function bind() {
@@ -610,13 +625,17 @@ function bind() {
 }
 
 (async function main() {
-  try { state.cfg = await getJson('data/resorts.json'); }
-  catch { $('#verdict').innerHTML = `<p>${esc(t('unavailable'))}: resorts.json</p>`; return; }
+  try { state.cfg = await getJson(`data/resorts.json?v=${Math.floor(Date.now() / 600000)}`); }
+  catch { window.__skiReady = true; $$('#verdict').innerHTML = `<div class="why"><p>${esc(t('unavailable'))}: resorts.json · <a href="" onclick="location.reload();return false">↻</a></p></div>`; return; }
   if (!state.cfg.resorts.some(r => r.id === state.resort)) state.resort = state.cfg.resorts[0].id;
-  state.start = loadStart(state.cfg);
-  state.startUI = mountStartUI($('#start'), { cfg: state.cfg, t, L, getStart: () => state.start, onChange: setStart });
-  bind(); renderChrome();
-  await Promise.all([loadSnapshot(), loadCams()]); renderAll();
-  routeAll();
+  try { state.start = loadStart(state.cfg); } catch { state.start = { ...state.cfg.trip.origin, kind: 'preset' }; }
+  try { if ($('#start')) state.startUI = mountStartUI($('#start'), { cfg: state.cfg, t, L, getStart: () => state.start, onChange: setStart }); }
+  catch (e) { console.warn('[ski] start UI failed:', e); }
+  try { bind(); } catch (e) { console.warn('[ski] bind failed:', e); }
+  safe('nav', renderChrome);
+  await Promise.allSettled([loadSnapshot(), loadCams()]);
+  renderAll();
+  window.__skiReady = true;
+  routeAll().catch(e => console.warn('[ski] routing failed:', e));
   await refresh();
 })();
