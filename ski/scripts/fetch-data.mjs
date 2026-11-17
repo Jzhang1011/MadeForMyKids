@@ -5,6 +5,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { fetchAllIntel } from '../js/intel.js';
 import { openMeteoUrl, splitOpenMeteo, carsUrl, slimEvents, EVENT_CLASSES, nwsUrl, slimAlerts } from '../js/core.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -12,18 +13,26 @@ const dataDir = join(here, '..', 'data');
 const cfg = JSON.parse(await readFile(join(dataDir, 'resorts.json'), 'utf8'));
 const UA = 'madeformykids-ski-dashboard (https://madeformykids.com/ski/)';
 
-async function getJson(url, tries = 3) {
+async function getRaw(url, extra = {}, tries = 3, accept = 'application/json, application/geo+json') {
   let last;
   for (let i = 0; i < tries; i++) {
     try {
-      const r = await fetch(url, { headers: { 'User-Agent': UA, Accept: 'application/json, application/geo+json' } });
+      const r = await fetch(url, { headers: { 'User-Agent': UA, Accept: accept, ...extra } });
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      return await r.json();
+      return r;
     } catch (e) { last = e; await new Promise(res => setTimeout(res, 1500 * (i + 1))); }
   }
   throw last;
 }
+const getJson = async (url, extra) => (await getRaw(url, extra)).json();
+const getText = async (url, extra) => (await getRaw(url, extra, 3, 'text/html')).text();
 const now = () => new Date().toISOString();
+
+// Resort intel (small file; the workflow refreshes it hourly during the ski day).
+const intel = { generatedAt: now(), resorts: await fetchAllIntel(cfg, { getJson, getText }) };
+await writeFile(join(dataDir, 'intel.json'), JSON.stringify(intel));
+console.log('intel:', Object.entries(intel.resorts).map(([k, v]) => `${k}=${v.ok ? 'ok' : 'FAIL ' + v.error}`).join(' '));
+if (process.argv.includes('--intel-only')) process.exit(0);
 
 const out = { generatedAt: now(), sources: {}, weather: null, roads: null, alerts: {}, cameras: null };
 

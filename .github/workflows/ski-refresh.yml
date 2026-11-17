@@ -1,9 +1,11 @@
-name: Ski dashboard morning refresh
+name: Ski dashboard refresh
 
 on:
   schedule:
     # 12:30 UTC = 5:30 AM MST (6:30 AM during daylight time). GitHub may start it a few minutes late.
     - cron: '30 12 * * *'
+    # Hourly resort intel (lifts, runs, hours, snow report) during the ski day: 6 AM–4 PM MST. Small file, cheap.
+    - cron: '0 13-23 * * *'
   workflow_dispatch:
 
 permissions:
@@ -22,14 +24,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Fetch weather, roads, alerts, cameras
-        run: node ski/scripts/fetch-data.mjs
+      - name: Fetch resort intel (+ weather, roads, alerts, cameras on the morning run)
+        run: |
+          if [ "${{ github.event.schedule }}" = "0 13-23 * * *" ]; then
+            node ski/scripts/fetch-data.mjs --intel-only
+          else
+            node ski/scripts/fetch-data.mjs
+          fi
       - name: Commit snapshot
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ski/data/latest.json
+          git add ski/data/latest.json ski/data/intel.json
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
-          git commit -m "ski: morning data refresh $(date -u +%Y-%m-%dT%H:%MZ)"
+          git commit -m "ski: data refresh $(date -u +%Y-%m-%dT%H:%MZ)"
           git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"

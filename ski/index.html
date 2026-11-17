@@ -3,66 +3,49 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Ski Trip Go / No-Go · Denver → A-Basin, Copper, Steamboat</title>
-  <meta name="description" content="One-glance go / no-go for a Colorado ski day: CDOT chain and traction law, I-70 closures and incidents, roadside cameras, hourly and 7-day snow, what to wear for adults and kids, resort webcams, and a packing list." />
+  <title>SkiDay · Should we go skiing today? Denver → A-Basin, Copper, Steamboat</title>
+  <meta name="description" content="One-glance go / no-go for a Colorado ski day: lifts and runs open, lift hours, resort snow report, CDOT chain law and I-70 cameras, snow forecast charts, and what adults and kids should wear." />
   <link rel="canonical" href="https://www.madeformykids.com/ski/" />
-  <meta name="theme-color" content="#0b2545" />
+  <meta name="theme-color" content="#0b1d33" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛷️</text></svg>" />
+  <link rel="preload" href="data/resorts.json" as="fetch" crossorigin />
   <link rel="stylesheet" href="css/ski.css" />
 </head>
 <body>
   <header class="top">
     <div class="wrap top-row">
-      <div class="brand">
-        <span class="logo" aria-hidden="true">⛷️</span>
-        <div>
-          <h1 data-i18n="title">Ski Trip Go / No-Go</h1>
-          <p class="sub" data-i18n="subtitle">Denver → A-Basin · Copper · Steamboat</p>
-        </div>
-      </div>
+      <a class="brand" href="./"><span class="logo" aria-hidden="true">⛷️</span><b data-i18n="title">SkiDay</b></a>
       <div class="toggles">
         <button id="btn-lang" class="pill" type="button" aria-label="Language">中文</button>
-        <button id="btn-units" class="pill" type="button" aria-label="Units">°F · in</button>
+        <button id="btn-units" class="pill" type="button" aria-label="Units">°F</button>
         <button id="btn-refresh" class="pill icon" type="button" aria-label="Refresh" title="Refresh">↻</button>
       </div>
     </div>
+    <div class="wrap"><h1 class="q" data-i18n="q_title">Should we go skiing today?</h1></div>
     <nav class="wrap tabs" id="nav" aria-label="Sections"></nav>
   </header>
 
   <main class="wrap">
-    <div id="resort-picker" class="picker" role="tablist" aria-label="Resort"></div>
+    <section id="verdict" class="hero" aria-live="polite"><div class="skeleton"></div></section>
 
-    <section id="verdict" class="card verdict-card" aria-live="polite">
-      <p class="muted" data-i18n="loading">Loading…</p>
-    </section>
-    <div id="sources" class="sources"></div>
-
-    <section id="weather" class="card">
-      <h2 data-i18n="weather_h">Weather</h2>
-      <div id="weather-body"></div>
+    <section id="mountains" class="block">
+      <h2 data-i18n="choose">Choose your mountain</h2>
+      <div id="resort-cards" class="rcards"></div>
     </section>
 
-    <section id="roads" class="card">
-      <h2 data-i18n="roads_h">Roads from DEN</h2>
-      <div id="roads-body"></div>
-    </section>
+    <section id="intel" class="block card"></section>
+    <section id="outlook" class="block card"></section>
+    <section id="weather" class="block card"></section>
+    <section id="roads" class="block card"></section>
+    <section id="wear" class="block card"></section>
+    <section id="resorts" class="block card"></section>
+    <section id="pack" class="block card"></section>
 
-    <section id="wear" class="card">
-      <h2 data-i18n="wear_h">What to wear</h2>
-      <div id="wear-body"></div>
-    </section>
-
-    <section id="resorts" class="card">
-      <h2 data-i18n="resorts_h">Resort webcams &amp; live streams</h2>
-      <div id="resorts-body"></div>
-    </section>
-
-    <section id="pack" class="card">
-      <h2 data-i18n="pack_h">Bring from home</h2>
-      <div id="pack-body"></div>
-    </section>
-
-    <footer class="foot"><p data-i18n="footer"></p></footer>
+    <footer class="foot">
+      <div id="sources" class="sources"></div>
+      <p data-i18n="footer"></p>
+      <p id="credits" class="small"></p>
+    </footer>
   </main>
 
   <script type="module" src="js/app.js"></script>

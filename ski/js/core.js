@@ -21,7 +21,7 @@ export function openMeteoUrl(cfg) {
   const p = new URLSearchParams({
     latitude: lat.join(','), longitude: lon.join(','), elevation: elev.join(','),
     hourly: HOURLY.join(','), daily: DAILY.join(','),
-    timezone: cfg.trip.timezone || 'America/Denver', forecast_days: '7',
+    timezone: cfg.trip.timezone || 'America/Denver', forecast_days: '10',
     wind_speed_unit: 'kmh', temperature_unit: 'celsius', precipitation_unit: 'mm'
   });
   return `${cfg.sources.weather}?${p}`;
@@ -214,8 +214,13 @@ export function worst(levels) {
  * Build itemized reasons for a resort. Each reason: {level, kind, text:{key, args}, seg?, ev?}.
  * `roads` = {ok, events[]}, `alerts` = {ok, list[]}, `days` = dailyRows or null.
  */
-export function verdictFor(cfg, resort, { roads, alerts, days, now = Date.now() }) {
+export function verdictFor(cfg, resort, { roads, alerts, days, intel = null, now = Date.now() }) {
   const reasons = [];
+  if (intel && intel.ok) {
+    if (intel.status === 'closed') reasons.push({ level: 'nogo', kind: 'resort', key: 'r_resort_closed', note: intel.note });
+    else if (intel.lifts && intel.lifts.total && intel.lifts.open / intel.lifts.total < 0.25) reasons.push({ level: 'caution', kind: 'resort', key: 'r_limited', val: intel.lifts });
+    else if (intel.lifts) reasons.push({ level: 'go', kind: 'resort', key: 'r_lifts_ok', val: intel.lifts });
+  }
   const future = e => e.start && e.start > now + 2 * 3600e3;
   const rules = cfg.rules;
   const segIds = resort.route.map(r => r.seg);

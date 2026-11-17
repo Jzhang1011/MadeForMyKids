@@ -41,3 +41,19 @@ links) and its `route` as a list of `segments` (route names + bbox). Cameras ref
 `ski/` is part of the GitHub Pages site (private.madeformykids.com). The `madeformykids-landing` Worker
 proxies madeformykids.com (and www) to Pages, so a push to `main` is all that's needed; no separate deploy.
 Canonical URL: https://www.madeformykids.com/ski/
+
+## v2: resort intel (lifts, runs, hours, snow report)
+
+`ski/js/intel.js` normalizes each resort's own public report into one shape
+(`lifts`, `trails`, `terrain`, `hours`, `status`, `baseCm`, `snow.h24/h48/d7/season`, `surface`, `asOf`).
+Provider per resort is set in `data/resorts.json` → `resorts[].intel`:
+
+| provider | used for | source |
+|---|---|---|
+| `abasin` | A-Basin | arapahoebasin.com/snow-report + /operating-hours- (HTML) |
+| `powdr` | Copper | api.coppercolorado.com/api/v1/dor (needs Origin header → server-side only) |
+| `mtnpowder` | Steamboat | mtnpowder.com/feed?resortId=6 |
+
+`node ski/scripts/fetch-data.mjs --intel-only` writes `data/intel.json` only. The GitHub Action runs it hourly
+13–23 UTC; the full weather/roads snapshot still runs at 12:30 UTC. Missing fields render as "n/a" — never guessed.
+Resort photos in `ski/img/` are from Wikimedia Commons (credits in `resorts.json` and the page footer).

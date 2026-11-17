@@ -104,3 +104,51 @@ export const PACK_DEFAULT = [
   { cat: 'misc', en: 'Portable boot/glove dryer (if staying in a condo)', zh: '便携烘鞋/手套器（住公寓的话）' },
   { cat: 'misc', en: 'Power bank (cold drains phones fast)', zh: '充电宝（低温掉电快）' }
 ];
+
+// ---- v2 UI strings ----
+const V2 = {
+  en: {
+    q_title: 'Should we go skiing today?', title: 'SkiDay', subtitle: 'Denver → A-Basin · Copper · Steamboat',
+    nav_intel: 'Mountain', nav_outlook: 'Snow outlook',
+    pass: 'PASS', info: 'INFO', k_chain: 'Chains', k_closure: 'Closures', k_incident: 'Incidents', k_nws: 'NWS', k_snow: 'Snow', k_wind: 'Wind', k_cold: 'Cold', k_resort: 'Lifts', watch: 'WATCH', fail: 'FAIL', unk: '?',
+    st_newsnow: 'New snow 24h', st_newsnow_fc: 'Snow today (fcst)', st_basetemp: 'Base temp now', st_lifts: 'Lifts open', st_drive: 'Drive from DEN',
+    choose: 'Choose your mountain', fcst_7: '7-day fcst',
+    intel_h: 'Mountain today', lifts: 'Lifts', runs: 'Runs', terrain: 'Terrain', hours: 'Lift hours', hours_sched: 'scheduled', season: 'Season',
+    status_open: 'Open', status_closed: 'Closed', base_depth: 'Base depth', reported: 'Resort-reported snow', h24: '24h', h48: '48h', d7: '7d', season_total: 'Season',
+    surface: 'Surface', as_of: 'as of {0}', checked: 'checked {0}', source: 'Source', intel_unavailable: 'Resort report unavailable',
+    outlook_h: 'Snow outlook', last24: 'Last 24h', next15: 'Next 1–5 days', next610: 'Days 6–10',
+    hourly_chart: 'Next 48 h', daily_chart: '10-day snowfall', more_info: 'How we estimate', legend_snow: 'snow', legend_temp: 'temp',
+    road_details: 'Details', wear_today: 'Today', wear_layers_base: 'Base', wear_layers_mid: 'Mid', wear_layers_outer: 'Outer', wear_extras: 'Extras',
+    wear_kid_plus: 'Kids: +1 warmer layer, mittens, spare gloves', cams_h: 'Resort cams', r_resort_closed: 'Resort closed today{0}', r_limited: 'Limited terrain: {0} lifts open', r_lifts_ok: '{0} lifts open',
+    photo_by: 'Photo: {0}', show_all: 'Show all', unavailable_short: 'n/a'
+  },
+  zh: {
+    q_title: '今天去滑雪吗？', title: 'SkiDay', subtitle: '丹佛 → A-Basin · Copper · Steamboat',
+    nav_intel: '雪场', nav_outlook: '降雪展望',
+    pass: '通过', info: '提示', k_chain: '链条', k_closure: '封路', k_incident: '事故', k_nws: '气象预警', k_snow: '降雪', k_wind: '风', k_cold: '低温', k_resort: '缆车', watch: '注意', fail: '不通过', unk: '?',
+    st_newsnow: '24 小时新雪', st_newsnow_fc: '今日预报雪', st_basetemp: '山脚现在', st_lifts: '缆车开放', st_drive: '机场开车',
+    choose: '选择雪场', fcst_7: '7 天预报',
+    intel_h: '雪场今日', lifts: '缆车', runs: '雪道', terrain: '地形', hours: '缆车时间', hours_sched: '计划', season: '雪季',
+    status_open: '营业中', status_closed: '未开放', base_depth: '雪底厚度', reported: '雪场报告降雪', h24: '24h', h48: '48h', d7: '7 天', season_total: '本季',
+    surface: '雪面', as_of: '更新于 {0}', checked: '抓取于 {0}', source: '来源', intel_unavailable: '雪场报告暂不可用',
+    outlook_h: '降雪展望', last24: '过去 24h', next15: '未来 1–5 天', next610: '第 6–10 天',
+    hourly_chart: '未来 48 小时', daily_chart: '10 天降雪', more_info: '估算说明', legend_snow: '降雪', legend_temp: '气温',
+    road_details: '详情', wear_today: '今天', wear_layers_base: '内层', wear_layers_mid: '中层', wear_layers_outer: '外层', wear_extras: '配件',
+    wear_kid_plus: '孩子：多穿一层、连指手套、备用手套', cams_h: '雪场摄像头', r_resort_closed: '雪场今天未开放{0}', r_limited: '开放地形有限：缆车 {0}', r_lifts_ok: '缆车开放 {0}',
+    photo_by: '照片：{0}', show_all: '全部', unavailable_short: '无'
+  }
+};
+Object.assign(STR.en, V2.en); Object.assign(STR.zh, V2.zh);
+
+// Short labels for the outfit icons.
+const SHORT = {
+  en: { w_base_light: 'Light base', w_base_mid: 'Midweight base', w_base_heavy: 'Heavy merino', w_mid_fleece_opt: 'Thin fleece', w_mid_fleece: 'Fleece', w_mid_puffy: 'Fleece + puffy',
+    w_shell: 'Shell + pants', w_jacket_insulated: 'Insulated jacket + pants', w_gaiter: 'Neck gaiter', w_balaclava: 'Balaclava', w_facemask: 'Face mask', w_gloves: 'Gloves', w_gloves_warm: 'Warm gloves',
+    w_mittens: 'Mittens', w_handwarmers: 'Hand warmers', w_toewarmers: 'Toe warmers', w_socks: 'Wool socks', w_helmet_goggles: 'Helmet + goggles', w_spare_gloves: 'Spare gloves',
+    n_kid_breaks: 'Warm-up breaks', n_frostbite: 'Frostbite check', n_wind: 'Windproof', n_snow_lens: 'Low-light lens', n_sun_lens: 'Dark lens', n_sunscreen: 'SPF 50', n_warm_vent: 'Open vents pm' },
+  zh: { w_base_light: '薄内衣', w_base_mid: '中厚内衣', w_base_heavy: '厚羊毛内衣', w_mid_fleece_opt: '薄抓绒', w_mid_fleece: '抓绒', w_mid_puffy: '抓绒+羽绒',
+    w_shell: '硬壳+雪裤', w_jacket_insulated: '保暖雪服+雪裤', w_gaiter: '围脖', w_balaclava: '头套', w_facemask: '面罩', w_gloves: '手套', w_gloves_warm: '厚手套',
+    w_mittens: '连指手套', w_handwarmers: '暖手贴', w_toewarmers: '暖脚贴', w_socks: '羊毛袜', w_helmet_goggles: '头盔+雪镜', w_spare_gloves: '备用手套',
+    n_kid_breaks: '定时取暖', n_frostbite: '查冻伤', n_wind: '防风', n_snow_lens: '低光镜片', n_sun_lens: '深色镜片', n_sunscreen: 'SPF 50', n_warm_vent: '下午开通风' }
+};
+for (const l of ['en', 'zh']) for (const [k, v] of Object.entries(SHORT[l])) STR[l]['s_' + k] = v;
