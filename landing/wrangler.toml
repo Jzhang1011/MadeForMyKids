@@ -1,11 +1,19 @@
 name = "madeformykids-landing"
 compatibility_date = "2026-11-06"
+main = "src/worker.js"
 
-# Static public landing page for the Family Board calendar product.
-# Served at madeformykids.com (apex) and www.madeformykids.com via
-# Workers custom domains, and at madeformyfamily.com (apex) via a
-# Worker route. The learning site lives at
-# private.madeformykids.com (GitHub Pages).
+# One Worker, split by hostname (see src/worker.js):
+#  - madeformyfamily.com (apex, Worker route set in the dashboard): Family Board
+#    marketing pages from ./public (/, /guides/, /visual-guidance/, /visual-schedules/).
+#    Everything else 301s to www.madeformykids.com.
+#  - madeformykids.com + www (Workers custom domains, set in the dashboard): the kids
+#    learning portal and /ski/, proxied from GitHub Pages (private.madeformykids.com).
+#    Family Board pages 301 to madeformyfamily.com.
+# No routes are declared here on purpose: `wrangler deploy` then leaves the existing
+# dashboard-managed custom domains and routes untouched.
+# www.madeformyfamily.com -> apex redirect lives in ../www-redirect (its own Worker).
 
 [assets]
 directory = "./public"
+binding = "ASSETS"
+run_worker_first = true

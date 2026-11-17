@@ -10,7 +10,7 @@
     "cars": "https://api-511x-co.carsprogram.org",
     "nws": "https://api.weather.gov/alerts/active",
     "cotrip": "https://www.cotrip.org/",
-    "snapshots": ["data/latest.json", "https://private.madeformykids.com/ski/data/latest.json"]
+    "snapshots": ["data/latest.json"]
   },
   "rules": {
     "snowCautionCm": 15,

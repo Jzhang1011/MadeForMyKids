@@ -1,6 +1,6 @@
 # Ski Trip Go / No-Go dashboard
 
-Live: https://madeformykids.com/ski/ (also https://private.madeformykids.com/ski/)
+Live: https://madeformykids.com/ski/
 
 A self-contained, no-build static app (HTML + ES modules) that answers "do we drive up today?"
 for a Denver (DEN) → Arapahoe Basin / Copper Mountain / Steamboat ski trip.
@@ -37,6 +37,7 @@ Everything is driven by `data/resorts.json`: add a resort (lat/lon, base/summit 
 links) and its `route` as a list of `segments` (route names + bbox). Cameras reference COtrip camera IDs.
 `shop.enabled` reserves a nav slot for a future gear shop.
 
-## madeformykids.com copy
-The apex domain is served by the `madeformykids-landing` Cloudflare Worker (`landing/`). After changing
-code here run `ski/scripts/sync-to-landing.sh` and then `cd landing && wrangler deploy`.
+## How it is served
+`ski/` is part of the GitHub Pages site (private.madeformykids.com). The `madeformykids-landing` Worker
+proxies madeformykids.com (and www) to Pages, so a push to `main` is all that's needed; no separate deploy.
+Canonical URL: https://www.madeformykids.com/ski/

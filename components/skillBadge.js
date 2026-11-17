@@ -36,12 +36,21 @@
     spanish: "spanish",
     espanol: "spanish",
     "español": "spanish",
+    ski: "ski",
+    skiing: "ski",
     widi: "widi",
     "write it do it": "widi",
     "science olympiad": "widi",
   };
 
   const MAP = {
+    ski: {
+      id: "ski",
+      label: "Ski",
+      icon: "⛷️",
+      bg: "var(--mfk-skill-ski-bg, #e0f2fe)",
+      fg: "var(--mfk-skill-ski, #0369a1)",
+    },
     typing: {
       id: "typing",
       label: "Typing",

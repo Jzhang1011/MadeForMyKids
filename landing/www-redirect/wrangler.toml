@@ -1,0 +1,9 @@
+name = "madeformyfamily-www-redirect"
+compatibility_date = "2026-11-06"
+main = "worker.js"
+workers_dev = false
+
+# Custom domain: wrangler creates the DNS record + certificate for it.
+routes = [
+  { pattern = "www.madeformyfamily.com", custom_domain = true }
+]
