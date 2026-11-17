@@ -203,7 +203,8 @@ export function routeSegments(route, events, startLabel) {
   route.legs.forEach((l, i) => {
     const id = `dyn-${i}`;
     const km = Math.round(l.distM / 1000);
-    const outside = !route.pts.slice(l.from, l.to + 1).some(inCO);
+    const lp = route.pts.slice(l.from, l.to + 1);
+    const outside = lp.filter(inCO).length < lp.length / 2; // mostly outside Colorado
     segments[id] = { name: { en: `${l.key} · ${km} km`, zh: `${l.key} · ${km} 公里` }, routes: l.refs, km, key: l.key, outside };
     // A full closure on a long highway leg has no easy detour; short local legs usually do.
     legs.push({ seg: id, closure: l.distM > 15000 && l.refs.length ? 'nogo' : 'caution' });
