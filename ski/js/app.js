@@ -1,8 +1,8 @@
 import { openMeteoUrl, splitOpenMeteo, dailyRows, hourlyRows, weatherEmoji, carsUrl, slimEvents, EVENT_CLASSES,
-  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=efc0804f18';
-import { STR, PACK_DEFAULT } from './i18n.js?v=efc0804f18';
-import { selectCameras, routeSegments, inCO } from './route.js?v=efc0804f18';
-import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=efc0804f18';
+  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=a2c3cd1621';
+import { STR, PACK_DEFAULT } from './i18n.js?v=a2c3cd1621';
+import { selectCameras, routeSegments, inCO } from './route.js?v=a2c3cd1621';
+import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=a2c3cd1621';
 
 const LS = {
   get: (k, d) => { try { const v = localStorage.getItem('ski.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -15,7 +15,7 @@ const state = {
   point: LS.get('point', 'summit'),
   cfg: null,
   wx: { data: null, mode: null, at: null }, roads: { data: null, mode: null, at: null }, alerts: { data: null, mode: null, at: null },
-  intel: { data: {}, at: null }, cams: null, start: null, routes: {}, camsAll: null, startUI: null, map: null, refreshing: false, lastLive: 0
+  intel: { data: {}, at: null, mode: null }, cams: null, camsAt: null, start: null, routes: {}, camsAll: null, startUI: null, map: null, refreshing: false, lastLive: 0
 };
 
 const $ = s => document.querySelector(s);
@@ -63,44 +63,66 @@ async function getJson(url, ms = 20000) {
 
 /* ---------- Data loading ---------- */
 
-async function loadSnapshot() {
-  const bust = `?v=${Math.floor(Date.now() / 300000)}`;
-  const [snap, intel] = await Promise.allSettled([getJson('data/latest.json' + bust), getJson((state.cfg.sources.intel || 'data/intel.json') + bust)]);
+// Data comes from the ski-data Worker (api/ = /ski/api/*: refreshed on a schedule into KV, cached 60 s),
+// falling back to the git snapshot (data/*.json, GitHub Action backup). The browser only calls the
+// upstream APIs itself when neither copy is fresh enough (see LIMIT), so visitors share one fetch.
+const API = 'api/';
+const LIMIT = { wx: 180, roads: 30, alerts: 30, intel: 120 }; // minutes before a copy counts as stale
+const ageMin = at => { if (!at) return Infinity; const ms = typeof at === 'number' ? at : new Date(String(at).replace(/([+-]\d{2})(\d{2})$/, '$1:$2')).getTime(); return isNaN(ms) ? Infinity : (Date.now() - ms) / 60000; };
+const isStale = slot => !state[slot].data || ageMin(state[slot].at) > LIMIT[slot];
+
+async function getFirst(urls) {
+  let err;
+  for (const u of urls) { try { return { j: await getJson(u, 15000), from: u.startsWith(API) ? 'server' : 'snapshot' }; } catch (e) { err = e; } }
+  throw err;
+}
+/** Keep the newest copy of a source. */
+function take(slot, data, at, mode, status) {
+  if (data == null) return;
+  const cur = state[slot];
+  if (cur.data && cur.at && at && ageMin(at) > ageMin(cur.at)) return;
+  state[slot] = { data, mode, at, status: status || 'ok' };
+}
+async function loadServer() {
+  const bust = `?v=${Math.floor(Date.now() / 60000)}`;
+  const [snap, intel] = await Promise.allSettled([
+    getFirst([`${API}latest.json${bust}`, `data/latest.json${bust}`]),
+    getFirst([`${API}intel.json${bust}`, `${state.cfg.sources.intel || 'data/intel.json'}${bust}`])
+  ]);
   if (snap.status === 'fulfilled') {
-    const s = snap.value;
-    if (s.sources?.weather?.ok && s.weather && !state.wx.data) state.wx = { data: s.weather, mode: 'snapshot', at: s.sources.weather.fetchedAt };
-    if (s.sources?.roads?.ok && s.roads && !state.roads.data) state.roads = { data: s.roads.events, mode: 'snapshot', at: s.sources.roads.fetchedAt };
-    if (s.alerts && !state.alerts.data && Object.values(s.alerts).some(v => v)) state.alerts = { data: s.alerts, mode: 'snapshot', at: s.sources.alerts?.fetchedAt };
+    const s = snap.value.j, from = snap.value.from, src = s.sources || {};
+    if (src.weather?.ok && s.weather) take('wx', s.weather, src.weather.fetchedAt, from, src.weather.status);
+    if (src.roads?.ok && s.roads) take('roads', s.roads.events, src.roads.fetchedAt, from, src.roads.status);
+    if (s.alerts && src.alerts?.ok !== false && Object.values(s.alerts).some(v => v)) take('alerts', s.alerts, src.alerts?.fetchedAt, from, src.alerts?.status);
     if (s.cameras) state.cams = s.cameras;
   }
   if (intel.status === 'fulfilled') {
-    for (const [id, v] of Object.entries(intel.value.resorts || {})) state.intel.data[id] = v;
-    state.intel.at = intel.value.generatedAt;
+    const j = intel.value.j;
+    if (!state.intel.at || ageMin(j.generatedAt) <= ageMin(state.intel.at)) {
+      for (const [id, v] of Object.entries(j.resorts || {})) state.intel.data[id] = v;
+      state.intel.at = j.generatedAt; state.intel.mode = intel.value.from;
+    }
   }
 }
 
-async function loadLive() {
-  const cfg = state.cfg;
-  await Promise.all([
-    getJson(openMeteoUrl(cfg)).then(j => { const d = splitOpenMeteo(cfg, j); if (!Object.keys(d).length) throw new Error('empty'); state.wx = { data: d, mode: 'live', at: new Date().toISOString() }; })
-      .catch(e => { state.wx.error = String(e.message || e); }),
-    Promise.all(EVENT_CLASSES.map(c => getJson(carsUrl(cfg, c), 30000).then(j => slimEvents(cfg, c, j))))
-      .then(all => { state.roads = { data: all.flat(), mode: 'live', at: new Date().toISOString() }; })
-      .catch(e => { state.roads.error = String(e.message || e); }),
-    Promise.all(cfg.resorts.map(r => getJson(nwsUrl(cfg, r)).then(j => [r.id, slimAlerts(j)])))
-      .then(all => { state.alerts = { data: Object.fromEntries(all), mode: 'live', at: new Date().toISOString() }; })
-      .catch(e => { state.alerts.error = String(e.message || e); }),
-    // Resort intel comes from the hourly snapshot (data/intel.json); a live browser fetch of the
-    // Steamboat feed was intermittently missing CORS headers and spammed the console.
-    getJson((state.cfg.sources.intel || 'data/intel.json') + `?v=${Date.now()}`).then(j => { Object.assign(state.intel.data, j.resorts || {}); state.intel.at = j.generatedAt; }).catch(() => {})
-  ]);
-  state.lastLive = Date.now();
+/** Last resort: fetch upstream directly, only for sources with no fresh copy. */
+async function loadLiveFallback() {
+  const cfg = state.cfg; const jobs = [];
+  if (isStale('wx')) jobs.push(getJson(openMeteoUrl(cfg)).then(j => { const d = splitOpenMeteo(cfg, j); if (!Object.keys(d).length) throw new Error('empty'); state.wx = { data: d, mode: 'live', at: new Date().toISOString(), status: 'ok' }; })
+    .catch(e => { state.wx.error = String(e.message || e); }));
+  if (isStale('roads')) jobs.push(Promise.all(EVENT_CLASSES.map(c => getJson(carsUrl(cfg, c), 30000).then(j => slimEvents(cfg, c, j))))
+    .then(all => { state.roads = { data: all.flat(), mode: 'live', at: new Date().toISOString(), status: 'ok' }; })
+    .catch(e => { state.roads.error = String(e.message || e); }));
+  if (isStale('alerts')) jobs.push(Promise.all(cfg.resorts.map(r => getJson(nwsUrl(cfg, r)).then(j => [r.id, slimAlerts(j)])))
+    .then(all => { state.alerts = { data: Object.fromEntries(all), mode: 'live', at: new Date().toISOString(), status: 'ok' }; })
+    .catch(e => { state.alerts.error = String(e.message || e); }));
+  await Promise.all(jobs);
 }
 
 async function refresh() {
   if (state.refreshing) return;
   state.refreshing = true; $('#btn-refresh').classList.add('spin');
-  try { await loadLive(); if (Object.values(state.routes).some(x => x.status === 'fail')) { for (const k in state.routes) if (state.routes[k].status === 'fail') delete state.routes[k]; routeAll(); } } finally { state.refreshing = false; $('#btn-refresh').classList.remove('spin'); renderAll(); }
+  try { await Promise.allSettled([loadServer(), loadCams()]); await loadLiveFallback(); state.lastLive = Date.now(); if (Object.values(state.routes).some(x => x.status === 'fail')) { for (const k in state.routes) if (state.routes[k].status === 'fail') delete state.routes[k]; routeAll(); } } finally { state.refreshing = false; $('#btn-refresh').classList.remove('spin'); renderAll(); }
 }
 
 /* ---------- Derived ---------- */
@@ -239,8 +261,8 @@ function renderVerdict() {
     <div class="tiles">
       <div class="tile"><span class="ti">❄️</span><b>${snow24.v}</b><span>${esc(t(snow24.k))}</span></div>
       <div class="tile"><span class="ti">🌡️</span><b>${now ? fmt.temp(now.t, u) : '—'}</b><span>${esc(t('st_basetemp'))}</span></div>
-      <div class="tile"><span class="ti">🚡</span><b>${lifts}</b><span>${esc(t('st_lifts'))}</span></div>
-      <div class="tile"><span class="ti">🚗</span><b>${drive}</b><span>${esc(driveLabel(r))}</span></div>
+      <div class="tile"><span class="ti">🚡</span><b>${lifts}</b><span>${esc(t('st_lifts'))}</span>${intel?.ok && freshness('intel', r).cls === 'stale' ? `<small class="dnote stale">${esc(freshness('intel', r).text)}</small>` : ''}</div>
+      <div class="tile"><span class="ti">🚗</span><b>${drive}</b><span>${esc(driveLabel(r))}</span><small class="dnote">${esc(t('drive_note'))} · <a href="https://www.cotrip.org/trip-planner" target="_blank" rel="noopener">COtrip ↗</a></small></div>
     </div>
     </div>
     <div class="why"><h3 class="ov">${esc(t('why_h'))}</h3>
@@ -266,7 +288,7 @@ function renderResortCards() {
           <span><i>🚡</i><b>${i?.ok && i.lifts ? `${i.lifts.open}/${i.lifts.total}` : '—'}</b><small>${esc(t('lifts'))}</small></span>
           <span><i>❄️</i><b>${i?.ok && i.snow?.h24 != null ? fmt.snow(i.snow.h24, u) : '—'}</b><small>24h</small></span>
           <span><i>📈</i><b>${wk != null ? fmt.snow(wk, u) : '—'}</b><small>${esc(t('fcst_7'))}</small></span>
-          <span><i>🚗</i><b>${dm == null ? '—' : `${Math.floor(dm / 60)}h${String(dm % 60).padStart(2, '0')}`}</b><small>${esc(t('drive'))}</small></span>
+          <span><i>🚗</i><b>${dm == null ? '—' : `${Math.floor(dm / 60)}h${String(dm % 60).padStart(2, '0')}`}</b><small>${esc(t('drive'))}*</small></span>
         </span>
       </span>
     </button>`;
@@ -275,7 +297,7 @@ function renderResortCards() {
 
 function renderIntel() {
   const r = resort(); const i = intelFor(r); const u = U(); const el = $('#intel');
-  const head = `<h2>${esc(t('intel_h'))} · ${esc(r.short)}</h2>`;
+  const head = `<div class="sec-h"><h2>${esc(t('intel_h'))} · ${esc(r.short)}</h2>${badge('intel', r)}</div>`;
   if (!i || !i.ok) {
     el.innerHTML = `${head}<p class="muted">${esc(t('intel_unavailable'))}${i?.error ? ` <span class="small">(${esc(i.error)})</span>` : ''} · <a href="${esc(r.links.report)}" target="_blank" rel="noopener">${esc(t('report'))} ↗</a></p>`;
     return;
@@ -336,7 +358,7 @@ function renderWeather() {
   const hs = rows.slice(s0, s0 + 48);
   const sv = days.map(d => snowVal(d.summit.snow) || 0);
   const elev = state.point === 'base' ? fmt.elev(r.baseElevM, u) : fmt.elev(r.summitElevM, u);
-  el.innerHTML = `<h2>${esc(t('weather_h'))} · ${esc(r.short)}</h2>
+  el.innerHTML = `<div class="sec-h"><h2>${esc(t('weather_h'))} · ${esc(r.short)}</h2>${badge('wx')}</div>
     <div class="row-sb"><h3>${esc(t('hourly_chart'))} · ${esc(elev)}</h3>${segCtl('point', [['summit', t('summit')], ['base', t('base')]], state.point)}</div>
     <div class="legend"><span class="lg-s"></span>${esc(t('legend_snow'))} <span class="lg-t"></span>${esc(t('legend_temp'))}</div>
     <div class="scroll">${hourlyChart(hs)}</div>
@@ -346,6 +368,43 @@ function renderWeather() {
     <details class="more"><summary>ⓘ ${esc(t('more_info'))}</summary><p class="small muted">${esc(t('ratio_note'))}</p></details>`;
 }
 
+function ago(at) {
+  const m = ageMin(at);
+  if (!isFinite(m)) return '—';
+  if (m < 1.5) return t('just_now');
+  if (m < 90) return t('ago_min', Math.round(m));
+  if (m < 48 * 60) return t('ago_h', Math.round(m / 60));
+  return t('ago_d', Math.round(m / 1440));
+}
+function mtParts(d) {
+  const p = new Intl.DateTimeFormat('en-CA', { timeZone: tz(), year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(d);
+  const g = k => p.find(x => x.type === k)?.value;
+  return { day: `${g('year')}-${g('month')}-${g('day')}`, min: Number(g('hour')) * 60 + Number(g('minute')) };
+}
+/** Freshness of one section: cls ok | stale | na, plus a label (live / forecast / resort report / cached Xh ago / unavailable). */
+function freshness(kind, r) {
+  if (kind === 'intel') {
+    const i = r && intelFor(r);
+    if (!i || !i.ok) return { cls: 'na', text: t('b_na') };
+    const at = i.fetchedAt || state.intel.at, m = ageMin(at), now = mtParts(new Date());
+    const opHours = now.min >= 7 * 60 && now.min <= 16 * 60 + 30;
+    const prevDay = isFinite(m) && mtParts(new Date(Date.now() - m * 60000)).day !== now.day && now.min >= 6 * 60; // yesterday's report, after 6 AM MT
+    const stale = i.stale || (opHours && m > LIMIT.intel) || prevDay;
+    return { cls: stale ? 'stale' : 'ok', text: stale ? t('b_cached', ago(at)) : t('b_report', ago(at)) };
+  }
+  const slot = state[kind];
+  if (!slot?.data) return { cls: 'na', text: t('b_na') };
+  if (ageMin(slot.at) > LIMIT[kind] || slot.status === 'stale') return { cls: 'stale', text: t('b_cached', ago(slot.at)) };
+  return { cls: 'ok', text: t(kind === 'wx' ? 'b_forecast' : 'b_live', ago(slot.at)) };
+}
+const badge = (kind, r) => { const f = freshness(kind, r); return `<span class="age age-${f.cls}">${esc(f.text)}</span>`; };
+/** One camera tile: visible "camera unavailable" on a broken/failed image, and the image's age. */
+function camTile({ href, img, name, ts, broken, extra = '', title = '' }) {
+  const m = ageMin(ts), old = isFinite(m) && m > 60;
+  const age = isFinite(m) ? ` <small class="cage${old ? ' old' : ''}">· ${esc(old ? `${t('cam_old')} ${ago(ts)}` : ago(ts))}</small>` : '';
+  return `<a class="thumb${broken || !img ? ' na' : ''}" data-na="${esc(t('cam_na'))}" href="${esc(href)}" target="_blank" rel="noopener"${title ? ` title="${esc(title)}"` : ''}>
+      ${img && !broken ? `<img loading="lazy" alt="${esc(name)}" src="${esc(camImg(img))}" onerror="this.parentNode.classList.add('na')">` : ''}${extra}<span>${esc(name)}${age}</span></a>`;
+}
 function camImg(src) { return src + (src.includes('?') ? '&' : '?') + 't=' + Math.floor(Date.now() / 120000); }
 
 function segName(r, id) {
@@ -401,26 +460,26 @@ function renderRoads() {
   let camsHtml, camCount;
   if (c && c.cams) {
     camCount = c.cams.length;
-    camsHtml = c.cams.length ? c.cams.map((m, i) => `<a class="thumb" href="https://www.cotrip.org/camera/${m.id}" target="_blank" rel="noopener" title="${esc(m.name)}">
-      <img loading="lazy" alt="${esc(m.name)}" src="${esc(camImg(m.img))}" onerror="this.style.visibility='hidden'"><i class="num">${i + 1}</i><em class="km">${km(m.along)}</em><span>${esc(camShort(m.name))}</span></a>`).join('')
+    camsHtml = c.cams.length ? c.cams.map((m, i) => camTile({ href: `https://www.cotrip.org/camera/${m.id}`, img: m.img, name: camShort(m.name), title: m.name, ts: m.ts, broken: m.broken,
+      extra: `<i class="num">${i + 1}</i><em class="km">${km(m.along)}</em>` })).join('')
       : `<p class="muted">${esc(t('cams_none'))}</p>`;
   } else {
     const meta = new Map((state.cams || []).map(x => [x.id, x]));
     const onRoute = new Set(r.route.map(x => x.seg));
     const list = cfg.cameras.filter(x => onRoute.has(x.seg));
     camCount = list.length;
-    camsHtml = list.map(x => `<a class="thumb" href="https://www.cotrip.org/camera/${x.id}" target="_blank" rel="noopener" title="${esc(x.name)}">
-      <img loading="lazy" alt="${esc(x.name)}" src="${esc(camImg(meta.get(x.id)?.image || x.image))}" onerror="this.style.visibility='hidden'"><span>${esc(camShort(x.name))}</span></a>`).join('');
+    camsHtml = list.map(x => { const mm = meta.get(x.id); return camTile({ href: `https://www.cotrip.org/camera/${x.id}`, img: mm?.image || x.image, name: camShort(x.name), title: x.name, ts: mm?.ts, broken: mm?.broken }); }).join('');
   }
   const from = c ? L(state.start.name) : L(state.cfg.trip.origin.name);
-  el.innerHTML = `<div class="sec-h"><h2>${esc(t('roads_h'))}</h2><span class="sub-h">${esc(from)} → ${esc(r.short)}${c ? ` · ${km(c.route.distM)}` : ''}</span></div>
+  el.innerHTML = `<div class="sec-h"><h2>${esc(t('roads_h'))}</h2><span class="sub-h">${esc(from)} → ${esc(r.short)}${c ? ` · ${km(c.route.distM)}` : ''}</span>${badge('roads')}</div>
     ${routeNoteHtml(r)}
     ${c ? '' : `<details class="more"><summary>🧭 ${esc(t('route'))}</summary><p class="small">${esc(L(r.routeNote))}</p></details>`}
     <ul class="rlist">${legs}</ul>
     ${c ? `<div id="route-map" class="rmap" role="img" aria-label="${esc(t('map_label'))}"></div>` : ''}
     <h3>📷 ${esc(c ? t('cams_route') : t('cameras'))} <small class="muted">(${camCount})</small></h3>
     <div class="thumbs">${camsHtml}</div>
-    <p class="note">CDOT COtrip · ${esc(state.roads.mode ? fmtTime(state.roads.at) : t('unavailable'))}${c ? ` · ${esc(t('route_src'))} <a href="https://project-osrm.org/" target="_blank" rel="noopener">OSRM</a> (© OpenStreetMap)` : ''} · <a href="https://www.cotrip.org/" target="_blank" rel="noopener">${esc(t('open_cotrip'))} ↗</a></p>`;
+    <p class="note">🚗 ${esc(t('drive_note_long'))} <a href="https://www.cotrip.org/trip-planner" target="_blank" rel="noopener">${esc(t('cotrip_tt'))} ↗</a></p>
+    <p class="note">CDOT COtrip · ${state.roads.data ? `${esc(fmtTime(state.roads.at))} (${esc(ago(state.roads.at))})` : esc(t('unavailable'))}${c ? ` · ${esc(t('route_src'))} <a href="https://project-osrm.org/" target="_blank" rel="noopener">OSRM</a> (© OpenStreetMap)` : ''} · <a href="https://www.cotrip.org/" target="_blank" rel="noopener">${esc(t('open_cotrip'))} ↗</a> · <a href="https://www.cotrip.org/road-conditions" target="_blank" rel="noopener">${esc(t('cotrip_cond'))} ↗</a></p>`;
   if (c) mountMap(c);
 }
 
@@ -494,13 +553,15 @@ function setStart(s) {
 }
 async function loadCams() {
   try {
-    const j = await getJson(`${state.cfg.sources.cameras}?v=${Math.floor(Date.now() / 3600e3)}`);
-    state.camsAll = j.cameras;
+    const bust = `?v=${Math.floor(Date.now() / 300e3)}`;
+    const { j } = await getFirst([`${API}cameras.json${bust}`, `${state.cfg.sources.cameras}${bust}`]);
+    if (!j.cameras?.length) throw new Error('empty');
+    state.camsAll = j.cameras; state.camsAt = j.generatedAt;
   } catch {
     try { // fallback: the live statewide list (CORS-enabled)
       const j = await getJson(`${state.cfg.sources.cars}/cameras/map-features`, 30000);
       state.camsAll = (j.features || []).filter(f => f.properties?.public).map(f => { const p = f.properties, v = p.views.find(x => !x.broken) || p.views[0];
-        return { id: p.id, lon: f.geometry.coordinates[0], lat: f.geometry.coordinates[1], name: p.name, route: p.route, local: !!p.location?.localRoad, img: v && (v.type === 'STILL_IMAGE' ? v.url : v.videoPreviewUrl), broken: p.views.every(x => x.broken) }; });
+        return { id: p.id, lon: f.geometry.coordinates[0], lat: f.geometry.coordinates[1], name: p.name, route: p.route, local: !!p.location?.localRoad, img: v && (v.type === 'STILL_IMAGE' ? v.url : v.videoPreviewUrl), broken: p.views.every(x => x.broken), ts: v?.imageTimestamp || null }; });
     } catch { state.camsAll = null; }
   }
   ctxMemo.clear();
@@ -545,7 +606,7 @@ function renderResorts() {
       <a href="${esc(r.links.report)}" target="_blank" rel="noopener">${esc(t('report'))} ↗</a></div>
     <div class="thumbs">${r.webcams.map(w => w.youtube
       ? `<div class="thumb yt" data-yt="${esc(w.youtube)}" role="button" tabindex="0" aria-label="${esc(t('play'))}"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/${esc(w.youtube)}/hqdefault_live.jpg"><b class="play">▶</b><span>${esc(L(w.name))}</span></div>`
-      : `<a class="thumb" href="${esc(w.live || r.links.webcams)}" target="_blank" rel="noopener"><img loading="lazy" alt="${esc(L(w.name))}" src="${esc(camImg(w.image))}" onerror="this.style.visibility='hidden'">${w.live ? '<b class="play">▶</b>' : ''}<span>${esc(L(w.name))}</span></a>`).join('')}</div>`;
+      : camTile({ href: w.live || r.links.webcams, img: w.image, name: L(w.name), extra: w.live ? '<b class="play">▶</b>' : '' })).join('')}</div>`;
   $('#resorts').innerHTML = `<h2>${esc(t('cams_h'))}</h2>${block(sel)}
     <details class="more"><summary>${esc(t('show_all'))}</summary>${others.map(block).join('')}</details>`;
 }
@@ -583,9 +644,14 @@ function bindPack() {
 }
 
 function renderSources() {
-  const item = (k, s) => `<span class="${s.mode === 'live' ? 'ok' : s.mode ? 'snap' : 'bad'}">${esc(t(k))}: ${esc(s.mode ? `${t(s.mode === 'live' ? 'live' : 'snapshot')} ${fmtTime(s.at)}` : t('unavailable'))}</span>`;
-  $('#sources').innerHTML = item('src_roads', state.roads) + item('src_weather', state.wx) + item('src_alerts', state.alerts)
-    + `<span class="${state.intel.at ? 'snap' : 'bad'}">${esc(t('intel_h'))}: ${esc(state.intel.at ? fmtTime(state.intel.at) : t('unavailable'))}</span>`;
+  const via = m => t(m === 'live' ? 'via_live' : m === 'server' ? 'via_server' : 'via_snapshot');
+  const cls = f => f.cls === 'ok' ? 'ok' : f.cls === 'stale' ? 'snap' : 'bad';
+  const item = (k, slot) => { const f = freshness(slot), s = state[slot];
+    return `<span class="${cls(f)}">${esc(t(k))}: ${esc(f.text)}${s.data ? ` · ${esc(fmtTime(s.at))} · ${esc(via(s.mode))}` : ''}</span>`; };
+  const fi = freshness('intel', resort());
+  $('#sources').innerHTML = item('src_roads', 'roads') + item('src_weather', 'wx') + item('src_alerts', 'alerts')
+    + `<span class="${cls(fi)}">${esc(t('intel_h'))}: ${esc(fi.text)}${state.intel.at ? ` · ${esc(fmtTime(state.intel.at))} · ${esc(via(state.intel.mode))}` : ''}</span>`
+    + (state.camsAt ? `<span class="${ageMin(state.camsAt) > 60 ? 'snap' : 'ok'}">${esc(t('cameras'))}: ${esc(t('cam_list'))} ${esc(ago(state.camsAt))}</span>` : '');
   $('#credits').innerHTML = state.cfg.resorts.filter(r => r.photo).map(r => `${esc(r.short)} ${esc(t('photo_by', r.photo.credit))}, <a href="${esc(r.photo.page)}" target="_blank" rel="noopener">Wikimedia Commons</a>, <a href="${esc(r.photo.licenseUrl)}" target="_blank" rel="noopener">${esc(r.photo.license)}</a>`).join(' · ');
 }
 
@@ -633,9 +699,11 @@ function bind() {
   catch (e) { console.warn('[ski] start UI failed:', e); }
   try { bind(); } catch (e) { console.warn('[ski] bind failed:', e); }
   safe('nav', renderChrome);
-  await Promise.allSettled([loadSnapshot(), loadCams()]);
+  await Promise.allSettled([loadServer(), loadCams()]);
   renderAll();
   window.__skiReady = true;
   routeAll().catch(e => console.warn('[ski] routing failed:', e));
-  await refresh();
+  try { await loadLiveFallback(); } catch (e) { console.warn('[ski] live fallback failed:', e); }
+  state.lastLive = Date.now();
+  renderAll();
 })();

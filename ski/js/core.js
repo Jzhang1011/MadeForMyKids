@@ -12,11 +12,12 @@ const DAILY = ['temperature_2m_max', 'temperature_2m_min', 'apparent_temperature
   'snowfall_sum', 'precipitation_sum', 'rain_sum', 'showers_sum', 'wind_gusts_10m_max', 'wind_speed_10m_max',
   'weather_code', 'uv_index_max', 'sunrise', 'sunset'];
 
-/** One request for every resort: two points each (base, summit). */
+/** One request for every resort: two points each — base (base lat/lon + base elevation) and summit
+ * (summit lat/lon + official summit elevation, so summit wind/precip come from the summit grid cell). */
 export function openMeteoUrl(cfg) {
   const lat = [], lon = [], elev = [];
   for (const r of cfg.resorts) {
-    lat.push(r.lat, r.lat); lon.push(r.lon, r.lon); elev.push(r.baseElevM, r.summitElevM);
+    lat.push(r.lat, r.summitLat ?? r.lat); lon.push(r.lon, r.summitLon ?? r.lon); elev.push(r.baseElevM, r.summitElevM);
   }
   const p = new URLSearchParams({
     latitude: lat.join(','), longitude: lon.join(','), elevation: elev.join(','),

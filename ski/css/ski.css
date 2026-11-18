@@ -69,7 +69,7 @@ button{font-family:inherit}
 .tile{padding:14px 10px 16px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;border-right:1px solid rgba(255,255,255,.1)}
 .tile:last-child{border-right:0}
 .tile .ti{font-size:18px;opacity:.9} .tile b{font-size:28px;font-weight:800;line-height:1.1;letter-spacing:-.02em}
-.tile b small{font-size:15px;color:#9fb3c8} .tile span:last-child{font-size:12px;color:#b7c7d8}
+.tile b small{font-size:15px;color:#9fb3c8} .tile>span:not(.ti){font-size:12px;color:#b7c7d8}
 .why{background:#fff;color:var(--ink);border-radius:var(--r);box-shadow:var(--shadow);margin-top:12px;padding:16px 18px 10px}
 .rlist{list-style:none;margin:0;padding:0}
 .rrow{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
@@ -241,3 +241,20 @@ section{scroll-margin-top:70px}
 @supports not (inset:0){
   .presets button,.toggles .pill,.rchips span,.wi{margin:0 6px 6px 0}
 }
+
+/* Data freshness badges (live / forecast / cached / unavailable) */
+.sec-h{flex-wrap:wrap}
+.age{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;line-height:1;padding:5px 9px;border-radius:999px;white-space:nowrap;vertical-align:middle}
+.age::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.age-ok{background:#E3F2EA;color:var(--green)}
+.age-stale{background:#FDEBDB;color:#B45A14}
+.age-na{background:#EEF1F4;color:var(--slate)}
+.dnote{display:block;font-size:10.5px;line-height:1.25;opacity:.85;margin-top:2px}
+.dnote a{color:inherit;text-decoration:underline}
+.dnote.stale{color:#FFC48F;opacity:1}
+/* Camera tiles: visible failure + image age */
+.thumb.na{background:#24384F}
+.thumb.na img{visibility:hidden}
+.thumb.na::before{content:attr(data-na);position:absolute;top:0;right:0;bottom:22px;left:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;font-size:12px;font-weight:600;color:#C9D6E2}
+.thumb .cage{font-size:10.5px;opacity:.85}
+.thumb .cage.old{color:#FFC48F;opacity:1}
