@@ -6,6 +6,7 @@ import { DurableObject } from 'cloudflare:workers';
 import bundledCfg from '../../ski/data/resorts.json';
 import STATS_HTML from './stats.html';
 import { SOURCES, runSources, toLatest, toIntel, toCameras } from '../../ski/scripts/collect.mjs';
+import { BATCHES, refreshCatalogBatch, serveCatalogConditions, fetchForecast, catalogIds } from './catalog.js';
 
 const CFG_URL = 'https://raw.githubusercontent.com/Jzhang1011/MadeForMyKids/main/ski/data/resorts.json';
 const KEYS = ['weather', 'roads', 'alerts', 'cameras', 'camsall', 'intel', 'cotrip'];
@@ -17,7 +18,7 @@ function plan(d) {
   if (q === 0) { out.push('weather'); if (h >= 12 && h <= 23) out.push('intel'); } // hourly; intel 5 AM–4 PM MST
   return out;
 }
-const PLAN = { cron: '*/15 * * * *', every15min: ['roads', 'alerts', 'cameras'], hourly: ['weather'], hourly_12_23_utc: ['intel'], daily_12_30_utc: SOURCES };
+const PLAN = { cron: '*/15 * * * *', every15min: ['roads', 'alerts', 'cameras', 'catalog (1 of 4 slices; each resort hourly)'], hourly: ['weather'], hourly_12_23_utc: ['intel'], daily_12_30_utc: SOURCES };
 const TTL = 60; // seconds: browsers and the edge re-check every minute; data itself changes every 15–60 min
 
 async function loadCfg() {
@@ -98,14 +99,19 @@ async function serve(name, env) {
 
 /* ---------- Anonymous usage counters ---------- */
 // Allowlist: event -> allowed labels. Nothing outside this list is ever stored.
-const RESORT_IDS = bundledCfg.resorts.map(r => r.id);
+const RESORT_IDS = [...new Set([...bundledCfg.resorts.map(r => r.id), ...catalogIds()])];
 const PRESET_IDS = (bundledCfg.trip.presets || []).map(p => p.id);
 const EVENTS = {
   page_view: ['en', 'zh'],
   resort_select: RESORT_IDS,
   start_select: [...PRESET_IDS, 'custom'],
   lang_toggle: ['en', 'zh'],
-  unit_toggle: ['imperial', 'metric']
+  unit_toggle: ['imperial', 'metric'],
+  disc_tab: ['near', 'fav', 'best', 'explore'],
+  disc_view: ['list', 'map'],
+  disc_search: ['used'],          // never the search text
+  disc_fav: ['add', 'remove'],
+  disc_compare: ['open']
 };
 const SITE_HOSTS = ['madeformykids.com', 'www.madeformykids.com'];
 const denverDay = (d = new Date()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
@@ -172,7 +178,7 @@ export default {
     if (url.pathname === '/ski/api/stats.html' || url.pathname === '/api/stats.html') {
       return new Response(STATS_HTML, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex', 'Referrer-Policy': 'no-referrer' } });
     }
-    const m = url.pathname.match(/^\/(?:ski\/)?api\/([a-z]+)(?:\.json)?$/);
+    const m = url.pathname.match(/^\/(?:ski\/)?api\/([a-z-]+)(?:\.json)?$/);
     if (!m) return json({ error: 'not found', endpoints: ['/ski/api/latest.json', '/ski/api/intel.json', '/ski/api/cameras.json', '/ski/api/status.json'] }, 404);
     const name = m[1];
     if (name === 'event') return request.method === 'POST' ? handleEvent(request, env) : json({ error: 'POST only' }, 405);
@@ -187,12 +193,29 @@ export default {
       if (request.method !== 'POST') return json({ error: 'POST only' }, 405);
       const auth = request.headers.get('Authorization') || '';
       if (!env.REFRESH_TOKEN || auth !== `Bearer ${env.REFRESH_TOKEN}`) return json({ error: 'unauthorized' }, 401);
-      const names = (url.searchParams.get('sources') || SOURCES.join(',')).split(',').filter(n => SOURCES.includes(n) || n === 'cotrip');
-      return json(await refresh(env, names), 200, { 'Cache-Control': 'no-store' });
+      const want = (url.searchParams.get('sources') || SOURCES.join(',')).split(',');
+      const out = {};
+      if (want.includes('catalog')) { out.catalog = []; for (let b = 0; b < BATCHES; b++) out.catalog.push(await refreshCatalogBatch(env, b)); }
+      const names = want.filter(n => SOURCES.includes(n) || n === 'cotrip');
+      if (names.length) Object.assign(out, await refresh(env, names));
+      return json(out, 200, { 'Cache-Control': 'no-store' });
     }
     if (request.method !== 'GET' && request.method !== 'HEAD') return json({ error: 'GET only' }, 405);
     // Edge cache (per data centre) so KV is read at most once a minute per location.
     const cache = caches.default;
+    if (name === 'forecast') {
+      const id = url.searchParams.get('r') || '';
+      if (!catalogIds().includes(id)) return json({ error: 'unknown resort' }, 404);
+      const fkey = new Request(`https://ski-data.cache/forecast/${id}`);
+      const hit = await cache.match(fkey);
+      if (hit) return new Response(hit.body, { status: 200, headers: { ...Object.fromEntries(json({}, 200, { 'Cache-Control': 'public, max-age=600' }).headers), 'X-Ski-Cache': 'edge' } });
+      try {
+        const body = await fetchForecast(env, id);
+        if (!body) return json({ error: 'unknown resort' }, 404);
+        ctx.waitUntil(cache.put(fkey, json(body, 200, { 'Cache-Control': 'public, max-age=1800' })));
+        return json(body, 200, { 'Cache-Control': 'public, max-age=600' });
+      } catch (e) { return json({ error: String(e.message || e) }, 502); }
+    }
     const key = new Request(`https://ski-data.cache/${name}`);
     if (name !== 'status') {
       const hit = await cache.match(key);
@@ -200,11 +223,14 @@ export default {
       // then rewrite our 60 s Cache-Control. A fresh Response keeps the short TTL.
       if (hit) return new Response(hit.body, { status: 200, headers: { ...Object.fromEntries(json({}).headers), 'X-Ski-Cache': 'edge' } });
     }
-    const res = await serve(name, env);
+    const res = name === 'catalog-conditions' ? json(await serveCatalogConditions(env)) : await serve(name, env);
     if (res.status === 200 && name !== 'status') ctx.waitUntil(cache.put(key, res.clone()));
     return res;
   },
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(refresh(env, plan(new Date(event.scheduledTime))));
+    const d = new Date(event.scheduledTime);
+    ctx.waitUntil(refresh(env, plan(d)));
+    // Catalog conditions: one slice per quarter-hour -> every resort hourly, small requests.
+    ctx.waitUntil(refreshCatalogBatch(env, Math.floor(d.getUTCMinutes() / 15) % BATCHES));
   }
 };

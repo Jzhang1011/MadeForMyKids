@@ -3,15 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>SkiDay · Should we go skiing today? Denver → A-Basin, Copper, Steamboat</title>
-  <meta name="description" content="One-glance go / no-go for a Colorado ski day: lifts and runs open, lift hours, resort snow report, CDOT chain law and I-70 cameras, snow forecast charts, and what adults and kids should wear." />
+  <title>SkiDay · Where do you want to ski? Resort conditions, snow &amp; drive times</title>
+  <meta name="description" content="Find a ski resort and check today's conditions: search 75+ North American resorts (Ikon, Epic and more), new and forecast snow, summit temperature and wind, drive estimates, favorites, map and a transparent ski-day score. Full go / no-go dashboards for A-Basin, Copper and Steamboat." />
   <link rel="canonical" href="https://www.madeformykids.com/ski/" />
   <meta name="theme-color" content="#14283F" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛷️</text></svg>" />
   <link rel="preload" href="fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="css/ski.css?v=f7738e7c93" />
+  <link rel="stylesheet" href="css/ski.css?v=b7a974d943" />
 </head>
 <body>
+  <script>document.body.className = 'v-' + (/[?&]resort=/.test(location.search) ? 'dash' : 'disc');</script>
   <header class="top">
     <div class="wrap top-row">
       <a class="brand" href="./"><span class="logo" aria-hidden="true">⛷️</span><b data-i18n="title">SkiDay</b></a>
@@ -24,8 +25,12 @@
     </div>
   </header>
 
+  <section id="discover" class="disc" aria-label="Find a resort"><div class="disc-hero"><div class="wrap"><div class="skeleton" style="height:180px;margin:24px 0"></div></div></div></section>
+  <section id="basic" class="basic"></section>
+
   <section class="hero-wrap" id="hero">
     <div class="wrap hero-in">
+      <a class="dback" id="dash-back" href="./">← <span data-i18n="d_back_all">All resorts</span></a>
       <h1 class="q" data-i18n="q_title">Should we go skiing today?</h1>
       <div id="start" class="start"></div>
       <div id="verdict" aria-live="polite"><div class="skeleton"></div></div>
@@ -33,7 +38,7 @@
     </div>
   </section>
 
-  <main class="wrap">
+  <main class="wrap" id="dash-main">
     <section id="mountains" class="block">
       <h2 data-i18n="choose">Choose your mountain</h2>
       <div id="resort-cards" class="rcards"></div>
@@ -47,22 +52,25 @@
     <section id="resorts" class="block card"></section>
     <section id="pack" class="block card"></section>
 
+  </main>
+  <div class="wrap">
     <footer class="foot">
       <div id="sources" class="sources"></div>
       <p data-i18n="footer"></p>
+      <p data-i18n="footer_disc"></p>
       <p class="small" data-i18n="privacy_note"></p>
       <p id="credits" class="small"></p>
     </footer>
-  </main>
+  </div>
 
   <nav class="bnav" id="bnav" aria-label="Sections"></nav>
-  <script type="module" src="js/app.js?v=f7738e7c93"></script>
+  <script type="module" src="js/app.js?v=b7a974d943"></script>
   <script nomodule>document.getElementById('verdict').innerHTML='<p style="padding:16px">This browser is too old for SkiDay. Please update iOS / your browser.</p>';</script>
   <script>
     // Safety net: if the app has not started after 12 s (blocked script, network or a JS error), say so instead of a blank page.
     setTimeout(function () {
       if (window.__skiReady) return;
-      var v = document.getElementById('verdict');
+      var v = document.getElementById(document.body.className.indexOf('v-dash') >= 0 ? 'verdict' : 'discover');
       if (v) v.innerHTML = '<div class="why"><p><b>SkiDay could not finish loading.</b> Check your connection and <a href="" onclick="location.reload(true);return false">tap to reload</a>.</p></div>';
     }, 12000);
   </script>

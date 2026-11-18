@@ -1,0 +1,2042 @@
+{
+ "version": 1,
+ "updated": "2026-11-18",
+ "note": "Coordinates and elevations from each resort's Wikipedia infobox (src) unless detail=full (verified in resorts.json) or noted; pass membership from ikonpass.com and epicpass.com for the 2026/27 season. passes:[] = neither Ikon nor Epic. Photos: Wikimedia Commons, licence + author in photo{}; no photo = neutral placeholder.",
+ "regions": [
+  {
+   "id": "colorado",
+   "en": "Colorado",
+   "zh": "科罗拉多"
+  },
+  {
+   "id": "utah",
+   "en": "Utah",
+   "zh": "犹他"
+  },
+  {
+   "id": "california",
+   "en": "California / Tahoe",
+   "zh": "加州 / 太浩湖"
+  },
+  {
+   "id": "pnw",
+   "en": "Pacific NW & Alaska",
+   "zh": "太平洋西北 / 阿拉斯加"
+  },
+  {
+   "id": "rockies",
+   "en": "Rockies / Other",
+   "zh": "落基山区 / 其他"
+  },
+  {
+   "id": "canada",
+   "en": "Canada",
+   "zh": "加拿大"
+  },
+  {
+   "id": "northeast",
+   "en": "Northeast",
+   "zh": "美国东北"
+  }
+ ],
+ "passes": [
+  {
+   "id": "ikon",
+   "name": "Ikon"
+  },
+  {
+   "id": "epic",
+   "name": "Epic"
+  }
+ ],
+ "resorts": [
+  {
+   "id": "abasin",
+   "name": "Arapahoe Basin",
+   "aliases": [
+    "A-Basin",
+    "ABasin",
+    "Arapahoe"
+   ],
+   "city": "Dillon",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Front Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 39.6425,
+   "lon": -105.8719,
+   "baseElevM": 3286,
+   "summitElevM": 3978,
+   "tz": "America/Denver",
+   "url": "https://www.arapahoebasin.com/",
+   "detail": "full",
+   "src": "https://en.wikipedia.org/wiki/Arapahoe_Basin",
+   "summitLat": 39.6249,
+   "summitLon": -105.8624,
+   "photo": {
+    "src": "img/abasin.jpg",
+    "credit": "Runningonbrains",
+    "license": "CC BY 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Arapahoe_Basin_Montezuma_Bowl.jpg"
+   }
+  },
+  {
+   "id": "copper",
+   "name": "Copper Mountain",
+   "aliases": [
+    "Copper Mountain Resort"
+   ],
+   "city": "Frisco",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Tenmile Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 39.5022,
+   "lon": -106.1497,
+   "baseElevM": 2960,
+   "summitElevM": 3792,
+   "tz": "America/Denver",
+   "url": "https://www.coppercolorado.com/",
+   "detail": "full",
+   "src": "https://en.wikipedia.org/wiki/Copper_Mountain_(Colorado)",
+   "summitLat": 39.4552,
+   "summitLon": -106.1902,
+   "photo": {
+    "src": "img/copper.jpg",
+    "credit": "Jarrod Doll from United States of America",
+    "license": "CC BY 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Copper_Mountain,_Spaulding_Bowl_and_trails.jpg"
+   }
+  },
+  {
+   "id": "steamboat",
+   "name": "Steamboat",
+   "aliases": [
+    "Steamboat Springs"
+   ],
+   "city": "Steamboat Springs",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Park Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 40.4572,
+   "lon": -106.8045,
+   "baseElevM": 2103,
+   "summitElevM": 3221,
+   "tz": "America/Denver",
+   "url": "https://www.steamboat.com/",
+   "detail": "full",
+   "src": "https://en.wikipedia.org/wiki/Steamboat_Ski_Resort",
+   "summitLat": 40.456,
+   "summitLon": -106.7402,
+   "photo": {
+    "src": "img/steamboat.jpg",
+    "credit": "Murray Foubister",
+    "license": "CC BY-SA 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Steamboat_Springs_Ski_Resort_(8644072249).jpg"
+   }
+  },
+  {
+   "id": "winter-park",
+   "name": "Winter Park",
+   "aliases": [
+    "Mary Jane"
+   ],
+   "city": "Winter Park",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Front Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 39.88694,
+   "lon": -105.7625,
+   "baseElevM": 2743,
+   "summitElevM": 3676,
+   "tz": "America/Denver",
+   "url": "https://www.winterparkresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Winter_Park_Resort",
+   "photo": {
+    "src": "img/cat/winter-park.jpg",
+    "credit": "Jameschipmunk at English Wikipedia",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Winter_Park_Base_Area.JPG"
+   }
+  },
+  {
+   "id": "eldora",
+   "name": "Eldora",
+   "aliases": [],
+   "city": "Nederland",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Front Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 39.9375,
+   "lon": -105.58361,
+   "baseElevM": 2853,
+   "summitElevM": 3231,
+   "tz": "America/Denver",
+   "url": "https://www.eldora.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Eldora_Mountain_Resort",
+   "photo": {
+    "src": "img/cat/eldora.jpg",
+    "credit": "KamenG",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Eldora_Mountain_Ski_Resort_at_Top_of_International.jpg"
+   }
+  },
+  {
+   "id": "aspen-snowmass",
+   "name": "Aspen Snowmass",
+   "aliases": [
+    "Aspen",
+    "Snowmass",
+    "Aspen Mountain",
+    "Aspen Highlands",
+    "Buttermilk"
+   ],
+   "city": "Snowmass Village",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Elk Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 39.1956,
+   "lon": -106.9513,
+   "baseElevM": 2470,
+   "summitElevM": 3813,
+   "tz": "America/Denver",
+   "url": "https://www.aspensnowmass.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Snowmass_(ski_area)",
+   "photo": {
+    "src": "img/cat/aspen-snowmass.jpg",
+    "credit": "Werdna",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Snowmass_Village.JPG"
+   }
+  },
+  {
+   "id": "vail",
+   "name": "Vail",
+   "aliases": [],
+   "city": "Vail",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Gore Range",
+   "passes": [
+    "epic"
+   ],
+   "lat": 39.639,
+   "lon": -106.374,
+   "baseElevM": 2475,
+   "summitElevM": 3527,
+   "tz": "America/Denver",
+   "url": "https://www.vail.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Vail_Ski_Resort",
+   "photo": {
+    "src": "img/cat/vail.jpg",
+    "credit": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Vail_front_side.jpg"
+   }
+  },
+  {
+   "id": "beaver-creek",
+   "name": "Beaver Creek",
+   "aliases": [],
+   "city": "Avon",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Gore Range",
+   "passes": [
+    "epic"
+   ],
+   "lat": 39.63139,
+   "lon": -106.52167,
+   "baseElevM": 2469,
+   "summitElevM": 3487,
+   "tz": "America/Denver",
+   "url": "https://www.beavercreek.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Beaver_Creek_Resort"
+  },
+  {
+   "id": "breckenridge",
+   "name": "Breckenridge",
+   "aliases": [],
+   "city": "Breckenridge",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Tenmile Range",
+   "passes": [
+    "epic"
+   ],
+   "lat": 39.48,
+   "lon": -106.067,
+   "baseElevM": 2926,
+   "summitElevM": 3962,
+   "tz": "America/Denver",
+   "url": "https://www.breckenridge.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Breckenridge_Ski_Resort",
+   "photo": {
+    "src": "img/cat/breckenridge.jpg",
+    "credit": "Ahodges7",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Breckenridge_Ski_Area_from_Dercum_Mountain,_Keystone_Ski_Area.jpg"
+   }
+  },
+  {
+   "id": "keystone",
+   "name": "Keystone",
+   "aliases": [],
+   "city": "Keystone",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Front Range",
+   "passes": [
+    "epic"
+   ],
+   "lat": 39.605,
+   "lon": -105.95417,
+   "baseElevM": 2829,
+   "summitElevM": 3782,
+   "tz": "America/Denver",
+   "url": "https://www.keystoneresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Keystone_Resort",
+   "photo": {
+    "src": "img/cat/keystone.jpg",
+    "credit": "Ahodges7",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:River_Run_Village_Fireworks,_Keystone,_CO.jpg"
+   }
+  },
+  {
+   "id": "crested-butte",
+   "name": "Crested Butte",
+   "aliases": [
+    "CB"
+   ],
+   "city": "Mt. Crested Butte",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Elk Mountains",
+   "passes": [
+    "epic"
+   ],
+   "lat": 38.89972,
+   "lon": -106.965,
+   "baseElevM": 2858,
+   "summitElevM": 3707,
+   "tz": "America/Denver",
+   "url": "https://www.skicb.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Crested_Butte_Mountain_Resort",
+   "photo": {
+    "src": "img/cat/crested-butte.jpg",
+    "credit": "Larry D. Moore",
+    "license": "CC BY 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Mount_crested_butte_1988.jpg"
+   }
+  },
+  {
+   "id": "telluride",
+   "name": "Telluride",
+   "aliases": [],
+   "city": "Telluride",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "San Juan Mountains",
+   "passes": [
+    "epic"
+   ],
+   "lat": 37.93639,
+   "lon": -107.82028,
+   "baseElevM": 2659,
+   "summitElevM": 4008,
+   "tz": "America/Denver",
+   "url": "https://www.tellurideskiresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Telluride_Ski_Resort",
+   "photo": {
+    "src": "img/cat/telluride.jpg",
+    "credit": "Murray Foubister",
+    "license": "CC BY-SA 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Telluride_Ski_Resort,_Col._(8645173834).jpg"
+   }
+  },
+  {
+   "id": "loveland",
+   "name": "Loveland",
+   "aliases": [],
+   "city": "Georgetown",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Front Range",
+   "passes": [],
+   "lat": 39.68,
+   "lon": -105.897,
+   "baseElevM": 3292,
+   "summitElevM": 3965,
+   "tz": "America/Denver",
+   "url": "https://www.skiloveland.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Loveland_Ski_Area",
+   "photo": {
+    "src": "img/cat/loveland.jpg",
+    "credit": "Mitch Bennett from Columbia, MO, USA",
+    "license": "CC BY 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Loveland_Ski_Area,_north_view.jpg"
+   }
+  },
+  {
+   "id": "monarch",
+   "name": "Monarch Mountain",
+   "aliases": [],
+   "city": "Salida",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "Sawatch Range",
+   "passes": [],
+   "lat": 38.5125,
+   "lon": -106.3325,
+   "baseElevM": 3289,
+   "summitElevM": 3645,
+   "tz": "America/Denver",
+   "url": "https://www.skimonarch.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Monarch_Mountain_(ski_area)",
+   "photo": {
+    "src": "img/cat/monarch.jpg",
+    "credit": "flickr user \"abkfenris\"",
+    "license": "CC BY 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Snow_rafting_Monarch_Mountain_surroundings.jpg"
+   }
+  },
+  {
+   "id": "wolf-creek",
+   "name": "Wolf Creek",
+   "aliases": [],
+   "city": "Pagosa Springs",
+   "state": "CO",
+   "country": "US",
+   "region": "colorado",
+   "range": "San Juan Mountains",
+   "passes": [],
+   "lat": 37.47222,
+   "lon": -106.79333,
+   "baseElevM": 3139,
+   "summitElevM": 3628,
+   "tz": "America/Denver",
+   "url": "https://www.wolfcreekski.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Wolf_Creek_ski_area",
+   "photo": {
+    "src": "img/cat/wolf-creek.jpg",
+    "credit": "Jeffrey Beall",
+    "license": "CC BY 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Wolf_Creek_Ski_Area.JPG"
+   }
+  },
+  {
+   "id": "alta",
+   "name": "Alta",
+   "aliases": [],
+   "city": "Alta",
+   "state": "UT",
+   "country": "US",
+   "region": "utah",
+   "range": "Wasatch Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 40.58083,
+   "lon": -111.63722,
+   "baseElevM": 2600,
+   "summitElevM": 3374,
+   "tz": "America/Denver",
+   "url": "https://www.alta.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Alta_Ski_Area"
+  },
+  {
+   "id": "snowbird",
+   "name": "Snowbird",
+   "aliases": [],
+   "city": "Snowbird",
+   "state": "UT",
+   "country": "US",
+   "region": "utah",
+   "range": "Wasatch Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 40.58111,
+   "lon": -111.65639,
+   "baseElevM": 2365,
+   "summitElevM": 3353,
+   "tz": "America/Denver",
+   "url": "https://www.snowbird.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Snowbird,_Utah"
+  },
+  {
+   "id": "brighton",
+   "name": "Brighton",
+   "aliases": [],
+   "city": "Brighton",
+   "state": "UT",
+   "country": "US",
+   "region": "utah",
+   "range": "Wasatch Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 40.6,
+   "lon": -111.58333,
+   "baseElevM": 2669,
+   "summitElevM": 3277,
+   "tz": "America/Denver",
+   "url": "https://www.brightonresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Brighton_Ski_Resort",
+   "photo": {
+    "src": "img/cat/brighton.jpg",
+    "credit": "PeteysHead",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Big_Cottonwood_Canyon,_Utah.JPG"
+   }
+  },
+  {
+   "id": "solitude",
+   "name": "Solitude",
+   "aliases": [],
+   "city": "Solitude",
+   "state": "UT",
+   "country": "US",
+   "region": "utah",
+   "range": "Wasatch Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 40.61514,
+   "lon": -111.58892,
+   "baseElevM": 2435,
+   "summitElevM": 3197,
+   "tz": "America/Denver",
+   "url": "https://www.solitudemountain.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Solitude_Mountain_Resort"
+  },
+  {
+   "id": "deer-valley",
+   "name": "Deer Valley",
+   "aliases": [],
+   "city": "Park City",
+   "state": "UT",
+   "country": "US",
+   "region": "utah",
+   "range": "Wasatch Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 40.62278,
+   "lon": -111.48944,
+   "baseElevM": 1990,
+   "summitElevM": 2917,
+   "tz": "America/Denver",
+   "url": "https://www.deervalley.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Deer_Valley",
+   "photo": {
+    "src": "img/cat/deer-valley.jpg",
+    "credit": "Skyguy414",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Deervalleyutah_0209.jpg"
+   }
+  },
+  {
+   "id": "snowbasin",
+   "name": "Snowbasin",
+   "aliases": [],
+   "city": "Huntsville",
+   "state": "UT",
+   "country": "US",
+   "region": "utah",
+   "range": "Wasatch Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 41.216,
+   "lon": -111.857,
+   "baseElevM": 1948,
+   "summitElevM": 2850,
+   "tz": "America/Denver",
+   "url": "https://www.snowbasin.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Snowbasin",
+   "photo": {
+    "src": "img/cat/snowbasin.jpg",
+    "credit": "Gyejournal",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Basin_1x_blue_sky.jpg"
+   }
+  },
+  {
+   "id": "park-city",
+   "name": "Park City Mountain",
+   "aliases": [
+    "PCMR",
+    "Canyons"
+   ],
+   "city": "Park City",
+   "state": "UT",
+   "country": "US",
+   "region": "utah",
+   "range": "Wasatch Range",
+   "passes": [
+    "epic"
+   ],
+   "lat": 40.65083,
+   "lon": -111.5075,
+   "baseElevM": 2103,
+   "summitElevM": 3056,
+   "tz": "America/Denver",
+   "url": "https://www.parkcitymountain.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Park_City_Mountain_Resort",
+   "photo": {
+    "src": "img/cat/park-city.jpg",
+    "credit": "Rudi Riet from Washington, DC, United States",
+    "license": "CC BY-SA 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Eagle_Race_Arena_at_Park_City_Resort.jpg"
+   }
+  },
+  {
+   "id": "powder-mountain",
+   "name": "Powder Mountain",
+   "aliases": [
+    "Pow Mow"
+   ],
+   "city": "Eden",
+   "state": "UT",
+   "country": "US",
+   "region": "utah",
+   "range": "Wasatch Range",
+   "passes": [],
+   "lat": 41.38,
+   "lon": -111.78028,
+   "baseElevM": 2103,
+   "summitElevM": 2713,
+   "tz": "America/Denver",
+   "url": "https://www.powmow.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Powder_Mountain"
+  },
+  {
+   "id": "sundance",
+   "name": "Sundance",
+   "aliases": [],
+   "city": "Sundance",
+   "state": "UT",
+   "country": "US",
+   "region": "utah",
+   "range": "Wasatch Range",
+   "passes": [],
+   "lat": 40.392,
+   "lon": -111.579,
+   "baseElevM": 1859,
+   "summitElevM": 2515,
+   "tz": "America/Denver",
+   "url": "https://www.sundanceresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Sundance_Resort",
+   "photo": {
+    "src": "img/cat/sundance.jpg",
+    "credit": "Wikimedia Commons contributor",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:October_12_2005_Alpine_Loop_Utah_United_States.JPG"
+   }
+  },
+  {
+   "id": "palisades",
+   "name": "Palisades Tahoe",
+   "aliases": [
+    "Squaw Valley",
+    "Alpine Meadows",
+    "Lake Tahoe"
+   ],
+   "city": "Olympic Valley",
+   "state": "CA",
+   "country": "US",
+   "region": "california",
+   "range": "Sierra Nevada",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 39.196,
+   "lon": -120.235,
+   "baseElevM": 1890,
+   "summitElevM": 2758,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.palisadestahoe.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Palisades_Tahoe",
+   "photo": {
+    "src": "img/cat/palisades.jpg",
+    "credit": "Jonnyboyca at English Wikipedia",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:TheVillageatSquawValley-exterior.jpg"
+   }
+  },
+  {
+   "id": "mammoth",
+   "name": "Mammoth Mountain",
+   "aliases": [
+    "Mammoth Lakes"
+   ],
+   "city": "Mammoth Lakes",
+   "state": "CA",
+   "country": "US",
+   "region": "california",
+   "range": "Sierra Nevada",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 37.63056,
+   "lon": -119.0325,
+   "baseElevM": 2424,
+   "summitElevM": 3369,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.mammothmountain.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Mammoth_Mountain_Resort"
+  },
+  {
+   "id": "june",
+   "name": "June Mountain",
+   "aliases": [],
+   "city": "June Lake",
+   "state": "CA",
+   "country": "US",
+   "region": "california",
+   "range": "Sierra Nevada",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 37.7683,
+   "lon": -119.0906,
+   "baseElevM": 2300,
+   "summitElevM": 3075,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.junemountain.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/June_Mountain_ski_area",
+   "photo": {
+    "src": "img/cat/june.jpg",
+    "credit": "Eric T Gunther",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:June_Mountain_skiing.jpg"
+   }
+  },
+  {
+   "id": "big-bear",
+   "name": "Big Bear Mountain Resort",
+   "aliases": [
+    "Bear Mountain",
+    "Snow Summit",
+    "Big Bear"
+   ],
+   "city": "Big Bear Lake",
+   "state": "CA",
+   "country": "US",
+   "region": "california",
+   "range": "San Bernardino Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 34.2267,
+   "lon": -116.8602,
+   "baseElevM": 2176,
+   "summitElevM": 2684,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.bigbearmountainresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Bear_Mountain_(ski_area)"
+  },
+  {
+   "id": "snow-valley",
+   "name": "Snow Valley",
+   "aliases": [],
+   "city": "Running Springs",
+   "state": "CA",
+   "country": "US",
+   "region": "california",
+   "range": "San Bernardino Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 34.22337,
+   "lon": -117.03742,
+   "baseElevM": 2073,
+   "summitElevM": 2390,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.bigbearmountainresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Snow_Valley_Mountain_Resort",
+   "photo": {
+    "src": "img/cat/snow-valley.jpg",
+    "credit": "Me",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Snow_Valley_CA_2010_1.jpg"
+   }
+  },
+  {
+   "id": "sierra-at-tahoe",
+   "name": "Sierra-at-Tahoe",
+   "aliases": [
+    "Lake Tahoe"
+   ],
+   "city": "Twin Bridges",
+   "state": "CA",
+   "country": "US",
+   "region": "california",
+   "range": "Sierra Nevada",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 38.8002,
+   "lon": -120.0806,
+   "baseElevM": 2024,
+   "summitElevM": 2698,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.sierraattahoe.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Sierra-at-Tahoe",
+   "photo": {
+    "src": "img/cat/sierra-at-tahoe.jpg",
+    "credit": "LittleT889",
+    "license": "CC BY 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Sierra-at-Tahoe_2.jpg"
+   }
+  },
+  {
+   "id": "heavenly",
+   "name": "Heavenly",
+   "aliases": [
+    "Lake Tahoe",
+    "South Lake Tahoe"
+   ],
+   "city": "South Lake Tahoe",
+   "state": "CA/NV",
+   "country": "US",
+   "region": "california",
+   "range": "Sierra Nevada",
+   "passes": [
+    "epic"
+   ],
+   "lat": 38.9353,
+   "lon": -119.94,
+   "baseElevM": 1907,
+   "summitElevM": 3068,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.skiheavenly.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Heavenly_Mountain_Resort"
+  },
+  {
+   "id": "northstar",
+   "name": "Northstar",
+   "aliases": [
+    "Lake Tahoe"
+   ],
+   "city": "Truckee",
+   "state": "CA",
+   "country": "US",
+   "region": "california",
+   "range": "Sierra Nevada",
+   "passes": [
+    "epic"
+   ],
+   "lat": 39.264,
+   "lon": -120.125,
+   "baseElevM": 1929,
+   "summitElevM": 2624,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.northstarcalifornia.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Northstar_California",
+   "photo": {
+    "src": "img/cat/northstar.jpg",
+    "credit": "Leijurv",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Northstar_California_East_Ridge_2019.jpg"
+   }
+  },
+  {
+   "id": "kirkwood",
+   "name": "Kirkwood",
+   "aliases": [
+    "Lake Tahoe"
+   ],
+   "city": "Kirkwood",
+   "state": "CA",
+   "country": "US",
+   "region": "california",
+   "range": "Sierra Nevada",
+   "passes": [
+    "epic"
+   ],
+   "lat": 38.684,
+   "lon": -120.068,
+   "baseElevM": 2377,
+   "summitElevM": 2987,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.kirkwood.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Kirkwood_Mountain_Resort"
+  },
+  {
+   "id": "sugar-bowl",
+   "name": "Sugar Bowl",
+   "aliases": [],
+   "city": "Norden",
+   "state": "CA",
+   "country": "US",
+   "region": "california",
+   "range": "Sierra Nevada",
+   "passes": [],
+   "lat": 39.30444,
+   "lon": -120.33583,
+   "baseElevM": 2098,
+   "summitElevM": 2555,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.sugarbowl.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Sugar_Bowl_Ski_Resort",
+   "photo": {
+    "src": "img/cat/sugar-bowl.jpg",
+    "credit": "Sugar Bowl Resort",
+    "license": "CC BY 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Sugar_Bowl_Ski_Resort_Modern_Lodge.jpg"
+   }
+  },
+  {
+   "id": "mt-rose",
+   "name": "Mt. Rose",
+   "aliases": [
+    "Mount Rose",
+    "Reno"
+   ],
+   "city": "Reno",
+   "state": "NV",
+   "country": "US",
+   "region": "california",
+   "range": "Carson Range",
+   "passes": [],
+   "lat": 39.32917,
+   "lon": -119.88583,
+   "baseElevM": 2518,
+   "summitElevM": 2957,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.skirose.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Mount_Rose_Ski_Tahoe",
+   "photo": {
+    "src": "img/cat/mt-rose.jpg",
+    "credit": "Patrick Nouhailler's…",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Mount_Rose_Ski_Tahoe_-_panoramio_(1).jpg"
+   }
+  },
+  {
+   "id": "crystal",
+   "name": "Crystal Mountain",
+   "aliases": [],
+   "city": "Enumclaw",
+   "state": "WA",
+   "country": "US",
+   "region": "pnw",
+   "range": "Cascade Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 46.93,
+   "lon": -121.48,
+   "baseElevM": 1192,
+   "summitElevM": 2137,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.crystalmountainresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Crystal_Mountain_(Washington)"
+  },
+  {
+   "id": "snoqualmie",
+   "name": "The Summit at Snoqualmie",
+   "aliases": [
+    "Snoqualmie Pass",
+    "The Summit"
+   ],
+   "city": "Snoqualmie Pass",
+   "state": "WA",
+   "country": "US",
+   "region": "pnw",
+   "range": "Cascade Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 47.424,
+   "lon": -121.416,
+   "baseElevM": 796,
+   "summitElevM": 1652,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.summitatsnoqualmie.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/The_Summit_at_Snoqualmie",
+   "photo": {
+    "src": "img/cat/snoqualmie.jpg",
+    "credit": "DarkRavag3r",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Snoqualmie_summit_lodge.jpg"
+   }
+  },
+  {
+   "id": "mt-bachelor",
+   "name": "Mt. Bachelor",
+   "aliases": [
+    "Bachelor",
+    "Mount Bachelor"
+   ],
+   "city": "Bend",
+   "state": "OR",
+   "country": "US",
+   "region": "pnw",
+   "range": "Cascade Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 44.003,
+   "lon": -121.677,
+   "baseElevM": 1737,
+   "summitElevM": 2763,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.mtbachelor.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Mount_Bachelor_ski_area",
+   "photo": {
+    "src": "img/cat/mt-bachelor.jpg",
+    "credit": "K50 Dude",
+    "license": "CC BY 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Pine_Marten_Express.JPG"
+   }
+  },
+  {
+   "id": "alyeska",
+   "name": "Alyeska",
+   "aliases": [],
+   "city": "Girdwood",
+   "state": "AK",
+   "country": "US",
+   "region": "pnw",
+   "range": "Chugach Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 60.9705,
+   "lon": -149.0982,
+   "baseElevM": 76,
+   "summitElevM": 838,
+   "tz": "America/Anchorage",
+   "url": "https://www.alyeskaresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Alyeska_Resort"
+  },
+  {
+   "id": "stevens-pass",
+   "name": "Stevens Pass",
+   "aliases": [],
+   "city": "Skykomish",
+   "state": "WA",
+   "country": "US",
+   "region": "pnw",
+   "range": "Cascade Range",
+   "passes": [
+    "epic"
+   ],
+   "lat": 47.74472,
+   "lon": -121.08889,
+   "baseElevM": 1238,
+   "summitElevM": 1782,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.stevenspass.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Stevens_Pass_Ski_Area",
+   "photo": {
+    "src": "img/cat/stevens-pass.jpg",
+    "credit": "Buidhe",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:View_of_Stevens_Pass_resort_from_the_top_of_Kehr%27s_Chair_(30_January_2025).jpg"
+   }
+  },
+  {
+   "id": "mt-baker",
+   "name": "Mt. Baker",
+   "aliases": [
+    "Mount Baker"
+   ],
+   "city": "Glacier",
+   "state": "WA",
+   "country": "US",
+   "region": "pnw",
+   "range": "Cascade Range",
+   "passes": [],
+   "lat": 48.862,
+   "lon": -121.654,
+   "baseElevM": 1067,
+   "summitElevM": 1551,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.mtbaker.us/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Mt._Baker_Ski_Area",
+   "photo": {
+    "src": "img/cat/mt-baker.jpg",
+    "credit": "Maia! at English Wikipedia",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:MtBakerSkiAreaLodge.JPG"
+   }
+  },
+  {
+   "id": "mt-hood-meadows",
+   "name": "Mt. Hood Meadows",
+   "aliases": [
+    "Mount Hood",
+    "Mt Hood",
+    "Hood Meadows"
+   ],
+   "city": "Mt. Hood",
+   "state": "OR",
+   "country": "US",
+   "region": "pnw",
+   "range": "Cascade Range",
+   "passes": [],
+   "lat": 45.32889,
+   "lon": -121.6625,
+   "baseElevM": 1379,
+   "summitElevM": 2225,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.skihood.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Mount_Hood_Meadows"
+  },
+  {
+   "id": "timberline",
+   "name": "Timberline Lodge",
+   "aliases": [
+    "Mount Hood",
+    "Mt Hood"
+   ],
+   "city": "Government Camp",
+   "state": "OR",
+   "country": "US",
+   "region": "pnw",
+   "range": "Cascade Range",
+   "passes": [],
+   "lat": 45.33,
+   "lon": -121.71,
+   "baseElevM": 1219,
+   "summitElevM": 2603,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.timberlinelodge.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Timberline_Lodge_ski_area",
+   "photo": {
+    "src": "img/cat/timberline.jpg",
+    "credit": "Buidhe",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Timberline_Lodge_to_Palmer_ski_tour_(8_May_2025)_(71645).jpg"
+   }
+  },
+  {
+   "id": "jackson-hole",
+   "name": "Jackson Hole",
+   "aliases": [
+    "JHMR",
+    "Jackson",
+    "Teton Village"
+   ],
+   "city": "Teton Village · Jackson",
+   "state": "WY",
+   "country": "US",
+   "region": "rockies",
+   "range": "Teton Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 43.59,
+   "lon": -110.89,
+   "baseElevM": 1924,
+   "summitElevM": 3185,
+   "tz": "America/Denver",
+   "url": "https://www.jacksonhole.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Jackson_Hole_Mountain_Resort",
+   "photo": {
+    "src": "img/cat/jackson-hole.jpg",
+    "credit": "Enricokamasa",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Jackson_hole_new_tram.jpg"
+   }
+  },
+  {
+   "id": "big-sky",
+   "name": "Big Sky",
+   "aliases": [
+    "Lone Peak"
+   ],
+   "city": "Big Sky",
+   "state": "MT",
+   "country": "US",
+   "region": "rockies",
+   "range": "Madison Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 45.275,
+   "lon": -111.4319,
+   "baseElevM": 2073,
+   "summitElevM": 3403,
+   "tz": "America/Denver",
+   "url": "https://www.bigskyresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Big_Sky_Resort",
+   "photo": {
+    "src": "img/cat/big-sky.jpg",
+    "credit": "Jim from Lexington, KY, USA",
+    "license": "CC BY-SA 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Big_Sky_resort.jpg"
+   }
+  },
+  {
+   "id": "sun-valley",
+   "name": "Sun Valley",
+   "aliases": [
+    "Bald Mountain",
+    "Ketchum"
+   ],
+   "city": "Ketchum",
+   "state": "ID",
+   "country": "US",
+   "region": "rockies",
+   "range": "Smoky Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 43.655,
+   "lon": -114.40917,
+   "baseElevM": 1753,
+   "summitElevM": 2789,
+   "tz": "America/Boise",
+   "url": "https://www.sunvalley.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Sun_Valley,_Idaho",
+   "photo": {
+    "src": "img/cat/sun-valley.jpg",
+    "credit": "Greg L. Wright - SnapJag",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Baldmountainid.jpg"
+   }
+  },
+  {
+   "id": "schweitzer",
+   "name": "Schweitzer",
+   "aliases": [],
+   "city": "Sandpoint",
+   "state": "ID",
+   "country": "US",
+   "region": "rockies",
+   "range": "Selkirk Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 48.367,
+   "lon": -116.623,
+   "baseElevM": 1207,
+   "summitElevM": 1951,
+   "tz": "America/Los_Angeles",
+   "url": "https://www.schweitzer.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Schweitzer_Mountain"
+  },
+  {
+   "id": "taos",
+   "name": "Taos Ski Valley",
+   "aliases": [
+    "Taos"
+   ],
+   "city": "Taos",
+   "state": "NM",
+   "country": "US",
+   "region": "rockies",
+   "range": "Sangre de Cristo Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 36.59,
+   "lon": -105.43694,
+   "baseElevM": 2804,
+   "summitElevM": 3804,
+   "tz": "America/Denver",
+   "url": "https://www.skitaos.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Taos_Ski_Valley,_New_Mexico"
+  },
+  {
+   "id": "grand-targhee",
+   "name": "Grand Targhee",
+   "aliases": [
+    "Targhee"
+   ],
+   "city": "Alta · Driggs",
+   "state": "WY",
+   "country": "US",
+   "region": "rockies",
+   "range": "Teton Range",
+   "passes": [],
+   "lat": 43.789,
+   "lon": -110.957,
+   "baseElevM": 2258,
+   "summitElevM": 3006,
+   "tz": "America/Denver",
+   "url": "https://www.grandtarghee.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Grand_Targhee_Resort"
+  },
+  {
+   "id": "whitefish",
+   "name": "Whitefish Mountain",
+   "aliases": [
+    "Big Mountain"
+   ],
+   "city": "Whitefish",
+   "state": "MT",
+   "country": "US",
+   "region": "rockies",
+   "range": "Whitefish Range",
+   "passes": [],
+   "lat": 48.5,
+   "lon": -114.34,
+   "baseElevM": 1361,
+   "summitElevM": 2078,
+   "tz": "America/Denver",
+   "url": "https://skiwhitefish.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Whitefish_Mountain_Resort",
+   "photo": {
+    "src": "img/cat/whitefish.jpg",
+    "credit": "Donnie Clapp for Whitefish Mountain Resort",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:WhitefishMountainResortAerialView.jpg"
+   }
+  },
+  {
+   "id": "bridger-bowl",
+   "name": "Bridger Bowl",
+   "aliases": [],
+   "city": "Bozeman",
+   "state": "MT",
+   "country": "US",
+   "region": "rockies",
+   "range": "Bridger Range",
+   "passes": [],
+   "lat": 45.818,
+   "lon": -110.897,
+   "baseElevM": 1859,
+   "summitElevM": 2652,
+   "tz": "America/Denver",
+   "url": "https://www.bridgerbowl.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Bridger_Bowl_Ski_Area",
+   "photo": {
+    "src": "img/cat/bridger-bowl.jpg",
+    "credit": "Richard Barley",
+    "license": "CC BY 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Bridger_Bowl.jpg"
+   }
+  },
+  {
+   "id": "banff-sunshine",
+   "name": "Banff Sunshine",
+   "aliases": [
+    "Sunshine Village",
+    "Banff",
+    "SkiBig3"
+   ],
+   "city": "Banff",
+   "state": "AB",
+   "country": "CA",
+   "region": "canada",
+   "range": "Canadian Rockies",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 51.07861,
+   "lon": -115.78222,
+   "baseElevM": 1660,
+   "summitElevM": 2730,
+   "tz": "America/Edmonton",
+   "url": "https://www.skibanff.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Banff_Sunshine",
+   "photo": {
+    "src": "img/cat/banff-sunshine.jpg",
+    "credit": "5of7",
+    "license": "CC BY-SA 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Sunshine_Village_06.jpg"
+   }
+  },
+  {
+   "id": "lake-louise",
+   "name": "Lake Louise",
+   "aliases": [
+    "Banff",
+    "SkiBig3"
+   ],
+   "city": "Lake Louise",
+   "state": "AB",
+   "country": "CA",
+   "region": "canada",
+   "range": "Canadian Rockies",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 51.44194,
+   "lon": -116.16056,
+   "baseElevM": 1646,
+   "summitElevM": 2637,
+   "tz": "America/Edmonton",
+   "url": "https://www.skilouise.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Lake_Louise_Ski_Resort"
+  },
+  {
+   "id": "norquay",
+   "name": "Mt. Norquay",
+   "aliases": [
+    "Mount Norquay",
+    "Banff",
+    "SkiBig3"
+   ],
+   "city": "Banff",
+   "state": "AB",
+   "country": "CA",
+   "region": "canada",
+   "range": "Canadian Rockies",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 51.204,
+   "lon": -115.599,
+   "baseElevM": 1630,
+   "summitElevM": 2133,
+   "tz": "America/Edmonton",
+   "url": "https://www.banffnorquay.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Mount_Norquay",
+   "photo": {
+    "src": "img/cat/norquay.jpg",
+    "credit": "Qyd (talk · contribs)",
+    "license": "CC BY-SA 2.5",
+    "page": "https://commons.wikimedia.org/wiki/File:Norquay2.JPG"
+   }
+  },
+  {
+   "id": "revelstoke",
+   "name": "Revelstoke",
+   "aliases": [],
+   "city": "Revelstoke",
+   "state": "BC",
+   "country": "CA",
+   "region": "canada",
+   "range": "Selkirk Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 50.95417,
+   "lon": -118.15417,
+   "baseElevM": 512,
+   "summitElevM": 2225,
+   "tz": "America/Vancouver",
+   "url": "https://www.revelstokemountainresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Revelstoke_Mountain_Resort",
+   "photo": {
+    "src": "img/cat/revelstoke.jpg",
+    "credit": "Murray Foubister",
+    "license": "CC BY-SA 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:A_day%27s_skiing_at_spedtacular_Mt_Revelstoke_-_Noth_Americas_biggest_vertical_drop_at_1713m_(5620_ft)_-_the_mid_mountain_day_lodge_-_(28620313540).jpg"
+   }
+  },
+  {
+   "id": "red-mountain",
+   "name": "RED Mountain",
+   "aliases": [
+    "Rossland"
+   ],
+   "city": "Rossland",
+   "state": "BC",
+   "country": "CA",
+   "region": "canada",
+   "range": "Monashee Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 49.10278,
+   "lon": -117.82028,
+   "baseElevM": 1185,
+   "summitElevM": 2072,
+   "tz": "America/Vancouver",
+   "url": "https://www.redresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Red_Mountain_Resort"
+  },
+  {
+   "id": "panorama",
+   "name": "Panorama",
+   "aliases": [],
+   "city": "Invermere",
+   "state": "BC",
+   "country": "CA",
+   "region": "canada",
+   "range": "Purcell Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 50.46028,
+   "lon": -116.23833,
+   "baseElevM": 1150,
+   "summitElevM": 2450,
+   "tz": "America/Edmonton",
+   "url": "https://www.panoramaresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Panorama_Mountain_Resort"
+  },
+  {
+   "id": "sun-peaks",
+   "name": "Sun Peaks",
+   "aliases": [],
+   "city": "Kamloops",
+   "state": "BC",
+   "country": "CA",
+   "region": "canada",
+   "range": "Shuswap Highland",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 50.89389,
+   "lon": -119.89306,
+   "baseElevM": 1198,
+   "summitElevM": 2152,
+   "tz": "America/Vancouver",
+   "url": "https://www.sunpeaksresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Sun_Peaks_Resort",
+   "photo": {
+    "src": "img/cat/sun-peaks.jpg",
+    "credit": "Sun Peaks",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Feb_7_full_moon.jpg_(1).jpg"
+   }
+  },
+  {
+   "id": "silverstar",
+   "name": "SilverStar",
+   "aliases": [],
+   "city": "Vernon",
+   "state": "BC",
+   "country": "CA",
+   "region": "canada",
+   "range": "Monashee Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 50.35972,
+   "lon": -119.05806,
+   "baseElevM": 1155,
+   "summitElevM": 1915,
+   "tz": "America/Vancouver",
+   "url": "https://www.skisilverstar.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Silver_Star_Mountain_Resort"
+  },
+  {
+   "id": "cypress",
+   "name": "Cypress Mountain",
+   "aliases": [],
+   "city": "West Vancouver",
+   "state": "BC",
+   "country": "CA",
+   "region": "canada",
+   "range": "Coast Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 49.39556,
+   "lon": -123.20333,
+   "baseElevM": 826,
+   "summitElevM": 1440,
+   "tz": "America/Vancouver",
+   "url": "https://www.cypressmountain.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Cypress_Mountain_Ski_Area"
+  },
+  {
+   "id": "tremblant",
+   "name": "Tremblant",
+   "aliases": [
+    "Mont Tremblant",
+    "Mont-Tremblant"
+   ],
+   "city": "Mont-Tremblant",
+   "state": "QC",
+   "country": "CA",
+   "region": "canada",
+   "range": "Laurentian Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 46.21389,
+   "lon": -74.585,
+   "baseElevM": 230,
+   "summitElevM": 875,
+   "tz": "America/Toronto",
+   "url": "https://www.tremblant.ca/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Mont_Tremblant_Resort",
+   "photo": {
+    "src": "img/cat/tremblant.jpg",
+    "credit": "Kuiyan Xu",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Fall_Colors_of_Mont_Tremblant.jpg"
+   }
+  },
+  {
+   "id": "blue-mountain-on",
+   "name": "Blue Mountain",
+   "aliases": [
+    "Collingwood"
+   ],
+   "city": "The Blue Mountains",
+   "state": "ON",
+   "country": "CA",
+   "region": "canada",
+   "range": "Niagara Escarpment",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 44.50278,
+   "lon": -80.31194,
+   "baseElevM": 230,
+   "summitElevM": 450,
+   "tz": "America/Toronto",
+   "url": "https://www.bluemountain.ca/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Blue_Mountain_(ski_resort)",
+   "photo": {
+    "src": "img/cat/blue-mountain-on.jpg",
+    "credit": "Andrew Skujins",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Blue_Mountain_Resort_-_Summer_view.jpg"
+   }
+  },
+  {
+   "id": "whistler",
+   "name": "Whistler Blackcomb",
+   "aliases": [
+    "Whistler",
+    "Blackcomb"
+   ],
+   "city": "Whistler",
+   "state": "BC",
+   "country": "CA",
+   "region": "canada",
+   "range": "Coast Mountains",
+   "passes": [
+    "epic"
+   ],
+   "lat": 50.10833,
+   "lon": -122.9425,
+   "baseElevM": 675,
+   "summitElevM": 2182,
+   "tz": "America/Vancouver",
+   "url": "https://www.whistlerblackcomb.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Whistler_Blackcomb"
+  },
+  {
+   "id": "fernie",
+   "name": "Fernie",
+   "aliases": [],
+   "city": "Fernie",
+   "state": "BC",
+   "country": "CA",
+   "region": "canada",
+   "range": "Canadian Rockies",
+   "passes": [
+    "epic"
+   ],
+   "lat": 49.4625,
+   "lon": -115.08694,
+   "baseElevM": 1068,
+   "summitElevM": 2149,
+   "tz": "America/Edmonton",
+   "url": "https://www.skifernie.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Fernie_Alpine_Resort"
+  },
+  {
+   "id": "kicking-horse",
+   "name": "Kicking Horse",
+   "aliases": [],
+   "city": "Golden",
+   "state": "BC",
+   "country": "CA",
+   "region": "canada",
+   "range": "Purcell Mountains",
+   "passes": [
+    "epic"
+   ],
+   "lat": 51.28917,
+   "lon": -117.05861,
+   "baseElevM": 1190,
+   "summitElevM": 2505,
+   "tz": "America/Edmonton",
+   "url": "https://www.kickinghorseresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Kicking_Horse_Resort"
+  },
+  {
+   "id": "killington",
+   "name": "Killington",
+   "aliases": [
+    "Pico",
+    "Killington-Pico"
+   ],
+   "city": "Killington",
+   "state": "VT",
+   "country": "US",
+   "region": "northeast",
+   "range": "Green Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 43.626,
+   "lon": -72.798,
+   "baseElevM": 355,
+   "summitElevM": 1293,
+   "tz": "America/New_York",
+   "url": "https://www.killington.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Killington_Ski_Resort",
+   "photo": {
+    "src": "img/cat/killington.jpg",
+    "credit": "Doodybutch",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Killington_Resort_2018-03-18.jpg"
+   }
+  },
+  {
+   "id": "sugarbush",
+   "name": "Sugarbush",
+   "aliases": [],
+   "city": "Warren",
+   "state": "VT",
+   "country": "US",
+   "region": "northeast",
+   "range": "Green Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 44.13722,
+   "lon": -72.90667,
+   "baseElevM": 452,
+   "summitElevM": 1244,
+   "tz": "America/New_York",
+   "url": "https://www.sugarbush.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Sugarbush_Resort",
+   "photo": {
+    "src": "img/cat/sugarbush.jpg",
+    "credit": "Mrtrek1701 at English Wikipedia",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Mt_Ellen,_Sugarbush.jpg"
+   }
+  },
+  {
+   "id": "stratton",
+   "name": "Stratton",
+   "aliases": [],
+   "city": "Stratton",
+   "state": "VT",
+   "country": "US",
+   "region": "northeast",
+   "range": "Green Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 43.11417,
+   "lon": -72.90667,
+   "baseElevM": 571,
+   "summitElevM": 1181,
+   "tz": "America/New_York",
+   "url": "https://www.stratton.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Stratton_Mountain_Resort"
+  },
+  {
+   "id": "sunday-river",
+   "name": "Sunday River",
+   "aliases": [],
+   "city": "Newry",
+   "state": "ME",
+   "country": "US",
+   "region": "northeast",
+   "range": "Mahoosuc Range",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 44.4734,
+   "lon": -70.8569,
+   "baseElevM": 244,
+   "summitElevM": 957,
+   "tz": "America/New_York",
+   "url": "https://www.sundayriver.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Sunday_River_(ski_resort)",
+   "photo": {
+    "src": "img/cat/sunday-river.jpg",
+    "credit": "Tv.Rule",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Chondola-scenic-ride-fall.jpg"
+   }
+  },
+  {
+   "id": "sugarloaf",
+   "name": "Sugarloaf",
+   "aliases": [],
+   "city": "Carrabassett Valley",
+   "state": "ME",
+   "country": "US",
+   "region": "northeast",
+   "range": "Longfellow Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 45.03139,
+   "lon": -70.31306,
+   "baseElevM": 432,
+   "summitElevM": 1291,
+   "tz": "America/New_York",
+   "url": "https://www.sugarloaf.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Sugarloaf_(ski_resort)"
+  },
+  {
+   "id": "loon",
+   "name": "Loon Mountain",
+   "aliases": [],
+   "city": "Lincoln",
+   "state": "NH",
+   "country": "US",
+   "region": "northeast",
+   "range": "White Mountains",
+   "passes": [
+    "ikon"
+   ],
+   "lat": 44.03611,
+   "lon": -71.62167,
+   "baseElevM": 262,
+   "summitElevM": 930,
+   "tz": "America/New_York",
+   "url": "https://www.loonmtn.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Loon_Mountain_Ski_Resort"
+  },
+  {
+   "id": "stowe",
+   "name": "Stowe",
+   "aliases": [],
+   "city": "Stowe",
+   "state": "VT",
+   "country": "US",
+   "region": "northeast",
+   "range": "Green Mountains",
+   "passes": [
+    "epic"
+   ],
+   "lat": 44.53194,
+   "lon": -72.7875,
+   "baseElevM": 475,
+   "summitElevM": 1134,
+   "tz": "America/New_York",
+   "url": "https://www.stowe.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Stowe_Mountain_Resort"
+  },
+  {
+   "id": "okemo",
+   "name": "Okemo",
+   "aliases": [],
+   "city": "Ludlow",
+   "state": "VT",
+   "country": "US",
+   "region": "northeast",
+   "range": "Green Mountains",
+   "passes": [
+    "epic"
+   ],
+   "lat": 43.40139,
+   "lon": -72.71667,
+   "baseElevM": 346,
+   "summitElevM": 1019,
+   "tz": "America/New_York",
+   "url": "https://www.okemo.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Okemo_Mountain",
+   "photo": {
+    "src": "img/cat/okemo.jpg",
+    "credit": "Jrclark (talk)",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Okemo-2005-0316a.jpg"
+   }
+  },
+  {
+   "id": "mount-snow",
+   "name": "Mount Snow",
+   "aliases": [],
+   "city": "West Dover",
+   "state": "VT",
+   "country": "US",
+   "region": "northeast",
+   "range": "Green Mountains",
+   "passes": [
+    "epic"
+   ],
+   "lat": 42.959,
+   "lon": -72.922,
+   "baseElevM": 579,
+   "summitElevM": 1097,
+   "tz": "America/New_York",
+   "url": "https://www.mountsnow.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Mount_Snow",
+   "photo": {
+    "src": "img/cat/mount-snow.jpg",
+    "credit": "Mount Snow",
+    "license": "CC BY-SA 4.0",
+    "page": "https://commons.wikimedia.org/wiki/File:MountSnowWinter.jpg"
+   }
+  },
+  {
+   "id": "hunter",
+   "name": "Hunter Mountain",
+   "aliases": [],
+   "city": "Hunter",
+   "state": "NY",
+   "country": "US",
+   "region": "northeast",
+   "range": "Catskill Mountains",
+   "passes": [
+    "epic"
+   ],
+   "lat": 42.20028,
+   "lon": -74.23028,
+   "baseElevM": 488,
+   "summitElevM": 975,
+   "tz": "America/New_York",
+   "url": "https://www.huntermtn.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Hunter_Mountain_(ski_area)",
+   "photo": {
+    "src": "img/cat/hunter.jpg",
+    "credit": "Ryssby at English Wikipedia",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Hunter_Mountain.jpg"
+   }
+  },
+  {
+   "id": "jay-peak",
+   "name": "Jay Peak",
+   "aliases": [],
+   "city": "Jay",
+   "state": "VT",
+   "country": "US",
+   "region": "northeast",
+   "range": "Green Mountains",
+   "passes": [],
+   "lat": 44.92944,
+   "lon": -72.53222,
+   "baseElevM": 553,
+   "summitElevM": 1177,
+   "tz": "America/New_York",
+   "url": "https://www.jaypeakresort.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Jay_Peak_Resort"
+  },
+  {
+   "id": "whiteface",
+   "name": "Whiteface",
+   "aliases": [
+    "Lake Placid"
+   ],
+   "city": "Wilmington · Lake Placid",
+   "state": "NY",
+   "country": "US",
+   "region": "northeast",
+   "range": "Adirondack Mountains",
+   "passes": [],
+   "lat": 44.36583,
+   "lon": -73.90278,
+   "baseElevM": 372,
+   "summitElevM": 1337,
+   "tz": "America/New_York",
+   "url": "https://www.whiteface.com/",
+   "detail": "basic",
+   "src": "https://en.wikipedia.org/wiki/Whiteface_Mountain",
+   "photo": {
+    "src": "img/cat/whiteface.jpg",
+    "credit": "Mwanner",
+    "license": "CC BY-SA 3.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Whiteface_Mountain_from_Lake_Placid_Airport.JPG"
+   }
+  }
+ ]
+}

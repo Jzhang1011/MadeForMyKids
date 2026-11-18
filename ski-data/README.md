@@ -16,3 +16,11 @@ Deploy: `npx wrangler@4 deploy` from this folder.
 | `REFRESH_TOKEN` | Required for `POST /ski/api/run`. |
 | `OPEN_METEO_KEY` | Uses `customer-api.open-meteo.com` with the commercial key (same response). |
 | `COTRIP_API_KEY` | Also fetches CDOT's official data-sharing feeds (`destinations`, `incidents`, `roadConditions`) into `src:cotrip`. Endpoint path/params (`COTRIP_API_BASE`, default `https://data.cotrip.org/api/v1`) must be confirmed against the portal once the key is issued; the UI still reads the COtrip map feed until then. |
+
+## Resort catalog conditions (discovery page)
+
+- `ski/data/catalog.json` lists ~77 North American resorts (id, name, aliases, region, pass, lat/lon, base/summit elevation, official URL, photo credit, `detail: full|basic`). Coordinates/elevations come from each resort's Wikipedia infobox (`src`), pass membership from ikonpass.com / epicpass.com (2026/27). `detail: full` resorts (A-Basin, Copper, Steamboat) use the verified values in `resorts.json`.
+- The cron refreshes one of 4 slices per 15-minute tick (each resort hourly) with a single multi-location Open-Meteo request (summit + mid-mountain points, unixtime), stored in KV `cat:b0..3` (~96 writes/day).
+- `GET /ski/api/catalog-conditions.json`: merged summary (summit/mid temperature, wind, 24 h past and 72 h forecast snowfall, cm/°C/km/h) plus resort-reported status/lifts only for resorts with a report feed (intel). No lift data is invented for other resorts.
+- `GET /ski/api/forecast.json?r=<id>`: 7-day hourly/daily forecast for one catalog resort (basic view), edge-cached 30 minutes.
+- Manual refresh: `POST /ski/api/run?sources=catalog` with the refresh token.

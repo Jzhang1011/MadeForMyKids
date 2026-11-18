@@ -1,8 +1,9 @@
 import { openMeteoUrl, splitOpenMeteo, dailyRows, hourlyRows, weatherEmoji, carsUrl, slimEvents, EVENT_CLASSES,
-  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=f7738e7c93';
-import { STR, PACK_DEFAULT } from './i18n.js?v=f7738e7c93';
-import { selectCameras, routeSegments, inCO } from './route.js?v=f7738e7c93';
-import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=f7738e7c93';
+  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=b7a974d943';
+import { STR, PACK_DEFAULT } from './i18n.js?v=b7a974d943';
+import { selectCameras, routeSegments, inCO } from './route.js?v=b7a974d943';
+import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=b7a974d943';
+import { initDiscover, loadCatalog, loadConditions, renderDiscover, resolveResort, addRecent, showBasic, renderBasic } from './discover.js?v=b7a974d943';
 
 const LS = {
   get: (k, d) => { try { const v = localStorage.getItem('ski.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -224,7 +225,7 @@ function renderChrome() {
   const items = [['verdict', 'nav_verdict'], ['intel', 'nav_intel'], ['outlook', 'nav_outlook'], ['weather', 'nav_weather'], ['roads', 'nav_roads'], ['wear', 'nav_wear'], ['resorts', 'nav_resorts'], ['pack', 'nav_pack']];
   if (state.cfg?.shop?.enabled) items.push(['shop', 'nav_shop']);
   $('#nav').innerHTML = items.map(([id, k]) => `<a href="#${id}">${esc(t(k))}</a>`).join('');
-  const BN = [['hero', '🎯', 'nav_verdict'], ['mountains', '🏔️', 'nav_intel'], ['weather', '❄️', 'nav_weather'], ['roads', '🚗', 'nav_roads'], ['wear', '🧥', 'nav_wear']];
+  const BN = [['hero', '🎯', 'nav_verdict'], ['intel', '🏔️', 'nav_intel'], ['weather', '❄️', 'nav_weather'], ['roads', '🚗', 'nav_roads'], ['wear', '🧥', 'nav_wear']];
   $$('#bnav').innerHTML = BN.map(([id, ic, k]) => `<a href="#${id}"><i aria-hidden="true">${ic}</i><span>${esc(t(k))}</span></a>`).join('');
 }
 
@@ -557,8 +558,9 @@ function updateStartMsg() {
   state.startUI.setMsg(h);
 }
 function setStart(s) {
-  state.start = s; saveStart(s); track('start_select', s.kind === 'preset' ? s.id : 'custom'); // never the address or coordinates state.routes = {}; ctxMemo.clear();
-  state.startUI?.relabel(); renderAll(); routeAll();
+  state.start = s; saveStart(s); track('start_select', s.kind === 'preset' ? s.id : 'custom'); /* never the address or coordinates */ state.routes = {}; ctxMemo.clear();
+  state.startUI?.relabel();
+  if (state.view === 'dash') { renderAll(); routeAll(); } else renderView();
 }
 async function loadCams() {
   try {
@@ -682,21 +684,71 @@ function renderAll() {
 }
 
 function bind() {
-  $('#btn-lang').onclick = () => { state.lang = state.lang === 'zh' ? 'en' : 'zh'; LS.set('lang', state.lang); renderAll(); track('lang_toggle', state.lang); };
-  $('#btn-units').onclick = () => { state.units = U() === 'imperial' ? 'metric' : 'imperial'; LS.set('units', state.units); renderAll(); track('unit_toggle', state.units); };
-  $('#btn-refresh').onclick = () => refresh();
+  $('#btn-lang').onclick = () => { state.lang = state.lang === 'zh' ? 'en' : 'zh'; LS.set('lang', state.lang); renderView(); track('lang_toggle', state.lang); };
+  $('#btn-units').onclick = () => { state.units = U() === 'imperial' ? 'metric' : 'imperial'; LS.set('units', state.units); renderView(); track('unit_toggle', state.units); };
+  $('#btn-refresh').onclick = () => { if (state.view === 'dash') refresh(); else { const b = $('#btn-refresh'); b.classList.add('spin'); loadConditions(true).finally(() => { b.classList.remove('spin'); renderView(); }); } };
   document.addEventListener('click', e => {
     const rc = e.target.closest('[data-resort]');
-    if (rc && !e.target.closest('details')) { state.resort = rc.dataset.resort; LS.set('resort', state.resort); track('resort_select', state.resort); renderAll(); routeAll(); if (rc.classList.contains('orow') || rc.classList.contains('rcard')) $('#verdict').scrollIntoView({ behavior: 'smooth' }); return; }
+    if (rc && !e.target.closest('details')) { state.resort = rc.dataset.resort; LS.set('resort', state.resort); track('resort_select', state.resort); try { addRecent(state.resort); history.replaceState({ resort: state.resort }, '', `?resort=${encodeURIComponent(state.resort)}`); } catch {} renderAll(); routeAll(); if (rc.classList.contains('orow') || rc.classList.contains('rcard')) $('#verdict').scrollIntoView({ behavior: 'smooth' }); return; }
     const b = e.target.closest('.seg-ctl button');
-    if (b) { if (b.parentElement.dataset.ctl === 'point') { state.point = b.dataset.v; LS.set('point', state.point); } renderWeather(); return; }
+    if (b && !b.closest('#basic')) { if (b.parentElement.dataset.ctl === 'point') { state.point = b.dataset.v; LS.set('point', state.point); } renderWeather(); return; }
     const yt = e.target.closest('.yt[data-yt]');
     if (yt && !yt.querySelector('iframe')) yt.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(yt.dataset.yt)}?autoplay=1&mute=1&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="live"></iframe>`;
   });
   document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.yt[data-yt]')) { e.preventDefault(); e.target.click(); } });
   bindPack();
-  setInterval(() => { if (!document.hidden) refresh(); }, 10 * 60 * 1000);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() - state.lastLive > 10 * 60 * 1000) refresh(); });
+  const tick = () => { if (state.view === 'dash') refresh(); else loadConditions(true).then(() => { if (state.view !== 'dash') renderView(); }); };
+  setInterval(() => { if (!document.hidden) tick(); }, 10 * 60 * 1000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() - state.lastLive > 10 * 60 * 1000) { state.lastLive = Date.now(); tick(); } });
+}
+
+/* ---------- Views: discovery (default) | full dashboard (?resort=<full id>) | basic resort view ---------- */
+let dashLoaded = false;
+function setBodyView(v) {
+  state.view = v;
+  document.body.classList.remove('v-disc', 'v-dash', 'v-basic');
+  document.body.classList.add(`v-${v}`);
+  if (v !== 'disc') document.body.classList.remove('dmap-full');
+}
+function renderView() {
+  safe('nav', renderChrome);
+  if (state.view === 'dash') renderAll();
+  else if (state.view === 'basic') safe('basic', renderBasic);
+  else safe('discover', renderDiscover);
+}
+async function showDash(id) {
+  setBodyView('dash');
+  if (state.resort !== id) { state.resort = id; LS.set('resort', id); }
+  safe('nav', renderChrome);
+  if (!dashLoaded) {
+    dashLoaded = true;
+    $$('#verdict').innerHTML = '<div class="skeleton"></div>';
+    await Promise.allSettled([loadServer(), loadCams()]);
+    renderAll();
+    routeAll().catch(e => console.warn('[ski] routing failed:', e));
+    try { await loadLiveFallback(); } catch (e) { console.warn('[ski] live fallback failed:', e); }
+    state.lastLive = Date.now();
+    renderAll();
+  } else { renderAll(); routeAll().catch(() => {}); }
+}
+/** Route from the URL (?resort=<id|name>); push=true adds a history entry. */
+async function route(push) {
+  const q = new URLSearchParams(location.search).get('resort');
+  const full = q && state.cfg.resorts.find(r => r.id === q);
+  const cr = !full && q ? resolveResort(q) : null;
+  window.scrollTo(0, 0);
+  if (full || cr?.detail === 'full') { const id = full ? full.id : cr.id; addRecent(id); await showDash(id); }
+  else if (cr) { addRecent(cr.id); setBodyView('basic'); safe('nav', renderChrome); await showBasic(cr.id); }
+  else { setBodyView('disc'); safe('nav', renderChrome); renderDiscover(); }
+}
+function openResort(id) {
+  track('resort_select', id);
+  try { history.pushState({ resort: id }, '', `?resort=${encodeURIComponent(id)}`); } catch { location.search = `?resort=${encodeURIComponent(id)}`; return; }
+  route();
+}
+function goHome() {
+  try { history.pushState({}, '', location.pathname); } catch {}
+  route();
 }
 
 (async function main() {
@@ -706,14 +758,20 @@ function bind() {
   try { state.start = loadStart(state.cfg); } catch { state.start = { ...state.cfg.trip.origin, kind: 'preset' }; }
   try { if ($('#start')) state.startUI = mountStartUI($('#start'), { cfg: state.cfg, t, L, getStart: () => state.start, onChange: setStart }); }
   catch (e) { console.warn('[ski] start UI failed:', e); }
+  initDiscover({ state, L, getJson, track, loadLeaflet, getStart: () => state.start, setStart, open: openResort, home: goHome, view: () => state.view });
   try { bind(); } catch (e) { console.warn('[ski] bind failed:', e); }
+  document.querySelector('.brand')?.addEventListener('click', e => { e.preventDefault(); goHome(); });
+  $$('#dash-back').addEventListener('click', e => { e.preventDefault(); goHome(); });
+  window.addEventListener('popstate', () => route());
   safe('nav', renderChrome);
-  await Promise.allSettled([loadServer(), loadCams()]);
-  renderAll();
+  const q = new URLSearchParams(location.search).get('resort');
+  const isFull = q && state.cfg.resorts.some(r => r.id === q);
+  // Discovery needs the catalog; the full dashboard can start without it.
+  const catP = loadCatalog().catch(e => { console.warn('[ski] catalog failed:', e); });
+  const condP = loadConditions().catch(() => {});
+  if (!isFull) await Promise.all([catP, condP]);
+  await route();
   window.__skiReady = true;
   track('page_view', state.lang);
-  routeAll().catch(e => console.warn('[ski] routing failed:', e));
-  try { await loadLiveFallback(); } catch (e) { console.warn('[ski] live fallback failed:', e); }
-  state.lastLive = Date.now();
-  renderAll();
+  if (isFull) { await Promise.all([catP, condP]); }
 })();
