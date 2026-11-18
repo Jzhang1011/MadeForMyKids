@@ -329,7 +329,11 @@
    "parking": {
     "lat": 39.6423,
     "lon": -105.8717
-   }
+   },
+   "summitLat": 39.6249,
+   "summitLon": -105.8624,
+   "summitSource": "East Wall summit 13,050 ft (arapahoebasin.com); point on the East Wall ridge, Copernicus DEM 3,953 m",
+   "baseSource": "Base 10,780 ft (Mountain Goat Plaza)"
   },
   {
    "id": "copper",
@@ -345,7 +349,7 @@
    "lat": 39.5022,
    "lon": -106.1497,
    "baseElevM": 2960,
-   "summitElevM": 3753,
+   "summitElevM": 3792,
    "driveMin": 105,
    "routeNote": {
     "en": "DEN → I-70 W through the Eisenhower-Johnson Tunnel → exit 195 (CO 91) Copper Mountain.",
@@ -448,7 +452,11 @@
    "parking": {
     "lat": 39.5013,
     "lon": -106.1516
-   }
+   },
+   "summitLat": 39.4552,
+   "summitLon": -106.1902,
+   "summitSource": "Summit 12,441 ft / 3,792 m (coppercolorado.com winter mountain stats); Tucker Mountain ridge, Copernicus DEM 3,798 m",
+   "baseSource": "Base 9,712 ft (coppercolorado.com)"
   },
   {
    "id": "steamboat",
@@ -569,7 +577,11 @@
    "parking": {
     "lat": 40.4572,
     "lon": -106.8045
-   }
+   },
+   "summitLat": 40.456,
+   "summitLon": -106.7402,
+   "summitSource": "Summit/Mt. Werner 10,568 ft (steamboat.com mountain stats); USGS GNIS 172767 high point, Copernicus DEM 3,213 m",
+   "baseSource": "Base 6,900 ft (steamboat.com)"
   }
  ],
  "cameras": [

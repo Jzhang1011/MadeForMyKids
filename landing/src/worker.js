@@ -76,6 +76,8 @@ export default {
     // madeformykids.com, www.madeformykids.com, workers.dev preview
     if (hasPrefix(path, FAMILY_PREFIXES)) return redirect(FAMILY_ORIGIN, url);
     if (hasPrefix(path, BLOCKED_PREFIXES)) return new Response('Not found', { status: 404 });
+    // Ski dashboard data API (scheduled refresh + KV) lives in the ski-data Worker.
+    if (path.startsWith('/ski/api/') && env.SKI_DATA_SVC) return env.SKI_DATA_SVC.fetch(request);
     return proxyPortal(request, url);
   }
 };

@@ -17,3 +17,8 @@ main = "src/worker.js"
 directory = "./public"
 binding = "ASSETS"
 run_worker_first = true
+
+# /ski/api/* -> ski-data Worker (../ski-data: cron refresh + KV-backed JSON for madeformykids.com/ski).
+[[services]]
+binding = "SKI_DATA_SVC"
+service = "ski-data"

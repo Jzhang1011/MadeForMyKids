@@ -1,0 +1,26 @@
+name = "ski-data"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+# Scheduled refresh for madeformykids.com/ski. Results go to KV; the madeformykids-landing Worker
+# forwards /ski/api/* here through a service binding. MST = UTC-7.
+[triggers]
+# One cron (the free plan allows 5 per account); src/index.js picks the work per tick (UTC):
+#   every tick (:00 :15 :30 :45)  roads (CDOT), NWS alerts, CDOT camera list + image timestamps
+#   first tick of each hour        weather (Open-Meteo)
+#   first tick, 12:00–23:00 UTC    resort intel, hourly 5 AM–4 PM MST
+#   12:30 UTC tick                 full refresh of everything (5:30 AM MST)
+crons = ["*/15 * * * *"]
+
+[[kv_namespaces]]
+binding = "SKI_DATA"
+id = "7e2987feff8c4218aa766211fff5b859"
+
+[observability]
+enabled = true
+
+# Secrets (wrangler secret put <NAME>), all optional except REFRESH_TOKEN:
+#   REFRESH_TOKEN    bearer token for POST /ski/api/run (manual refresh)
+#   OPEN_METEO_KEY   commercial Open-Meteo key -> customer-api.open-meteo.com
+#   COTRIP_API_KEY   CDOT data-sharing key from manage-api.cotrip.org (stored, see README)
