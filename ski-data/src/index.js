@@ -18,7 +18,7 @@ function plan(d) {
   if (q === 0) { out.push('weather'); if (h >= 12 && h <= 23) out.push('intel'); } // hourly; intel 5 AM–4 PM MST
   return out;
 }
-const PLAN = { cron: '*/15 * * * *', every15min: ['roads', 'alerts', 'cameras', 'catalog (1 of 4 slices; each resort hourly)'], hourly: ['weather'], hourly_12_23_utc: ['intel'], daily_12_30_utc: SOURCES };
+const PLAN = { cron: '*/15 * * * *', every15min: ['roads', 'alerts', 'cameras', 'catalog (1 of 4 slices: Open-Meteo + resort lift/terrain/snow feeds; each resort hourly)'], hourly: ['weather'], hourly_12_23_utc: ['intel'], daily_12_30_utc: SOURCES };
 const TTL = 60; // seconds: browsers and the edge re-check every minute; data itself changes every 15–60 min
 
 async function loadCfg() {
@@ -195,7 +195,11 @@ export default {
       if (!env.REFRESH_TOKEN || auth !== `Bearer ${env.REFRESH_TOKEN}`) return json({ error: 'unauthorized' }, 401);
       const want = (url.searchParams.get('sources') || SOURCES.join(',')).split(',');
       const out = {};
-      if (want.includes('catalog')) { out.catalog = []; for (let b = 0; b < BATCHES; b++) out.catalog.push(await refreshCatalogBatch(env, b)); }
+      if (want.includes('catalog')) {
+        const only = url.searchParams.get('batch');
+        const bs = only != null && /^\d$/.test(only) && +only < BATCHES ? [+only] : [...Array(BATCHES).keys()];
+        out.catalog = []; for (const b of bs) out.catalog.push(await refreshCatalogBatch(env, b));
+      }
       const names = want.filter(n => SOURCES.includes(n) || n === 'cotrip');
       if (names.length) Object.assign(out, await refresh(env, names));
       return json(out, 200, { 'Cache-Control': 'no-store' });

@@ -81,6 +81,12 @@
     "credit": "Runningonbrains",
     "license": "CC BY 4.0",
     "page": "https://commons.wikimedia.org/wiki/File:Arapahoe_Basin_Montezuma_Bowl.jpg"
+   },
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     93
+    ]
    }
   },
   {
@@ -112,6 +118,11 @@
     "credit": "Jarrod Doll from United States of America",
     "license": "CC BY 2.0",
     "page": "https://commons.wikimedia.org/wiki/File:Copper_Mountain,_Spaulding_Bowl_and_trails.jpg"
+   },
+   "report": {
+    "p": "powdr",
+    "api": "https://api.coppercolorado.com/api/v1",
+    "origin": "https://www.coppercolorado.com"
    }
   },
   {
@@ -143,6 +154,12 @@
     "credit": "Murray Foubister",
     "license": "CC BY-SA 2.0",
     "page": "https://commons.wikimedia.org/wiki/File:Steamboat_Springs_Ski_Resort_(8644072249).jpg"
+   },
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     6
+    ]
    }
   },
   {
@@ -172,6 +189,12 @@
     "credit": "Jameschipmunk at English Wikipedia",
     "license": "Public domain",
     "page": "https://commons.wikimedia.org/wiki/File:Winter_Park_Base_Area.JPG"
+   },
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     5
+    ]
    }
   },
   {
@@ -199,6 +222,11 @@
     "credit": "KamenG",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Eldora_Mountain_Ski_Resort_at_Top_of_International.jpg"
+   },
+   "report": {
+    "p": "powdr",
+    "api": "https://api.eldora.com/api/v1",
+    "origin": "https://www.eldora.com"
    }
   },
   {
@@ -232,6 +260,16 @@
     "credit": "Werdna",
     "license": "CC BY-SA 4.0",
     "page": "https://commons.wikimedia.org/wiki/File:Snowmass_Village.JPG"
+   },
+   "report": {
+    "p": "aspen",
+    "mountains": [
+     "AspenMountain",
+     "AspenHighlands",
+     "Snowmass",
+     "Buttermilk"
+    ],
+    "baseFrom": "Snowmass"
    }
   },
   {
@@ -259,6 +297,12 @@
     "credit": "Wikimedia Commons contributor",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Vail_front_side.jpg"
+   },
+   "report": {
+    "p": "vail",
+    "host": "www.vail.com",
+    "terrain": "/the-mountain/mountain-conditions/terrain-and-lift-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
    }
   },
   {
@@ -280,7 +324,13 @@
    "tz": "America/Denver",
    "url": "https://www.beavercreek.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Beaver_Creek_Resort"
+   "src": "https://en.wikipedia.org/wiki/Beaver_Creek_Resort",
+   "report": {
+    "p": "vail",
+    "host": "www.beavercreek.com",
+    "terrain": "/the-mountain/mountain-conditions/terrain-and-lift-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
+   }
   },
   {
    "id": "breckenridge",
@@ -307,6 +357,12 @@
     "credit": "Ahodges7",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Breckenridge_Ski_Area_from_Dercum_Mountain,_Keystone_Ski_Area.jpg"
+   },
+   "report": {
+    "p": "vail",
+    "host": "www.breckenridge.com",
+    "terrain": "/the-mountain/mountain-conditions/terrain-and-lift-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
    }
   },
   {
@@ -334,6 +390,12 @@
     "credit": "Ahodges7",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:River_Run_Village_Fireworks,_Keystone,_CO.jpg"
+   },
+   "report": {
+    "p": "vail",
+    "host": "www.keystoneresort.com",
+    "terrain": "/the-mountain/mountain-conditions/terrain-and-lift-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
    }
   },
   {
@@ -363,6 +425,12 @@
     "credit": "Larry D. Moore",
     "license": "CC BY 4.0",
     "page": "https://commons.wikimedia.org/wiki/File:Mount_crested_butte_1988.jpg"
+   },
+   "report": {
+    "p": "vail",
+    "host": "www.skicb.com",
+    "terrain": "/the-mountain/mountain-conditions/lift-and-terrain-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/weather-report.aspx"
    }
   },
   {
@@ -507,7 +575,12 @@
    "tz": "America/Denver",
    "url": "https://www.snowbird.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Snowbird,_Utah"
+   "src": "https://en.wikipedia.org/wiki/Snowbird,_Utah",
+   "report": {
+    "p": "powdr",
+    "api": "https://api.snowbird.com/api/v1",
+    "origin": "https://www.snowbird.com"
+   }
   },
   {
    "id": "brighton",
@@ -534,6 +607,11 @@
     "credit": "PeteysHead",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Big_Cottonwood_Canyon,_Utah.JPG"
+   },
+   "report": {
+    "p": "reportpal",
+    "host": "www.brightonresort.com",
+    "code": "br"
    }
   },
   {
@@ -555,7 +633,13 @@
    "tz": "America/Denver",
    "url": "https://www.solitudemountain.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Solitude_Mountain_Resort"
+   "src": "https://en.wikipedia.org/wiki/Solitude_Mountain_Resort",
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     65
+    ]
+   }
   },
   {
    "id": "deer-valley",
@@ -582,6 +666,12 @@
     "credit": "Skyguy414",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Deervalleyutah_0209.jpg"
+   },
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     49
+    ]
    }
   },
   {
@@ -639,6 +729,12 @@
     "credit": "Rudi Riet from Washington, DC, United States",
     "license": "CC BY-SA 2.0",
     "page": "https://commons.wikimedia.org/wiki/File:Eagle_Race_Arena_at_Park_City_Resort.jpg"
+   },
+   "report": {
+    "p": "vail",
+    "host": "www.parkcitymountain.com",
+    "terrain": "/the-mountain/mountain-conditions/terrain-and-lift-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/weather-report.aspx"
    }
   },
   {
@@ -685,6 +781,10 @@
     "credit": "Wikimedia Commons contributor",
     "license": "Public domain",
     "page": "https://commons.wikimedia.org/wiki/File:October_12_2005_Alpine_Loop_Utah_United_States.JPG"
+   },
+   "report": {
+    "p": "sundance",
+    "url": "https://www.sundanceresort.com/api/mountain-information/"
    }
   },
   {
@@ -716,6 +816,12 @@
     "credit": "Jonnyboyca at English Wikipedia",
     "license": "Public domain",
     "page": "https://commons.wikimedia.org/wiki/File:TheVillageatSquawValley-exterior.jpg"
+   },
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     61
+    ]
    }
   },
   {
@@ -739,7 +845,13 @@
    "tz": "America/Los_Angeles",
    "url": "https://www.mammothmountain.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Mammoth_Mountain_Resort"
+   "src": "https://en.wikipedia.org/wiki/Mammoth_Mountain_Resort",
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     60
+    ]
+   }
   },
   {
    "id": "june",
@@ -766,6 +878,12 @@
     "credit": "Eric T Gunther",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:June_Mountain_skiing.jpg"
+   },
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     59
+    ]
    }
   },
   {
@@ -791,7 +909,14 @@
    "tz": "America/Los_Angeles",
    "url": "https://www.bigbearmountainresort.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Bear_Mountain_(ski_area)"
+   "src": "https://en.wikipedia.org/wiki/Bear_Mountain_(ski_area)",
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     57,
+     58
+    ]
+   }
   },
   {
    "id": "snow-valley",
@@ -871,7 +996,13 @@
    "tz": "America/Los_Angeles",
    "url": "https://www.skiheavenly.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Heavenly_Mountain_Resort"
+   "src": "https://en.wikipedia.org/wiki/Heavenly_Mountain_Resort",
+   "report": {
+    "p": "vail",
+    "host": "www.skiheavenly.com",
+    "terrain": "/the-mountain/mountain-conditions/terrain-and-lift-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
+   }
   },
   {
    "id": "northstar",
@@ -900,6 +1031,12 @@
     "credit": "Leijurv",
     "license": "CC BY-SA 4.0",
     "page": "https://commons.wikimedia.org/wiki/File:Northstar_California_East_Ridge_2019.jpg"
+   },
+   "report": {
+    "p": "vail",
+    "host": "www.northstarcalifornia.com",
+    "terrain": "/the-mountain/mountain-conditions/terrain-and-lift-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
    }
   },
   {
@@ -923,7 +1060,13 @@
    "tz": "America/Los_Angeles",
    "url": "https://www.kirkwood.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Kirkwood_Mountain_Resort"
+   "src": "https://en.wikipedia.org/wiki/Kirkwood_Mountain_Resort",
+   "report": {
+    "p": "vail",
+    "host": "www.kirkwood.com",
+    "terrain": "/the-mountain/mountain-conditions/terrain-and-lift-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
+   }
   },
   {
    "id": "sugar-bowl",
@@ -997,7 +1140,13 @@
    "tz": "America/Los_Angeles",
    "url": "https://www.crystalmountainresort.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Crystal_Mountain_(Washington)"
+   "src": "https://en.wikipedia.org/wiki/Crystal_Mountain_(Washington)",
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     80
+    ]
+   }
   },
   {
    "id": "snoqualmie",
@@ -1027,6 +1176,11 @@
     "credit": "DarkRavag3r",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Snoqualmie_summit_lodge.jpg"
+   },
+   "report": {
+    "p": "reportpal",
+    "host": "www.summitatsnoqualmie.com",
+    "code": "ss"
    }
   },
   {
@@ -1057,6 +1211,11 @@
     "credit": "K50 Dude",
     "license": "CC BY 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Pine_Marten_Express.JPG"
+   },
+   "report": {
+    "p": "powdr",
+    "api": "https://api.mtbachelor.com/api/v1",
+    "origin": "https://www.mtbachelor.com"
    }
   },
   {
@@ -1105,6 +1264,12 @@
     "credit": "Buidhe",
     "license": "CC BY-SA 4.0",
     "page": "https://commons.wikimedia.org/wiki/File:View_of_Stevens_Pass_resort_from_the_top_of_Kehr%27s_Chair_(30_January_2025).jpg"
+   },
+   "report": {
+    "p": "vail",
+    "host": "www.stevenspass.com",
+    "terrain": "/the-mountain/mountain-conditions/lift-and-terrain-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/weather-report.aspx"
    }
   },
   {
@@ -1214,6 +1379,10 @@
     "credit": "Enricokamasa",
     "license": "Public domain",
     "page": "https://commons.wikimedia.org/wiki/File:Jackson_hole_new_tram.jpg"
+   },
+   "report": {
+    "p": "zaneray",
+    "url": "https://jacksonhole-prod.zaneray.com/api/all.json"
    }
   },
   {
@@ -1243,6 +1412,11 @@
     "credit": "Jim from Lexington, KY, USA",
     "license": "CC BY-SA 2.0",
     "page": "https://commons.wikimedia.org/wiki/File:Big_Sky_resort.jpg"
+   },
+   "report": {
+    "p": "reportpal",
+    "host": "www.bigskyresort.com",
+    "code": "bs"
    }
   },
   {
@@ -1273,6 +1447,13 @@
     "credit": "Greg L. Wright - SnapJag",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Baldmountainid.jpg"
+   },
+   "report": {
+    "p": "mtnlive",
+    "maps": [
+     "SunValley-BaldMountain",
+     "SunValley-DollarMountain"
+    ]
    }
   },
   {
@@ -1317,7 +1498,11 @@
    "tz": "America/Denver",
    "url": "https://www.skitaos.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Taos_Ski_Valley,_New_Mexico"
+   "src": "https://en.wikipedia.org/wiki/Taos_Ski_Valley,_New_Mexico",
+   "report": {
+    "p": "taos",
+    "url": "https://www.skitaos.com/api/conditions"
+   }
   },
   {
    "id": "grand-targhee",
@@ -1526,7 +1711,11 @@
    "tz": "America/Vancouver",
    "url": "https://www.redresort.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Red_Mountain_Resort"
+   "src": "https://en.wikipedia.org/wiki/Red_Mountain_Resort",
+   "report": {
+    "p": "red",
+    "url": "https://api.redresort.com/report/full"
+   }
   },
   {
    "id": "panorama",
@@ -1595,7 +1784,12 @@
    "tz": "America/Vancouver",
    "url": "https://www.skisilverstar.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Silver_Star_Mountain_Resort"
+   "src": "https://en.wikipedia.org/wiki/Silver_Star_Mountain_Resort",
+   "report": {
+    "p": "powdr",
+    "api": "https://api.skisilverstar.com/api/v1",
+    "origin": "https://www.skisilverstar.com"
+   }
   },
   {
    "id": "cypress",
@@ -1616,7 +1810,12 @@
    "tz": "America/Vancouver",
    "url": "https://www.cypressmountain.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Cypress_Mountain_Ski_Area"
+   "src": "https://en.wikipedia.org/wiki/Cypress_Mountain_Ski_Area",
+   "report": {
+    "p": "reportpal",
+    "host": "www.cypressmountain.com",
+    "code": "cy"
+   }
   },
   {
    "id": "tremblant",
@@ -1646,6 +1845,12 @@
     "credit": "Kuiyan Xu",
     "license": "CC BY-SA 4.0",
     "page": "https://commons.wikimedia.org/wiki/File:Fall_Colors_of_Mont_Tremblant.jpg"
+   },
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     4
+    ]
    }
   },
   {
@@ -1675,6 +1880,12 @@
     "credit": "Andrew Skujins",
     "license": "CC BY-SA 4.0",
     "page": "https://commons.wikimedia.org/wiki/File:Blue_Mountain_Resort_-_Summer_view.jpg"
+   },
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     3
+    ]
    }
   },
   {
@@ -1699,7 +1910,13 @@
    "tz": "America/Vancouver",
    "url": "https://www.whistlerblackcomb.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Whistler_Blackcomb"
+   "src": "https://en.wikipedia.org/wiki/Whistler_Blackcomb",
+   "report": {
+    "p": "vail",
+    "host": "www.whistlerblackcomb.com",
+    "terrain": "/the-mountain/mountain-conditions/terrain-and-lift-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
+   }
   },
   {
    "id": "fernie",
@@ -1798,6 +2015,12 @@
     "credit": "Mrtrek1701 at English Wikipedia",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Mt_Ellen,_Sugarbush.jpg"
+   },
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     70
+    ]
    }
   },
   {
@@ -1819,7 +2042,13 @@
    "tz": "America/New_York",
    "url": "https://www.stratton.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Stratton_Mountain_Resort"
+   "src": "https://en.wikipedia.org/wiki/Stratton_Mountain_Resort",
+   "report": {
+    "p": "mtnpowder",
+    "ids": [
+     1
+    ]
+   }
   },
   {
    "id": "sunday-river",
@@ -1846,6 +2075,11 @@
     "credit": "Tv.Rule",
     "license": "CC BY-SA 4.0",
     "page": "https://commons.wikimedia.org/wiki/File:Chondola-scenic-ride-fall.jpg"
+   },
+   "report": {
+    "p": "reportpal",
+    "host": "www.sundayriver.com",
+    "code": "sr"
    }
   },
   {
@@ -1867,7 +2101,12 @@
    "tz": "America/New_York",
    "url": "https://www.sugarloaf.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Sugarloaf_(ski_resort)"
+   "src": "https://en.wikipedia.org/wiki/Sugarloaf_(ski_resort)",
+   "report": {
+    "p": "reportpal",
+    "host": "www.sugarloaf.com",
+    "code": "sl"
+   }
   },
   {
    "id": "loon",
@@ -1888,7 +2127,12 @@
    "tz": "America/New_York",
    "url": "https://www.loonmtn.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Loon_Mountain_Ski_Resort"
+   "src": "https://en.wikipedia.org/wiki/Loon_Mountain_Ski_Resort",
+   "report": {
+    "p": "reportpal",
+    "host": "www.loonmtn.com",
+    "code": "lm"
+   }
   },
   {
    "id": "stowe",
@@ -1909,7 +2153,13 @@
    "tz": "America/New_York",
    "url": "https://www.stowe.com/",
    "detail": "basic",
-   "src": "https://en.wikipedia.org/wiki/Stowe_Mountain_Resort"
+   "src": "https://en.wikipedia.org/wiki/Stowe_Mountain_Resort",
+   "report": {
+    "p": "vail",
+    "host": "www.stowe.com",
+    "terrain": "/the-mountain/mountain-conditions/terrain-and-lift-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
+   }
   },
   {
    "id": "okemo",
@@ -1936,6 +2186,12 @@
     "credit": "Jrclark (talk)",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Okemo-2005-0316a.jpg"
+   },
+   "report": {
+    "p": "vail",
+    "host": "www.okemo.com",
+    "terrain": "/the-mountain/mountain-conditions/lift-and-terrain-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
    }
   },
   {
@@ -1963,6 +2219,12 @@
     "credit": "Mount Snow",
     "license": "CC BY-SA 4.0",
     "page": "https://commons.wikimedia.org/wiki/File:MountSnowWinter.jpg"
+   },
+   "report": {
+    "p": "vail",
+    "host": "www.mountsnow.com",
+    "terrain": "/the-mountain/mountain-conditions/lift-and-terrain-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/weather-report.aspx"
    }
   },
   {
@@ -1990,6 +2252,12 @@
     "credit": "Ryssby at English Wikipedia",
     "license": "CC BY-SA 3.0",
     "page": "https://commons.wikimedia.org/wiki/File:Hunter_Mountain.jpg"
+   },
+   "report": {
+    "p": "vail",
+    "host": "www.huntermtn.com",
+    "terrain": "/the-mountain/mountain-conditions/lift-and-terrain-status.aspx",
+    "snow": "/the-mountain/mountain-conditions/snow-and-weather-report.aspx"
    }
   },
   {

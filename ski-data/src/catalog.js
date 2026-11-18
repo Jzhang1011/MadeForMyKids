@@ -4,6 +4,7 @@
 //   GET /ski/api/catalog-conditions.json   merged slices (+ resort-reported status where we have a feed)
 //   GET /ski/api/forecast.json?r=<id>      7-day hourly/daily forecast for one catalog resort (edge-cached 30 min)
 import bundledCatalog from '../../ski/data/catalog.json';
+import { fetchReport } from './reports.js';
 
 const CAT_URL = 'https://raw.githubusercontent.com/Jzhang1011/MadeForMyKids/main/ski/data/catalog.json';
 export const BATCHES = 4;
@@ -43,11 +44,15 @@ function snowSums(pt) {
   return { s24: np ? r1(past) : null, s72: nn ? r1(next) : null };
 }
 
-export async function refreshCatalogBatch(env, b) {
+export async function refreshCatalogBatch(env, b, { reports = true } = {}) {
   const cat = await loadCatalog();
   const list = cat.resorts.filter((_, i) => i % BATCHES === b);
   const key = `cat:b${b}`;
   const now = new Date().toISOString();
+  const prev = await env.SKI_DATA.get(key, 'json');
+  // Resort reports for this slice run alongside the weather call and land in the same KV write (no extra writes).
+  const repP = reports ? Promise.all(list.filter(x => x.report).map(async x => [x.id, await fetchReport(x, prev?.reports?.[x.id])])) : Promise.resolve(null);
+  let rec, result;
   try {
     const r = await fetch(omUrl(env, list, {
       current: 'temperature_2m,wind_speed_10m,wind_gusts_10m,weather_code',
@@ -67,16 +72,22 @@ export async function refreshCatalogBatch(env, b) {
         elev: { summit: x.summitElevM, mid: midElev(x) }
       };
     });
-    const rec = { status: 'ok', fetchedAt: now, error: null, resorts };
-    await env.SKI_DATA.put(key, JSON.stringify(rec));
-    return { batch: b, status: 'ok', n: list.length };
+    rec = { status: 'ok', fetchedAt: now, error: null, resorts };
+    result = { batch: b, status: 'ok', n: list.length };
   } catch (e) {
-    const prev = await env.SKI_DATA.get(key, 'json');
     const error = String(e.message || e);
-    await env.SKI_DATA.put(key, JSON.stringify({ ...(prev || { resorts: {} }), status: prev?.resorts ? 'stale' : 'failed', attemptAt: now, error }));
+    rec = { ...(prev || { resorts: {} }), status: prev?.resorts ? 'stale' : 'failed', attemptAt: now, error };
     console.error('[ski-data] catalog batch failed', b, error);
-    return { batch: b, status: 'failed', error };
+    result = { batch: b, status: 'failed', error };
   }
+  const reps = await repP;
+  if (reps) {
+    rec.reports = Object.fromEntries(reps.filter(([, v]) => v));
+    rec.reportsAt = now;
+    result.reports = reps.map(([id, v]) => ({ id, ok: !!v && !v.error, error: v?.error || undefined }));
+  } else if (prev?.reports) rec.reports = prev.reports;
+  await env.SKI_DATA.put(key, JSON.stringify(rec));
+  return result;
 }
 
 /** Merged conditions + resort-reported status for resorts that have a live report feed (intel). */
@@ -85,16 +96,22 @@ export async function serveCatalogConditions(env) {
   const intel = await env.SKI_DATA.get('src:intel', 'json');
   const resorts = {}; const batches = [];
   recs.forEach((r, b) => { batches.push({ batch: b, status: r?.status || 'missing', fetchedAt: r?.fetchedAt || null }); Object.assign(resorts, r?.resorts || {}); });
+  // Resort reports: catalog feeds first; the full-dashboard intel fills in only where a catalog feed is missing.
   const reports = {};
   for (const [id, v] of Object.entries(intel?.data || {})) {
     if (!v?.ok) continue;
-    reports[id] = { status: v.status || null, lifts: v.lifts || null, trails: v.trails || null, snow24: v.snow?.h24 ?? null, fetchedAt: v.fetchedAt || null, asOf: v.snowAsOf || v.asOf || null, source: v.source || null };
+    const t = v.terrain, tr = v.trails;
+    const basis = t?.pct != null ? 'acres' : tr?.total ? 'trails' : null;
+    reports[id] = { status: v.status || null, lifts: v.lifts || null, trails: tr || null, acres: t?.totalAcres ? { open: t.openAcres, total: t.totalAcres } : null,
+      pct: t?.pct ?? (tr?.total ? Math.round(tr.open / tr.total * 100) : null), basis, baseCm: v.baseCm ?? null, s24Cm: v.snow?.h24 ?? null,
+      fetchedAt: v.fetchedAt || null, at: v.asOf || null, snowAt: v.snowAsOf || null, source: v.source || null };
   }
+  recs.forEach(r => { for (const [id, v] of Object.entries(r?.reports || {})) if (!v.failed) reports[id] = v; });
   const times = batches.map(x => x.fetchedAt).filter(Boolean).sort();
   return {
     generatedAt: times[times.length - 1] || null, oldest: times[0] || null,
-    source: { weather: 'Open-Meteo forecast model (summit + mid-mountain grid points, elevation-adjusted)', reports: 'Resort snow reports (only where SkiDay has a feed)' },
-    units: { t: '°C', wind: 'km/h', snow: 'cm' }, batches, resorts, reports
+    source: { weather: 'Open-Meteo forecast model (summit + mid-mountain grid points, elevation-adjusted)', reports: 'Resort-published lift, terrain and snow reports (only where SkiDay has a public feed; null = not reported)' },
+    units: { t: '°C', wind: 'km/h', snow: 'cm', baseCm: 'cm', s24Cm: 'cm' }, batches, resorts, reports
   };
 }
 
