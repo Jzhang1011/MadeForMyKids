@@ -24,3 +24,14 @@ enabled = true
 #   REFRESH_TOKEN    bearer token for POST /ski/api/run (manual refresh)
 #   OPEN_METEO_KEY   commercial Open-Meteo key -> customer-api.open-meteo.com
 #   COTRIP_API_KEY   CDOT data-sharing key from manage-api.cotrip.org (stored, see README)
+
+# Anonymous usage counters (POST /ski/api/event, GET /ski/api/stats). SQLite-backed Durable Object:
+# available on Workers Free, and avoids KV's 1,000 writes/day free limit. Stores only
+# (day, event, label, count) - no IPs, cookies or IDs.
+[[durable_objects.bindings]]
+name = "COUNTER"
+class_name = "SkiCounter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["SkiCounter"]

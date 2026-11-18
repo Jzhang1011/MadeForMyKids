@@ -1,8 +1,8 @@
 import { openMeteoUrl, splitOpenMeteo, dailyRows, hourlyRows, weatherEmoji, carsUrl, slimEvents, EVENT_CLASSES,
-  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=06bb1664b8';
-import { STR, PACK_DEFAULT } from './i18n.js?v=06bb1664b8';
-import { selectCameras, routeSegments, inCO } from './route.js?v=06bb1664b8';
-import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=06bb1664b8';
+  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=f7738e7c93';
+import { STR, PACK_DEFAULT } from './i18n.js?v=f7738e7c93';
+import { selectCameras, routeSegments, inCO } from './route.js?v=f7738e7c93';
+import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=f7738e7c93';
 
 const LS = {
   get: (k, d) => { try { const v = localStorage.getItem('ski.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -19,6 +19,13 @@ const state = {
 };
 
 const $ = s => document.querySelector(s);
+/** Anonymous usage count (allowlisted event + label, no IDs/cookies). Production host only; never throws. */
+function track(e, v) {
+  try {
+    if (!/(^|\.)madeformykids\.com$/.test(location.hostname) || !navigator.sendBeacon) return;
+    navigator.sendBeacon('api/event', new Blob([JSON.stringify({ e, v: String(v ?? '') })], { type: 'text/plain' }));
+  } catch { /* stats are optional */ }
+}
 // Null-safe element lookup for optional page parts (an older cached index.html may lack them).
 const $$ = s => document.querySelector(s) || document.createElement('div');
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -550,7 +557,7 @@ function updateStartMsg() {
   state.startUI.setMsg(h);
 }
 function setStart(s) {
-  state.start = s; saveStart(s); state.routes = {}; ctxMemo.clear();
+  state.start = s; saveStart(s); track('start_select', s.kind === 'preset' ? s.id : 'custom'); // never the address or coordinates state.routes = {}; ctxMemo.clear();
   state.startUI?.relabel(); renderAll(); routeAll();
 }
 async function loadCams() {
@@ -675,12 +682,12 @@ function renderAll() {
 }
 
 function bind() {
-  $('#btn-lang').onclick = () => { state.lang = state.lang === 'zh' ? 'en' : 'zh'; LS.set('lang', state.lang); renderAll(); };
-  $('#btn-units').onclick = () => { state.units = U() === 'imperial' ? 'metric' : 'imperial'; LS.set('units', state.units); renderAll(); };
+  $('#btn-lang').onclick = () => { state.lang = state.lang === 'zh' ? 'en' : 'zh'; LS.set('lang', state.lang); renderAll(); track('lang_toggle', state.lang); };
+  $('#btn-units').onclick = () => { state.units = U() === 'imperial' ? 'metric' : 'imperial'; LS.set('units', state.units); renderAll(); track('unit_toggle', state.units); };
   $('#btn-refresh').onclick = () => refresh();
   document.addEventListener('click', e => {
     const rc = e.target.closest('[data-resort]');
-    if (rc && !e.target.closest('details')) { state.resort = rc.dataset.resort; LS.set('resort', state.resort); renderAll(); routeAll(); if (rc.classList.contains('orow') || rc.classList.contains('rcard')) $('#verdict').scrollIntoView({ behavior: 'smooth' }); return; }
+    if (rc && !e.target.closest('details')) { state.resort = rc.dataset.resort; LS.set('resort', state.resort); track('resort_select', state.resort); renderAll(); routeAll(); if (rc.classList.contains('orow') || rc.classList.contains('rcard')) $('#verdict').scrollIntoView({ behavior: 'smooth' }); return; }
     const b = e.target.closest('.seg-ctl button');
     if (b) { if (b.parentElement.dataset.ctl === 'point') { state.point = b.dataset.v; LS.set('point', state.point); } renderWeather(); return; }
     const yt = e.target.closest('.yt[data-yt]');
@@ -704,6 +711,7 @@ function bind() {
   await Promise.allSettled([loadServer(), loadCams()]);
   renderAll();
   window.__skiReady = true;
+  track('page_view', state.lang);
   routeAll().catch(e => console.warn('[ski] routing failed:', e));
   try { await loadLiveFallback(); } catch (e) { console.warn('[ski] live fallback failed:', e); }
   state.lastLive = Date.now();

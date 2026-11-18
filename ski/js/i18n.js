@@ -41,6 +41,7 @@ export const STR = {
     resorts_h: 'Resort webcams & live streams', official: 'Official webcams', report: 'Snow report', watch_live: 'Watch live', play: 'Play live', yt_note: 'Official Steamboat Resort YouTube streams',
     pack_h: 'Bring from home', pack_sub: 'Only things that are hard to find or pricey in mountain towns. Tap to check off; edits save on this device.',
     add_item: 'Add item', reset: 'Reset list', add: 'Add',
+    privacy_note: 'Privacy: we keep anonymous usage counts only (page views, resort and setting choices). No cookies, no tracking IDs, no addresses.',
     footer: 'Data: Open-Meteo, CDOT COtrip, National Weather Service, resort webcams. Always confirm with COtrip and the resort before driving. Built by MadeForMyKids.',
     lang: '中文', units_imperial: '°F · in', units_metric: '°C · cm', shop_soon: 'Gear shop — coming soon',
     more_days: 'Days 4–7', loading: 'Loading…', never: 'never', ago: '{0} ago', minutes: '{0} min', hours: '{0} h'
@@ -87,6 +88,7 @@ export const STR = {
     resorts_h: '雪场摄像头 & 直播', official: '官方摄像头', report: '雪况报告', watch_live: '看直播', play: '播放直播', yt_note: 'Steamboat 官方 YouTube 直播',
     pack_h: '从家带去', pack_sub: '只记山里难买或很贵的东西。点一下打勾；修改保存在本设备。',
     add_item: '添加物品', reset: '恢复默认', add: '添加',
+    privacy_note: '隐私：我们只统计匿名使用次数（访问量、雪场和设置选择），不使用 Cookie，不记录追踪 ID 或地址。',
     footer: '数据来源：Open-Meteo、CDOT COtrip、美国国家气象局、雪场官方摄像头。开车前请再次确认 COtrip 和雪场官网。MadeForMyKids 出品。',
     lang: 'EN', units_imperial: '°F · in', units_metric: '°C · cm', shop_soon: '雪具商店——即将上线',
     more_days: '第 4–7 天', loading: '加载中…', never: '从未', ago: '{0}前', minutes: '{0} 分钟', hours: '{0} 小时'

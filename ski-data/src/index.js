@@ -2,7 +2,9 @@
 //   Cron -> fetch upstream (Open-Meteo, CDOT COtrip, NWS, resort feeds) -> merge with last good -> KV.
 //   GET  /ski/api/latest.json | intel.json | cameras.json | status.json   (served via madeformykids-landing)
 //   POST /ski/api/run?sources=weather,roads   Authorization: Bearer <REFRESH_TOKEN>
+import { DurableObject } from 'cloudflare:workers';
 import bundledCfg from '../../ski/data/resorts.json';
+import STATS_HTML from './stats.html';
 import { SOURCES, runSources, toLatest, toIntel, toCameras } from '../../ski/scripts/collect.mjs';
 
 const CFG_URL = 'https://raw.githubusercontent.com/Jzhang1011/MadeForMyKids/main/ski/data/resorts.json';
@@ -94,12 +96,92 @@ async function serve(name, env) {
   return json({ error: 'not found' }, 404);
 }
 
+/* ---------- Anonymous usage counters ---------- */
+// Allowlist: event -> allowed labels. Nothing outside this list is ever stored.
+const RESORT_IDS = bundledCfg.resorts.map(r => r.id);
+const PRESET_IDS = (bundledCfg.trip.presets || []).map(p => p.id);
+const EVENTS = {
+  page_view: ['en', 'zh'],
+  resort_select: RESORT_IDS,
+  start_select: [...PRESET_IDS, 'custom'],
+  lang_toggle: ['en', 'zh'],
+  unit_toggle: ['imperial', 'metric']
+};
+const SITE_HOSTS = ['madeformykids.com', 'www.madeformykids.com'];
+const denverDay = (d = new Date()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+
+export class SkiCounter extends DurableObject {
+  constructor(ctx, env) {
+    super(ctx, env);
+    this.sql = ctx.storage.sql;
+    this.sql.exec('CREATE TABLE IF NOT EXISTS counts (day TEXT NOT NULL, event TEXT NOT NULL, label TEXT NOT NULL, n INTEGER NOT NULL, PRIMARY KEY (day, event, label))');
+    // Abuse guard, memory only (never written to storage): per-client hits in the current minute,
+    // keyed by a hash that is discarded when the minute ends, plus a hard daily cap.
+    this.minute = 0; this.perClient = new Map(); this.day = ''; this.dayTotal = 0;
+  }
+  hit(clientKey, event, label) {
+    const m = Math.floor(Date.now() / 60000);
+    if (m !== this.minute) { this.minute = m; this.perClient.clear(); }
+    const c = (this.perClient.get(clientKey) || 0) + 1; this.perClient.set(clientKey, c);
+    if (c > 30) return false;
+    const day = denverDay();
+    if (day !== this.day) {
+      this.day = day;
+      this.dayTotal = this.sql.exec('SELECT COALESCE(SUM(n), 0) AS t FROM counts WHERE day = ?', day).one().t;
+    }
+    if (this.dayTotal >= 50000) return false;
+    this.dayTotal++;
+    this.sql.exec('INSERT INTO counts (day, event, label, n) VALUES (?, ?, ?, 1) ON CONFLICT (day, event, label) DO UPDATE SET n = n + 1', day, event, label);
+    return true;
+  }
+  stats(days) {
+    const since = denverDay(new Date(Date.now() - (days - 1) * 86400000));
+    const rows = this.sql.exec('SELECT day, event, label, n FROM counts WHERE day >= ? ORDER BY day DESC, event, label', since).toArray();
+    const byDay = {}; const totals = {};
+    for (const r of rows) {
+      const d = (byDay[r.day] ||= {});
+      const e = (d[r.event] ||= { total: 0 }); e.total += r.n; if (r.label) e[r.label] = (e[r.label] || 0) + r.n;
+      const t = (totals[r.event] ||= { total: 0 }); t.total += r.n; if (r.label) t[r.label] = (t[r.label] || 0) + r.n;
+    }
+    return { since, timezone: 'America/Denver', totals, days: Object.entries(byDay).map(([day, events]) => ({ day, ...events })) };
+  }
+}
+
+async function handleEvent(request, env) {
+  const ok = () => new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': 'https://madeformykids.com', 'Cache-Control': 'no-store' } });
+  // Only the site itself (sendBeacon sends Origin); anything else is ignored silently.
+  const origin = request.headers.get('Origin') || request.headers.get('Referer') || '';
+  let host = ''; try { host = new URL(origin).hostname; } catch {}
+  if (!SITE_HOSTS.includes(host)) return ok();
+  const text = await request.text();
+  if (text.length > 200) return ok();
+  let body; try { body = JSON.parse(text); } catch { return ok(); }
+  const event = String(body?.e || ''), label = String(body?.v ?? '');
+  if (!EVENTS[event] || !EVENTS[event].includes(label)) return ok();
+  // Rate-limit key: a hash of IP + user agent + the current minute, used in memory only.
+  const raw = `${request.headers.get('CF-Connecting-IP') || ''}|${request.headers.get('User-Agent') || ''}|${Math.floor(Date.now() / 60000)}`;
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw));
+  const key = [...new Uint8Array(digest).slice(0, 8)].map(b => b.toString(16).padStart(2, '0')).join('');
+  await env.COUNTER.get(env.COUNTER.idFromName('ski')).hit(key, event, label);
+  return ok();
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (url.pathname === '/ski/api/stats.html' || url.pathname === '/api/stats.html') {
+      return new Response(STATS_HTML, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex', 'Referrer-Policy': 'no-referrer' } });
+    }
     const m = url.pathname.match(/^\/(?:ski\/)?api\/([a-z]+)(?:\.json)?$/);
     if (!m) return json({ error: 'not found', endpoints: ['/ski/api/latest.json', '/ski/api/intel.json', '/ski/api/cameras.json', '/ski/api/status.json'] }, 404);
     const name = m[1];
+    if (name === 'event') return request.method === 'POST' ? handleEvent(request, env) : json({ error: 'POST only' }, 405);
+    if (name === 'stats') {
+      const auth = request.headers.get('Authorization') || '';
+      if (!env.REFRESH_TOKEN || auth !== `Bearer ${env.REFRESH_TOKEN}`) return json({ error: 'unauthorized' }, 401);
+      const days = Math.min(90, Math.max(1, parseInt(url.searchParams.get('days') || '30', 10) || 30));
+      return json(await env.COUNTER.get(env.COUNTER.idFromName('ski')).stats(days), 200, { 'Cache-Control': 'no-store' });
+    }
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST', 'Access-Control-Allow-Headers': 'Authorization' } });
     if (name === 'run') {
       if (request.method !== 'POST') return json({ error: 'POST only' }, 405);
