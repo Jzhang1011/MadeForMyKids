@@ -4,7 +4,6 @@
 //   GET /ski/api/catalog-conditions.json   merged slices (+ resort-reported status where we have a feed)
 //   GET /ski/api/forecast.json?r=<id>      7-day hourly/daily forecast for one catalog resort (edge-cached 30 min)
 import bundledCatalog from '../../ski/data/catalog.json';
-import { fetchReport } from './reports.js';
 
 const CAT_URL = 'https://raw.githubusercontent.com/Jzhang1011/MadeForMyKids/main/ski/data/catalog.json';
 export const BATCHES = 4;
@@ -44,6 +43,32 @@ function snowSums(pt) {
   return { s24: np ? r1(past) : null, s72: nn ? r1(next) : null };
 }
 
+/** Resort reports for one slice. Parsing a resort page costs a few ms of CPU, so the work is fanned out to small
+ *  sub-requests of this Worker (each its own invocation and CPU budget) instead of running in the cron invocation. */
+const HEAVY = new Set(['vail']);
+async function fetchSliceReports(env, list, prev) {
+  const groups = [], light = [];
+  for (const r of list) (HEAVY.has(r.report.p) ? groups.push([r]) : light.push(r));
+  for (let i = 0; i < light.length; i += 3) groups.push(light.slice(i, i + 3));
+  const self = env.SELF_RUN_URL || 'https://ski-data.wealthlanding001.workers.dev/api/run';
+  const out = [];
+  await Promise.all(groups.map(async g => {
+    let got = null, error = null;
+    try {
+      const r = await fetch(`${self}?sources=reports`, { method: 'POST', headers: { Authorization: `Bearer ${env.REFRESH_TOKEN}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resorts: g.map(x => ({ id: x.id, report: x.report })) }), signal: AbortSignal.timeout(25000) });
+      if (!r.ok) throw new Error(`fan-out HTTP ${r.status}`);
+      got = new Map((await r.json()).reports || []);
+    } catch (e) { error = String(e.message || e); console.error('[ski-data] report fan-out failed', g.map(x => x.id).join(','), error); }
+    for (const x of g) {
+      let v = got?.get(x.id) || null;
+      if (!v || v.failed) { const p = prev[x.id]; v = p && !p.failed ? { ...p, stale: true, error: v?.error || error, attemptAt: new Date().toISOString() } : (v || { failed: true, error }); }
+      out.push([x.id, v]);
+    }
+  }));
+  return out;
+}
+
 export async function refreshCatalogBatch(env, b, { reports = true } = {}) {
   const cat = await loadCatalog();
   const list = cat.resorts.filter((_, i) => i % BATCHES === b);
@@ -51,7 +76,7 @@ export async function refreshCatalogBatch(env, b, { reports = true } = {}) {
   const now = new Date().toISOString();
   const prev = await env.SKI_DATA.get(key, 'json');
   // Resort reports for this slice run alongside the weather call and land in the same KV write (no extra writes).
-  const repP = reports ? Promise.all(list.filter(x => x.report).map(async x => [x.id, await fetchReport(x, prev?.reports?.[x.id])])) : Promise.resolve(null);
+  const repP = reports ? fetchSliceReports(env, list.filter(x => x.report), prev?.reports || {}) : Promise.resolve(null);
   let rec, result;
   try {
     const r = await fetch(omUrl(env, list, {

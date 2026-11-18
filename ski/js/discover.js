@@ -1,8 +1,8 @@
 // Resort discovery (default home) + basic resort view for catalog resorts without a full dashboard.
 // Data: data/catalog.json (static, verified) + api/catalog-conditions.json (Open-Meteo model, refreshed hourly by
-// the ski-data Worker; resort-reported status only where SkiDay has a feed) + api/forecast.json?r=<id> (basic view).
-import { fmt, weatherEmoji } from './core.js?v=1edcd309c1';
-import { getRoute } from './start.js?v=1edcd309c1';
+// the ski-data Worker; resort-published base depth / terrain open / lifts / 24 h snow where SkiDay reads a public feed) + api/forecast.json?r=<id> (basic view).
+import { fmt, weatherEmoji } from './core.js?v=97a5852266';
+import { getRoute } from './start.js?v=97a5852266';
 
 const S = {
   en: {
@@ -11,17 +11,19 @@ const S = {
     d_recent: 'Recently viewed', d_from: 'Distances from', d_useloc: 'Use my location', d_locating: 'Finding you…', d_loc_fail: 'Location unavailable; using your starting point.',
     d_filters: 'Filters', d_region: 'Region', d_pass: 'Pass', d_status: 'Status', d_dist: 'Distance', d_sort: 'Sort', d_all: 'All', d_allr: 'All regions', d_allp: 'All passes', d_other: 'Other', d_any: 'Any',
     d_open_only: 'Open (reported)', d_hide_closed: 'Hide reported closed', d_within: 'Within {0}', d_list: 'List', d_map: 'Map',
-    s_score: 'Best overall', s_snow: 'Best snow', s_close: 'Closest', s_weather: 'Best weather', s_wind: 'Lowest wind', s_fcst: 'Most snowfall (72 h)', s_open: 'Open first',
+    s_score: 'Best overall', s_snow: 'Most new snow (24 h)', s_close: 'Closest', s_fcst: 'Most snowfall (next 72 h)', s_base: 'Deepest base', s_terrain: 'Most terrain open', s_open: 'Open first',
     d_view: 'View conditions', d_addfav: 'Add to favorites', d_remfav: 'Remove from favorites', d_compare: 'Compare', d_compare_n: 'Compare {0}', d_clear: 'Clear',
     d_temp: 'summit now', d_new: 'new 24 h', d_fc72: 'next 72 h', d_drive: 'drive', d_nt: 'no traffic', d_straight: 'straight-line', d_wind: 'summit wind',
-    d_open: 'Open', d_closed: 'Closed', d_lifts: '{0}/{1} lifts', d_nolift: 'Lift data not available', d_upd: 'Updated {0}', d_model: 'Weather: Open-Meteo model estimate (not a resort report).',
+    d_open: 'Open', d_closed: 'Closed', d_lifts: '{0}/{1} lifts', d_nolift: 'Lifts not reported', d_upd: 'Updated {0}', d_model: 'Snowfall forecast, temperature and wind: Open-Meteo model estimate. Base depth, terrain open, lifts and ✓ new snow: the resort’s own published report; “Not reported” when it doesn’t publish one SkiDay can read.',
+    d_base: 'base depth', d_terrain: 'terrain open', d_nr: 'Not reported', d_acres: '{0}/{1} acres open', d_trails: '{0}/{1} trails open', d_rep_src: 'Resort report: {0}', d_dist_start: 'Distance from start', d_rep: 'resort-reported',
     d_fav_empty: 'No favorites yet. Tap ☆ on any resort to save it here.', d_none: 'No resorts match these filters.', d_results: 'Results for “{0}”', d_nearby: 'Near {0}',
     d_cond_na: 'Conditions are temporarily unavailable. Resort details still work.', d_nresorts: '{0} resorts', d_full: 'Full dashboard', d_basic: 'Basic',
-    d_score: 'Ski-day score', d_score_help: 'Score out of 100, from the model data shown on the card: new + forecast snow up to 40 pts (24 h snow ×4 + next-72 h snow ×1.5, in inches), summit temperature up to 20 (best 15–30°F), summit wind up to 20 (full under 10 mph, zero at 40 mph+) and distance up to 20 (full within ~1 h 30 m drive or 100 km; zero beyond ~8 h or 800 km). A resort that reports itself closed is scored ×0.3. Resorts without lift data are not penalised.',
-    d_best_near: 'Best ski options today', d_near_h: 'Closest to you', d_drive_note: 'Drive times: OpenStreetMap routing for the nearest few, no traffic. Others are straight-line distance.',
-    d_best_note: 'Ranked by ski-day score (snow, temperature, wind and distance from {0}). Tap ⓘ Ski-day score for how it works.',
+    d_score: 'Ski-day score', d_score_help: 'Score out of 100. Snow up to 35 pts (new 24 h snow ×4 + next-72 h forecast ×1.5, in inches; the resort’s reported 24 h snow when it has one, otherwise the model). Base depth up to 15 and terrain open up to 20, both resort-reported and scored against the deepest base and the most terrain open that any resort reports today (so early-season 9% open can earn full points). Weather up to 15: summit wind up to 10 (full under 10 mph, zero at 40 mph+) and summit temperature up to 5 (best 15–30°F); temperature is no longer on the card but still counts a little. Distance from your starting point up to 15 (straight-line: full within 100 km / 60 mi, zero beyond 800 km / 500 mi). If a resort doesn’t report base depth or terrain, that part gets half points, so missing data neither lifts nor sinks it. A resort that reports itself closed is scored ×0.3.',
+    d_best_near: 'Best ski options today', d_near_h: 'Closest to you', d_drive_note: 'Sorted by straight-line distance from {0}. Open a resort for the drive time from there.',
+    d_best_note: 'Ranked by ski-day score (snow, base depth, terrain open, weather and distance from {0}). Tap ⓘ Ski-day score for how it works.',
     d_explore_h: 'Explore by region', d_back: 'All resorts', d_cmp_h: 'Compare resorts', d_close: 'Close', d_score_s: 'score',
-    b_limited: 'Basic view: weather-model forecast only. SkiDay does not have live lift, trail or road data for this resort. Always check the official snow report before you go.',
+    b_limited: 'Basic view: weather-model forecast only. SkiDay can’t read a published lift, terrain or snow report for this resort, and has no road data here. Always check the official snow report before you go.',
+    b_limited_rep: 'Basic view: base depth, terrain open, lifts and ✓ new snow come from the resort’s own report ({0}); forecasts are Open-Meteo model estimates. No road data here. Always check the official snow report before you go.',
     b_now: 'Now', b_mid: 'mid-mountain', b_summit: 'summit', b_48: 'Next 48 hours', b_7d: '7-day forecast', b_day: 'Day', b_snow: 'Snow', b_hilo: 'High / low', b_wind: 'Wind',
     b_get: 'Getting there', b_links: 'Official links', b_site: 'Resort website', b_report: 'Snow report, lifts & webcams (official site)', b_dir: 'Directions (Google Maps)',
     b_loading: 'Loading forecast…', b_fc_fail: 'Forecast unavailable right now.', b_route_loading: 'Estimating drive…', b_route_fail: 'Drive estimate unavailable.',
@@ -34,17 +36,19 @@ const S = {
     d_recent: '最近浏览', d_from: '距离起点', d_useloc: '使用我的位置', d_locating: '定位中…', d_loc_fail: '无法定位，改用你的出发地。',
     d_filters: '筛选', d_region: '地区', d_pass: '雪票', d_status: '状态', d_dist: '距离', d_sort: '排序', d_all: '全部', d_allr: '全部地区', d_allp: '全部雪票', d_other: '其他', d_any: '不限',
     d_open_only: '营业中（雪场公布）', d_hide_closed: '隐藏已公布关闭', d_within: '{0} 以内', d_list: '列表', d_map: '地图',
-    s_score: '综合最佳', s_snow: '雪最好', s_close: '最近', s_weather: '天气最好', s_wind: '风最小', s_fcst: '未来72小时降雪最多', s_open: '营业优先',
+    s_score: '综合最佳', s_snow: '24小时新雪最多', s_close: '最近', s_fcst: '未来72小时降雪最多', s_base: '雪底最深', s_terrain: '开放雪道最多', s_open: '营业优先',
     d_view: '查看雪况', d_addfav: '加入收藏', d_remfav: '取消收藏', d_compare: '对比', d_compare_n: '对比 {0} 个', d_clear: '清除',
     d_temp: '山顶现在', d_new: '24小时新雪', d_fc72: '未来72小时', d_drive: '车程', d_nt: '未计路况', d_straight: '直线距离', d_wind: '山顶风速',
-    d_open: '营业中', d_closed: '已关闭', d_lifts: '缆车 {0}/{1}', d_nolift: '暂无缆车数据', d_upd: '更新于 {0}', d_model: '天气：Open-Meteo 模型估算（非雪场官方报告）。',
+    d_open: '营业中', d_closed: '已关闭', d_lifts: '缆车 {0}/{1}', d_nolift: '缆车未公布', d_upd: '更新于 {0}', d_model: '降雪预报、气温和风：Open-Meteo 模型估算。雪底深度、雪道开放、缆车和带 ✓ 的新雪：来自雪场自己公布的报告；雪场没有可读取的报告时显示“未公布”。',
+    d_base: '雪底深度', d_terrain: '雪道开放', d_nr: '未公布', d_acres: '已开放 {0}/{1} 英亩', d_trails: '已开放 {0}/{1} 条雪道', d_rep_src: '雪场报告：{0}', d_dist_start: '距出发地', d_rep: '雪场公布',
     d_fav_empty: '还没有收藏。点任意雪场上的 ☆ 即可收藏。', d_none: '没有符合筛选条件的雪场。', d_results: '“{0}” 的搜索结果', d_nearby: '{0} 附近',
     d_cond_na: '雪况暂时无法获取，雪场详情仍可查看。', d_nresorts: '{0} 个雪场', d_full: '完整看板', d_basic: '基础',
-    d_score: '滑雪日评分', d_score_help: '满分 100，基于卡片上的模型数据：新雪 + 预报降雪最高 40 分（24 小时新雪英寸 ×4 + 未来 72 小时降雪英寸 ×1.5），山顶气温最高 20 分（15–30°F 最佳），山顶风速最高 20 分（10 mph 以下满分，40 mph 以上 0 分），距离最高 20 分（约 1 小时 30 分车程或 100 公里内满分，超过约 8 小时或 800 公里为 0）。雪场公布关闭则 ×0.3。没有缆车数据的雪场不扣分。',
-    d_best_near: '今天的最佳滑雪选择', d_near_h: '离你最近', d_drive_note: '车程：最近几个雪场用 OpenStreetMap 路线估算，未计路况；其余为直线距离。',
-    d_best_note: '按滑雪日评分排序（雪量、气温、风和距 {0} 的远近）。点 ⓘ 滑雪日评分 查看算法。',
+    d_score: '滑雪日评分', d_score_help: '满分 100。降雪最高 35 分（24 小时新雪英寸 ×4 + 未来 72 小时预报降雪英寸 ×1.5；有雪场公布的 24 小时新雪就用公布值，否则用模型）。雪底深度最高 15 分、雪道开放最高 20 分，均为雪场公布数据，并与今天所有雪场公布的最深雪底和最高开放比例相比（所以早季开放 9% 也可能拿满分）。天气最高 15 分：山顶风速最高 10 分（10 mph 以下满分，40 mph 以上 0 分），山顶气温最高 5 分（15–30°F 最佳）；气温不再显示在卡片上，但仍占少量分数。距出发地最高 15 分（直线距离：100 公里 / 60 英里内满分，超过 800 公里 / 500 英里为 0）。雪场没有公布雪底或雪道数据时，该项给一半分，既不加分也不拖累。雪场公布关闭则 ×0.3。',
+    d_best_near: '今天的最佳滑雪选择', d_near_h: '离你最近', d_drive_note: '按距 {0} 的直线距离排序。打开雪场可查看从出发地的车程。',
+    d_best_note: '按滑雪日评分排序（降雪、雪底深度、雪道开放、天气和距 {0} 的远近）。点 ⓘ 滑雪日评分 查看算法。',
     d_explore_h: '按地区浏览', d_back: '全部雪场', d_cmp_h: '雪场对比', d_close: '关闭', d_score_s: '分',
-    b_limited: '基础视图：仅有天气模型预报。SkiDay 暂无此雪场的实时缆车、雪道或路况数据。出发前请务必查看雪场官方雪况报告。',
+    b_limited: '基础视图：仅有天气模型预报。SkiDay 读取不到此雪场公布的缆车、雪道或雪况报告，也没有这里的路况数据。出发前请务必查看雪场官方雪况报告。',
+    b_limited_rep: '基础视图：雪底深度、雪道开放、缆车和带 ✓ 的新雪来自雪场自己的报告（{0}）；预报为 Open-Meteo 模型估算。这里没有路况数据。出发前请务必查看雪场官方雪况报告。',
     b_now: '现在', b_mid: '半山', b_summit: '山顶', b_48: '未来 48 小时', b_7d: '7 天预报', b_day: '日期', b_snow: '降雪', b_hilo: '最高 / 最低', b_wind: '风',
     b_get: '怎么去', b_links: '官方链接', b_site: '雪场官网', b_report: '雪况、缆车和摄像头（官网）', b_dir: '导航（Google 地图）',
     b_loading: '正在加载预报…', b_fc_fail: '暂时无法获取预报。', b_route_loading: '正在估算车程…', b_route_fail: '无法估算车程。',
@@ -83,22 +87,35 @@ const startPt = () => X.getStart();
 const distKm = r => hav(startPt(), r);
 const kmTxt = km => U() === 'imperial' ? `${Math.round(km / 1.609)} mi` : `${Math.round(km)} km`;
 const durTxt = m => X.state.lang === 'zh' ? `${Math.floor(m / 60)}小时${String(m % 60).padStart(2, '0')}分` : `${Math.floor(m / 60)}h ${String(m % 60).padStart(2, '0')}m`;
-const driveMin = r => D.drive[r.id]?.min ?? null;
 const cond = r => D.cond?.resorts?.[r.id] || null;
 const report = r => D.cond?.reports?.[r.id] || null;
+const rep24 = p => p ? (p.s24Cm ?? p.snow24 ?? null) : null;      // resort-reported 24 h snow (cm)
+const snow24 = r => rep24(report(r)) ?? cond(r)?.summit.s24 ?? null;
+const baseCm = r => report(r)?.baseCm ?? null;
+const pctOpen = r => report(r)?.pct ?? null;
+let mxMemo = { at: -1 };
+function maxima() {
+  if (mxMemo.at === D.condAt) return mxMemo;
+  const rs = Object.values(D.cond?.reports || {});
+  mxMemo = { at: D.condAt, base: Math.max(25, ...rs.map(p => p.baseCm ?? 0)), pct: Math.max(1, ...rs.map(p => p.pct ?? 0)) };
+  return mxMemo;
+}
 function score(r) {
   const c = cond(r); if (!c) return null;
-  const s24 = (c.summit.s24 ?? 0) / 2.54, s72 = (c.summit.s72 ?? 0) / 2.54;
-  const snow = Math.min(40, s24 * 4 + s72 * 1.5);
+  const s24 = (snow24(r) ?? 0) / 2.54, s72 = (c.summit.s72 ?? 0) / 2.54;
+  const snow = Math.min(35, s24 * 4 + s72 * 1.5);
+  // Base and terrain are scored against the best any resort reports today (early season 9% open can be the best there is).
+  const mx = maxima();
+  const b = baseCm(r), base = b == null ? 7.5 : 15 * Math.min(1, b / mx.base);
+  const pc = pctOpen(r), terrain = pc == null ? 10 : 20 * Math.min(1, pc / mx.pct);
   const tf = c.summit.t == null ? null : c.summit.t * 9 / 5 + 32;
-  const temp = tf == null ? 10 : tf < 15 ? Math.max(0, 20 - (15 - tf) * 0.8) : tf > 30 ? Math.max(0, 20 - (tf - 30) * 1.5) : 20;
+  const temp = tf == null ? 2.5 : tf < 15 ? Math.max(0, 5 - (15 - tf) * 0.2) : tf > 30 ? Math.max(0, 5 - (tf - 30) * 0.4) : 5;
   const wm = c.summit.wind == null ? null : c.summit.wind / 1.609;
-  const wind = wm == null ? 10 : wm <= 10 ? 20 : wm >= 40 ? 0 : 20 * (40 - wm) / 30;
-  const dm = driveMin(r), km = distKm(r);
-  const dist = dm != null ? (dm <= 90 ? 20 : dm >= 480 ? 0 : 20 * (480 - dm) / 390) : (km <= 100 ? 20 : km >= 800 ? 0 : 20 * (800 - km) / 700);
-  let s = snow + temp + wind + dist;
+  const wind = wm == null ? 5 : wm <= 10 ? 10 : wm >= 40 ? 0 : 10 * (40 - wm) / 30;
+  const km = distKm(r), dist = km <= 100 ? 15 : km >= 800 ? 0 : 15 * (800 - km) / 700;
+  let s = snow + base + terrain + temp + wind + dist;
   if (report(r)?.status === 'closed') s *= 0.3;
-  return { total: Math.round(s), snow: Math.round(snow), temp: Math.round(temp), wind: Math.round(wind), dist: Math.round(dist) };
+  return { total: Math.round(s), snow: Math.round(snow), base: Math.round(base), terrain: Math.round(terrain), weather: Math.round(temp + wind), dist: Math.round(dist) };
 }
 
 /* ---------- search ---------- */
@@ -172,48 +189,48 @@ function toggleFav(id) {
   X.track('disc_fav', on ? 'remove' : 'add');
 }
 
-/* ---------- drive estimates (OSRM demo server, throttled ≤1 req/s inside getRoute; nearest few only) ---------- */
-let driveGen = 0;
-async function estimateDrives(list) {
-  const s = startPt(); const key = `${s.lat.toFixed(3)},${s.lon.toFixed(3)}`;
-  if (D.driveKey !== key) { D.drive = {}; D.driveKey = key; }
-  const gen = ++driveGen;
-  const todo = list.filter(r => !D.drive[r.id] && distKm(r) < 900).slice(0, 5);
-  for (const r of todo) {
-    try {
-      const route = await getRoute(X.state.cfg, s, r);
-      if (gen !== driveGen) return;
-      D.drive[r.id] = { min: Math.round(route.durS / 60), km: route.distM / 1000 };
-    } catch { D.drive[r.id] = { fail: true }; }
-    if (X.view() === 'disc') renderList();
-  }
-}
-
 /* ---------- formatting ---------- */
 function updTime(iso) {
   if (!iso) return '—';
   const d = new Date(iso); if (isNaN(d)) return '—';
-  return new Intl.DateTimeFormat(X.state.lang === 'zh' ? 'zh-CN' : 'en-US', { hour: 'numeric', minute: '2-digit' }).format(d);
+  const loc = X.state.lang === 'zh' ? 'zh-CN' : 'en-US';
+  const today = new Date().toDateString() === d.toDateString();
+  return new Intl.DateTimeFormat(loc, today ? { hour: 'numeric', minute: '2-digit' } : { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(d);
 }
 const passTxt = r => r.passes.length ? r.passes.map(p => p[0].toUpperCase() + p.slice(1)).join(' · ') : tr('d_other');
 const stateTxt = r => X.state.lang === 'zh' ? (STATE_ZH[r.state] || r.state) : (STATE_NAMES[r.state] ? r.state : r.state);
 const regionName = id => { const g = D.cat.regions.find(x => x.id === id); return g ? (g[X.state.lang] || g.en) : id; };
 function statusHtml(r) {
   const p = report(r);
-  if (p?.status === 'open') return `<span class="dst open">● ${esc(tr('d_open'))}${p.lifts ? ` · ${esc(tr('d_lifts', p.lifts.open, p.lifts.total))}` : ''}</span>`;
-  if (p?.status === 'closed') return `<span class="dst closed">● ${esc(tr('d_closed'))}</span>`;
+  const lifts = p?.lifts ? ` · ${esc(tr('d_lifts', p.lifts.open, p.lifts.total))}` : '';
+  if (p?.status === 'open') return `<span class="dst open">● ${esc(tr('d_open'))}${lifts}</span>`;
+  if (p?.status === 'closed') return `<span class="dst closed">● ${esc(tr('d_closed'))}${lifts}</span>`;
   return `<span class="dst na">${esc(tr('d_nolift'))}</span>`;
 }
-function driveHtml(r) {
-  const d = D.drive[r.id];
-  if (d?.min != null) return `<b>${durTxt(d.min)}</b><small>${esc(tr('d_drive'))} · ${esc(tr('d_nt'))}</small>`;
-  return `<b>${kmTxt(distKm(r))}</b><small>${esc(tr('d_straight'))}</small>`;
+const baseTxt = (cm, u) => cm == null ? null : u === 'imperial' ? `${Math.round(cm / 2.54)}″` : `${Math.round(cm)} cm`;
+const nf0 = n => Number(n).toLocaleString(X.state.lang === 'zh' ? 'zh-CN' : 'en-US');
+function terrainTip(p) {
+  if (!p || p.pct == null) return '';
+  return p.basis === 'acres' && p.acres ? tr('d_acres', nf0(p.acres.open), nf0(p.acres.total)) : p.trails ? tr('d_trails', nf0(p.trails.open), nf0(p.trails.total)) : '';
+}
+const nr = () => `<b class="nr">${esc(tr('d_nr'))}</b>`;
+/** When the numbers on a card were last updated: the resort report's own time if it has one, else the model run. */
+function cardUpd(r) {
+  const p = report(r), c = cond(r);
+  const t = p ? ([p.at, p.snowAt].filter(Boolean).sort().pop() || p.fetchedAt) : c?.at;
+  return t ? tr('d_upd', updTime(t)) : '';
+}
+function statsHtml(r, u) {
+  const c = cond(r), p = report(r), s24 = snow24(r), rep = rep24(p) != null, b = baseCm(r), pc = pctOpen(r);
+  return `<span><b>${s24 != null ? fmt.snow(s24, u) : '—'}</b><small>${esc(tr('d_new'))}${rep ? ' ✓' : ''}</small></span>
+        <span title="${esc(b != null ? tr('d_rep') : '')}">${b != null ? `<b>${baseTxt(b, u)}</b>` : nr()}<small>${esc(tr('d_base'))}</small></span>
+        <span title="${esc(terrainTip(p))}">${pc != null ? `<b>${pc}%</b>` : nr()}<small>${esc(tr('d_terrain'))}</small></span>
+        <span><b>${c ? fmt.snow(c.summit.s72, u) : '—'}</b><small>${esc(tr('d_fc72'))}</small></span>`;
 }
 const photoStyle = r => r.photo?.src ? ` style="background-image:url('${esc(r.photo.src)}')"` : '';
 
 function card(r, { rank } = {}) {
-  const c = cond(r), u = U(), f = favs().includes(r.id), sc = score(r), p = report(r);
-  const snow24 = p?.snow24 != null ? p.snow24 : c?.summit.s24;
+  const c = cond(r), u = U(), f = favs().includes(r.id), sc = score(r);
   return `<article class="dcard" data-open="${r.id}">
     <div class="dph${r.photo ? '' : ' ph0'}"${photoStyle(r)}>${rank ? `<span class="drank">${rank}</span>` : ''}${r.detail === 'full' ? `<span class="dfull">${esc(tr('d_full'))}</span>` : ''}</div>
     <div class="dbody">
@@ -221,12 +238,9 @@ function card(r, { rank } = {}) {
         <button type="button" class="dfav${f ? ' on' : ''}" data-fav="${r.id}" aria-pressed="${f}" aria-label="${esc(tr(f ? 'd_remfav' : 'd_addfav'))}" title="${esc(tr(f ? 'd_remfav' : 'd_addfav'))}">${f ? '★' : '☆'}</button></div>
       <div class="dmeta">${esc(stateTxt(r))} · ${esc(passTxt(r))}${sc ? ` · <span class="dsc" title="${esc(tr('d_score_help'))}">${sc.total} ${esc(tr('d_score_s'))}</span>` : ''}</div>
       <div class="dstats">
-        <span><b>${c ? fmt.temp(c.summit.t, u) : '—'}</b><small>${esc(tr('d_temp'))}</small></span>
-        <span><b>${snow24 != null ? fmt.snow(snow24, u) : '—'}</b><small>${esc(tr('d_new'))}${p?.snow24 != null ? ' ✓' : ''}</small></span>
-        <span><b>${c ? fmt.snow(c.summit.s72, u) : '—'}</b><small>${esc(tr('d_fc72'))}</small></span>
-        <span>${driveHtml(r)}</span>
+        ${statsHtml(r, u)}
       </div>
-      <div class="dfoot">${statusHtml(r)}<span class="dupd">${c ? esc(tr('d_upd', updTime(p?.fetchedAt || c.at))) : ''}</span></div>
+      <div class="dfoot">${statusHtml(r)}<span class="dupd">${c || report(r) ? esc(cardUpd(r)) : ''}</span></div>
       <div class="dact"><button type="button" class="dgo" data-open="${r.id}">${esc(tr('d_view'))} →</button>
         <label class="dcmp"><input type="checkbox" data-cmp="${r.id}"${D.cmp.includes(r.id) ? ' checked' : ''}${!D.cmp.includes(r.id) && D.cmp.length >= 4 ? ' disabled' : ''}> ${esc(tr('d_compare'))}</label></div>
     </div>
@@ -243,11 +257,11 @@ function filtered(list) {
 }
 const SORTS = {
   score: (a, b) => (score(b)?.total ?? -1) - (score(a)?.total ?? -1),
-  snow: (a, b) => (score(b)?.snow ?? -1) - (score(a)?.snow ?? -1) || (cond(b)?.summit.s24 ?? 0) - (cond(a)?.summit.s24 ?? 0),
-  close: (a, b) => (driveMin(a) ?? distKm(a) * 0.9) - (driveMin(b) ?? distKm(b) * 0.9),
-  weather: (a, b) => ((score(b)?.temp ?? 0) + (score(b)?.wind ?? 0)) - ((score(a)?.temp ?? 0) + (score(a)?.wind ?? 0)),
-  wind: (a, b) => (cond(a)?.summit.wind ?? 999) - (cond(b)?.summit.wind ?? 999),
+  snow: (a, b) => (snow24(b) ?? -1) - (snow24(a) ?? -1) || SORTS.score(a, b),
+  close: (a, b) => distKm(a) - distKm(b),
   fcst: (a, b) => (cond(b)?.summit.s72 ?? -1) - (cond(a)?.summit.s72 ?? -1),
+  base: (a, b) => (baseCm(b) ?? -1) - (baseCm(a) ?? -1) || SORTS.score(a, b),
+  terrain: (a, b) => (pctOpen(b) ?? -1) - (pctOpen(a) ?? -1) || (report(b)?.acres?.open ?? report(b)?.trails?.open ?? 0) - (report(a)?.acres?.open ?? report(a)?.trails?.open ?? 0) || SORTS.score(a, b),
   open: (a, b) => ((report(b)?.status === 'open') - (report(a)?.status === 'open')) || SORTS.score(a, b)
 };
 function currentList() {
@@ -257,7 +271,7 @@ function currentList() {
     return { title: tr('d_results', esc(D.q.trim())), list: filtered(hits), ranked: false };
   }
   if (D.tab === 'fav') return { title: tr('d_fav'), list: filtered(favs().map(id => D.byId.get(id))), empty: tr('d_fav_empty') };
-  if (D.tab === 'near') return { title: tr('d_near_h'), list: filtered([...all].sort(SORTS.close)), note: tr('d_drive_note') };
+  if (D.tab === 'near') return { title: tr('d_near_h'), list: filtered([...all].sort(SORTS.close)), note: tr('d_drive_note', X.L(startPt().name) || '') };
   if (D.tab === 'explore') return { title: tr('d_explore_h'), list: filtered(all), grouped: true };
   return { title: tr('d_best_near'), list: filtered([...all].sort(SORTS[D.sort] || SORTS.score)), ranked: true, sortable: true, note: tr('d_best_note', X.L(startPt().name) || '') };
 }
@@ -303,7 +317,7 @@ function renderShell() {
 function renderRecent() {
   const r = recents();
   $('#d-recent').innerHTML = r.length ? `<h2 class="ov">${esc(tr('d_recent'))}</h2><div class="rvchips">${r.map(id => { const x = D.byId.get(id); const c = cond(x);
-    return `<button type="button" class="rvchip" data-open="${id}"><span class="rvchip-ph${x.photo ? '' : ' ph0'}"${photoStyle(x)}></span><span><b>${esc(x.name)}</b><small>${esc(stateTxt(x))} · ${c ? `${fmt.temp(c.summit.t, U())} · ${fmt.snow(c.summit.s24, U())}` : esc(passTxt(x))}</small></span></button>`; }).join('')}</div>` : '';
+    return `<button type="button" class="rvchip" data-open="${id}"><span class="rvchip-ph${x.photo ? '' : ' ph0'}"${photoStyle(x)}></span><span><b>${esc(x.name)}</b><small>${esc(stateTxt(x))} · ${c ? `${fmt.snow(snow24(x), U())} ${esc(tr('d_new'))}${baseCm(x) != null ? ` · ${baseTxt(baseCm(x), U())} ${esc(tr('d_base'))}` : ''}` : esc(passTxt(x))}</small></span></button>`; }).join('')}</div>` : '';
 }
 function renderBar(meta) {
   const im = U() === 'imperial', f = D.f;
@@ -316,7 +330,7 @@ function renderBar(meta) {
     <label class="ff"><span>${esc(tr('d_pass'))}</span><select data-f="pass">${opt('', tr('d_allp'), f.pass)}${opt('ikon', 'Ikon', f.pass)}${opt('epic', 'Epic', f.pass)}${opt('other', tr('d_other'), f.pass)}</select></label>
     <label class="ff"><span>${esc(tr('d_status'))}</span><select data-f="status">${opt('', tr('d_any'), f.status)}${opt('open', tr('d_open_only'), f.status)}${opt('notclosed', tr('d_hide_closed'), f.status)}</select></label>
     <label class="ff"><span>${esc(tr('d_dist'))}</span><select data-f="dist">${opt('', tr('d_any'), f.dist)}${dists.map(([v, l]) => opt(v, tr('d_within', l), f.dist)).join('')}</select></label>
-    ${meta.sortable ? `<label><span>${esc(tr('d_sort'))}</span><select id="d-sort">${['score', 'snow', 'close', 'weather', 'wind', 'fcst', 'open'].map(k => opt(k, tr('s_' + k), D.sort)).join('')}</select></label>` : ''}
+    ${meta.sortable ? `<label><span>${esc(tr('d_sort'))}</span><select id="d-sort">${['score', 'snow', 'fcst', 'base', 'terrain', 'open', 'close'].map(k => opt(k, tr('s_' + k), D.sort)).join('')}</select></label>` : ''}
     <details class="dhelp"><summary>ⓘ ${esc(tr('d_score'))}</summary><p>${esc(tr('d_score_help'))}</p><p class="small muted">${esc(tr('d_model'))}</p></details>
     <div class="dvt" role="group" aria-label="${esc(tr('d_list'))} / ${esc(tr('d_map'))}"><button type="button" data-vt="list" class="${D.view === 'list' ? 'on' : ''}">☰ ${esc(tr('d_list'))}</button><button type="button" data-vt="map" class="${D.view === 'map' ? 'on' : ''}">🗺️ ${esc(tr('d_map'))}</button></div>`;
 }
@@ -343,7 +357,6 @@ function renderList() {
   $('#d-list').innerHTML = html;
   renderTray();
   if (D.map) drawMarkers(meta.list);
-  if (D.tab === 'near' || D.tab === 'best' || D.sort === 'close') estimateDrives([...D.cat.resorts].sort((a, b) => distKm(a) - distKm(b)));
 }
 function renderTray() {
   const t = $('#d-tray'); if (!t) return;
@@ -358,14 +371,16 @@ function renderCompare() {
     ${row(tr('d_region'), r => `${esc(regionName(r.region))} · ${esc(r.state)}`)}
     ${row(tr('d_pass'), r => esc(passTxt(r)))}
     ${row(tr('d_score'), r => { const s = score(r); return s ? `<b>${s.total}</b>/100` : '—'; })}
-    ${row(tr('d_temp'), r => cond(r) ? fmt.temp(cond(r).summit.t, u) : '—')}
-    ${row(`${tr('b_now')} · ${tr('b_mid')}`, r => cond(r) ? fmt.temp(cond(r).mid.t, u) : '—')}
-    ${row(tr('d_new'), r => { const p = report(r); return p?.snow24 != null ? `${fmt.snow(p.snow24, u)} ✓` : cond(r) ? fmt.snow(cond(r).summit.s24, u) : '—'; })}
-    ${row(tr('d_fc72'), r => cond(r) ? fmt.snow(cond(r).summit.s72, u) : '—')}
-    ${row(tr('d_wind'), r => cond(r) ? `${fmt.wind(cond(r).summit.wind, u)} <small class="muted">(${fmt.wind(cond(r).summit.gust, u)})</small>` : '—')}
-    ${row(tr('d_drive'), r => driveHtml(r).replace(/<small>/, ' <small class="muted">'))}
-    ${row(tr('b_elev'), r => fmt.elevRange(r.baseElevM, r.summitElevM, u))}
     ${row(tr('d_status'), r => statusHtml(r))}
+    ${row(tr('d_new'), r => { const v = snow24(r); return v == null ? '—' : `${fmt.snow(v, u)}${rep24(report(r)) != null ? ' ✓' : ''}`; })}
+    ${row(tr('d_base'), r => baseCm(r) != null ? `<b>${baseTxt(baseCm(r), u)}</b>` : `<span class="muted">${esc(tr('d_nr'))}</span>`)}
+    ${row(tr('d_terrain'), r => pctOpen(r) != null ? `<b>${pctOpen(r)}%</b> <small class="muted">${esc(terrainTip(report(r)))}</small>` : `<span class="muted">${esc(tr('d_nr'))}</span>`)}
+    ${row(tr('d_fc72'), r => cond(r) ? fmt.snow(cond(r).summit.s72, u) : '—')}
+    ${row(tr('d_temp'), r => cond(r) ? fmt.temp(cond(r).summit.t, u) : '—')}
+    ${row(tr('d_wind'), r => cond(r) ? `${fmt.wind(cond(r).summit.wind, u)} <small class="muted">(${fmt.wind(cond(r).summit.gust, u)})</small>` : '—')}
+    ${row(tr('d_dist_start'), r => `${kmTxt(distKm(r))} <small class="muted">${esc(tr('d_straight'))}</small>`)}
+    ${row(tr('b_elev'), r => fmt.elevRange(r.baseElevM, r.summitElevM, u))}
+    ${row(tr('d_upd', '').trim() || 'Updated', r => esc(cardUpd(r).replace(tr('d_upd', ''), '').trim() || '—'))}
     </tbody></table></div><p class="small muted">${esc(tr('d_model'))} ✓ = ${X.state.lang === 'zh' ? '雪场公布' : 'resort-reported'}</p></div>`;
   $('#d-modal').hidden = false;
   X.track('disc_compare', 'open');
@@ -373,12 +388,12 @@ function renderCompare() {
 
 /* ---------- map ---------- */
 function miniCard(r) {
-  const c = cond(r), u = U(), f = favs().includes(r.id), d = D.drive[r.id], p = report(r);
-  const s24 = p?.snow24 != null ? p.snow24 : c?.summit.s24;
+  const c = cond(r), u = U(), f = favs().includes(r.id), p = report(r), s24 = snow24(r), b = baseCm(r), pc = pctOpen(r);
   return `<div class="dmini"><b>${esc(r.name)}</b><span class="muted">${esc(stateTxt(r))} · ${esc(passTxt(r))}</span>
-    ${p ? statusHtml(r) : ''}
-    <span>${c ? `${fmt.temp(c.summit.t, u)} · ${fmt.snow(s24, u)}${p?.snow24 != null ? ' ✓' : ''} ${esc(tr('d_new'))} · ${fmt.snow(c.summit.s72, u)} ${esc(tr('d_fc72'))}` : '—'}</span>
-    <span>${d?.min != null ? `🚗 ${durTxt(d.min)} (${esc(tr('d_nt'))})` : `📍 ${kmTxt(distKm(r))} ${esc(tr('d_straight'))}`}</span>
+    ${statusHtml(r)}
+    <span>❄️ ${s24 != null ? fmt.snow(s24, u) : '—'}${rep24(p) != null ? ' ✓' : ''} ${esc(tr('d_new'))} · ${c ? fmt.snow(c.summit.s72, u) : '—'} ${esc(tr('d_fc72'))}</span>
+    <span>${esc(tr('d_base'))}: ${b != null ? `<b>${baseTxt(b, u)}</b>` : `<span class="muted">${esc(tr('d_nr'))}</span>`} · ${esc(tr('d_terrain'))}: ${pc != null ? `<b>${pc}%</b>` : `<span class="muted">${esc(tr('d_nr'))}</span>`}</span>
+    <span class="muted small">${esc(cardUpd(r))}</span>
     <span class="dmini-a"><button type="button" class="dgo" data-open="${r.id}">${esc(tr('d_view'))}</button><button type="button" class="dlink" data-fav="${r.id}">${f ? '★ ' + esc(tr('d_remfav')) : '☆ ' + esc(tr('d_addfav'))}</button></span></div>`;
 }
 function drawMarkers(list, force) {
@@ -548,7 +563,7 @@ function table7(pt) {
 }
 export function renderBasic() {
   const B = D.basic, r = D.byId.get(B.id), el = $('#basic'); if (!r || !el) return;
-  const c = cond(r), u = U(), f = favs().includes(r.id), s = startPt();
+  const c = cond(r), u = U(), f = favs().includes(r.id), s = startPt(), p = report(r);
   const pt = B.fc ? B.fc[B.point] : null;
   const rt = B.route;
   el.innerHTML = `
@@ -558,11 +573,13 @@ export function renderBasic() {
     <p class="bmeta2">${esc(r.city)}, ${esc(stateTxt(r))} · ${esc(regionName(r.region))} · ${esc(passTxt(r))} · ${esc(r.range)}</p>
     <div class="vpanel"><div class="tiles">
       <div class="tile"><span class="ti">🌡️</span><b>${c ? fmt.temp(c.summit.t, u) : '—'}</b><span>${esc(tr('d_temp'))}</span><small class="dnote">${esc(tr('b_mid'))} ${c ? fmt.temp(c.mid.t, u) : '—'}</small></div>
-      <div class="tile"><span class="ti">❄️</span><b>${c ? fmt.snow(c.summit.s24, u) : '—'}</b><span>${esc(tr('d_new'))}</span><small class="dnote">model</small></div>
+      <div class="tile"><span class="ti">❄️</span><b>${snow24(r) != null ? fmt.snow(snow24(r), u) : '—'}</b><span>${esc(tr('d_new'))}</span><small class="dnote">${rep24(p) != null ? '✓ ' + esc(tr('d_rep')) : 'model'}</small></div>
+      <div class="tile"><span class="ti">📏</span><b${baseCm(r) == null ? ' class="nr"' : ''}>${baseCm(r) != null ? baseTxt(baseCm(r), u) : esc(tr('d_nr'))}</b><span>${esc(tr('d_base'))}</span>${baseCm(r) != null ? `<small class="dnote">${esc(tr('d_rep'))}</small>` : ''}</div>
+      <div class="tile"><span class="ti">🎿</span><b${pctOpen(r) == null ? ' class="nr"' : ''}>${pctOpen(r) != null ? pctOpen(r) + '%' : esc(tr('d_nr'))}</b><span>${esc(tr('d_terrain'))}</span><small class="dnote">${p?.lifts ? esc(tr('d_lifts', p.lifts.open, p.lifts.total)) + (terrainTip(p) ? ' · ' : '') : ''}${esc(terrainTip(p))}</small></div>
       <div class="tile"><span class="ti">📈</span><b>${c ? fmt.snow(c.summit.s72, u) : '—'}</b><span>${esc(tr('d_fc72'))}</span></div>
       <div class="tile"><span class="ti">🚗</span><b>${rt ? durTxt(Math.round(rt.durS / 60)) : kmTxt(distKm(r))}</b><span>${rt ? esc(tr('d_drive')) + ' · ' + esc(tr('d_nt')) : esc(tr('d_straight'))}</span><small class="dnote">${esc(tr('b_drive_from', X.L(s.name) || ''))}</small></div>
     </div></div>
-    <p class="blimit">ⓘ ${esc(tr('b_limited'))}</p>
+    <p class="blimit">ⓘ ${p ? `${esc(tr('b_limited_rep', p.source?.name || ''))} ${esc(cardUpd(r))}. ${p.source?.url ? `<a href="${esc(p.source.url)}" target="_blank" rel="noopener">${esc(tr('d_rep_src', new URL(p.source.url).host.replace(/^www\./, '')))} ↗</a>` : ''}` : esc(tr('b_limited'))}</p>
     ${r.photo ? `<p class="hero-credit">📷 ${esc(r.photo.credit)} · <a href="${esc(r.photo.page)}" target="_blank" rel="noopener">${esc(r.photo.license)}</a></p>` : ''}
   </div></div>
   <main class="wrap">
@@ -613,6 +630,7 @@ export async function showBasic(id) {
   }
   const r = D.byId.get(id);
   const jobs = [];
+  if (!D.cond) jobs.push(loadConditions(true).finally(() => { if (D.basic.id === id && X.view() === 'basic') renderBasic(); }));
   if (!B.fc) jobs.push(X.getJson(`api/forecast.json?r=${encodeURIComponent(id)}`, 20000).then(j => { if (D.basic.id === id) B.fc = j; }).catch(() => { if (D.basic.id === id) B.fcErr = true; }).finally(() => { if (D.basic.id === id && X.view() === 'basic') renderBasic(); }));
   if (!B.route) jobs.push(getRoute(X.state.cfg, startPt(), r).then(rt => { if (D.basic.id === id) B.route = rt; }).catch(() => { if (D.basic.id === id) B.routeErr = true; }).finally(() => { if (D.basic.id === id && X.view() === 'basic') renderBasic(); }));
   await Promise.allSettled(jobs);

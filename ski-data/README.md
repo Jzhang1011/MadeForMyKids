@@ -24,3 +24,22 @@ Deploy: `npx wrangler@4 deploy` from this folder.
 - `GET /ski/api/catalog-conditions.json`: merged summary (summit/mid temperature, wind, 24 h past and 72 h forecast snowfall, cm/°C/km/h) plus resort-reported status/lifts only for resorts with a report feed (intel). No lift data is invented for other resorts.
 - `GET /ski/api/forecast.json?r=<id>`: 7-day hourly/daily forecast for one catalog resort (basic view), edge-cached 30 minutes.
 - Manual refresh: `POST /ski/api/run?sources=catalog` with the refresh token.
+
+## Resort reports on catalog cards (base depth, terrain open, lifts, 24 h snow)
+
+`src/reports.js` reads the public, keyless feeds that 47 of the 77 catalog resorts' own websites load
+(`catalog.json` → `resorts[].report`): MountainPowder (Alterra and partners), Vail Resorts' terrain and
+snow-report pages (embedded JSON), the POWDR "dor" API, Boyne "reportpal", Jackson Hole, Aspen Snowmass,
+Taos, Sundance, RED Mountain and Sun Valley (mountain.live, lifts/trails only).
+
+- Each resort is fetched at most once an hour: the reports for a catalog slice run on the same 15-min tick
+  as its Open-Meteo call and are stored in the same `cat:b{n}` KV value (no extra KV writes).
+- Parsing a resort page costs a few ms of CPU, so the cron fans the work out to small authorized
+  `POST /api/run?sources=reports` sub-requests to this Worker's workers.dev URL (one Vail resort or three
+  JSON feeds each), keeping every invocation near the free plan's CPU limit.
+- Values are copied, never estimated. `pct` = open acres / total acres when the feed reports acres,
+  else open trails / total trails (`basis`). Base depth older than 14 days and 24 h snow older than 36 h
+  are dropped; a base of 0 at a resort with no lifts running is treated as the feed's placeholder.
+  Status comes from lift counts. Missing = `null` → "Not reported" in the UI.
+- A failed fetch keeps the previous value, marked `stale`.
+- Manual refresh of one slice: `POST /ski/api/run?sources=catalog&batch=N` (bearer token).

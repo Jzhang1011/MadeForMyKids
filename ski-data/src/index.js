@@ -6,6 +6,7 @@ import { DurableObject } from 'cloudflare:workers';
 import bundledCfg from '../../ski/data/resorts.json';
 import STATS_HTML from './stats.html';
 import { SOURCES, runSources, toLatest, toIntel, toCameras } from '../../ski/scripts/collect.mjs';
+import { fetchReport } from './reports.js';
 import { BATCHES, refreshCatalogBatch, serveCatalogConditions, fetchForecast, catalogIds } from './catalog.js';
 
 const CFG_URL = 'https://raw.githubusercontent.com/Jzhang1011/MadeForMyKids/main/ski/data/resorts.json';
@@ -199,6 +200,11 @@ export default {
         const only = url.searchParams.get('batch');
         const bs = only != null && /^\d$/.test(only) && +only < BATCHES ? [+only] : [...Array(BATCHES).keys()];
         out.catalog = []; for (const b of bs) out.catalog.push(await refreshCatalogBatch(env, b));
+      }
+      if (want.includes('reports')) { // fan-out worker: fetch the posted resorts' reports in this invocation (own CPU budget), no KV writes
+        const body = await request.json().catch(() => null);
+        const list = Array.isArray(body?.resorts) ? body.resorts.slice(0, 8) : [];
+        return json({ reports: await Promise.all(list.map(async r => [r.id, await fetchReport(r, null)])) }, 200, { 'Cache-Control': 'no-store' });
       }
       const names = want.filter(n => SOURCES.includes(n) || n === 'cotrip');
       if (names.length) Object.assign(out, await refresh(env, names));
