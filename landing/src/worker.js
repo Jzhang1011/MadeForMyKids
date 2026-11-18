@@ -6,8 +6,8 @@
 //   www.madeformyfamily.com  -> 301 to the apex
 //   madeformykids.com (+www) -> kids learning portal, proxied from GitHub Pages
 //                               (private.madeformykids.com). Family Board pages 301 ->
-//                               madeformyfamily.com. /ski/ pages 301 -> followthepowder.com
-//                               (SkiDay's new home); /ski/ assets + /ski/api/* still served for old tabs.
+//                               madeformyfamily.com. /ski/* 301 -> followthepowder.com/* (SkiDay's
+//                               home, repo Jzhang1011/followthepowder); /ski/api/* still proxied to ski-data.
 
 const FAMILY_HOST = 'madeformyfamily.com';
 const FAMILY_ORIGIN = 'https://madeformyfamily.com';
@@ -78,17 +78,14 @@ export default {
     // madeformykids.com, www.madeformykids.com, workers.dev preview
     if (hasPrefix(path, FAMILY_PREFIXES)) return redirect(FAMILY_ORIGIN, url);
     if (hasPrefix(path, BLOCKED_PREFIXES)) return new Response('Not found', { status: 404 });
-    // SkiDay moved to https://followthepowder.com (root). Pages (/ski, /ski/, ?resort= deep links, *.html)
-    // 301 there with the query kept. Assets, data and /ski/api/* keep working here for a while so pages
-    // already open or cached in browsers (4 h) don't break mid-session.
-    if (path === '/ski' || path.startsWith('/ski/')) {
-      const rest = path.slice(4) || '/';
-      const last = rest.split('/').pop();
-      const isPage = !rest.startsWith('/api/') && (last === '' || last.endsWith('.html') || !last.includes('.'));
-      if (isPage) return new Response(null, { status: 301, headers: { Location: SKI_ORIGIN + rest.replace(/\/index\.html$/, '/') + url.search, 'Cache-Control': 'public, max-age=3600' } });
-    }
-    // Ski dashboard data API (scheduled refresh + KV) lives in the ski-data Worker.
+    // SkiDay moved to https://followthepowder.com (repo Jzhang1011/followthepowder). /ski/api/* still goes to
+    // the ski-data Worker so tabs opened before the move (and their event beacons) keep working; everything
+    // else under /ski 301s to the same path at the new root, query kept (?resort= deep links, assets too).
     if (path.startsWith('/ski/api/') && env.SKI_DATA_SVC) return env.SKI_DATA_SVC.fetch(request);
+    if (path === '/ski' || path.startsWith('/ski/')) {
+      const rest = (path.slice(4) || '/').replace(/\/index\.html$/, '/');
+      return new Response(null, { status: 301, headers: { Location: SKI_ORIGIN + rest + url.search, 'Cache-Control': 'public, max-age=86400' } });
+    }
     return proxyPortal(request, url);
   }
 };

@@ -7,7 +7,8 @@ main = "src/worker.js"
 #    marketing pages from ./public (/, /guides/, /visual-guidance/, /visual-schedules/).
 #    Everything else 301s to www.madeformykids.com.
 #  - madeformykids.com + www (Workers custom domains, set in the dashboard): the kids
-#    learning portal and /ski/, proxied from GitHub Pages (private.madeformykids.com).
+#    learning portal, proxied from GitHub Pages (private.madeformykids.com). /ski/* 301s to
+#    https://followthepowder.com/* (SkiDay, repo Jzhang1011/followthepowder).
 #    Family Board pages 301 to madeformyfamily.com.
 # No routes are declared here on purpose: `wrangler deploy` then leaves the existing
 # dashboard-managed custom domains and routes untouched.
@@ -18,7 +19,7 @@ directory = "./public"
 binding = "ASSETS"
 run_worker_first = true
 
-# /ski/api/* -> ski-data Worker (../ski-data: cron refresh + KV-backed JSON for madeformykids.com/ski).
+# /ski/api/* -> ski-data Worker (code in Jzhang1011/followthepowder, workers/ski-data), kept for old SkiDay tabs.
 [[services]]
 binding = "SKI_DATA_SVC"
 service = "ski-data"
