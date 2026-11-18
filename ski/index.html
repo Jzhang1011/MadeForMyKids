@@ -3,13 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>SkiDay · Where do you want to ski? Resort conditions, snow &amp; drive times</title>
-  <meta name="description" content="Find a ski resort and check today's conditions: search 75+ North American resorts (Ikon, Epic and more), new and forecast snow, summit temperature and wind, drive estimates, favorites, map and a transparent ski-day score. Full go / no-go dashboards for A-Basin, Copper and Steamboat." />
-  <link rel="canonical" href="https://www.madeformykids.com/ski/" />
+  <title>SkiDay</title>
+  <meta name="description" content="SkiDay: find a ski resort and check today's conditions. Search 75+ North American resorts (Ikon, Epic and more): new and forecast snow, resort-reported base depth, terrain open and lifts, favorites, map and a transparent ski-day score. Full go / no-go dashboards for A-Basin, Copper and Steamboat." />
+  <link rel="canonical" href="https://followthepowder.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SkiDay" />
+  <meta property="og:title" content="SkiDay" />
+  <meta property="og:description" content="Where do you want to ski? Today's snow, base depth and terrain open for 75+ North American resorts." />
+  <meta property="og:url" content="https://followthepowder.com/" />
+  <meta name="twitter:card" content="summary" />
   <meta name="theme-color" content="#14283F" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛷️</text></svg>" />
   <link rel="preload" href="fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="css/ski.css?v=97a5852266" />
+  <link rel="stylesheet" href="css/ski.css?v=a51aa11193" />
 </head>
 <body>
   <script>document.body.className = 'v-' + (/[?&]resort=/.test(location.search) ? 'dash' : 'disc');</script>
@@ -64,7 +70,7 @@
   </div>
 
   <nav class="bnav" id="bnav" aria-label="Sections"></nav>
-  <script type="module" src="js/app.js?v=97a5852266"></script>
+  <script type="module" src="js/app.js?v=a51aa11193"></script>
   <script nomodule>document.getElementById('verdict').innerHTML='<p style="padding:16px">This browser is too old for SkiDay. Please update iOS / your browser.</p>';</script>
   <script>
     // Safety net: if the app has not started after 12 s (blocked script, network or a JS error), say so instead of a blank page.

@@ -1,9 +1,9 @@
 import { openMeteoUrl, splitOpenMeteo, dailyRows, hourlyRows, weatherEmoji, carsUrl, slimEvents, EVENT_CLASSES,
-  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=97a5852266';
-import { STR, PACK_DEFAULT } from './i18n.js?v=97a5852266';
-import { selectCameras, routeSegments, inCO } from './route.js?v=97a5852266';
-import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=97a5852266';
-import { initDiscover, loadCatalog, loadConditions, renderDiscover, resolveResort, addRecent, showBasic, renderBasic } from './discover.js?v=97a5852266';
+  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=a51aa11193';
+import { STR, PACK_DEFAULT } from './i18n.js?v=a51aa11193';
+import { selectCameras, routeSegments, inCO } from './route.js?v=a51aa11193';
+import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=a51aa11193';
+import { initDiscover, loadCatalog, loadConditions, renderDiscover, resolveResort, addRecent, showBasic, renderBasic } from './discover.js?v=a51aa11193';
 
 const LS = {
   get: (k, d) => { try { const v = localStorage.getItem('ski.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -23,7 +23,7 @@ const $ = s => document.querySelector(s);
 /** Anonymous usage count (allowlisted event + label, no IDs/cookies). Production host only; never throws. */
 function track(e, v) {
   try {
-    if (!/(^|\.)madeformykids\.com$/.test(location.hostname) || !navigator.sendBeacon) return;
+    if (!/^(www\.)?(followthepowder|madeformykids)\.com$/.test(location.hostname) || !navigator.sendBeacon) return;
     navigator.sendBeacon('api/event', new Blob([JSON.stringify({ e, v: String(v ?? '') })], { type: 'text/plain' }));
   } catch { /* stats are optional */ }
 }

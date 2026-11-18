@@ -2,8 +2,8 @@
 // Each provider reads the same public, keyless feed the resort's own website loads, at most once an hour per resort
 // (one catalog slice per 15-min cron tick). Values are copied, never estimated: anything a feed does not report is
 // null ("Not reported"). Depths/snow are stored in cm. Config: catalog.json resorts[].report.
-const UA = 'madeformykids.com ski-data (non-commercial family ski dashboard; hourly)';
-const HTML_UA = 'Mozilla/5.0 (compatible; madeformykids-ski-dashboard; +https://madeformykids.com/ski/)';
+const UA = 'SkiDay ski-data (followthepowder.com; non-commercial family ski dashboard; hourly)';
+const HTML_UA = 'Mozilla/5.0 (compatible; SkiDay-dashboard; +https://followthepowder.com/)';
 const DAY = 864e5;
 
 const num = v => { if (v == null || v === '' || v === '--') return null; const n = parseFloat(String(v).replace(/,/g, '')); return Number.isFinite(n) ? n : null; };

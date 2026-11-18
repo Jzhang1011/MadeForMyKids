@@ -1,6 +1,7 @@
-// ski-data: scheduled data refresh + JSON API for madeformykids.com/ski.
+// ski-data: scheduled data refresh + JSON API for SkiDay (https://followthepowder.com; old madeformykids.com/ski).
 //   Cron -> fetch upstream (Open-Meteo, CDOT COtrip, NWS, resort feeds) -> merge with last good -> KV.
-//   GET  /ski/api/latest.json | intel.json | cameras.json | status.json   (served via madeformykids-landing)
+//   GET  /api/latest.json | intel.json | cameras.json | status.json   (followthepowder.com/api/* via the followthepowder Worker;
+//        madeformykids.com/ski/api/* via madeformykids-landing during the overlap)
 //   POST /ski/api/run?sources=weather,roads   Authorization: Bearer <REFRESH_TOKEN>
 import { DurableObject } from 'cloudflare:workers';
 import bundledCfg from '../../ski/data/resorts.json';
@@ -114,7 +115,7 @@ const EVENTS = {
   disc_fav: ['add', 'remove'],
   disc_compare: ['open']
 };
-const SITE_HOSTS = ['madeformykids.com', 'www.madeformykids.com'];
+const SITE_HOSTS = ['followthepowder.com', 'madeformykids.com', 'www.madeformykids.com']; // madeformykids: old cached pages during the move
 const denverDay = (d = new Date()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
 
 export class SkiCounter extends DurableObject {
@@ -155,10 +156,10 @@ export class SkiCounter extends DurableObject {
 }
 
 async function handleEvent(request, env) {
-  const ok = () => new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': 'https://madeformykids.com', 'Cache-Control': 'no-store' } });
   // Only the site itself (sendBeacon sends Origin); anything else is ignored silently.
   const origin = request.headers.get('Origin') || request.headers.get('Referer') || '';
   let host = ''; try { host = new URL(origin).hostname; } catch {}
+  const ok = () => new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': SITE_HOSTS.includes(host) ? `https://${host}` : 'https://followthepowder.com', 'Cache-Control': 'no-store', Vary: 'Origin' } });
   if (!SITE_HOSTS.includes(host)) return ok();
   const text = await request.text();
   if (text.length > 200) return ok();

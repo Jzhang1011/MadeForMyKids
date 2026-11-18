@@ -6,7 +6,7 @@
 import { fetchAllIntel } from '../js/intel.js';
 import { openMeteoUrl, splitOpenMeteo, carsUrl, slimEvents, EVENT_CLASSES, nwsUrl, slimAlerts } from '../js/core.js';
 
-export const UA = 'madeformykids-ski-dashboard (https://madeformykids.com/ski/)';
+export const UA = 'SkiDay ski dashboard (https://followthepowder.com/)';
 export const SOURCES = ['weather', 'roads', 'alerts', 'cameras', 'intel'];
 const now = () => new Date().toISOString();
 

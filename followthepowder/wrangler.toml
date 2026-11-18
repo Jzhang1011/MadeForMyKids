@@ -1,0 +1,18 @@
+name = "followthepowder"
+compatibility_date = "2026-11-06"
+main = "worker.js"
+workers_dev = false
+
+# SkiDay at https://followthepowder.com (apex canonical; www 301s to the apex).
+# Static files: proxied from GitHub Pages (Jzhang1011/MadeForMyKids, ski/ folder) with the /ski prefix
+# stripped, so a push to main is still the only deploy step for the site itself.
+# /api/* -> ski-data Worker (cron refresh, KV, counters) through a service binding.
+# Custom domains: wrangler creates the proxied DNS records and the edge certificates.
+routes = [
+  { pattern = "followthepowder.com", custom_domain = true },
+  { pattern = "www.followthepowder.com", custom_domain = true }
+]
+
+[[services]]
+binding = "SKI_DATA_SVC"
+service = "ski-data"

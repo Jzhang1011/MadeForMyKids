@@ -1,6 +1,6 @@
-# Ski Trip Go / No-Go dashboard
+# SkiDay: resort discovery + Go / No-Go dashboard
 
-Live: https://madeformykids.com/ski/
+Live: https://followthepowder.com/ (www and the old https://madeformykids.com/ski/ 301 here)
 
 A self-contained, no-build static app (HTML + ES modules) that answers "do we drive up today?"
 for a Denver (DEN) → Arapahoe Basin / Copper Mountain / Steamboat ski trip.
@@ -38,9 +38,16 @@ links) and its `route` as a list of `segments` (route names + bbox). Cameras ref
 `shop.enabled` reserves a nav slot for a future gear shop.
 
 ## How it is served
-`ski/` is part of the GitHub Pages site (private.madeformykids.com). The `madeformykids-landing` Worker
-proxies madeformykids.com (and www) to Pages, so a push to `main` is all that's needed; no separate deploy.
-Canonical URL: https://www.madeformykids.com/ski/
+Code stays in this folder (`ski/` of Jzhang1011/MadeForMyKids), published by GitHub Pages
+(private.madeformykids.com/ski/). The `followthepowder` Worker (`../followthepowder`, custom domains
+followthepowder.com + www) proxies `followthepowder.com/<path>` → Pages `/ski/<path>` and sends `/api/*` to the
+ski-data Worker, so a push to `main` is still the only deploy step for the site. All asset paths are relative,
+so the same files work at `/` (followthepowder.com) and under `/ski/` (Pages).
+- www.followthepowder.com → 301 apex; `/ski/...` on the new host → 301 to the root path.
+- madeformykids.com/ski/* pages (incl. `?resort=`) → 301 https://followthepowder.com/* (madeformykids-landing);
+  its `/ski/` assets and `/ski/api/*` still answer for tabs opened before the move.
+- Stats page: https://followthepowder.com/api/stats.html (token prompt; token is not in the repo).
+Canonical URL: https://followthepowder.com/
 
 ## v2: resort intel (lifts, runs, hours, snow report)
 

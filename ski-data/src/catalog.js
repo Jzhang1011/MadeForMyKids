@@ -82,7 +82,7 @@ export async function refreshCatalogBatch(env, b, { reports = true } = {}) {
     const r = await fetch(omUrl(env, list, {
       current: 'temperature_2m,wind_speed_10m,wind_gusts_10m,weather_code',
       hourly: 'snowfall', past_hours: '24', forecast_hours: '72', timeformat: 'unixtime', timezone: 'GMT'
-    }), { headers: { 'User-Agent': 'madeformykids.com ski-data (non-commercial family dashboard)' } });
+    }), { headers: { 'User-Agent': 'SkiDay ski-data (followthepowder.com; non-commercial family dashboard)' } });
     if (!r.ok) throw new Error(`open-meteo HTTP ${r.status}`);
     const arr = await r.json();
     if (!Array.isArray(arr) || arr.length !== list.length * 2) throw new Error('open-meteo: unexpected shape');
@@ -148,7 +148,7 @@ export async function fetchForecast(env, id) {
     hourly: 'temperature_2m,apparent_temperature,snowfall,wind_speed_10m,wind_gusts_10m,weather_code',
     daily: 'temperature_2m_max,temperature_2m_min,snowfall_sum,wind_speed_10m_max,wind_gusts_10m_max,weather_code',
     forecast_days: '7', timezone: 'auto'
-  }), { headers: { 'User-Agent': 'madeformykids.com ski-data (non-commercial family dashboard)' } });
+  }), { headers: { 'User-Agent': 'SkiDay ski-data (followthepowder.com; non-commercial family dashboard)' } });
   if (!res.ok) throw new Error(`open-meteo HTTP ${res.status}`);
   const arr = await res.json();
   return { resort: id, fetchedAt: new Date().toISOString(), points: { summit: r.summitElevM, mid: midElev(r) }, summit: arr[0], mid: arr[1] };

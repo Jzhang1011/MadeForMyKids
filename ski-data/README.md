@@ -1,10 +1,10 @@
 # ski-data Worker
 
-Scheduled data refresh and JSON API for https://madeformykids.com/ski/.
+Scheduled data refresh and JSON API for SkiDay, https://followthepowder.com/ (formerly madeformykids.com/ski/).
 
 - **Cron**: one trigger `*/15 * * * *` (free plan: 5 crons per account). Per tick (UTC): roads + NWS alerts + CDOT cameras every 15 min; weather on the first tick of each hour; resort intel hourly 12:00–23:00 UTC (5 AM–4 PM MST); everything at 12:30 UTC (5:30 AM MST).
 - **Storage**: KV namespace `SKI_DATA` (`7e2987feff8c4218aa766211fff5b859`), one key per source: `src:weather`, `src:roads`, `src:alerts`, `src:cameras`, `src:camsall`, `src:intel` (+ `src:cotrip` when keyed). Each record: `{status: ok|stale|failed, fetchedAt, attemptAt, error, data}`. A failed fetch keeps the last good `data` and its `fetchedAt`.
-- **API** (routed by `madeformykids-landing` via service binding `SKI_DATA_SVC`): `/ski/api/latest.json`, `/ski/api/intel.json`, `/ski/api/cameras.json`, `/ski/api/status.json`. `Cache-Control: public, max-age=60`. Edge-cached 60 s.
+- **API** (routed by the `followthepowder` Worker as `followthepowder.com/api/*`, and by `madeformykids-landing` as `madeformykids.com/ski/api/*` during the move, both via service binding `SKI_DATA_SVC`): `/api/latest.json`, `/api/intel.json`, `/api/cameras.json`, `/api/status.json`, `/api/catalog-conditions.json`, `/api/forecast.json?r=`, `/api/stats.html`. `Cache-Control: public, max-age=60`. Edge-cached 60 s.
 - **Manual refresh**: `curl -X POST -H "Authorization: Bearer $REFRESH_TOKEN" "https://ski-data.<subdomain>.workers.dev/ski/api/run?sources=weather,roads"`.
 - Collection logic is shared with the GitHub Action backup: `ski/scripts/collect.mjs` (+ `ski/js/core.js`, `ski/js/intel.js`).
 
