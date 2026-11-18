@@ -1,8 +1,8 @@
 import { openMeteoUrl, splitOpenMeteo, dailyRows, hourlyRows, weatherEmoji, carsUrl, slimEvents, EVENT_CLASSES,
-  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=bc2838e70f';
-import { STR, PACK_DEFAULT } from './i18n.js?v=bc2838e70f';
-import { selectCameras, routeSegments, inCO } from './route.js?v=bc2838e70f';
-import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=bc2838e70f';
+  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=06bb1664b8';
+import { STR, PACK_DEFAULT } from './i18n.js?v=06bb1664b8';
+import { selectCameras, routeSegments, inCO } from './route.js?v=06bb1664b8';
+import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=06bb1664b8';
 
 const LS = {
   get: (k, d) => { try { const v = localStorage.getItem('ski.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -502,7 +502,9 @@ function mountMap(c) {
     if (state.map) { try { state.map.remove(); } catch {} }
     const m = Lf.map(el, { scrollWheelZoom: false, zoomControl: true, attributionControl: true });
     state.map = m;
-    Lf.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 15, attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(m);
+    // Tile provider is config (resorts.json sources.tiles / tilesAttribution), so a keyed commercial provider can replace OSM's servers.
+    const fix = ' · <a href="https://www.openstreetmap.org/fixthemap">Report a map error</a>';
+    Lf.tileLayer(state.cfg.sources.tiles || 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 15, attribution: (state.cfg.sources.tilesAttribution || '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors') + fix }).addTo(m);
     const line = Lf.polyline(c.route.pts.map(p => [p[1], p[0]]), { color: '#14283F', weight: 4, opacity: .85 }).addTo(m);
     const a = c.route.pts[0], b = c.route.pts[c.route.pts.length - 1];
     Lf.circleMarker([a[1], a[0]], { radius: 7, color: '#fff', weight: 2, fillColor: '#25845A', fillOpacity: 1 }).addTo(m).bindTooltip(L(state.start.name));
