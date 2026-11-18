@@ -1,8 +1,8 @@
 // Resort discovery (default home) + basic resort view for catalog resorts without a full dashboard.
 // Data: data/catalog.json (static, verified) + api/catalog-conditions.json (Open-Meteo model, refreshed hourly by
 // the ski-data Worker; resort-reported status only where SkiDay has a feed) + api/forecast.json?r=<id> (basic view).
-import { fmt, weatherEmoji } from './core.js?v=b7a974d943';
-import { getRoute } from './start.js?v=b7a974d943';
+import { fmt, weatherEmoji } from './core.js?v=1edcd309c1';
+import { getRoute } from './start.js?v=1edcd309c1';
 
 const S = {
   en: {
@@ -384,7 +384,7 @@ function miniCard(r) {
 function drawMarkers(list, force) {
   const Lf = window.L; if (!Lf || !D.map) return;
   // Redraw (and refit) only when the set of resorts or favorites changes, so background updates never move the map.
-  const key = list.map(r => r.id).join(',') + '|' + favs().join(',') + '|' + (D.cond ? D.condAt : 0) + '|' + startPt().lat + ',' + startPt().lon;
+  const key = list.map(r => r.id).sort().join(',') + '|' + favs().join(',') + '|' + (D.cond ? D.condAt : 0) + '|' + startPt().lat + ',' + startPt().lon;
   if (!force && key === D.mkKey) return;
   const refit = !force && key.split('|')[0] !== (D.mkKey || '').split('|')[0];
   D.mkKey = key;

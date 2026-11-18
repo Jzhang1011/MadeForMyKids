@@ -1,9 +1,9 @@
 import { openMeteoUrl, splitOpenMeteo, dailyRows, hourlyRows, weatherEmoji, carsUrl, slimEvents, EVENT_CLASSES,
-  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=b7a974d943';
-import { STR, PACK_DEFAULT } from './i18n.js?v=b7a974d943';
-import { selectCameras, routeSegments, inCO } from './route.js?v=b7a974d943';
-import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=b7a974d943';
-import { initDiscover, loadCatalog, loadConditions, renderDiscover, resolveResort, addRecent, showBasic, renderBasic } from './discover.js?v=b7a974d943';
+  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=1edcd309c1';
+import { STR, PACK_DEFAULT } from './i18n.js?v=1edcd309c1';
+import { selectCameras, routeSegments, inCO } from './route.js?v=1edcd309c1';
+import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=1edcd309c1';
+import { initDiscover, loadCatalog, loadConditions, renderDiscover, resolveResort, addRecent, showBasic, renderBasic } from './discover.js?v=1edcd309c1';
 
 const LS = {
   get: (k, d) => { try { const v = localStorage.getItem('ski.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
