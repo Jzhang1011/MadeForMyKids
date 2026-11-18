@@ -1,8 +1,8 @@
 import { openMeteoUrl, splitOpenMeteo, dailyRows, hourlyRows, weatherEmoji, carsUrl, slimEvents, EVENT_CLASSES,
-  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=a2c3cd1621';
-import { STR, PACK_DEFAULT } from './i18n.js?v=a2c3cd1621';
-import { selectCameras, routeSegments, inCO } from './route.js?v=a2c3cd1621';
-import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=a2c3cd1621';
+  nwsUrl, slimAlerts, verdictFor, outfitFor, fmt } from './core.js?v=bc2838e70f';
+import { STR, PACK_DEFAULT } from './i18n.js?v=bc2838e70f';
+import { selectCameras, routeSegments, inCO } from './route.js?v=bc2838e70f';
+import { loadStart, saveStart, isDefaultStart, getRoute, mountStartUI } from './start.js?v=bc2838e70f';
 
 const LS = {
   get: (k, d) => { try { const v = localStorage.getItem('ski.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -401,9 +401,9 @@ const badge = (kind, r) => { const f = freshness(kind, r); return `<span class="
 /** One camera tile: visible "camera unavailable" on a broken/failed image, and the image's age. */
 function camTile({ href, img, name, ts, broken, extra = '', title = '' }) {
   const m = ageMin(ts), old = isFinite(m) && m > 60;
-  const age = isFinite(m) ? ` <small class="cage${old ? ' old' : ''}">· ${esc(old ? `${t('cam_old')} ${ago(ts)}` : ago(ts))}</small>` : '';
+  const age = isFinite(m) ? `<em class="cage${old ? ' old' : ''}">${esc(old ? `${t('cam_old')} ${ago(ts)}` : ago(ts))}</em>` : '';
   return `<a class="thumb${broken || !img ? ' na' : ''}" data-na="${esc(t('cam_na'))}" href="${esc(href)}" target="_blank" rel="noopener"${title ? ` title="${esc(title)}"` : ''}>
-      ${img && !broken ? `<img loading="lazy" alt="${esc(name)}" src="${esc(camImg(img))}" onerror="this.parentNode.classList.add('na')">` : ''}${extra}<span>${esc(name)}${age}</span></a>`;
+      ${img && !broken ? `<img loading="lazy" alt="${esc(name)}" src="${esc(camImg(img))}" onerror="this.parentNode.classList.add('na')">` : ''}${extra}${broken || !img ? '' : age}<span>${esc(name)}</span></a>`;
 }
 function camImg(src) { return src + (src.includes('?') ? '&' : '?') + 't=' + Math.floor(Date.now() / 120000); }
 
